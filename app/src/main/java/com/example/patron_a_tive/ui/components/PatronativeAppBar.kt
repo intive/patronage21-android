@@ -3,14 +3,12 @@ package com.example.patron_a_tive.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Dehaze
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,28 +31,17 @@ fun PatronativeAppBar(
     //
     // We set the background on the Column rather than the TopAppBar,
     // so that the background is drawn behind any padding set on the app bar (i.e. status bar).
-    val backgroundColor = MaterialTheme.colors.primary
+    val backgroundColor = Color.White
     Column(
         Modifier.background(backgroundColor.copy(alpha = 0.95f))
     ) {
         TopAppBar(
             modifier = modifier,
+            title = { Row { title() } },
             backgroundColor = Color.Transparent,
-            elevation = 0.dp, // No shadow needed
-            contentColor = MaterialTheme.colors.onSurface,
-            actions = actions,
-            title = { Row { title() } }, // https://issuetracker.google.com/168793068
-            navigationIcon = {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = stringResource(id = 21),
-                    modifier = Modifier
-                        .clickable(onClick = onNavIconPressed)
-                        .padding(horizontal = 16.dp)
-                )
-            }
+            elevation = 50.dp,
+            actions = actions
         )
-        Divider()
     }
 }
 
@@ -62,4 +49,25 @@ fun PatronativeAppBar(
 @Composable
 fun JetchatAppBarPreview() {
     PatronativeAppBar(title = { Text("Patron-a-tive!") })
+}
+
+@Preview
+@Composable
+fun JetchatAppBarWithActionsPreview() {
+    PatronativeAppBar(
+        title = { Text(text = "Patron-a-tive!", color = Color(R.color.design_default_color_primary)) },
+        actions = {
+            IconButton(onClick = { }){
+                Icon(Icons.Outlined.Search, contentDescription = null)
+            }
+            Spacer(modifier = Modifier.size(5.dp))
+            IconButton(onClick = { }){
+                Icon(Icons.Outlined.Person, contentDescription = null)
+            }
+            Spacer(modifier = Modifier.size(5.dp))
+            IconButton(onClick = { }){
+                Icon(Icons.Outlined.Dehaze, contentDescription = null)
+            }
+        }
+    )
 }
