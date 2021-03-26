@@ -5,6 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
@@ -22,14 +23,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.patron_a_tive.R
+import com.example.patron_a_tive.ui.theme.PatronageTypography
 
 @Composable
 fun BoxButton(text: String,
+              borderColor: Color = MaterialTheme.colors.primary,
               onClick: (() -> Unit) = {},
-            content: @Composable ()->Unit){
+              content: @Composable ()->Unit){
     Box(modifier = Modifier
         .requiredSize(150.dp, 150.dp)
-        .border(border = BorderStroke(1.dp, Color(R.color.design_default_color_primary)), shape = RoundedCornerShape(20.dp))
+        .border(border = BorderStroke(1.dp, color = borderColor), shape = RoundedCornerShape(20.dp))
         .clip(shape = RoundedCornerShape(20.dp))
         .clickable { onClick() }){
         Column(modifier = Modifier
@@ -38,7 +41,12 @@ fun BoxButton(text: String,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,) {
             content()
-            Text(text = text, textAlign = TextAlign.Center, overflow = TextOverflow.Ellipsis,)
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                style = PatronageTypography.body2,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }

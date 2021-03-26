@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.patron_a_tive.R
+import com.example.patron_a_tive.ui.theme.PatronageTypography
+import com.example.patron_a_tive.ui.theme.PatronativeTheme
 
 
 class HomeScreenFragment : Fragment() {
@@ -51,7 +53,7 @@ class HomeScreenFragment : Fragment() {
 
 @Composable
 fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = null) {
-    MaterialTheme {
+    PatronativeTheme {
         Column(modifier) {
             val scrollState = rememberScrollState()
             Column(
@@ -62,17 +64,14 @@ fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = nul
             ) {
                 Text(
                     text = stringResource(R.string.home_screen_greeting),
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 22.sp,
-                        color = Color.Cyan,
-                        letterSpacing = 0.sp
-                    ),
+                    style = PatronageTypography.h5,
+                    color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .padding(top = 15.dp, bottom = 15.dp)
                 )
                 Text(
                     text = stringResource(R.string.home_screen_text),
+                    style = PatronageTypography.body2,
                     modifier = Modifier
                         .padding(top = 15.dp, bottom = 15.dp)
                 )

@@ -19,6 +19,7 @@ import com.example.patron_a_tive.FragmentAwareAndroidViewBinding
 import com.example.patron_a_tive.R
 import com.example.patron_a_tive.ui.components.PatronativeAppBar
 import com.example.patron_a_tive.databinding.ContentMainBinding
+import com.example.patron_a_tive.ui.theme.PatronativeTheme
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,14 +32,14 @@ class NavActivity : AppCompatActivity() {
 
 @Composable
 fun HomeScreen() {
-    MaterialTheme {
+    PatronativeTheme {
         Scaffold(
             topBar = {
                 PatronativeAppBar(
                     title = {
                         Text(
                             text = stringResource(R.string.app_name),
-                            color = Color(R.color.design_default_color_primary)
+                            color = MaterialTheme.colors.primary
                         )
                     },
                     actions = {

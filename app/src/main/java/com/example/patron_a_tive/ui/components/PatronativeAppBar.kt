@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.patron_a_tive.R
+import com.example.patron_a_tive.ui.theme.PatronativeTheme
 
 @Composable
 fun PatronativeAppBar(
@@ -43,20 +44,27 @@ fun JetchatAppBarPreview() {
 @Preview
 @Composable
 fun JetchatAppBarWithActionsPreview() {
-    PatronativeAppBar(
-        title = { Text(text = "Patron-a-tive", color = Color(R.color.design_default_color_primary)) },
-        actions = {
-            IconButton(onClick = { }){
-                Icon(Icons.Outlined.Search, contentDescription = null)
+    PatronativeTheme {
+        PatronativeAppBar(
+            title = {
+                Text(
+                    text = "Patron-a-tive",
+                    color = MaterialTheme.colors.primary
+                )
+            },
+            actions = {
+                IconButton(onClick = { }) {
+                    Icon(Icons.Outlined.Search, contentDescription = null)
+                }
+                Spacer(modifier = Modifier.size(5.dp))
+                IconButton(onClick = { }) {
+                    Icon(Icons.Outlined.Person, contentDescription = null)
+                }
+                Spacer(modifier = Modifier.size(5.dp))
+                IconButton(onClick = { }) {
+                    Icon(Icons.Outlined.Dehaze, contentDescription = null)
+                }
             }
-            Spacer(modifier = Modifier.size(5.dp))
-            IconButton(onClick = { }){
-                Icon(Icons.Outlined.Person, contentDescription = null)
-            }
-            Spacer(modifier = Modifier.size(5.dp))
-            IconButton(onClick = { }){
-                Icon(Icons.Outlined.Dehaze, contentDescription = null)
-            }
-        }
-    )
+        )
+    }
 }
