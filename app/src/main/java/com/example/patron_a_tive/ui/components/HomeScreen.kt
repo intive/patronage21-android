@@ -89,7 +89,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.users_module),
-                onClick = { /*TODO: Place users module navDestination here*/ }
+                onClick = { navController?.navigate(R.id.action_homeScreenFragment_to_usersFragment)}
             ){
                 Icon(
                     Icons.Outlined.Person,
