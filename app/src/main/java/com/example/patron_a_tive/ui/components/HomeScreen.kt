@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +20,8 @@ import com.example.patron_a_tive.R
 
 @Composable
 fun BoxButton(text: String,
-              onClick: (() -> Unit)){
+              onClick: (() -> Unit),
+            imageDrawableId: Int = R.drawable.ic_launcher_foreground){
     Box(modifier = Modifier
         .requiredSize(150.dp, 150.dp)
         .border(border = BorderStroke(1.dp, Color(R.color.design_default_color_primary)), shape = RoundedCornerShape(20.dp))
@@ -33,7 +35,7 @@ fun BoxButton(text: String,
             Image(modifier = Modifier
                 .height(50.dp)
                 .width(50.dp),
-                painter = painterResource(R.drawable.ic_launcher_foreground),
+                painter = painterResource(imageDrawableId),
                 contentDescription = "Module miniature",
                 contentScale = ContentScale.Crop)
             Text(text = text, textAlign = TextAlign.Center, overflow = TextOverflow.Ellipsis,)
@@ -57,19 +59,34 @@ fun HomeScreenTechGroupsButton(){
 fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier){
     Column {
         Row {
-            BoxButton(text = "Grupy technologiczne", onClick = { /*TODO: Place technology groups module navDestination here*/ })
+            BoxButton(
+                text = stringResource(R.string.tech_groups_module),
+                onClick = { /*TODO: Place technology groups module navDestination here*/ }
+            )
             Spacer(modifier = modifier)
-            BoxButton(text = "Użytkownicy", onClick = { /*TODO: Place users module navDestination here*/ })
+            BoxButton(
+                text = stringResource(R.string.users_module),
+                onClick = { /*TODO: Place users module navDestination here*/ }
+            )
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(text = "Dzienniczek", onClick = { /*TODO: Place diary module navDestination here*/ })
+            BoxButton(
+                text = stringResource(R.string.diary_module),
+                onClick = { /*TODO: Place diary module navDestination here*/ }
+            )
             Spacer(modifier = modifier)
-            BoxButton(text = "Kalendarz", onClick = { /*TODO: Place calendar module navDestination here*/ })
+            BoxButton(
+                text = stringResource(R.string.calendar_module),
+                onClick = { /*TODO: Place calendar module navDestination here*/ }
+            )
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(text = "Audyt zdarzeń", onClick = { /*TODO: Place logs module navDestination here*/ })
+            BoxButton(
+                text = stringResource(R.string.logs_module)
+                , onClick = { /*TODO: Place logs module navDestination here*/ }
+            )
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.patron_a_tive.ui.components.HomeScreenBoxButtonsGrid
 import androidx.compose.ui.text.TextStyle
+import com.example.patron_a_tive.R
 
 
 class HomeScreenFragment : Fragment() {
@@ -51,7 +53,7 @@ fun NewsStory(modifier: Modifier = Modifier) {
                     .verticalScroll(scrollState),
             ) {
                 Text(
-                    text = "Witaj w Patron-a-tive!",
+                    text = stringResource(R.string.home_screen_greeting),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp,
@@ -62,8 +64,7 @@ fun NewsStory(modifier: Modifier = Modifier) {
                         .padding(top = 15.dp, bottom = 15.dp)
                 )
                 Text(
-                    text = "Aplikacja Parton-a-tive pozwala na zarządzanie" +
-                            "programem stażowym, jego użytkownikami oraz wydarzeniami",
+                    text = stringResource(R.string.home_screen_text),
                     modifier = Modifier
                         .padding(top = 15.dp, bottom = 15.dp)
                 )
