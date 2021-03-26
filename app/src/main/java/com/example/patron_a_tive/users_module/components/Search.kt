@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.components
+package com.example.patron_a_tive.users_module.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +35,7 @@ fun Search(
         label = { Text(text = "Szukaj użytkownika") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done,
+            imeAction = ImeAction.Search,
         ),
         keyboardActions = KeyboardActions(
             onDone = {

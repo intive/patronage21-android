@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.components
+package com.example.patron_a_tive.users_module.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -19,16 +19,13 @@ import com.example.patron_a_tive.ui.utils.lightBlue
 
 @Composable
 fun Header(
+    modifier: Modifier = Modifier,
     text: String,
     count: Int? = null,
-    showCount: Boolean = false
+    showCount: Boolean = false,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .padding(top = 16.dp)
-            .background(lightBlue),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {

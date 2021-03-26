@@ -1,4 +1,5 @@
-package com.example.patron_a_tive.ui.components
+package com.example.patron_a_tive.users_module.components
+
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text

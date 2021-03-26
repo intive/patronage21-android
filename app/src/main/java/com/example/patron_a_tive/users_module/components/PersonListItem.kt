@@ -1,6 +1,7 @@
-package com.example.patron_a_tive.ui.components
+package com.example.patron_a_tive.users_module.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,12 +22,23 @@ import com.example.patron_a_tive.R
 import com.example.patron_a_tive.users_module.users_screen.Person
 
 @Composable
-fun PersonListItem(person: Person) {
+fun PersonListItem(
+    person: Person,
+    onItemClick: (Person) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .height(50.dp)
+            .padding(
+                start = 16.dp,
+                end = 16.dp
+            )
+            .clickable {
+                   onItemClick(person)
+            },
+        verticalAlignment = Alignment.CenterVertically,
+
     ) {
         Image(
             bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
