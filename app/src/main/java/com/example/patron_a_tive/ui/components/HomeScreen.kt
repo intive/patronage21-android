@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,24 +78,22 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                 text = stringResource(R.string.tech_groups_module),
                 onClick = { /*TODO: Place technology groups module navDestination here*/ },
             ){
-                Image(modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp),
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Module miniature",
-                    contentScale = ContentScale.Crop)
+                Icon(
+                    Icons.Outlined.Keyboard,
+                    contentDescription = "technologyGroupsModule miniature",
+                    Modifier.requiredSize(40.dp)
+                )
             }
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.users_module),
                 onClick = { /*TODO: Place users module navDestination here*/ }
             ){
-                Image(modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp),
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Module miniature",
-                    contentScale = ContentScale.Crop)
+                Icon(
+                    Icons.Outlined.Person,
+                    contentDescription = "usersModule miniature",
+                    Modifier.requiredSize(40.dp)
+                )
             }
         }
         Spacer(modifier = modifier)
@@ -104,24 +102,22 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                 text = stringResource(R.string.diary_module),
                 onClick = { /*TODO: Place diary module navDestination here*/ }
             ){
-                Image(modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp),
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Module miniature",
-                    contentScale = ContentScale.Crop)
+                Icon(
+                    Icons.Outlined.Book,
+                    contentDescription = "diaryModule miniature",
+                    Modifier.requiredSize(40.dp)
+                )
             }
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.calendar_module),
                 onClick = { /*TODO: Place calendar module navDestination here*/ }
             ){
-                Image(modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp),
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Module miniature",
-                    contentScale = ContentScale.Crop)
+                Icon(
+                    Icons.Outlined.CalendarToday,
+                    contentDescription = "calendarModule miniature",
+                    Modifier.requiredSize(40.dp)
+                )
             }
         }
         Spacer(modifier = modifier)
@@ -130,12 +126,11 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                 text = stringResource(R.string.logs_module)
                 , onClick = { /*TODO: Place logs module navDestination here*/ }
             ){
-                Image(modifier = Modifier
-                    .height(50.dp)
-                    .width(50.dp),
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "Module miniature",
-                    contentScale = ContentScale.Crop)
+                Icon(
+                    Icons.Outlined.MenuBook,
+                    contentDescription = "logsModule miniature",
+                    Modifier.requiredSize(40.dp)
+                )
             }
         }
     }
