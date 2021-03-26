@@ -37,14 +37,14 @@ fun PatronativeAppBar(
 @Preview
 @Composable
 fun JetchatAppBarPreview() {
-    PatronativeAppBar(title = { Text("Patron-a-tive!") })
+    PatronativeAppBar(title = { Text("Patron-a-tive") })
 }
 
 @Preview
 @Composable
 fun JetchatAppBarWithActionsPreview() {
     PatronativeAppBar(
-        title = { Text(text = "Patron-a-tive!", color = Color(R.color.design_default_color_primary)) },
+        title = { Text(text = "Patron-a-tive", color = Color(R.color.design_default_color_primary)) },
         actions = {
             IconButton(onClick = { }){
                 Icon(Icons.Outlined.Search, contentDescription = null)

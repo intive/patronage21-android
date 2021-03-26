@@ -22,6 +22,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.patron_a_tive.ui.components.HomeScreenBoxButtonsGrid
 import androidx.compose.ui.text.TextStyle
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.patron_a_tive.R
 
 
@@ -35,14 +38,19 @@ class HomeScreenFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                NewsStory()
+                NewsStory(navController = findNavController())
             }
         }
+    }
+    private fun findNavController(): NavController {
+        val navHostFragment =
+            (activity as FragmentActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        return navHostFragment.navController
     }
 }
 
 @Composable
-fun NewsStory(modifier: Modifier = Modifier) {
+fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = null) {
     MaterialTheme {
         Column(modifier) {
             val scrollState = rememberScrollState()
@@ -74,12 +82,16 @@ fun NewsStory(modifier: Modifier = Modifier) {
                         .padding(top = 15.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    HomeScreenBoxButtonsGrid(Modifier.size(20.dp))
+                    HomeScreenBoxButtonsGrid(
+                        modifier = Modifier.size(20.dp),
+                        navController = navController
+                    )
                 }
             }
         }
     }
 }
+
 
 @Preview
 @Composable

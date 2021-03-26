@@ -3,12 +3,16 @@ package com.example.patron_a_tive.ui.components
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -16,12 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import com.example.patron_a_tive.R
 
 @Composable
 fun BoxButton(text: String,
-              onClick: (() -> Unit),
-            imageDrawableId: Int = R.drawable.ic_launcher_foreground){
+              onClick: (() -> Unit) = {},
+            content: @Composable ()->Unit){
     Box(modifier = Modifier
         .requiredSize(150.dp, 150.dp)
         .border(border = BorderStroke(1.dp, Color(R.color.design_default_color_primary)), shape = RoundedCornerShape(20.dp))
@@ -32,12 +38,7 @@ fun BoxButton(text: String,
             .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,) {
-            Image(modifier = Modifier
-                .height(50.dp)
-                .width(50.dp),
-                painter = painterResource(imageDrawableId),
-                contentDescription = "Module miniature",
-                contentScale = ContentScale.Crop)
+            content()
             Text(text = text, textAlign = TextAlign.Center, overflow = TextOverflow.Ellipsis,)
         }
     }
@@ -46,47 +47,96 @@ fun BoxButton(text: String,
 @Preview
 @Composable
 fun HomeScreenUsersButton(){
-    BoxButton(text = "Użytkownicy", onClick = { })
+    BoxButton(text = "Użytkownicy", onClick = { }){
+        Image(modifier = Modifier
+            .height(50.dp)
+            .width(50.dp),
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = "Module miniature",
+            contentScale = ContentScale.Crop)
+    }
 }
 
 @Preview
 @Composable
 fun HomeScreenTechGroupsButton(){
-    BoxButton(text = "Grupy technologiczne", onClick = { })
+    BoxButton(text = "Grupy technologiczne", onClick = { }){
+        Image(modifier = Modifier
+            .height(50.dp)
+            .width(50.dp),
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = "Module miniature",
+            contentScale = ContentScale.Crop)
+    }
 }
 
 @Composable
-fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier){
+fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavController? = null){ // null for Previews
     Column {
         Row {
             BoxButton(
                 text = stringResource(R.string.tech_groups_module),
-                onClick = { /*TODO: Place technology groups module navDestination here*/ }
-            )
+                onClick = { /*TODO: Place technology groups module navDestination here*/ },
+            ){
+                Image(modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = "Module miniature",
+                    contentScale = ContentScale.Crop)
+            }
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.users_module),
                 onClick = { /*TODO: Place users module navDestination here*/ }
-            )
+            ){
+                Image(modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = "Module miniature",
+                    contentScale = ContentScale.Crop)
+            }
         }
         Spacer(modifier = modifier)
         Row {
             BoxButton(
                 text = stringResource(R.string.diary_module),
                 onClick = { /*TODO: Place diary module navDestination here*/ }
-            )
+            ){
+                Image(modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = "Module miniature",
+                    contentScale = ContentScale.Crop)
+            }
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.calendar_module),
                 onClick = { /*TODO: Place calendar module navDestination here*/ }
-            )
+            ){
+                Image(modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = "Module miniature",
+                    contentScale = ContentScale.Crop)
+            }
         }
         Spacer(modifier = modifier)
         Row {
             BoxButton(
                 text = stringResource(R.string.logs_module)
                 , onClick = { /*TODO: Place logs module navDestination here*/ }
-            )
+            ){
+                Image(modifier = Modifier
+                    .height(50.dp)
+                    .width(50.dp),
+                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                    contentDescription = "Module miniature",
+                    contentScale = ContentScale.Crop)
+            }
         }
     }
 }

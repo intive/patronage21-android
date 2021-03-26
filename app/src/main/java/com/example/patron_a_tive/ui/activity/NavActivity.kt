@@ -37,7 +37,7 @@ fun HomeScreen() {
                 PatronativeAppBar(
                     title = {
                         Text(
-                            text = stringResource(R.string.app_bar_text),
+                            text = stringResource(R.string.app_name),
                             color = Color(R.color.design_default_color_primary)
                         )
                     },
