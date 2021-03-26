@@ -57,19 +57,19 @@ fun HomeScreenTechGroupsButton(){
 fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier){
     Column {
         Row {
-            BoxButton(text = "Grupy technologiczne", onClick = { })
+            BoxButton(text = "Grupy technologiczne", onClick = { /*TODO: Place technology groups module navDestination here*/ })
             Spacer(modifier = modifier)
-            BoxButton(text = "Użytkownicy", onClick = { })
+            BoxButton(text = "Użytkownicy", onClick = { /*TODO: Place users module navDestination here*/ })
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(text = "Dzienniczek", onClick = { })
+            BoxButton(text = "Dzienniczek", onClick = { /*TODO: Place diary module navDestination here*/ })
             Spacer(modifier = modifier)
-            BoxButton(text = "Kalendarz", onClick = { })
+            BoxButton(text = "Kalendarz", onClick = { /*TODO: Place calendar module navDestination here*/ })
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(text = "Audyt zdarzeń", onClick = { })
+            BoxButton(text = "Audyt zdarzeń", onClick = { /*TODO: Place logs module navDestination here*/ })
         }
     }
 }

@@ -5,23 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Dehaze
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.patron_a_tive.R
-import com.example.patron_a_tive.components.PatronativeAppBar
 import com.example.patron_a_tive.ui.components.HomeScreenBoxButtonsGrid
+import androidx.compose.ui.text.TextStyle
+
 
 class HomeScreenFragment : Fragment() {
 
@@ -30,7 +30,7 @@ class HomeScreenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(requireContext()).apply {
             setContent {
                 NewsStory()
@@ -40,35 +40,24 @@ class HomeScreenFragment : Fragment() {
 }
 
 @Composable
-fun NewsStory() {
+fun NewsStory(modifier: Modifier = Modifier) {
     MaterialTheme {
-        Scaffold (
-            topBar = {
-                PatronativeAppBar(
-                    title = { Text(text = "Patron-a-tive!", color = Color(R.color.design_default_color_primary)) },
-                    actions = {
-                        IconButton(onClick = { }){
-                            Icon(Icons.Outlined.Search, contentDescription = null)
-                        }
-                        Spacer(modifier = Modifier.size(5.dp))
-                        IconButton(onClick = { }){
-                            Icon(Icons.Outlined.Person, contentDescription = null)
-                        }
-                        Spacer(modifier = Modifier.size(5.dp))
-                        IconButton(onClick = { }){
-                            Icon(Icons.Outlined.Dehaze, contentDescription = null)
-                        }
-                    }
-                )
-            }
-        ) {
+        Column(modifier) {
+            val scrollState = rememberScrollState()
             Column(
                 modifier = Modifier
                     .padding(30.dp)
-                    .fillMaxWidth(),
-            ){
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
+            ) {
                 Text(
                     text = "Witaj w Patron-a-tive!",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp,
+                        color = Color.Cyan,
+                        letterSpacing = 0.sp
+                    ),
                     modifier = Modifier
                         .padding(top = 15.dp, bottom = 15.dp)
                 )
@@ -82,7 +71,8 @@ fun NewsStory() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 15.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     HomeScreenBoxButtonsGrid(Modifier.size(20.dp))
                 }
             }
