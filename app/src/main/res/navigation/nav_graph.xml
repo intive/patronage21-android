@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.example.patron_a_tive.home_screen.HomeScreenFragment"
-        android:label="HomeScreenFragment" />
+        android:label="HomeScreenFragment" >
+        <action
+            android:id="@+id/action_homeScreenFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.example.patron_a_tive.users_module.users_screen.UsersFragment"
+        android:label="UsersFragment" />
 </navigation>
