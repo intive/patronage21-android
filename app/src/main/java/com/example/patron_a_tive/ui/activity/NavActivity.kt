@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.patron_a_tive.FragmentAwareAndroidViewBinding
 import com.example.patron_a_tive.R
-import com.example.patron_a_tive.ui.components.PatronativeAppBar
 import com.example.patron_a_tive.databinding.ContentMainBinding
+import com.example.patron_a_tive.ui.components.PatronativeAppBar
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

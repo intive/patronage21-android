@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.users_module.users_screen
+package com.intive.users
 
 import androidx.lifecycle.ViewModel
 

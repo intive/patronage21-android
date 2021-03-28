@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
 }
 
@@ -8,7 +8,6 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.intive.users"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -41,6 +40,7 @@ android {
         kotlinCompilerExtensionVersion '1.0.0-beta01'
     }
 }
+
 
 dependencies {
     def nav_version = "2.3.4"
@@ -82,6 +82,4 @@ dependencies {
 
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
-
-    implementation project(":users")
 }

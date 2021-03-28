@@ -1,5 +1,6 @@
 package com.example.patron_a_tive.ui.components
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -89,7 +90,9 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.users_module),
-                onClick = { navController?.navigate(R.id.action_homeScreenFragment_to_usersFragment)}
+                onClick = {
+                    navController?.navigate(Uri.parse("intive://usersFragment"))
+                }
             ){
                 Icon(
                     Icons.Outlined.Person,
