@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.utils
+package com.intive.users.ui.utils
 
 import androidx.compose.ui.graphics.Color
 

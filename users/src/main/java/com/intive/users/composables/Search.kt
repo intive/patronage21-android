@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.users_module.components
+package com.intive.users.composables
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +16,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.patron_a_tive.ui.utils.darkBlue
-import com.example.patron_a_tive.ui.utils.lightGray
+import com.intive.users.ui.utils.darkBlue
+import com.intive.users.ui.utils.lightGray
 
 @Composable
 fun Search(

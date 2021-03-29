@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.users_module.components
+package com.intive.users.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,8 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.patron_a_tive.R
-import com.example.patron_a_tive.users_module.users_screen.Person
+import com.intive.users.Person
 
 @Composable
 fun PersonListItem(
@@ -41,7 +40,7 @@ fun PersonListItem(
 
     ) {
         Image(
-            bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
+            bitmap = ImageBitmap.imageResource(id = com.intive.users.R.drawable.aaa),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

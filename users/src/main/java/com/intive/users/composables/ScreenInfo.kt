@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.users_module.components
+package com.intive.users.composables
 
 
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.patron_a_tive.ui.utils.darkBlue
+import com.intive.users.ui.utils.darkBlue
 
 @Composable
 fun ScreenInfo() {
