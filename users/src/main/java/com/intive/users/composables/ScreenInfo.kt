@@ -6,21 +6,29 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.intive.users.R
 import com.intive.users.ui.utils.darkBlue
 
 @Composable
-fun ScreenInfo() {
+fun ScreenInfo(
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 20.sp,
+    color: Color = darkBlue,
+    fontWeight: FontWeight = FontWeight.Bold,
+) {
     Text(
-        "Użytkownicy",
-        fontSize = 20.sp,
-        color = darkBlue,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.padding(bottom = 16.dp)
+        stringResource(R.string.users),
+        fontSize = fontSize,
+        color = color,
+        fontWeight = fontWeight,
+        modifier = modifier.padding(bottom = 16.dp)
     )
     Text(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac dolor et dui dictum viverra vel eu erat."
+        stringResource(R.string.lorem_placeholder)
     )
 }

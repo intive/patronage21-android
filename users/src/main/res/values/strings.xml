@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Patron-a-tive</string>
+    <string name="search_user">Szukaj użytkownika</string>
+    <string name="search_icon_content_description">Search Icon</string>
+    <string name="users">Użytkownicy</string>
+    <string name="leaders">Liderzy</string>
+    <string name="participants">Uczestnicy</string>
+    <string name="lorem_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac dolor et dui dictum viverra vel eu erat.</string>
 </resources>
