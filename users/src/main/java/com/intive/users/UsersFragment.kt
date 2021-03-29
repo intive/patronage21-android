@@ -5,18 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,6 +25,7 @@ import com.intive.users.ui.utils.darkBlue
 import com.intive.users.ui.utils.lightBlue
 import com.intive.users.composables.Header
 import com.intive.users.composables.PersonListItem
+import com.intive.users.composables.ScreenInfo
 import com.intive.users.composables.Search
 
 data class Person(val firstName: String, val lastName: String)
@@ -45,7 +45,8 @@ class UsersFragment : Fragment() {
                 Column {
                     MaterialTheme {
                         val users = viewModel.users
-                        val query = ""
+                        val query = viewModel.query.collectAsState()
+
 
                         val modifier = Modifier.padding(
                             start = 30.dp,
@@ -55,24 +56,25 @@ class UsersFragment : Fragment() {
                         )
                         LazyColumn {
                             item {
-                                Text(
-                                    "Użytkownicy",
-                                    fontSize = 20.sp,
-                                    color = darkBlue,
-                                    fontWeight = FontWeight.Bold,
+                                Column(
                                     modifier = modifier
-                                )
-                                Text(
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac dolor et dui dictum viverra vel eu erat.",
-                                    modifier = modifier
-                                )
-                                Search(query = query, onQueryChanged = {  }, onExecuteSearch = {})
+                                ) {
+                                    ScreenInfo()
+                                    Spacer(modifier = Modifier.padding(16.dp))
+                                    Search(
+                                        query = query.value,
+                                        onQueryChanged = {
+                                            viewModel.onQueryChanged(it)
+                                        },
+                                        onExecuteSearch = {}
+                                    )
+                                }
                             }
 
 
                             item {
                                 Header(
-                                    text = "Liderzy",
+                                    text = stringResource(id = R.string.leaders),
                                     count = users.size,
                                     showCount = true,
                                     modifier = Modifier
@@ -87,7 +89,7 @@ class UsersFragment : Fragment() {
                                 )
                             }
 
-                            items(users) {person ->
+                            items(users) { person ->
                                 PersonListItem(person = person, onItemClick = {})
                                 Divider(
                                     color = Color(0xFFF1F1F1),
@@ -101,7 +103,7 @@ class UsersFragment : Fragment() {
 
                             item {
                                 Header(
-                                    text = "Uczestnicy",
+                                    text = stringResource(id = R.string.participants),
                                     count = users.size,
                                     showCount = true,
                                     modifier = Modifier
@@ -116,8 +118,8 @@ class UsersFragment : Fragment() {
                                 )
                             }
 
-                            items(users) {person ->
-                                PersonListItem(person = person, onItemClick = {  })
+                            items(users) { person ->
+                                PersonListItem(person = person, onItemClick = { })
                                 Divider(
                                     color = Color(0xFFF1F1F1),
                                     thickness = 2.dp,
