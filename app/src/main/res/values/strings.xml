@@ -2,6 +2,11 @@
     <string name="app_name">Patron-a-tive</string>
     <string name="app_bar_text">Patron-a-tive!</string>
 
+    <!--AppBar Icons-->
+    <string name="search_icon_desc">Ikona wyszukiwania</string>
+    <string name="profile_icon_desc">Ikona profilu użytkownika</string>
+    <string name="settings_icon_desc">Ikona ustawień</string>
+
     <!--HomeScreen text content-->
     <string name="home_screen_greeting">Witaj w Patron-a-tive!</string>
     <string name="home_screen_text">Aplikacja Parton-a-tive pozwala na zarządzanie

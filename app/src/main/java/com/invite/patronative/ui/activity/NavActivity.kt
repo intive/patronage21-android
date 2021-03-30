@@ -43,15 +43,24 @@ fun HomeScreen() {
                     },
                     actions = {
                         IconButton(onClick = { }) {
-                            Icon(Icons.Outlined.Search, contentDescription = null)
+                            Icon(
+                                Icons.Outlined.Search,
+                                contentDescription = stringResource(R.string.search_icon_desc)
+                            )
                         }
                         Spacer(modifier = Modifier.size(5.dp))
                         IconButton(onClick = { }) {
-                            Icon(Icons.Outlined.Person, contentDescription = null)
+                            Icon(
+                                Icons.Outlined.Person,
+                                contentDescription = stringResource(R.string.profile_icon_desc)
+                            )
                         }
                         Spacer(modifier = Modifier.size(5.dp))
                         IconButton(onClick = { }) {
-                            Icon(Icons.Outlined.Dehaze, contentDescription = null)
+                            Icon(
+                                Icons.Outlined.Dehaze,
+                                contentDescription = stringResource(R.string.settings_icon_desc)
+                            )
                         }
                     }
                 )
