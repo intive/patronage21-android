@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.invite.patronative.FragmentAwareAndroidViewBinding
@@ -48,14 +49,14 @@ fun HomeScreen() {
                                 contentDescription = stringResource(R.string.search_icon_desc)
                             )
                         }
-                        Spacer(modifier = Modifier.size(5.dp))
+                        Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.appbar_icons_spacer_size)))
                         IconButton(onClick = { }) {
                             Icon(
                                 Icons.Outlined.Person,
                                 contentDescription = stringResource(R.string.profile_icon_desc)
                             )
                         }
-                        Spacer(modifier = Modifier.size(5.dp))
+                        Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.appbar_icons_spacer_size)))
                         IconButton(onClick = { }) {
                             Icon(
                                 Icons.Outlined.Dehaze,

@@ -9,9 +9,10 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.patron_a_tive.R
 import com.invite.patronative.ui.theme.PatronativeTheme
 
 @Composable
@@ -20,15 +21,15 @@ fun PatronativeAppBar(
     title: @Composable RowScope.() -> Unit,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    val backgroundColor = Color.White
+    val backgroundColor = MaterialTheme.colors.background
     Column(
         Modifier.background(backgroundColor.copy(alpha = 0.95f))
     ) {
         TopAppBar(
             modifier = modifier,
             title = { Row { title() } },
-            backgroundColor = Color.White,
-            elevation = 50.dp,
+            backgroundColor = MaterialTheme.colors.background,
+            elevation = dimensionResource(id = R.dimen.appbar_elevation),
             actions = actions
         )
     }
@@ -55,11 +56,11 @@ fun JetchatAppBarWithActionsPreview() {
                 IconButton(onClick = { }) {
                     Icon(Icons.Outlined.Search, contentDescription = null)
                 }
-                Spacer(modifier = Modifier.size(5.dp))
+                Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.appbar_icons_spacer_size)))
                 IconButton(onClick = { }) {
                     Icon(Icons.Outlined.Person, contentDescription = null)
                 }
-                Spacer(modifier = Modifier.size(5.dp))
+                Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.appbar_icons_spacer_size)))
                 IconButton(onClick = { }) {
                     Icon(Icons.Outlined.Dehaze, contentDescription = null)
                 }

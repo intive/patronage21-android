@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,10 @@ fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = nul
             val scrollState = rememberScrollState()
             Column(
                 modifier = Modifier
-                    .padding(30.dp)
+                    .padding(
+                        start = dimensionResource(id = R.dimen.activity_padding),
+                        end = dimensionResource(id = R.dimen.activity_padding)
+                    )
                     .fillMaxWidth()
                     .verticalScroll(scrollState),
             ) {
