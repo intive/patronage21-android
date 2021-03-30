@@ -5,17 +5,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -172,8 +178,18 @@ class DayFragment : Fragment() {
     @Composable
     fun UsersListItem(index: Int) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            Spacer(Modifier.width(10.dp))
-            Text("Uczestnik $index", style = TextStyle(fontSize = 18.sp))
+            Image(
+                bitmap = ImageBitmap.imageResource(id = R.drawable.header),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .width(30.dp)
+                    .height(30.dp)
+                    .clip(CircleShape)
+            )
+
+            Text("Uczestnik ${index+1}", style = TextStyle(fontSize = 18.sp), modifier = Modifier.padding(start = 15.dp))
             //Text("Organizator", style = MaterialTheme.typography.subtitle1)
         }
         Divider(color = Color.LightGray)
