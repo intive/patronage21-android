@@ -31,7 +31,8 @@ fun BoxButton(text: String,
               onClick: (() -> Unit) = {},
               content: @Composable ()->Unit){
     Box(modifier = Modifier
-        .requiredSize(150.dp, 150.dp)
+        .width(150.dp)
+        .height(150.dp)
         .border(border = BorderStroke(1.dp, color = borderColor), shape = RoundedCornerShape(20.dp))
         .clip(shape = RoundedCornerShape(20.dp))
         .clickable { onClick() }){
@@ -79,74 +80,86 @@ fun HomeScreenTechGroupsButton(){
 fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavController? = null){ // null for Previews
     Column {
         Row {
-            BoxButton(
-                text = stringResource(R.string.tech_groups_module),
-                onClick = { /*TODO: Place technology groups module navDestination here*/ },
-            ){
-                Icon(
-                    Icons.Outlined.Keyboard,
-                    contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)) {
+                BoxButton(
+                    text = stringResource(R.string.tech_groups_module),
+                    onClick = { /*TODO: Place technology groups module navDestination here*/ },
+                ) {
+                    Icon(
+                        Icons.Outlined.Keyboard,
+                        contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
             Spacer(modifier = modifier)
-            BoxButton(
-                text = stringResource(R.string.users_module),
-                onClick = { /*TODO: Place users module navDestination here*/ }
-            ){
-                Icon(
-                    Icons.Outlined.Person,
-                    contentDescription = stringResource(R.string.users_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)) {
+                BoxButton(
+                    text = stringResource(R.string.users_module),
+                    onClick = { /*TODO: Place users module navDestination here*/ }
+                ) {
+                    Icon(
+                        Icons.Outlined.Person,
+                        contentDescription = stringResource(R.string.users_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(
-                text = stringResource(R.string.diary_module),
-                onClick = { /*TODO: Place diary module navDestination here*/ }
-            ){
-                Icon(
-                    Icons.Outlined.Book,
-                    contentDescription = stringResource(R.string.diary_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)){
+                BoxButton(
+                    text = stringResource(R.string.diary_module),
+                    onClick = { /*TODO: Place diary module navDestination here*/ }
+                ){
+                    Icon(
+                        Icons.Outlined.Book,
+                        contentDescription = stringResource(R.string.diary_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
             Spacer(modifier = modifier)
-            BoxButton(
-                text = stringResource(R.string.calendar_module),
-                onClick = { /*TODO: Place calendar module navDestination here*/ }
-            ){
-                Icon(
-                    Icons.Outlined.CalendarToday,
-                    contentDescription = stringResource(R.string.calendar_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)) {
+                BoxButton(
+                    text = stringResource(R.string.calendar_module),
+                    onClick = { /*TODO: Place calendar module navDestination here*/ }
+                ) {
+                    Icon(
+                        Icons.Outlined.CalendarToday,
+                        contentDescription = stringResource(R.string.calendar_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
         }
         Spacer(modifier = modifier)
         Row {
-            BoxButton(
-                text = stringResource(R.string.logs_module)
-                , onClick = { /*TODO: Place logs module navDestination here*/ }
-            ){
-                Icon(
-                    Icons.Outlined.MenuBook,
-                    contentDescription = stringResource(R.string.logs_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)) {
+                BoxButton(
+                    text = stringResource(R.string.logs_module),
+                    onClick = { /*TODO: Place logs module navDestination here*/ }
+                ) {
+                    Icon(
+                        Icons.Outlined.MenuBook,
+                        contentDescription = stringResource(R.string.logs_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
             Spacer(modifier = modifier)
-            BoxButton(
-                text = stringResource(R.string.registration_module)
-                , onClick = { /*TODO: Place registration module navDestination here*/ }
-            ){
-                Icon(
-                    Icons.Outlined.PersonAdd,
-                    contentDescription = stringResource(R.string.registration_module_miniature_desc),
-                    Modifier.requiredSize(40.dp)
-                )
+            Column (Modifier.weight(1f)) {
+                BoxButton(
+                    text = stringResource(R.string.registration_module),
+                    onClick = { /*TODO: Place registration module navDestination here*/ }
+                ) {
+                    Icon(
+                        Icons.Outlined.PersonAdd,
+                        contentDescription = stringResource(R.string.registration_module_miniature_desc),
+                        Modifier.size(40.dp)
+                    )
+                }
             }
         }
     }

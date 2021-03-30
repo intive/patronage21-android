@@ -57,7 +57,7 @@ fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = nul
                 modifier = Modifier
                     .padding(
                         start = dimensionResource(id = R.dimen.activity_padding),
-                        end = dimensionResource(id = R.dimen.activity_padding)
+                        end = dimensionResource(id = R.dimen.activity_padding),
                     )
                     .fillMaxWidth()
                     .verticalScroll(scrollState),
