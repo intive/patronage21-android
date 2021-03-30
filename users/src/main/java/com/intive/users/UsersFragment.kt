@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.intive.users.ui.utils.darkBlue
 import com.intive.users.ui.utils.lightBlue
 import com.intive.users.composables.Header
@@ -73,24 +74,26 @@ class UsersFragment : Fragment() {
 
 
                             item {
-                                Header(
-                                    text = stringResource(id = R.string.leaders),
-                                    count = users.size,
-                                    showCount = true,
+                                Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(60.dp)
                                         .padding(
                                             top = 16.dp,
                                             start = 16.dp,
                                             end = 16.dp
                                         )
-                                        .background(lightBlue)
-                                )
+                                ) {
+                                    Header(
+                                        text = stringResource(id = R.string.leaders),
+                                        count = users.size,
+                                        showCount = true,
+                                    )
+                                }
                             }
 
                             items(users) { person ->
-                                PersonListItem(person = person, onItemClick = {})
+                                PersonListItem(person = person, onItemClick = {
+                                    findNavController().navigate(R.id.action_usersFragment_to_detailsFragment)
+                                })
                                 Divider(
                                     color = Color(0xFFF1F1F1),
                                     thickness = 2.dp,
@@ -102,24 +105,27 @@ class UsersFragment : Fragment() {
                             }
 
                             item {
-                                Header(
-                                    text = stringResource(id = R.string.participants),
-                                    count = users.size,
-                                    showCount = true,
+                                Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(60.dp)
                                         .padding(
                                             top = 16.dp,
                                             start = 16.dp,
                                             end = 16.dp
                                         )
-                                        .background(lightBlue)
-                                )
+                                ) {
+                                    Header(
+                                        text = stringResource(id = R.string.participants),
+                                        count = users.size,
+                                        showCount = true,
+                                    )
+                                }
+
                             }
 
                             items(users) { person ->
-                                PersonListItem(person = person, onItemClick = { })
+                                PersonListItem(person = person, onItemClick = {
+                                    findNavController().navigate(R.id.action_usersFragment_to_detailsFragment)
+                                })
                                 Divider(
                                     color = Color(0xFFF1F1F1),
                                     thickness = 2.dp,

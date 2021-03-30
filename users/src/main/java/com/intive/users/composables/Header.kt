@@ -1,7 +1,9 @@
 package com.intive.users.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,16 +14,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.intive.users.ui.utils.darkBlue
+import com.intive.users.ui.utils.lightBlue
 
 @Composable
 fun Header(
-    modifier: Modifier = Modifier,
     text: String,
     count: Int? = null,
     showCount: Boolean = false,
 ) {
     Row(
-        modifier = modifier,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .background(lightBlue),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
