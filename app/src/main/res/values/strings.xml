@@ -13,4 +13,19 @@
     <string name="diary_module">Dzienniczek</string>
     <string name="calendar_module">Kalendarz</string>
     <string name="logs_module">Audyt zdarzeń</string>
+
+    <string name="calendar">Kalendarz</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="add_event">Dodaj nowe wydarzenie</string>
+    <string name="accept">Zatwierdź</string>
+    <string name="go_back">Powrót</string>
+    <string name="add_event_hint">Nazwa wydarzenia</string>
+    <string name="choose_period">Wybierz zakres czasu</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="accept_event">Potwierdź udział</string>
+    <string name="reject_event">Odrzuć</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -3,6 +3,11 @@ plugins {
     id 'kotlin-android'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -43,6 +48,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.navigation:navigation-runtime:2.3.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def nav_version = "2.3.4"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
