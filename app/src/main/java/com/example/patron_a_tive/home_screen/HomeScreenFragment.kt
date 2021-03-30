@@ -64,7 +64,7 @@ fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = nul
             ) {
                 Text(
                     text = stringResource(R.string.home_screen_greeting),
-                    style = PatronageTypography.h5,
+                    style = MaterialTheme.typography.h5,
                     color = MaterialTheme.colors.secondary,
                     modifier = Modifier
                         .padding(top = 15.dp, bottom = 15.dp)

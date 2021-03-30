@@ -42,7 +42,7 @@ val PatronageTypography = Typography(
         letterSpacing = 0.sp
     ),
     h5 = TextStyle(
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Black,
         fontSize = 24.sp,
         letterSpacing = 0.sp
     ),
