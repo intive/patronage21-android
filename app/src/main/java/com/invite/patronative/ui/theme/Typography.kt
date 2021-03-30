@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.theme
+package com.invite.patronative.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

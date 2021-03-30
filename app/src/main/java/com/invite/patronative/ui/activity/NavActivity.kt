@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.activity
+package com.invite.patronative.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,14 +12,13 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.patron_a_tive.FragmentAwareAndroidViewBinding
+import com.invite.patronative.FragmentAwareAndroidViewBinding
 import com.example.patron_a_tive.R
-import com.example.patron_a_tive.ui.components.PatronativeAppBar
+import com.invite.patronative.ui.components.PatronativeAppBar
 import com.example.patron_a_tive.databinding.ContentMainBinding
-import com.example.patron_a_tive.ui.theme.PatronativeTheme
+import com.invite.patronative.ui.theme.PatronativeTheme
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

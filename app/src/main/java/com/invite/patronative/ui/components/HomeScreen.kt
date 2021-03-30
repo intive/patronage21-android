@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.ui.components
+package com.invite.patronative.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.*
@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.patron_a_tive.R
-import com.example.patron_a_tive.ui.theme.PatronageTypography
+import com.invite.patronative.ui.theme.PatronageTypography
 
 @Composable
 fun BoxButton(text: String,
@@ -54,26 +54,24 @@ fun BoxButton(text: String,
 @Preview
 @Composable
 fun HomeScreenUsersButton(){
-    BoxButton(text = "Użytkownicy", onClick = { }){
-        Image(modifier = Modifier
-            .height(50.dp)
-            .width(50.dp),
-            painter = painterResource(R.drawable.ic_launcher_foreground),
-            contentDescription = "Module miniature",
-            contentScale = ContentScale.Crop)
+    BoxButton(text = stringResource(R.string.users_module), onClick = { }){
+        Icon(
+            Icons.Outlined.Person,
+            contentDescription = stringResource(R.string.users_module_miniature_desc),
+            Modifier.requiredSize(40.dp)
+        )
     }
 }
 
 @Preview
 @Composable
 fun HomeScreenTechGroupsButton(){
-    BoxButton(text = "Grupy technologiczne", onClick = { }){
-        Image(modifier = Modifier
-            .height(50.dp)
-            .width(50.dp),
-            painter = painterResource(R.drawable.ic_launcher_foreground),
-            contentDescription = "Module miniature",
-            contentScale = ContentScale.Crop)
+    BoxButton(text = stringResource(R.string.tech_groups_module), onClick = { }){
+        Icon(
+            Icons.Outlined.Keyboard,
+            contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
+            Modifier.requiredSize(40.dp)
+        )
     }
 }
 
@@ -83,14 +81,11 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
         Row {
             BoxButton(
                 text = stringResource(R.string.tech_groups_module),
-                onClick = {
-                          /*TODO: Place technology groups module navDestination here*/
-                          Log.d("HomeScreen", "technologyGroupsModule button pressed")
-                          },
+                onClick = { /*TODO: Place technology groups module navDestination here*/ },
             ){
                 Icon(
                     Icons.Outlined.Keyboard,
-                    contentDescription = "technologyGroupsModule miniature",
+                    contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
                     Modifier.requiredSize(40.dp)
                 )
             }
@@ -101,7 +96,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             ){
                 Icon(
                     Icons.Outlined.Person,
-                    contentDescription = "usersModule miniature",
+                    contentDescription = stringResource(R.string.users_module_miniature_desc),
                     Modifier.requiredSize(40.dp)
                 )
             }
@@ -114,7 +109,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             ){
                 Icon(
                     Icons.Outlined.Book,
-                    contentDescription = "diaryModule miniature",
+                    contentDescription = stringResource(R.string.diary_module_miniature_desc),
                     Modifier.requiredSize(40.dp)
                 )
             }
@@ -125,7 +120,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             ){
                 Icon(
                     Icons.Outlined.CalendarToday,
-                    contentDescription = "calendarModule miniature",
+                    contentDescription = stringResource(R.string.calendar_module_miniature_desc),
                     Modifier.requiredSize(40.dp)
                 )
             }
@@ -138,7 +133,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             ){
                 Icon(
                     Icons.Outlined.MenuBook,
-                    contentDescription = "logsModule miniature",
+                    contentDescription = stringResource(R.string.logs_module_miniature_desc),
                     Modifier.requiredSize(40.dp)
                 )
             }

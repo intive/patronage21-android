@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.home_screen
+package com.invite.patronative.home_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,23 +11,19 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.patron_a_tive.ui.components.HomeScreenBoxButtonsGrid
-import androidx.compose.ui.text.TextStyle
+import com.invite.patronative.ui.components.HomeScreenBoxButtonsGrid
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.patron_a_tive.R
-import com.example.patron_a_tive.ui.theme.PatronageTypography
-import com.example.patron_a_tive.ui.theme.PatronativeTheme
+import com.invite.patronative.ui.theme.PatronageTypography
+import com.invite.patronative.ui.theme.PatronativeTheme
 
 
 class HomeScreenFragment : Fragment() {

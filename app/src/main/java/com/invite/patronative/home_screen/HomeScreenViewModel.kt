@@ -1,4 +1,4 @@
-package com.example.patron_a_tive.home_screen
+package com.invite.patronative.home_screen
 
 import androidx.lifecycle.ViewModel
 

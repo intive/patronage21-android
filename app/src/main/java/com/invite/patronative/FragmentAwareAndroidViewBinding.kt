@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.patron_a_tive
+package com.invite.patronative
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.fragment.app.findFragment
 import androidx.viewbinding.ViewBinding
+import com.example.patron_a_tive.R
 
 /**
  * FIXED: Fragments inflated via AndroidViewBinding don't work as expected
