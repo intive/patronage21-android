@@ -23,4 +23,7 @@
     <string name="calendar_module_miniature_desc">Miniaturka modułu kalendarza</string>
     <string name="logs_module">Audyt zdarzeń</string>
     <string name="logs_module_miniature_desc">Miniaturka modułu audytu zdarzeń</string>
+    <string name="registration_module">Audyt zdarzeń</string>
+    <string name="registration_module_miniature_desc">Miniaturka modułu rejestracji</string>
+
 </resources>

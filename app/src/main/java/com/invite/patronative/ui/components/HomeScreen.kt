@@ -137,6 +137,17 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Modifier.requiredSize(40.dp)
                 )
             }
+            Spacer(modifier = modifier)
+            BoxButton(
+                text = stringResource(R.string.registration_module)
+                , onClick = { /*TODO: Place registration module navDestination here*/ }
+            ){
+                Icon(
+                    Icons.Outlined.PersonAdd,
+                    contentDescription = stringResource(R.string.registration_module_miniature_desc),
+                    Modifier.requiredSize(40.dp)
+                )
+            }
         }
     }
 }
