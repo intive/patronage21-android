@@ -120,7 +120,7 @@ class DayFragment : Fragment() {
                     )
 
                     Text(
-                        "5",
+                        "10",
                         style = TextStyle(
                             color = Color(0xff52bcff.toInt()),
                             fontSize = 18.sp

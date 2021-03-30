@@ -56,11 +56,13 @@ class CalendarHomeFragment : Fragment() {
     private var param2: String? = null
     private lateinit var calendar: Calendar
     private lateinit var currentWeek: MutableState<Array<Calendar>>
+    private lateinit var currentMonth: MutableState<List<String>>
     private lateinit var showPeriodDialog: MutableState<Boolean>
     private lateinit var showDayDialog: MutableState<Boolean>
     private lateinit var showWeekView: MutableState<Boolean>
     private lateinit var month: MutableState<Int>
     private lateinit var year: MutableState<Int>
+    private lateinit var currentDate: MutableState<Calendar>
 
     private lateinit var navController: NavController
 
@@ -68,6 +70,7 @@ class CalendarHomeFragment : Fragment() {
     private val weekDays =
         arrayOf("Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela")
 
+    private val calendarHeader = listOf("Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +109,14 @@ class CalendarHomeFragment : Fragment() {
         month = remember { mutableStateOf(Calendar.getInstance()[Calendar.MONTH]) }
         year = remember { mutableStateOf(Calendar.getInstance()[Calendar.YEAR]) }
 
+        currentDate = remember { mutableStateOf((Calendar.getInstance()))}
+
+        val date = Calendar.getInstance()
+        date.set(Calendar.MONTH, month.value)
+        date.set(Calendar.DATE, 1)
+        date.set(Calendar.YEAR, year.value)
+
+        currentMonth = remember { mutableStateOf(getCurrentMonth(date)) }
 
         var calendarViewStr: String = if (showWeekView.value) "Tydzień" else "Miesiąc"
 
@@ -293,15 +304,18 @@ class CalendarHomeFragment : Fragment() {
     @ExperimentalFoundationApi
     @Composable
     fun CalendarGrid() {
-        val numbers = (0..31).toList()
+        val calendarItems = currentMonth.value
 
         LazyVerticalGrid(
             cells = GridCells.Fixed(7)
         ) {
-            items(numbers.size) {
+            items(calendarItems.size) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = "Number")
-                    Text(text = "  $it")
+                    Text(
+                        text = calendarItems[it],
+                        style = TextStyle(fontSize = 18.sp),
+                        modifier = Modifier.padding(4.dp)
+                    )
                 }
             }
         }
@@ -402,10 +416,35 @@ class CalendarHomeFragment : Fragment() {
         }
     }
 
-    private fun getCurrentWeek(date: Calendar): Array<Calendar> {
-        val dayOfTheWeek = Calendar.getInstance()[Calendar.DAY_OF_WEEK]
-        //val date: Calendar = Calendar.getInstance()
+    private fun getCurrentMonth(firstDay: Calendar): List<String> {
+        val dayOfTheWeek = firstDay[Calendar.DAY_OF_WEEK]
+        val daysNumber = firstDay.getActualMaximum(Calendar.DAY_OF_MONTH)
 
+        var offset: Int = when {
+            dayOfTheWeek == 2 -> {
+                0
+            }
+            dayOfTheWeek > 2 -> {
+                dayOfTheWeek - 2
+            }
+            else -> {
+                6
+            }
+        }
+
+        var offsetList = listOf<String>()
+        val numbers = (1..daysNumber).toList().map { it.toString() }
+
+        repeat(offset) {
+            offsetList += ""
+        }
+
+        return (calendarHeader + offsetList + numbers)
+
+    }
+
+    private fun getCurrentWeek(date: Calendar): Array<Calendar> {
+        val dayOfTheWeek = date[Calendar.DAY_OF_WEEK]
 
         when {
             dayOfTheWeek == 2 -> {
@@ -443,11 +482,19 @@ class CalendarHomeFragment : Fragment() {
     }
 
     private fun goToPreviousMonth() {
-
+        currentDate.value.add(Calendar.MONTH, -1)
+        currentDate.value.set(Calendar.DATE, 1)
+        currentMonth.value = getCurrentMonth(currentDate.value)
+        month.value = currentDate.value[Calendar.MONTH]
+        year.value = currentDate.value[Calendar.YEAR]
     }
 
     private fun goToNextMonth() {
-
+        currentDate.value.add(Calendar.MONTH, 1)
+        currentDate.value.set(Calendar.DATE, 1)
+        currentMonth.value = getCurrentMonth(currentDate.value)
+        month.value = currentDate.value[Calendar.MONTH]
+        year.value = currentDate.value[Calendar.YEAR]
     }
 
     @Composable
