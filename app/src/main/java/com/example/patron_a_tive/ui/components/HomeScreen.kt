@@ -121,7 +121,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Spacer(modifier = modifier)
             BoxButton(
                 text = stringResource(R.string.calendar_module),
-                onClick = { /*TODO: Place calendar module navDestination here*/ }
+                onClick = { navController?.navigate(R.id.action_homeScreenFragment_to_calendarFragment)}
             ){
                 Icon(
                     Icons.Outlined.CalendarToday,
