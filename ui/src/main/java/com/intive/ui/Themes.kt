@@ -7,45 +7,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.intive.patronative.ui.theme.PatronageTypography
-
-private val pink300 = Color(R.color.pink_300)
-private val pink700 = Color(R.color.pink700)
-
-private val light_blue400 = Color(R.color.light_blue400)
-private val light_blue700 = Color(R.color.light_blue700)
-
-private val deep_purple300 = Color(R.color.deep_purple_300)
-private val deep_purple700 = Color(R.color.deep_purple_700)
-
-private val red800 = Color(R.color.red800)
-private val red900 = Color(R.color.red900)
-
-private val PatronativeDarkPalette = darkColors(
-    primary = deep_purple300,
-    primaryVariant = deep_purple700,
-    onPrimary = Color.White,
-    secondary = light_blue400,
-    secondaryVariant = light_blue700,
-    onSecondary = Color.Black,
-    onSurface = Color.White,
-    onBackground = Color.White,
-    error = red900,
-    onError = Color.White
-)
-
-private val PatronativeLightPalette = lightColors(
-    primary = pink300,
-    primaryVariant = pink700,
-    onPrimary = Color.White,
-    secondary = light_blue400,
-    secondaryVariant = light_blue700,
-    onSecondary = Color.Black,
-    onSurface = Color.White,
-    onBackground = Color.White,
-    error = red800,
-    onError = Color.Black
-)
+import androidx.compose.ui.res.colorResource
 
 @Composable
 fun PatronativeTheme(
@@ -53,11 +15,48 @@ fun PatronativeTheme(
     colors: Colors? = null,
     content: @Composable () -> Unit
 ) {
-    val myColors = colors ?: if (isDarkTheme) PatronativeDarkPalette else PatronativeLightPalette
+    val pink300 = colorResource(R.color.pink300)
+    val pink700 = colorResource(R.color.pink700)
+
+    val lightBlue400 = colorResource(R.color.light_blue400)
+    val lightBlue700 = colorResource(R.color.light_blue700)
+
+    val deepPurple300 = colorResource(R.color.deep_purple_300)
+    val deepPurple700 = colorResource(R.color.deep_purple_700)
+
+    val red800 = colorResource(R.color.red800)
+    val red900 = colorResource(R.color.red900)
+
+    val patronativeDarkPalette = darkColors(
+        primary = deepPurple300,
+        primaryVariant = deepPurple700,
+        onPrimary = Color.White,
+        secondary = lightBlue400,
+        secondaryVariant = lightBlue700,
+        onSecondary = Color.Black,
+        onSurface = Color.White,
+        onBackground = Color.White,
+        error = red900,
+        onError = Color.White
+    )
+    val patronativeLightPalette = lightColors(
+        primary = pink300,
+        primaryVariant = pink700,
+        onPrimary = Color.White,
+        secondary = lightBlue400,
+        secondaryVariant = lightBlue700,
+        onSecondary = Color.Black,
+        onSurface = Color.Black,
+        onBackground = Color.Black,
+        error = red800,
+        onError = Color.Black
+    )
+    val myColors = colors ?: if (isDarkTheme) patronativeDarkPalette else patronativeLightPalette
 
     MaterialTheme(
         colors = myColors,
-        content = content,
         typography = PatronageTypography
-    )
+    ){
+        content()
+    }
 }

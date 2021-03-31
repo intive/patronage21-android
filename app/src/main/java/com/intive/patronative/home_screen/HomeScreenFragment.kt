@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.intive.patronative.R
-import com.intive.patronative.ui.theme.PatronageTypography
+import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
 
 
@@ -37,10 +37,13 @@ class HomeScreenFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                NewsStory(navController = findNavController())
+                PatronativeTheme {
+                    HomeScreen(navController = findNavController())
+                }
             }
         }
     }
+
     private fun findNavController(): NavController {
         val navHostFragment =
             (activity as FragmentActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -49,43 +52,41 @@ class HomeScreenFragment : Fragment() {
 }
 
 @Composable
-fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = null) {
-    PatronativeTheme {
-        Column(modifier) {
-            val scrollState = rememberScrollState()
+fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+    Column(modifier) {
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .padding(
+                    start = dimensionResource(id = R.dimen.activity_padding),
+                    end = dimensionResource(id = R.dimen.activity_padding),
+                )
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
+        ) {
+            Text(
+                text = stringResource(R.string.home_screen_greeting),
+                style = MaterialTheme.typography.h5,
+                color = MaterialTheme.colors.secondary,
+                modifier = Modifier
+                    .padding(top = 15.dp, bottom = 15.dp)
+            )
+            Text(
+                text = stringResource(R.string.home_screen_text),
+                style = PatronageTypography.body2,
+                modifier = Modifier
+                    .padding(top = 15.dp, bottom = 15.dp)
+            )
             Column(
                 modifier = Modifier
-                    .padding(
-                        start = dimensionResource(id = R.dimen.activity_padding),
-                        end = dimensionResource(id = R.dimen.activity_padding),
-                    )
                     .fillMaxWidth()
-                    .verticalScroll(scrollState),
+                    .padding(top = 15.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = stringResource(R.string.home_screen_greeting),
-                    style = MaterialTheme.typography.h5,
-                    color = MaterialTheme.colors.secondary,
-                    modifier = Modifier
-                        .padding(top = 15.dp, bottom = 15.dp)
+                HomeScreenBoxButtonsGrid(
+                    modifier = Modifier.size(20.dp),
+                    navController = navController
                 )
-                Text(
-                    text = stringResource(R.string.home_screen_text),
-                    style = PatronageTypography.body2,
-                    modifier = Modifier
-                        .padding(top = 15.dp, bottom = 15.dp)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 15.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    HomeScreenBoxButtonsGrid(
-                        modifier = Modifier.size(20.dp),
-                        navController = navController
-                    )
-                }
             }
         }
     }
@@ -95,5 +96,5 @@ fun NewsStory(modifier: Modifier = Modifier, navController: NavController? = nul
 @Preview
 @Composable
 fun DefaultPreview() {
-    NewsStory()
+    HomeScreen()
 }

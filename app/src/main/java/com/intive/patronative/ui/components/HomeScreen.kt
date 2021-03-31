@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.patronative.R
-import com.intive.patronative.ui.theme.PatronageTypography
+import com.intive.ui.PatronageTypography
 
 @Composable
 fun BoxButton(text: String,
@@ -35,7 +35,8 @@ fun BoxButton(text: String,
         .clickable { onClick() }){
         Column(modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
+            .aspectRatio(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,) {
             content()
@@ -56,7 +57,7 @@ fun HomeScreenUsersButton(){
         Icon(
             Icons.Outlined.Person,
             contentDescription = stringResource(R.string.users_module_miniature_desc),
-            Modifier.requiredSize(40.dp)
+            Modifier.fillMaxSize(0.3f)
         )
     }
 }
@@ -68,7 +69,7 @@ fun HomeScreenTechGroupsButton(){
         Icon(
             Icons.Outlined.Keyboard,
             contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
-            Modifier.requiredSize(40.dp)
+            Modifier.fillMaxSize(0.3f)
         )
     }
 }
@@ -85,7 +86,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.Keyboard,
                         contentDescription = stringResource(R.string.tech_groups_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }
@@ -98,7 +99,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.Person,
                         contentDescription = stringResource(R.string.users_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }
@@ -113,7 +114,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.Book,
                         contentDescription = stringResource(R.string.diary_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }
@@ -126,7 +127,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.CalendarToday,
                         contentDescription = stringResource(R.string.calendar_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }
@@ -141,7 +142,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.MenuBook,
                         contentDescription = stringResource(R.string.logs_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }
@@ -154,7 +155,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                     Icon(
                         Icons.Outlined.PersonAdd,
                         contentDescription = stringResource(R.string.registration_module_miniature_desc),
-                        Modifier.size(40.dp)
+                        Modifier.fillMaxSize(0.3f)
                     )
                 }
             }

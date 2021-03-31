@@ -8,7 +8,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val pink300 = Color(R.color.pink_300)
+private val pink300 = Color(R.color.pink300)
 private val pink700 = Color(R.color.pink700)
 
 private val light_blue400 = Color(R.color.light_blue400)
