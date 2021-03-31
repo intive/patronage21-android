@@ -18,10 +18,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,52 +31,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.patron_a_tive.R
 import java.util.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CalendarHomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+import com.example.patron_a_tive.calendar_module.viewmodels.CalendarHomeViewModel
 
 
 class CalendarHomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var calendar: Calendar
-    private lateinit var currentWeek: MutableState<Array<Calendar>>
-    private lateinit var currentMonth: MutableState<List<String>>
-    private lateinit var showPeriodDialog: MutableState<Boolean>
-    private lateinit var showDayDialog: MutableState<Boolean>
-    private lateinit var showWeekView: MutableState<Boolean>
-    private lateinit var month: MutableState<Int>
-    private lateinit var year: MutableState<Int>
-    private lateinit var currentDate: MutableState<Calendar>
 
+    private lateinit var calendar: Calendar
     private lateinit var navController: NavController
 
 
     private val weekDays =
         arrayOf("Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela")
 
-    private val calendarHeader = listOf("Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
         calendar = Calendar.getInstance()
     }
 
@@ -98,42 +69,22 @@ class CalendarHomeFragment : Fragment() {
 
     @ExperimentalFoundationApi
     @Composable
-    fun WeekFragmentLayout() {
+    fun WeekFragmentLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
 
         navController = findNavController()
 
-        currentWeek = remember { mutableStateOf(getCurrentWeek(Calendar.getInstance())) }
-        showPeriodDialog = remember { mutableStateOf(false) }
-        showDayDialog = remember { mutableStateOf(false) }
-        showWeekView = remember { mutableStateOf(true) }
-        month = remember { mutableStateOf(Calendar.getInstance()[Calendar.MONTH]) }
-        year = remember { mutableStateOf(Calendar.getInstance()[Calendar.YEAR]) }
+        val currentWeek: Array<Calendar>? by calendarViewModel.currentWeek.observeAsState()
+        val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
 
-        currentDate = remember { mutableStateOf((Calendar.getInstance()))}
-
-        val date = Calendar.getInstance()
-        date.set(Calendar.MONTH, month.value)
-        date.set(Calendar.DATE, 1)
-        date.set(Calendar.YEAR, year.value)
-
-        currentMonth = remember { mutableStateOf(getCurrentMonth(date)) }
-
-        var calendarViewStr: String = if (showWeekView.value) "Tydzień" else "Miesiąc"
+        var calendarViewStr: String = if (showWeekView == true) "Tydzień" else "Miesiąc"
 
         val period =
-            "${currentWeek.value[0]?.get(Calendar.DAY_OF_MONTH)}.${
-                currentWeek.value[0]?.get(
-                    Calendar.MONTH
-                ) + 1
-            }.${
-                currentWeek.value[0]?.get(Calendar.YEAR)
-            } - ${currentWeek.value[6]?.get(Calendar.DAY_OF_MONTH)}.${
-                currentWeek.value[6]?.get(
-                    Calendar.MONTH
-                ) + 1
-            }.${
-                currentWeek.value[6]?.get(Calendar.YEAR)
-            }"
+            "${currentWeek?.get(0)?.get(Calendar.DAY_OF_MONTH)}.${
+                currentWeek?.get(0)?.get(Calendar.MONTH)?.plus(1)
+            }.${currentWeek?.get(0)?.get(Calendar.YEAR)}" +
+                    "-${currentWeek?.get(6)?.get(Calendar.DAY_OF_MONTH)}.${
+                        currentWeek?.get(6)?.get(Calendar.MONTH)?.plus(1)
+                    }.${currentWeek?.get(6)?.get(Calendar.YEAR)}"
 
         Scaffold(
             backgroundColor = Color.White,
@@ -188,7 +139,7 @@ class CalendarHomeFragment : Fragment() {
 
                         )
 
-                        IconButton(onClick = { showPeriodDialog.value = true }) {
+                        IconButton(onClick = { calendarViewModel.showDialog() }) {
                             Icon(
                                 Icons.Default.KeyboardArrowRight,
                                 contentDescription = "Right button",
@@ -197,12 +148,14 @@ class CalendarHomeFragment : Fragment() {
                         }
                     }
 
-                    WeekView(period)
+                    WeekView(
+                        period,
+                        currentWeek,
+                        onClickPrev = { calendarViewModel.goToPreviousWeek() },
+                        onClickNext = { calendarViewModel.goToNextWeek() })
                     MonthView()
 
-
                 }
-
 
             }
         }
@@ -210,8 +163,15 @@ class CalendarHomeFragment : Fragment() {
     }
 
     @Composable
-    fun WeekView(period: String) {
-        if (showWeekView.value) {
+    fun WeekView(
+        period: String,
+        currentWeek: Array<Calendar>?,
+        onClickPrev: () -> Unit,
+        onClickNext: () -> Unit,
+        calendarViewModel: CalendarHomeViewModel = viewModel()
+    ) {
+        val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
+        if (showWeekView == true) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
@@ -219,7 +179,7 @@ class CalendarHomeFragment : Fragment() {
                     .background(Color(0xffcc4c80.toInt()))
             ) {
 
-                IconButton(onClick = { goToPreviousWeek() }) {
+                IconButton(onClick = onClickPrev) {
                     Icon(
                         Icons.Default.KeyboardArrowLeft,
                         contentDescription = "Left button",
@@ -238,7 +198,7 @@ class CalendarHomeFragment : Fragment() {
 
                 )
 
-                IconButton(onClick = { goToNextWeek() }) {
+                IconButton(onClick = onClickNext) {
                     Icon(
                         Icons.Default.KeyboardArrowRight,
                         contentDescription = "Right button",
@@ -248,16 +208,30 @@ class CalendarHomeFragment : Fragment() {
 
             }
 
-            DaysList()
+            DaysList(currentWeek)
         }
 
     }
 
+    @Composable
+    fun DaysList(currentWeek: Array<Calendar>?) {
+        val scrollState = rememberLazyListState()
+
+        LazyColumn(state = scrollState) {
+            items(7) {
+                currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it) }
+            }
+        }
+    }
+
     @ExperimentalFoundationApi
     @Composable
-    fun MonthView() {
-        if (!showWeekView.value) {
-            val monthStr: String = "${month.value + 1}.${year.value}"
+    fun MonthView(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+        val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
+        val month: Int? by calendarViewModel.month.observeAsState()
+        val year: Int? by calendarViewModel.year.observeAsState()
+        if (showWeekView == false) {
+            val monthStr: String = "${month?.plus(1)}.${year}"
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -266,7 +240,7 @@ class CalendarHomeFragment : Fragment() {
                     .background(Color(0xffcc4c80.toInt()))
             ) {
 
-                IconButton(onClick = { goToPreviousMonth() }) {
+                IconButton(onClick = { calendarViewModel.goToPreviousMonth() }) {
                     Icon(
                         Icons.Default.KeyboardArrowLeft,
                         contentDescription = "Left button",
@@ -285,7 +259,7 @@ class CalendarHomeFragment : Fragment() {
 
                 )
 
-                IconButton(onClick = { goToNextMonth() }) {
+                IconButton(onClick = { calendarViewModel.goToNextMonth() }) {
                     Icon(
                         Icons.Default.KeyboardArrowRight,
                         contentDescription = "Right button",
@@ -303,19 +277,22 @@ class CalendarHomeFragment : Fragment() {
 
     @ExperimentalFoundationApi
     @Composable
-    fun CalendarGrid() {
-        val calendarItems = currentMonth.value
+    fun CalendarGrid(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+        val currentMonth: List<String>? by calendarViewModel.currentMonth.observeAsState()
+        //val calendarItems = currentMonth
 
         LazyVerticalGrid(
             cells = GridCells.Fixed(7)
         ) {
-            items(calendarItems.size) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = calendarItems[it],
-                        style = TextStyle(fontSize = 18.sp),
-                        modifier = Modifier.padding(4.dp)
-                    )
+            if (currentMonth != null) {
+                items(currentMonth!!.size) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = currentMonth!![it],
+                            style = TextStyle(fontSize = 18.sp),
+                            modifier = Modifier.padding(4.dp)
+                        )
+                    }
                 }
             }
         }
@@ -323,9 +300,10 @@ class CalendarHomeFragment : Fragment() {
 
 
     @Composable
-    fun ChoosePeriodDialog() {
-        if (showPeriodDialog.value) {
-            Dialog(onDismissRequest = { showPeriodDialog.value = false }) {
+    fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+        val showPeriodDialog: Boolean? by calendarViewModel.showPeriodDialog.observeAsState()
+        if (showPeriodDialog == true) {
+            Dialog(onDismissRequest = { calendarViewModel.hideDialog() }) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color.White
@@ -338,12 +316,12 @@ class CalendarHomeFragment : Fragment() {
     }
 
     @Composable
-    fun ClearButton() {
+    fun ClearButton(calendarViewModel: CalendarHomeViewModel = viewModel()) {
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.padding(12.dp)
         ) {
-            IconButton(onClick = { showPeriodDialog.value = false }) {
+            IconButton(onClick = { calendarViewModel.hideDialog() }) {
                 Icon(
                     Icons.Default.Clear,
                     contentDescription = "Exit dialog button",
@@ -354,33 +332,16 @@ class CalendarHomeFragment : Fragment() {
     }
 
     @Composable
-    fun DaysList() {
-        val scrollState = rememberLazyListState()
-
-        LazyColumn(state = scrollState) {
-            items(7) {
-                DaysListItem(currentWeek.value[it], it)
-            }
-        }
-    }
-
-
-    @Composable
     fun DaysListItem(date: Calendar, index: Int) {
 
+        var bkgColor: Color = Color.White
+        var txtColor: Color = Color.Black
 
-        val bkgColor = if (isDateSame(date, calendar)) {
-            Color(0xff52bcff.toInt())
-        } else {
-            Color.White
-        }
-
-        val txtColor = if (date.before(calendar)) {
-            Color.Gray
-        } else if (isDateSame(date, calendar)) {
-            Color.White
-        } else {
-            Color.Black
+        if (isDateSame(date, Calendar.getInstance())) {
+            bkgColor = Color(0xff52bcff.toInt())
+            txtColor = Color.White
+        } else if(date.before(calendar)){
+            txtColor = Color.Gray
         }
 
 
@@ -416,89 +377,14 @@ class CalendarHomeFragment : Fragment() {
         }
     }
 
-    private fun getCurrentMonth(firstDay: Calendar): List<String> {
-        val dayOfTheWeek = firstDay[Calendar.DAY_OF_WEEK]
-        val daysNumber = firstDay.getActualMaximum(Calendar.DAY_OF_MONTH)
-
-        var offset: Int = when {
-            dayOfTheWeek == 2 -> {
-                0
-            }
-            dayOfTheWeek > 2 -> {
-                dayOfTheWeek - 2
-            }
-            else -> {
-                6
-            }
-        }
-
-        var offsetList = listOf<String>()
-        val numbers = (1..daysNumber).toList().map { it.toString() }
-
-        repeat(offset) {
-            offsetList += ""
-        }
-
-        return (calendarHeader + offsetList + numbers)
-
-    }
-
-    private fun getCurrentWeek(date: Calendar): Array<Calendar> {
-        val dayOfTheWeek = date[Calendar.DAY_OF_WEEK]
-
-        when {
-            dayOfTheWeek == 2 -> {
-            }
-            dayOfTheWeek > 2 -> {
-                date.add(Calendar.DAY_OF_MONTH, -(dayOfTheWeek - 2))
-            }
-            else -> {
-                date.add(Calendar.DAY_OF_MONTH, -6)
-            }
-        }
-
-        var weekArray = arrayOf<Calendar>()
-        weekArray += date.clone() as Calendar
-
-        for (i in 1..6) {
-            date.add(Calendar.DAY_OF_MONTH, 1)
-            weekArray += date.clone() as Calendar
-        }
-
-        return weekArray
-
-    }
-
-    private fun goToPreviousWeek() {
-        val weekPrev = currentWeek.value[0].clone() as Calendar
-        weekPrev.add(Calendar.DAY_OF_MONTH, -7)
-        currentWeek.value = getCurrentWeek(weekPrev)
-    }
-
-    private fun goToNextWeek() {
-        val weekNext = currentWeek.value[6].clone() as Calendar
-        weekNext.add(Calendar.DAY_OF_MONTH, 1)
-        currentWeek.value = getCurrentWeek(weekNext)
-    }
-
-    private fun goToPreviousMonth() {
-        currentDate.value.add(Calendar.MONTH, -1)
-        currentDate.value.set(Calendar.DATE, 1)
-        currentMonth.value = getCurrentMonth(currentDate.value)
-        month.value = currentDate.value[Calendar.MONTH]
-        year.value = currentDate.value[Calendar.YEAR]
-    }
-
-    private fun goToNextMonth() {
-        currentDate.value.add(Calendar.MONTH, 1)
-        currentDate.value.set(Calendar.DATE, 1)
-        currentMonth.value = getCurrentMonth(currentDate.value)
-        month.value = currentDate.value[Calendar.MONTH]
-        year.value = currentDate.value[Calendar.YEAR]
-    }
-
     @Composable
-    fun PeriodFragmentLayout() {
+    fun PeriodFragmentLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+
+        val bColorWeekBtn: Long? by calendarViewModel.bColorWeekBtn.observeAsState()
+        val bColorMonthBtn: Long? by calendarViewModel.bColorMonthBtn.observeAsState()
+        val txtColorWeekBtn: Long? by calendarViewModel.txtColorWeekBtn.observeAsState()
+        val txtColorMonthBtn: Long? by calendarViewModel.txtColorMonthBtn.observeAsState()
+
 
         var weekClicked = remember {
             mutableStateOf(true)
@@ -520,20 +406,12 @@ class CalendarHomeFragment : Fragment() {
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
 
-                val bColorWeekBtn = remember { mutableStateOf(0xff52bcff) }
-                val bColorMonthBtn = remember { mutableStateOf(0xffffffff) }
-                val txtColorWeekBtn = remember { mutableStateOf(0xffffffff) }
-                val txtColorMonthBtn = remember { mutableStateOf(0xff000000) }
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(bColorWeekBtn.value.toInt()))
+                        .background(Color(bColorWeekBtn!!))
                         .clickable(onClick = {
-                            bColorWeekBtn.value = 0xff52bcff
-                            bColorMonthBtn.value = 0xffffffff
-                            txtColorWeekBtn.value = 0xffffffff
-                            txtColorMonthBtn.value = 0xff000000
+                            calendarViewModel.weekClicked()
                             weekClicked.value = true
                         })
                 ) {
@@ -541,7 +419,7 @@ class CalendarHomeFragment : Fragment() {
                         stringResource(R.string.week),
                         modifier = Modifier.padding(8.dp),
                         style = TextStyle(
-                            color = Color(txtColorWeekBtn.value.toInt()),
+                            color = Color(txtColorWeekBtn!!),
                             fontSize = 20.sp,
                         )
                     )
@@ -550,12 +428,9 @@ class CalendarHomeFragment : Fragment() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(bColorMonthBtn.value.toInt()))
+                        .background(Color(bColorMonthBtn!!))
                         .clickable(onClick = {
-                            bColorMonthBtn.value = 0xff52bcff
-                            bColorWeekBtn.value = 0xffffffff
-                            txtColorMonthBtn.value = 0xffffffff
-                            txtColorWeekBtn.value = 0xff000000
+                            calendarViewModel.monthClicked()
                             weekClicked.value = false
                         })
                 ) {
@@ -563,18 +438,21 @@ class CalendarHomeFragment : Fragment() {
                         stringResource(R.string.month),
                         modifier = Modifier.padding(8.dp),
                         style = TextStyle(
-                            color = Color(txtColorMonthBtn.value.toInt()),
+                            color = Color(txtColorMonthBtn!!),
                             fontSize = 20.sp,
                         )
                     )
                 }
-
             }
             Column {
                 Button(
                     onClick = {
-                        showWeekView.value = weekClicked.value
-                        showPeriodDialog.value = false
+                        if (weekClicked.value) {
+                            calendarViewModel.showWeekView()
+                        } else {
+                            calendarViewModel.showMonthView()
+                        }
+                        calendarViewModel.hideDialog()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffcc4c80.toInt())),
                     modifier = Modifier.fillMaxWidth()
@@ -585,7 +463,7 @@ class CalendarHomeFragment : Fragment() {
                     )
                 }
                 Button(
-                    onClick = { showPeriodDialog.value = false },
+                    onClick = { calendarViewModel.hideDialog() },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff52bcff.toInt())),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -601,33 +479,13 @@ class CalendarHomeFragment : Fragment() {
         }
     }
 
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WeekFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CalendarHomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
     private fun findNavController(): NavController {
         val navHostFragment =
             (activity as FragmentActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         return navHostFragment.navController
     }
 }
+
 
 fun isDateSame(c1: Calendar, c2: Calendar): Boolean {
     return c1[Calendar.YEAR] === c2[Calendar.YEAR] && c1[Calendar.MONTH] === c2[Calendar.MONTH] && c1[Calendar.DAY_OF_MONTH] === c2[Calendar.DAY_OF_MONTH]
