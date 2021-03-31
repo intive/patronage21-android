@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.intive.users.composables.Header
 import com.intive.users.composables.ProjectListItem
 import com.intive.users.ui.utils.darkBlue
@@ -127,8 +128,10 @@ class DetailsFragment : Fragment() {
                             shape = RoundedCornerShape(16.dp),
                             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
                         ) {
-                            Text("Zadzwoń",
-                                color = Color.White)
+                            Text(
+                                "Zadzwoń",
+                                color = Color.White
+                            )
                         }
                         Divider(
                             color = Color(0xFFF1F1F1),
@@ -145,8 +148,10 @@ class DetailsFragment : Fragment() {
                             shape = RoundedCornerShape(16.dp),
                             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
                         ) {
-                            Text("Otwórz link",
-                                color = Color.White)
+                            Text(
+                                "Otwórz link",
+                                color = Color.White
+                            )
                         }
                     }
                     Column(
@@ -159,31 +164,35 @@ class DetailsFragment : Fragment() {
                             modifier = Modifier
                                 .padding(
                                     start = 32.dp,
-                                    end= 32.dp,
+                                    end = 32.dp,
                                     bottom = 16.dp
                                 )
                                 .fillMaxWidth()
                                 .height(60.dp)
                         ) {
-                            Text("Edytuj profil",
+                            Text(
+                                "Edytuj profil",
                                 color = Color.White,
                                 fontSize = 20.sp
                             )
                         }
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                findNavController().navigate(R.id.action_detailsFragment2_to_deactivateUserDialogFragment)
+                            },
                             colors = ButtonDefaults.buttonColors(backgroundColor = darkBlue),
                             shape = RoundedCornerShape(24.dp),
                             modifier = Modifier
                                 .padding(
                                     start = 32.dp,
-                                    end= 32.dp,
+                                    end = 32.dp,
                                     bottom = 16.dp
                                 )
                                 .fillMaxWidth()
                                 .height(60.dp)
                         ) {
-                            Text("Dezaktywuj profil",
+                            Text(
+                                "Dezaktywuj profil",
                                 color = Color.White,
                                 fontSize = 20.sp
                             )
