@@ -1,4 +1,4 @@
-package com.invite.patronative.home_screen
+package com.intive.patronative.home_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,13 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.invite.patronative.ui.components.HomeScreenBoxButtonsGrid
+import com.intive.patronative.ui.components.HomeScreenBoxButtonsGrid
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.patron_a_tive.R
-import com.invite.patronative.ui.theme.PatronageTypography
-import com.invite.patronative.ui.theme.PatronativeTheme
+import com.intive.patronative.R
+import com.intive.patronative.ui.theme.PatronageTypography
+import com.intive.patronative.ui.theme.PatronativeTheme
 
 
 class HomeScreenFragment : Fragment() {

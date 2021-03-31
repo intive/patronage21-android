@@ -1,4 +1,4 @@
-package com.invite.patronative.ui.components
+package com.intive.patronative.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,9 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.patron_a_tive.R
-import com.invite.patronative.ui.theme.PatronativeTheme
+import com.intive.patronative.R
+import com.intive.patronative.ui.theme.PatronativeTheme
 
 @Composable
 fun PatronativeAppBar(

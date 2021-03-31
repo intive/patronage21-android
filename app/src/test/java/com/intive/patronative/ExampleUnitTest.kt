@@ -1,4 +1,4 @@
-package com.invite.patronative
+package com.intive.patronative
 
 import org.junit.Test
 

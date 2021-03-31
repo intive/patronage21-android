@@ -1,4 +1,4 @@
-package com.invite.patronative.ui.theme
+package com.intive.patronative.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.patron_a_tive.R
+import com.intive.patronative.R
 
 private val MontserratFontFamily = FontFamily(
     Font(R.font.montserrat_regular),

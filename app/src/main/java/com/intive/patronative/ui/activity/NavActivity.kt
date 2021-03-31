@@ -1,4 +1,4 @@
-package com.invite.patronative.ui.activity
+package com.intive.patronative.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,12 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.invite.patronative.FragmentAwareAndroidViewBinding
-import com.example.patron_a_tive.R
-import com.invite.patronative.ui.components.PatronativeAppBar
-import com.example.patron_a_tive.databinding.ContentMainBinding
-import com.invite.patronative.ui.theme.PatronativeTheme
+import com.intive.patronative.FragmentAwareAndroidViewBinding
+import com.intive.patronative.ui.components.PatronativeAppBar
+import com.intive.patronative.databinding.ContentMainBinding
+import com.intive.patronative.ui.theme.PatronativeTheme
+import com.intive.patronative.R
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

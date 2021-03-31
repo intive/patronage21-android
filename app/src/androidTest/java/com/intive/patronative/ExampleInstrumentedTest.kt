@@ -1,4 +1,4 @@
-package com.invite.patronative
+package com.intive.patronative
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
