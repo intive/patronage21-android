@@ -149,6 +149,47 @@ class DetailsFragment : Fragment() {
                                 color = Color.White)
                         }
                     }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = pink),
+                            shape = RoundedCornerShape(24.dp),
+                            modifier = Modifier
+                                .padding(
+                                    start = 32.dp,
+                                    end= 32.dp,
+                                    bottom = 16.dp
+                                )
+                                .fillMaxWidth()
+                                .height(60.dp)
+                        ) {
+                            Text("Edytuj profil",
+                                color = Color.White,
+                                fontSize = 20.sp
+                            )
+                        }
+                        Button(
+                            onClick = { /*TODO*/ },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = darkBlue),
+                            shape = RoundedCornerShape(24.dp),
+                            modifier = Modifier
+                                .padding(
+                                    start = 32.dp,
+                                    end= 32.dp,
+                                    bottom = 16.dp
+                                )
+                                .fillMaxWidth()
+                                .height(60.dp)
+                        ) {
+                            Text("Dezaktywuj profil",
+                                color = Color.White,
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
+
                 }
 
             }
