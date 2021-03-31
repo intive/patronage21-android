@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_calendarFragment_to_addEventFragment"
             app:destination="@id/addEventFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
     </fragment>
 
     <fragment
