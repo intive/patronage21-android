@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import com.intive.patronative.FragmentAwareAndroidViewBinding
+import androidx.compose.ui.viewinterop.AndroidViewBinding
 import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.R
 import com.intive.patronative.databinding.ContentMainBinding
@@ -27,6 +27,7 @@ class NavActivity : AppCompatActivity() {
         setContent {
             HomeScreen()
         }
+
     }
 }
 
@@ -67,7 +68,9 @@ fun HomeScreen() {
                 )
             }
         ) {
-            FragmentAwareAndroidViewBinding(ContentMainBinding::inflate)
+            AndroidViewBinding(ContentMainBinding::inflate)
+           // FragmentAwareAndroidViewBinding(ContentMainBinding::inflate)
+           //Spacer(modifier = Modifier.size(20.dp))
         }
     }
 }

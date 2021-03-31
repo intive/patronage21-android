@@ -28,8 +28,8 @@ fun BoxButton(text: String,
               onClick: (() -> Unit) = {},
               content: @Composable ()->Unit){
     Box(modifier = Modifier
-        .width(150.dp)
-        .height(150.dp)
+        .fillMaxWidth()
+        .aspectRatio(1f)
         .border(border = BorderStroke(1.dp, color = borderColor), shape = RoundedCornerShape(20.dp))
         .clip(shape = RoundedCornerShape(20.dp))
         .clickable { onClick() }){
