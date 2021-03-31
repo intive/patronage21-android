@@ -1,4 +1,4 @@
-package com.intive.patronative.ui.theme
+package com.intive.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
@@ -7,7 +7,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.intive.patronative.R
+import com.intive.patronative.ui.theme.PatronageTypography
 
 private val pink300 = Color(R.color.pink_300)
 private val pink700 = Color(R.color.pink700)

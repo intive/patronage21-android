@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.intive.patronative.R
-import com.intive.patronative.ui.theme.PatronativeTheme
+import com.intive.ui.PatronativeTheme
 
 @Composable
 fun PatronativeAppBar(

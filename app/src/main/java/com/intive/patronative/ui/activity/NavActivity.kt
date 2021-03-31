@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import com.intive.patronative.FragmentAwareAndroidViewBinding
 import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.databinding.ContentMainBinding
-import com.intive.patronative.ui.theme.PatronativeTheme
+import com.intive.ui.PatronativeTheme
 import com.intive.patronative.R
 
 class NavActivity : AppCompatActivity() {
