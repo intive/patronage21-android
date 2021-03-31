@@ -16,9 +16,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.intive.patronative.FragmentAwareAndroidViewBinding
 import com.intive.patronative.ui.components.PatronativeAppBar
+import com.intive.patronative.R
 import com.intive.patronative.databinding.ContentMainBinding
 import com.intive.ui.PatronativeTheme
-import com.intive.patronative.R
+
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
