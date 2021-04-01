@@ -20,123 +20,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.intive.ui.PatronativeTheme
+import com.intive.users.composables.*
 import com.intive.users.ui.utils.darkBlue
 import com.intive.users.ui.utils.lightBlue
-import com.intive.users.composables.Header
-import com.intive.users.composables.PersonListItem
-import com.intive.users.composables.ScreenInfo
-import com.intive.users.composables.Search
 
 data class Person(val firstName: String, val lastName: String)
 
 class UsersFragment : Fragment() {
 
     private val viewModel: UsersViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        val navController = findNavController()
+        val navController = findNavController()
 
         return ComposeView(requireContext()).apply {
             setContent {
-                Column {
-                    MaterialTheme {
-                        val users = viewModel.users
-                        val query = viewModel.query.collectAsState()
-
-
-                        val modifier = Modifier.padding(
-                            start = 30.dp,
-                            end = 30.dp,
-                            bottom = 8.dp,
-                            top = 16.dp
-                        )
-                        LazyColumn {
-                            item {
-                                Column(
-                                    modifier = modifier
-                                ) {
-                                    ScreenInfo()
-                                    Spacer(modifier = Modifier.padding(16.dp))
-                                    Search(
-                                        query = query.value,
-                                        onQueryChanged = {
-                                            viewModel.onQueryChanged(it)
-                                        },
-                                        onExecuteSearch = {}
-                                    )
-                                }
-                            }
-
-
-                            item {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(
-                                            top = 16.dp,
-                                            start = 16.dp,
-                                            end = 16.dp
-                                        )
-                                ) {
-                                    Header(
-                                        text = stringResource(id = R.string.leaders),
-                                        count = users.size,
-                                        showCount = true,
-                                    )
-                                }
-                            }
-
-                            items(users) { person ->
-                                PersonListItem(person = person, onItemClick = {
-                                    findNavController().navigate(R.id.action_usersFragment_to_detailsFragment)
-                                })
-                                Divider(
-                                    color = Color(0xFFF1F1F1),
-                                    thickness = 2.dp,
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp
-                                    )
-                                )
-                            }
-
-                            item {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(
-                                            top = 16.dp,
-                                            start = 16.dp,
-                                            end = 16.dp
-                                        )
-                                ) {
-                                    Header(
-                                        text = stringResource(id = R.string.participants),
-                                        count = users.size,
-                                        showCount = true,
-                                    )
-                                }
-
-                            }
-
-                            items(users) { person ->
-                                PersonListItem(person = person, onItemClick = {
-                                    findNavController().navigate(R.id.action_usersFragment_to_detailsFragment)
-                                })
-                                Divider(
-                                    color = Color(0xFFF1F1F1),
-                                    thickness = 2.dp,
-                                    modifier = Modifier.padding(
-                                        start = 16.dp,
-                                        end = 16.dp
-                                    )
-                                )
-                            }
-                        }
-                    }
+                PatronativeTheme {
+                    UsersScreen(
+                        viewModel = viewModel,
+                        navController = navController
+                    )
                 }
             }
         }

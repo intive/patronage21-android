@@ -82,4 +82,6 @@ dependencies {
 
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
+
+    implementation project(":ui")
 }
