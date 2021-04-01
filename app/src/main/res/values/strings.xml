@@ -2,6 +2,11 @@
     <string name="app_name">Patron-a-tive</string>
     <string name="app_bar_text">Patron-a-tive!</string>
 
+    <!--AppBar Icons-->
+    <string name="search_icon_desc">Ikona wyszukiwania</string>
+    <string name="profile_icon_desc">Ikona profilu użytkownika</string>
+    <string name="settings_icon_desc">Ikona ustawień</string>
+
     <!--HomeScreen text content-->
     <string name="home_screen_greeting">Witaj w Patron-a-tive!</string>
     <string name="home_screen_text">Aplikacja Parton-a-tive pozwala na zarządzanie
@@ -9,8 +14,16 @@
 
     <!--Modules Names-->
     <string name="tech_groups_module">Grupy technologiczne</string>
+    <string name="tech_groups_module_miniature_desc">Miniaturka modułu grup technologicznych</string>
     <string name="users_module">Użytkownicy</string>
+    <string name="users_module_miniature_desc">Miniaturka modułu użytkowników</string>
     <string name="diary_module">Dzienniczek</string>
+    <string name="diary_module_miniature_desc">Miniaturka modułu dzienniczka</string>
     <string name="calendar_module">Kalendarz</string>
+    <string name="calendar_module_miniature_desc">Miniaturka modułu kalendarza</string>
     <string name="logs_module">Audyt zdarzeń</string>
+    <string name="logs_module_miniature_desc">Miniaturka modułu audytu zdarzeń</string>
+    <string name="registration_module">Rejestracja</string>
+    <string name="registration_module_miniature_desc">Miniaturka modułu rejestracji</string>
+
 </resources>
