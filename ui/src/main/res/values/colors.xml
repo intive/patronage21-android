@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light -->
+    <color name="pink300">#f06292</color>
+    <color name="pink700">#c2185a</color>
+    <color name="light_blue400">#29b6f6</color>
+    <color name="light_blue700">#0288d1</color>
+    <color name="red800">#c62828</color>
+
+    <!-- Dark -->
+    <color name="deep_purple_300">#9575cd</color>
+    <color name="deep_purple_700">#512da8</color>
+    <color name="red900">#b71c1c</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="grey">#6A6A6A</color>
+</resources>

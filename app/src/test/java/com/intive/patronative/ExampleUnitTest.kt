@@ -1,4 +1,4 @@
-package com.example.patron_a_tive
+package com.intive.patronative
 
 import org.junit.Test
 
