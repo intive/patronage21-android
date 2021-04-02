@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,23 +22,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.patron_a_tive.R
+import com.example.patron_a_tive.calendar_module.components.CancelButton
+import com.example.patron_a_tive.calendar_module.components.HeaderLarge
+import com.example.patron_a_tive.calendar_module.components.HeaderMedium
+import com.example.patron_a_tive.calendar_module.components.OKButton
 import java.util.*
 
 class DayFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,30 +60,13 @@ class DayFragment : Fragment() {
                 .padding(24.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "Piątek, 05.03.2021",
-                    style = TextStyle(
-                        color = Color(0xff52bcff.toInt()),
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier.padding(bottom = 24.dp)
-                )
+
+                HeaderLarge("Piątek, 05.03.2021")
+                HeaderMedium("Retrospective", Modifier.padding(bottom = 4.dp))
 
                 Text(
-                    "Retrospective",
-                    style = TextStyle(
-                        color = Color(0xff000000.toInt()),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Text(
                     "Godzina: 15:00-16:00",
-                    style = TextStyle(
-                        color = Color(0xff000000.toInt()),
-                        fontSize = 20.sp
-                    ),
+                    style = MaterialTheme.typography.subtitle1,
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
 
@@ -90,23 +74,19 @@ class DayFragment : Fragment() {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xffeef8fe.toInt()))
+                        .background(colorResource(R.color.pale_blue))
                         .padding(12.dp)
                 ) {
                     Text(
-                        "Uczestnicy",
-                        style = TextStyle(
-                            color = Color(0xff52bcff.toInt()),
-                            fontSize = 18.sp
-                        )
+                        stringResource(R.string.event_users_label),
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.secondary
                     )
 
                     Text(
                         "10",
-                        style = TextStyle(
-                            color = Color(0xff52bcff.toInt()),
-                            fontSize = 18.sp
-                        )
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.secondary
                     )
                 }
 
@@ -115,34 +95,8 @@ class DayFragment : Fragment() {
             }
 
             Column {
-                Button(
-                    onClick = {
-                        navController?.popBackStack()
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffcc4c80.toInt())),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                ) {
-                    Text(
-                        stringResource(R.string.accept_event),
-                        style = TextStyle(fontSize = 20.sp, color = Color.White)
-                    )
-                }
-                Button(
-                    onClick = {
-                        navController?.popBackStack()
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff52bcff.toInt())),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                ) {
-                    Text(
-                        stringResource(R.string.reject_event),
-                        style = TextStyle(fontSize = 20.sp, color = Color.White)
-                    )
-                }
+                OKButton(stringResource(R.string.accept_event))
+                CancelButton(stringResource(R.string.reject_event))
             }
 
         }
@@ -169,10 +123,10 @@ class DayFragment : Fragment() {
         ) {
             Image(
                 bitmap = ImageBitmap.imageResource(id = R.drawable.header),
-                contentDescription = null,
+                contentDescription = "User's profile pic",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(start = 15.dp)
+                    .padding(start = 8.dp)
                     .width(30.dp)
                     .height(30.dp)
                     .clip(CircleShape)
@@ -180,8 +134,8 @@ class DayFragment : Fragment() {
 
             Text(
                 "Uczestnik ${index + 1}",
-                style = TextStyle(fontSize = 18.sp),
-                modifier = Modifier.padding(start = 15.dp)
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(start = 16.dp)
             )
             //Text("Organizator", style = MaterialTheme.typography.subtitle1)
         }

@@ -20,11 +20,11 @@ fun HeaderLarge(text: String) {
 
 
 @Composable
-fun HeaderMedium(text: String) {
+fun HeaderMedium(text: String, modifier: Modifier) {
     Text(
         text,
         style = MaterialTheme.typography.h6,
         color = Color.Black,
-        modifier = Modifier.padding(bottom = 24.dp)
+        modifier = modifier
     )
 }

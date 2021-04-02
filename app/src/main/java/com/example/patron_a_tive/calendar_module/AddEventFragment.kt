@@ -121,7 +121,7 @@ class AddEventFragment : Fragment(),
                     PickerRow(stringResource(R.string.end_hour_label), "13:00")
                 }
 
-                HeaderMedium(text = stringResource(R.string.add_event_checkbox_header))
+                HeaderMedium(text = stringResource(R.string.add_event_checkbox_header), Modifier.padding(bottom = 24.dp))
 
                 CheckboxComponent(stringResource(R.string.checkbox_js_label))
                 CheckboxComponent(stringResource(R.string.checkbox_java_label))

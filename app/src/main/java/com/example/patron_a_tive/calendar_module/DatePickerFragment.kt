@@ -6,17 +6,8 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import java.util.*
-import com.example.patron_a_tive.R
 import com.example.patron_a_tive.ui.activity.NavActivity
-import kotlinx.android.synthetic.main.fragment_add_event.*
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class DatePickerFragment : DialogFragment(),
     OnDateSetListener {
