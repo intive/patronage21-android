@@ -25,6 +25,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.intive.patronative.R
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
+import com.intive.ui.TitleText
 
 
 class HomeScreenFragment : Fragment() {
@@ -64,7 +65,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            Text(
+            TitleText(
                 text = stringResource(R.string.home_screen_greeting),
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.secondary,
