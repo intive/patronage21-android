@@ -1,26 +1,24 @@
 package com.example.patron_a_tive.calendar_module.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.patron_a_tive.calendar_module.viewmodels.CalendarHomeViewModel
 
 
 @Composable
-// TODO: add onClick parameter, onClick: () -> Unit
-fun OKButton(text: String){
+fun OKButton(text: String, onClick: () -> Unit){
     Button(
-        onClick = {
-            //navController?.popBackStack()
-        },
+        onClick = onClick, //navController?.popBackStack()
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
         modifier = Modifier
             .fillMaxWidth()
@@ -36,11 +34,9 @@ fun OKButton(text: String){
 
 @Composable
 // TODO: add onClick parameter
-fun CancelButton(text: String) {
+fun CancelButton(text: String, onClick: () -> Unit) {
     Button(
-        onClick = {
-           //navController?.popBackStack()
-        },
+        onClick = onClick, //navController?.popBackStack()
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
         modifier = Modifier
             .fillMaxWidth()
@@ -51,5 +47,21 @@ fun CancelButton(text: String) {
             style = MaterialTheme.typography.subtitle1,
             color = Color.White
         )
+    }
+}
+
+@Composable
+fun ClearButton(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+    Row(
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier.padding(12.dp)
+    ) {
+        IconButton(onClick = { calendarViewModel.hideDialog() }) {
+            Icon(
+                Icons.Default.Clear,
+                contentDescription = "Exit dialog button",
+                tint = Color.Black
+            )
+        }
     }
 }

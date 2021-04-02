@@ -28,3 +28,13 @@ fun HeaderMedium(text: String, modifier: Modifier) {
         modifier = modifier
     )
 }
+
+@Composable
+fun Paragraph(text: String, modifier: Modifier) {
+    Text(
+        text,
+        style = MaterialTheme.typography.body1,
+        color = Color.Black,
+        modifier = modifier
+    )
+}

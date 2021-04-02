@@ -95,8 +95,9 @@ class DayFragment : Fragment() {
             }
 
             Column {
-                OKButton(stringResource(R.string.accept_event))
-                CancelButton(stringResource(R.string.reject_event))
+                // TODO: Add onClick handlers
+                OKButton(stringResource(R.string.accept_event), {})
+                CancelButton(stringResource(R.string.reject_event), {})
             }
 
         }

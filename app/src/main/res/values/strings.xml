@@ -40,6 +40,7 @@
     <string name="checkbox_qa_label">QA</string>
     <string name="checkbox_mobile_label">Mobile (Android)</string>
     <string name="event_users_label">Uczestnicy</string>
+    <string name="no_events">Brak wydarzeń</string>
 
 
 </resources>

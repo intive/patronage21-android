@@ -130,8 +130,9 @@ class AddEventFragment : Fragment(),
             }
 
             Column {
-                OKButton(stringResource(R.string.accept_new_event))
-                CancelButton(stringResource(R.string.reject_new_event))
+                // TODO: add onClick handlers
+                OKButton(stringResource(R.string.accept_new_event), {})
+                CancelButton(stringResource(R.string.reject_new_event), {})
             }
         }
     }
