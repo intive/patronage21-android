@@ -11,10 +11,24 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.ImageButton
 import android.widget.TimePicker
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.*
 
 
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -23,35 +37,22 @@ import kotlinx.android.synthetic.main.fragment_add_event.*
 
 
 import com.example.patron_a_tive.R
+import com.example.patron_a_tive.calendar_module.components.*
+import androidx.compose.material.TextField as TextField
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddEventFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddEventFragment : Fragment(),
     TimePickerDialog.OnTimeSetListener {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private lateinit var navController: NavController
 
     var hour: Int = 0
     var minute: Int = 0
-
     var isStart: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
         navController = findNavController()
     }
@@ -59,6 +60,7 @@ class AddEventFragment : Fragment(),
     override fun onStart() {
         super.onStart()
 
+        /*
         edit_date.setOnClickListener {
             showDatePickerDialog(it)
         }
@@ -79,6 +81,7 @@ class AddEventFragment : Fragment(),
             navController?.navigate(R.id.action_addEventFragment_to_calendarFragment)
         }
 
+         */
 
     }
 
@@ -91,28 +94,46 @@ class AddEventFragment : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_event, container, false)
+
+        return ComposeView(requireContext()).apply {
+            setContent {
+                AddEventFragmentLayout()
+            }
+        }
     }
 
+    @Composable
+    fun AddEventFragmentLayout() {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(24.dp)
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddEventFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddEventFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                HeaderLarge(stringResource(R.string.add_event))
+
+                InputText()
+
+                Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
+                    PickerRow(stringResource(R.string.date_label), "02.04.2021")
+                    PickerRow(stringResource(R.string.start_hour_label), "12:00")
+                    PickerRow(stringResource(R.string.end_hour_label), "13:00")
                 }
+
+                HeaderMedium(text = stringResource(R.string.add_event_checkbox_header))
+
+                CheckboxComponent(stringResource(R.string.checkbox_js_label))
+                CheckboxComponent(stringResource(R.string.checkbox_java_label))
+                CheckboxComponent(stringResource(R.string.checkbox_qa_label))
+                CheckboxComponent(stringResource(R.string.checkbox_mobile_label))
             }
+
+            Column {
+                OKButton(stringResource(R.string.accept_new_event))
+                CancelButton(stringResource(R.string.reject_new_event))
+            }
+        }
     }
 
     private fun showTimePickerDialog(v: View?) {
@@ -144,3 +165,4 @@ class AddEventFragment : Fragment(),
         return navHostFragment.navController
     }
 }
+

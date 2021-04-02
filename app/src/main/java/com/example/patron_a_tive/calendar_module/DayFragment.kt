@@ -33,28 +33,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.patron_a_tive.R
 import java.util.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DayFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DayFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -105,7 +87,7 @@ class DayFragment : Fragment() {
                 )
 
                 Row(
-                    horizontalArrangement =Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color(0xffeef8fe.toInt()))
@@ -135,10 +117,12 @@ class DayFragment : Fragment() {
             Column {
                 Button(
                     onClick = {
-                        navController?.navigate(R.id.action_dayFragment_to_calendarFragment)
+                        navController?.popBackStack()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffcc4c80.toInt())),
-                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp)
                 ) {
                     Text(
                         stringResource(R.string.accept_event),
@@ -147,7 +131,7 @@ class DayFragment : Fragment() {
                 }
                 Button(
                     onClick = {
-                        navController?.navigate(R.id.action_dayFragment_to_calendarFragment)
+                        navController?.popBackStack()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff52bcff.toInt())),
                     modifier = Modifier
@@ -165,7 +149,7 @@ class DayFragment : Fragment() {
     }
 
     @Composable
-    fun UsersList(){
+    fun UsersList() {
         val scrollState = rememberLazyListState()
 
         LazyColumn(state = scrollState) {
@@ -177,7 +161,12 @@ class DayFragment : Fragment() {
 
     @Composable
     fun UsersListItem(index: Int) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
             Image(
                 bitmap = ImageBitmap.imageResource(id = R.drawable.header),
                 contentDescription = null,
@@ -189,30 +178,14 @@ class DayFragment : Fragment() {
                     .clip(CircleShape)
             )
 
-            Text("Uczestnik ${index+1}", style = TextStyle(fontSize = 18.sp), modifier = Modifier.padding(start = 15.dp))
+            Text(
+                "Uczestnik ${index + 1}",
+                style = TextStyle(fontSize = 18.sp),
+                modifier = Modifier.padding(start = 15.dp)
+            )
             //Text("Organizator", style = MaterialTheme.typography.subtitle1)
         }
         Divider(color = Color.LightGray)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DayFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DayFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 
     private fun findNavController(): NavController {

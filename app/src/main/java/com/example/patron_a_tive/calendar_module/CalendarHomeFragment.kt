@@ -42,7 +42,10 @@ import com.example.patron_a_tive.calendar_module.viewmodels.CalendarHomeViewMode
 
 class CalendarHomeFragment : Fragment() {
 
+    //private lateinit var calendar: Calendar
     private lateinit var navController: NavController
+
+
     private val weekDays =
         arrayOf("Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela")
 
@@ -50,11 +53,15 @@ class CalendarHomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             navController?.navigate(R.id.action_calendarFragment_to_homeScreenFragment)
         }
 
+         */
+
     }
+
 
 
     @ExperimentalFoundationApi
@@ -344,7 +351,7 @@ class CalendarHomeFragment : Fragment() {
         if (isDateSame(date, Calendar.getInstance())) {
             bkgColor = Color(0xff52bcff.toInt())
             txtColor = Color.White
-        } else if (date.before(Calendar.getInstance())) {
+        } else if(date.before(Calendar.getInstance())){
             txtColor = Color.Gray
         }
 
