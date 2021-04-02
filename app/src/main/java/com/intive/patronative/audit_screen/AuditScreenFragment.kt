@@ -35,7 +35,7 @@ class AuditScreenFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    //HomeScreen(navController = findNavController())
+                    AuditScreen()
                 }
             }
         }
