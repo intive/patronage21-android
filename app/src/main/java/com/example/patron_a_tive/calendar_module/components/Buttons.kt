@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,14 +21,15 @@ fun OKButton(text: String){
         onClick = {
             //navController?.popBackStack()
         },
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xffcc4c80.toInt())),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp)
     ) {
         Text(
             text,
-            style = TextStyle(fontSize = 20.sp, color = Color.White)
+            style = MaterialTheme.typography.subtitle1,
+            color = Color.White
         )
     }
 }
@@ -39,14 +41,15 @@ fun CancelButton(text: String) {
         onClick = {
            //navController?.popBackStack()
         },
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xff52bcff.toInt())),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp)
     ) {
         Text(
             text,
-            style = TextStyle(fontSize = 20.sp, color = Color.White)
+            style = MaterialTheme.typography.subtitle1,
+            color = Color.White
         )
     }
 }
