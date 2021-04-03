@@ -80,17 +80,10 @@ fun DetailsScreen(
 
     Column {
         Header(text = stringResource(R.string.contact))
+
         Text("a@b.c", modifier = Modifier.padding(16.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
-        ) {
-            Text(
-                stringResource(R.string.send_message),
-                color = Color.White
-            )
+        ContactActionButton(stringResource(R.string.send_message)) {
+
         }
         Divider(
             color = Color(0xFFF1F1F1),
@@ -100,17 +93,10 @@ fun DetailsScreen(
                 end = 16.dp
             )
         )
+
         Text("+48 123123123", modifier = Modifier.padding(16.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
-        ) {
-            Text(
-                stringResource(R.string.call),
-                color = Color.White
-            )
+        ContactActionButton(stringResource(R.string.call)) {
+            
         }
         Divider(
             color = Color(0xFFF1F1F1),
@@ -120,17 +106,10 @@ fun DetailsScreen(
                 end = 16.dp
             )
         )
+
         Text("GitHub/loremIpsum", modifier = Modifier.padding(16.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
-        ) {
-            Text(
-                stringResource(R.string.open_link),
-                color = Color.White
-            )
+        ContactActionButton(stringResource(R.string.open_link)) {
+
         }
     }
     Column(
@@ -176,5 +155,23 @@ fun DetailsScreen(
                 fontSize = 20.sp
             )
         }
+    }
+}
+
+@Composable
+fun ContactActionButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = { onClick() },
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.padding(start = 16.dp, bottom = 16.dp).width(200.dp)
+    ) {
+        Text(
+            text,
+            color = Color.White
+        )
     }
 }
