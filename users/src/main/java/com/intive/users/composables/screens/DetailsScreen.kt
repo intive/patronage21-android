@@ -59,7 +59,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = "Bio")
+        Header(text = stringResource(R.string.bio))
         Text(
             text = stringResource(id = R.string.lorem_placeholder),
             modifier = Modifier
@@ -68,7 +68,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = "Projekty", count = projects.size, showCount = true)
+        Header(text = stringResource(R.string.projects), count = projects.size, showCount = true)
         projects.forEach { project ->
             ProjectListItem(project)
             Divider(
@@ -79,7 +79,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = "Kontakt")
+        Header(text = stringResource(R.string.contact))
         Text("a@b.c", modifier = Modifier.padding(16.dp))
         Button(
             onClick = { /*TODO*/ },
@@ -88,7 +88,7 @@ fun DetailsScreen(
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
         ) {
             Text(
-                "Wyślij wiadomość",
+                stringResource(R.string.send_message),
                 color = Color.White
             )
         }
@@ -108,7 +108,7 @@ fun DetailsScreen(
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
         ) {
             Text(
-                "Zadzwoń",
+                stringResource(R.string.call),
                 color = Color.White
             )
         }
@@ -128,7 +128,7 @@ fun DetailsScreen(
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
         ) {
             Text(
-                "Otwórz link",
+                stringResource(R.string.open_link),
                 color = Color.White
             )
         }
@@ -150,7 +150,7 @@ fun DetailsScreen(
                 .height(60.dp)
         ) {
             Text(
-                "Edytuj profil",
+                stringResource(R.string.edit_profile),
                 color = Color.White,
                 fontSize = 20.sp
             )
@@ -171,7 +171,7 @@ fun DetailsScreen(
                 .height(60.dp)
         ) {
             Text(
-                "Dezaktywuj profil",
+                stringResource(R.string.deactivate_profile),
                 color = Color.White,
                 fontSize = 20.sp
             )
