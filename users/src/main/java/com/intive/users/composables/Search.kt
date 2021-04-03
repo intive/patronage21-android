@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.intive.users.R
 
 @Composable
@@ -25,10 +27,9 @@ fun Search(
     onExecuteSearch: () -> Unit,
 ) {
 
-    TextField(
+    OutlinedTextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .border(2.dp, Color.DarkGray),
+            .fillMaxWidth(),
         value = query,
         onValueChange = { onQueryChanged(it) },
         label = { Text(text = stringResource(R.string.search_user)) },
@@ -46,10 +47,8 @@ fun Search(
                 Icons.Filled.Search,
                 contentDescription = stringResource(R.string.search_icon_content_description),
                 tint = MaterialTheme.colors.secondaryVariant,
-                modifier = Modifier.size(36.dp)
             )
         },
-        textStyle = TextStyle(color = Color.Black),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.surface,
             focusedLabelColor = MaterialTheme.colors.secondaryVariant,
