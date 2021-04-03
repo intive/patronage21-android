@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
-import com.intive.users.composables.DetailsScreen
+import com.intive.users.composables.screens.DetailsScreen
 
 class DetailsFragment : Fragment() {
 

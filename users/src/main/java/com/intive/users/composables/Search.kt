@@ -2,7 +2,6 @@ package com.intive.users.composables
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,8 +17,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.intive.users.R
-import com.intive.users.ui.utils.darkBlue
-import com.intive.users.ui.utils.lightGray
 
 @Composable
 fun Search(
@@ -31,7 +28,7 @@ fun Search(
     TextField(
         modifier = Modifier
             .fillMaxWidth()
-            .border(2.dp, lightGray),
+            .border(2.dp, Color.DarkGray),
         value = query,
         onValueChange = { onQueryChanged(it) },
         label = { Text(text = stringResource(R.string.search_user)) },
@@ -48,16 +45,16 @@ fun Search(
             Icon(
                 Icons.Filled.Search,
                 contentDescription = stringResource(R.string.search_icon_content_description),
-                tint = darkBlue,
+                tint = MaterialTheme.colors.secondaryVariant,
                 modifier = Modifier.size(36.dp)
             )
         },
         textStyle = TextStyle(color = Color.Black),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.surface,
-            focusedLabelColor = darkBlue,
-            focusedIndicatorColor = darkBlue,
-            cursorColor = darkBlue,
+            focusedLabelColor = MaterialTheme.colors.secondaryVariant,
+            focusedIndicatorColor = MaterialTheme.colors.secondaryVariant,
+            cursorColor = MaterialTheme.colors.secondaryVariant,
         ),
     )
 }

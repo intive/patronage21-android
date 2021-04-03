@@ -1,4 +1,4 @@
-package com.intive.users.composables
+package com.intive.users.composables.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,8 +21,8 @@ import androidx.navigation.NavController
 import com.intive.users.DetailsViewModel
 import com.intive.users.Person
 import com.intive.users.R
-import com.intive.users.ui.utils.darkBlue
-import com.intive.users.ui.utils.pink
+import com.intive.users.composables.Header
+import com.intive.users.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
@@ -52,7 +52,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .padding(start = 8.dp),
                 fontSize = 22.sp,
-                color = darkBlue,
+                color = MaterialTheme.colors.secondaryVariant,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -103,7 +103,7 @@ fun DetailsScreen(
         Text("+48 123123123", modifier = Modifier.padding(16.dp))
         Button(
             onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = pink),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
         ) {
@@ -123,7 +123,7 @@ fun DetailsScreen(
         Text("GitHub/loremIpsum", modifier = Modifier.padding(16.dp))
         Button(
             onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = pink),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
         ) {
@@ -138,7 +138,7 @@ fun DetailsScreen(
     ) {
         Button(
             onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = pink),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .padding(
@@ -159,7 +159,7 @@ fun DetailsScreen(
             onClick = {
                 navController.navigate(R.id.action_detailsFragment_to_deactivateUserDialogFragment)
             },
-            colors = ButtonDefaults.buttonColors(backgroundColor = darkBlue),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .padding(

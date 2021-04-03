@@ -2,6 +2,7 @@ package com.intive.users.composables
 
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,13 +13,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.intive.users.R
-import com.intive.users.ui.utils.darkBlue
 
 @Composable
 fun ScreenInfo(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 20.sp,
-    color: Color = darkBlue,
+    color: Color = MaterialTheme.colors.secondaryVariant,
     fontWeight: FontWeight = FontWeight.Bold,
 ) {
     Text(
