@@ -15,10 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
 import com.intive.users.UsersViewModel
-import com.intive.users.composables.Header
-import com.intive.users.composables.PersonListItem
-import com.intive.users.composables.ScreenInfo
-import com.intive.users.composables.Search
+import com.intive.users.composables.*
 
 @Composable
 fun UsersScreen(
@@ -50,6 +47,17 @@ fun UsersScreen(
                         },
                         onExecuteSearch = {}
                     )
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    GroupsSpinner(
+                        groups = listOf(
+                            "Wszystkie grupy",
+                            "Java",
+                            "QA",
+                            "Android",
+                            "JavaScript",
+                        )) {
+
+                    }
                 }
             }
 
