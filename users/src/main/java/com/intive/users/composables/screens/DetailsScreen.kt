@@ -96,7 +96,7 @@ fun DetailsScreen(
 
         Text("+48 123123123", modifier = Modifier.padding(16.dp))
         ContactActionButton(stringResource(R.string.call)) {
-            
+
         }
         Divider(
             color = Color(0xFFF1F1F1),
@@ -113,7 +113,8 @@ fun DetailsScreen(
         }
     }
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 30.dp)
     ) {
         Button(
             onClick = { /*TODO*/ },
@@ -126,17 +127,17 @@ fun DetailsScreen(
                     bottom = 16.dp
                 )
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(50.dp)
         ) {
             Text(
                 stringResource(R.string.edit_profile),
                 color = Color.White,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
         }
         Button(
             onClick = {
-                navController.navigate(R.id.action_detailsFragment_to_deactivateUserDialogFragment)
+                navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
             shape = RoundedCornerShape(24.dp),
@@ -147,12 +148,12 @@ fun DetailsScreen(
                     bottom = 16.dp
                 )
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(50.dp)
         ) {
             Text(
                 stringResource(R.string.deactivate_profile),
                 color = Color.White,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
         }
     }

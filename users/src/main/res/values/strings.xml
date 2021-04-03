@@ -14,4 +14,9 @@
     <string name="open_link">Otwórz link</string>
     <string name="edit_profile">Edytuj profil</string>
     <string name="deactivate_profile">Dezaktywuj profil</string>
+    <string name="cancel">Anuluj</string>
+    <string name="last_name">Nazwisko</string>
+    <string name="deactivate_user_question">Czy na pewno chcesz dezaktywować użytkownika?</string>
+    <string name="deactivate_user_warning">Operacji tej nie będzie można cofnąć.</string>
+    <string name="deactivate_user_condition">Aby potwierdzić dezaktywację wprowadź nazwisko w pole poniżej.</string>
 </resources>

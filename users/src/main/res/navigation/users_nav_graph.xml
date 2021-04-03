@@ -18,11 +18,11 @@
         android:name="com.intive.users.DetailsFragment"
         android:label="DetailsFragment" >
         <action
-            android:id="@+id/action_detailsFragment_to_deactivateUserDialogFragment"
-            app:destination="@id/deactivateUserDialogFragment" />
+            android:id="@+id/action_detailsFragment_to_deactivateUserFragment"
+            app:destination="@id/deactivateUserFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/deactivateUserDialogFragment"
-        android:name="com.intive.users.DeactivateUserDialogFragment"
-        android:label="DeactivateUserDialogFragment" />
+    <fragment
+        android:id="@+id/deactivateUserFragment"
+        android:name="com.intive.users.DeactivateUserFragment"
+        android:label="DeactivateUserFragment" />
 </navigation>
