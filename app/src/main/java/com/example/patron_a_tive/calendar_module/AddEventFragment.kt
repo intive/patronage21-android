@@ -3,97 +3,31 @@ package com.example.patron_a_tive.calendar_module
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.ImageButton
-import android.widget.TimePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.*
-
-
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.fragment_add_event.*
-
-
+import androidx.navigation.fragment.findNavController
 import com.example.patron_a_tive.R
 import com.example.patron_a_tive.calendar_module.components.*
-import androidx.compose.material.TextField as TextField
+import java.util.*
 
 
-class AddEventFragment : Fragment(),
-    TimePickerDialog.OnTimeSetListener {
-
-    private lateinit var navController: NavController
-
-    var hour: Int = 0
-    var minute: Int = 0
-    var isStart: Boolean = false
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        navController = findNavController()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        /*
-        edit_date.setOnClickListener {
-            showDatePickerDialog(it)
-        }
-
-        edit_time_start?.setOnClickListener {
-            isStart = true
-            showTimePickerDialog(it)
-        }
-
-        edit_time_end?.setOnClickListener {
-            showTimePickerDialog(it)
-        }
-
-        add_event_ok_button.setOnClickListener {
-            navController?.navigate(R.id.action_addEventFragment_to_calendarFragment)
-        }
-        add_event_cancel_button.setOnClickListener {
-            navController?.navigate(R.id.action_addEventFragment_to_calendarFragment)
-        }
-
-         */
-
-    }
-
-    private fun showDatePickerDialog(v: View?) {
-        val newFragment: DialogFragment = DatePickerFragment()
-        newFragment.show(parentFragmentManager, "datePicker")
-    }
+class AddEventFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
 
         return ComposeView(requireContext()).apply {
             setContent {
@@ -102,8 +36,66 @@ class AddEventFragment : Fragment(),
         }
     }
 
+    private fun getDate(): String {
+        val day = Calendar.getInstance()[Calendar.DAY_OF_MONTH].toString()
+        val month = Calendar.getInstance()[Calendar.MONTH].toString()
+        val year = Calendar.getInstance()[Calendar.YEAR].toString()
+
+        return "$day.$month.$year"
+    }
+
+    private fun getStartTime(): String {
+        val hour = (Calendar.getInstance()[Calendar.HOUR_OF_DAY] + 1).toString()
+        return "$hour:00"
+    }
+
+    private fun getEndTime(): String {
+        val hour = (Calendar.getInstance()[Calendar.HOUR_OF_DAY] + 2).toString()
+        return "$hour:00"
+    }
+
     @Composable
     fun AddEventFragmentLayout() {
+
+        val c: Calendar = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val hour = c[Calendar.HOUR_OF_DAY]
+        val minute = c[Calendar.MINUTE]
+
+        val date = remember {
+            mutableStateOf(getDate())
+        }
+
+        val timeStart = remember {
+            mutableStateOf(getStartTime())
+        }
+
+        val timeEnd = remember {
+            mutableStateOf(getEndTime())
+        }
+
+        val startTimePickerDialog = TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                timeStart.value = "$hourOfDay:$minute"
+            }, hour, minute, true
+        )
+
+        val endTimePickerDialog = TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                timeEnd.value = "$hourOfDay:$minute"
+            }, hour, minute, true
+        )
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), { _: DatePicker, year: Int, month: Int, day: Int ->
+                date.value = "$day.$month.$year"
+            }, year, month, day
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -116,12 +108,23 @@ class AddEventFragment : Fragment(),
                 InputText()
 
                 Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-                    PickerRow(stringResource(R.string.date_label), "02.04.2021")
-                    PickerRow(stringResource(R.string.start_hour_label), "12:00")
-                    PickerRow(stringResource(R.string.end_hour_label), "13:00")
+                    PickerRow(stringResource(R.string.date_label), date.value, datePickerDialog)
+                    PickerRow(
+                        stringResource(R.string.start_hour_label),
+                        timeStart.value,
+                        startTimePickerDialog
+                    )
+                    PickerRow(
+                        stringResource(R.string.end_hour_label),
+                        timeEnd.value,
+                        endTimePickerDialog
+                    )
                 }
 
-                HeaderMedium(text = stringResource(R.string.add_event_checkbox_header), Modifier.padding(bottom = 24.dp))
+                HeaderMedium(
+                    text = stringResource(R.string.add_event_checkbox_header),
+                    Modifier.padding(bottom = 24.dp)
+                )
 
                 CheckboxComponent(stringResource(R.string.checkbox_js_label))
                 CheckboxComponent(stringResource(R.string.checkbox_java_label))
@@ -130,40 +133,11 @@ class AddEventFragment : Fragment(),
             }
 
             Column {
-                // TODO: add onClick handlers
-                OKButton(stringResource(R.string.accept_new_event), {})
-                CancelButton(stringResource(R.string.reject_new_event), {})
+                // TODO: modify onClick handlers
+                OKButton(stringResource(R.string.accept_new_event)) { findNavController().popBackStack() }
+                CancelButton(stringResource(R.string.reject_new_event)) { findNavController().popBackStack() }
             }
         }
-    }
-
-    private fun showTimePickerDialog(v: View?) {
-        val timePickerDialog = TimePickerDialog(
-            activity, this, hour, minute,
-            DateFormat.is24HourFormat(requireContext())
-        )
-        timePickerDialog.show()
-    }
-
-    override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
-        var hourStr: String = hour.toString()
-        var minuteStr: String = minute.toString()
-        if (hour < 10) hourStr = "0$hour"
-        if (minute < 10) minuteStr = "0$minute"
-
-        if (isStart) {
-            time_start_value.text = "$hourStr:$minuteStr"
-            isStart = false
-        } else {
-            time_end_value.text = "$hourStr:$minuteStr"
-        }
-
-    }
-
-    private fun findNavController(): NavController {
-        val navHostFragment =
-            (activity as FragmentActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navHostFragment.navController
     }
 }
 

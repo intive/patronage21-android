@@ -35,4 +35,3 @@ class CalendarHomeFragment : Fragment() {
         }
     }
 }
-

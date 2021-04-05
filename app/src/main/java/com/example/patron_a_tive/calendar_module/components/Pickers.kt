@@ -1,5 +1,6 @@
 package com.example.patron_a_tive.calendar_module.components
 
+import android.app.AlertDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -15,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PickerRow(label: String, placeholder: String) {
+fun PickerRow(label: String, placeholder: String, pickerDialog: AlertDialog) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.align(Alignment.CenterVertically)) {
             Row {
@@ -26,7 +27,7 @@ fun PickerRow(label: String, placeholder: String) {
                 Text(placeholder)
             }
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = { pickerDialog.show() }) {
             Icon(
                 Icons.Default.Edit,
                 contentDescription = "Edit button",
