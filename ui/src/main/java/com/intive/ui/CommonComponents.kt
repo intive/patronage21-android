@@ -1,13 +1,17 @@
 package com.intive.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,7 +27,7 @@ fun TitleText(
     modifier: Modifier,
     style: TextStyle = MaterialTheme.typography.h5,
     color: Color = MaterialTheme.colors.secondary
-){
+) {
     Text(
         text = text,
         style = style,
@@ -34,44 +38,81 @@ fun TitleText(
 
 @Composable
 fun SectionHeader(
-    content: @Composable ()->Unit,
-){
-    Row (
-        modifier = Modifier
+    title: @Composable RowScope.() -> Unit,
+    action: @Composable RowScope.() -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    Row(
+        Modifier
             .fillMaxWidth()
-            .alpha(2f)
-            .background(MaterialTheme.colors.secondaryVariant),
+            .height(52.dp)
+            .background(MaterialTheme.colors.surface),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
-
-    ){
-        content()
+    ) {
+        Row(
+            Modifier
+                .fillMaxHeight()
+                .padding(start = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            content = title
+        )
+        Row(
+            Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .padding(start = 16.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            content = action
+        )
+        Row(
+            Modifier.fillMaxHeight(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            content = actions
+        )
     }
+}
+
+@Composable
+fun SectionHeaderText(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = PatronageTypography.h6,
+        color = MaterialTheme.colors.secondary
+    )
 }
 
 @Preview
 @Composable
-fun SectionHeaderPreview(){
-    SectionHeader(){
-        Row(
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp, start = 16.dp)
-                .wrapContentWidth(Alignment.Start)
-        ) {
-            Text(text = "Lista")
-            Text(text = "5")
-        }
-        Row(
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp, end = 16.dp)
-                .wrapContentWidth(Alignment.End)
-        ) {
-
-        }
+fun SectionHeaderPreview() {
+    PatronativeTheme {
+//        SectionHeader() {
+//            Row(
+//                modifier = Modifier
+//                    .padding(top = 16.dp, bottom = 16.dp, start = 16.dp)
+//                    .wrapContentWidth(Alignment.Start)
+//            ) {
+//                SectionHeaderText(text = "Lista")
+//            }
+//            Row(
+//                modifier = Modifier
+//                    .padding(top = 16.dp, bottom = 16.dp, end = 16.dp)
+//                    .wrapContentWidth(Alignment.End)
+//            ) {
+//
+//            }
+//        }
     }
 }
 
 @Composable
-fun TextSplited(modifier: Modifier = Modifier, text1: String, text2: String){
+fun TextSplited(modifier: Modifier = Modifier, text1: String, text2: String) {
     Row(modifier = modifier) {
         Text(
             modifier = Modifier
@@ -84,7 +125,6 @@ fun TextSplited(modifier: Modifier = Modifier, text1: String, text2: String){
         Text(
             modifier = Modifier
                 .weight(1f)
-
                 .padding(end = 4.dp)
                 .wrapContentWidth(Alignment.End),
 

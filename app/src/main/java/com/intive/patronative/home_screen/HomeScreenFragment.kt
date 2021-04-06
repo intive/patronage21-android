@@ -59,8 +59,8 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
         Column(
             modifier = Modifier
                 .padding(
-                    start = dimensionResource(id = R.dimen.activity_padding),
-                    end = dimensionResource(id = R.dimen.activity_padding),
+                    start = dimensionResource(id = R.dimen.screen_padding),
+                    end = dimensionResource(id = R.dimen.screen_padding),
                 )
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
