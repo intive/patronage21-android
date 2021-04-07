@@ -5,13 +5,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class UsersViewModel : ViewModel() {
-    val users = listOf(
-        Person("Jan", "Kowalski"),
-        Person("Jan", "Kowalski"),
-        Person("Jan", "Kowalski"),
-        Person("Jan", "Kowalski"),
-        Person("Jan", "Kowalski")
-    )
+    val users = List(5) {
+        Person(
+            "Jan",
+            "Kowalski",
+            "jankowalski@gmal.com",
+            "123456789",
+            "github.com/KowalskiJan",
+            "Jestem programista"
+        )
+    }
+
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     val query: StateFlow<String> = _query
 
