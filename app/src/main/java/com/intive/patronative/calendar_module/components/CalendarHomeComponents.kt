@@ -134,10 +134,10 @@ fun CalendarGrid(calendarViewModel: CalendarHomeViewModel = viewModel()) {
         cells = GridCells.Fixed(7)
     ) {
         if (items != null) {
-            items(items!!.size) {
+            items(items.size) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = items!![it],
+                        text = items[it],
                         style = TextStyle(fontSize = 18.sp),
                         modifier = Modifier.padding(4.dp)
                     )
@@ -167,16 +167,13 @@ fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel = viewModel()) {
 @Composable
 fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
 
+    val weekClicked: Boolean? by calendarViewModel.weekClicked.observeAsState()
+
     val bColorWeekBtn: Long? by calendarViewModel.bColorWeekBtn.observeAsState()
     val bColorMonthBtn: Long? by calendarViewModel.bColorMonthBtn.observeAsState()
     val txtColorWeekBtn: Long? by calendarViewModel.txtColorWeekBtn.observeAsState()
     val txtColorMonthBtn: Long? by calendarViewModel.txtColorMonthBtn.observeAsState()
-
-
-    val weekClicked = remember {
-        mutableStateOf(true)
-    }
-
+    
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -193,7 +190,6 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
                 stringResource(R.string.week), Color(bColorWeekBtn!!), Color(txtColorWeekBtn!!)
             ) {
                 calendarViewModel.weekClicked()
-                weekClicked.value = true
             }
 
             CalendarViewOption(
@@ -202,13 +198,12 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
                 Color(txtColorMonthBtn!!)
             ) {
                 calendarViewModel.monthClicked()
-                weekClicked.value = false
             }
         }
 
         Column {
             OKButton(stringResource(R.string.accept)) {
-                if (weekClicked.value) {
+                if (weekClicked == true) {
                     calendarViewModel.showWeekView()
                 } else {
                     calendarViewModel.showMonthView()

@@ -10,6 +10,9 @@ class CalendarHomeViewModel : ViewModel() {
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<Calendar>> = _currentWeek
 
+    private val _weekClicked = MutableLiveData(true)
+    val weekClicked: LiveData<Boolean> = _weekClicked
+
     private val _month = MutableLiveData(Calendar.getInstance()[Calendar.MONTH])
     val month: LiveData<Int> = _month
 
@@ -152,6 +155,7 @@ class CalendarHomeViewModel : ViewModel() {
         _bColorMonthBtn.value = 0xffffffff
         _txtColorWeekBtn.value = 0xffffffff
         _txtColorMonthBtn.value = 0xff000000
+        _weekClicked.value = true
     }
 
     fun monthClicked() {
@@ -159,6 +163,7 @@ class CalendarHomeViewModel : ViewModel() {
         _bColorWeekBtn.value = 0xffffffff
         _txtColorMonthBtn.value = 0xffffffff
         _txtColorWeekBtn.value = 0xff000000
+        _weekClicked.value = false
     }
 
 }
