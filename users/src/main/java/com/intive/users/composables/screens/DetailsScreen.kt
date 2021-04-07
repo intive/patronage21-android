@@ -61,7 +61,7 @@ fun DetailsScreen(
     Column {
         Header(text = stringResource(R.string.bio))
         Text(
-            text = stringResource(id = R.string.lorem_placeholder),
+            text = user.bio,
             modifier = Modifier
                 .padding(16.dp)
         )
@@ -81,7 +81,7 @@ fun DetailsScreen(
     Column {
         Header(text = stringResource(R.string.contact))
 
-        Text("a@b.c", modifier = Modifier.padding(16.dp))
+        Text(user.email, modifier = Modifier.padding(16.dp))
         ContactActionButton(stringResource(R.string.send_message)) {
 
         }
@@ -94,7 +94,7 @@ fun DetailsScreen(
             )
         )
 
-        Text("+48 123123123", modifier = Modifier.padding(16.dp))
+        Text(user.phoneNumber, modifier = Modifier.padding(16.dp))
         ContactActionButton(stringResource(R.string.call)) {
 
         }
@@ -107,7 +107,7 @@ fun DetailsScreen(
             )
         )
 
-        Text("GitHub/loremIpsum", modifier = Modifier.padding(16.dp))
+        Text(user.github, modifier = Modifier.padding(16.dp))
         ContactActionButton(stringResource(R.string.open_link)) {
 
         }
