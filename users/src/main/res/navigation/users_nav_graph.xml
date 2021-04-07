@@ -20,9 +20,16 @@
         <action
             android:id="@+id/action_detailsFragment_to_deactivateUserFragment"
             app:destination="@id/deactivateUserFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_editUserFragment"
+            app:destination="@id/editUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/deactivateUserFragment"
         android:name="com.intive.users.DeactivateUserFragment"
         android:label="DeactivateUserFragment" />
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.intive.users.edit_user.EditUserFragment"
+        android:label="EditUserFragment" />
 </navigation>

@@ -26,9 +26,9 @@ import com.intive.users.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
-     navController: NavController,
-     user: Person,
-     projects: List<DetailsViewModel.Project>
+    navController: NavController,
+    user: Person,
+    projects: List<DetailsViewModel.Project>
 ) {
     Column(
         Modifier
@@ -117,7 +117,9 @@ fun DetailsScreen(
         modifier = Modifier.padding(top = 30.dp)
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(R.id.action_detailsFragment_to_editUserFragment)
+            },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
@@ -168,7 +170,9 @@ fun ContactActionButton(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(start = 16.dp, bottom = 16.dp).width(200.dp)
+        modifier = Modifier
+            .padding(start = 16.dp, bottom = 16.dp)
+            .width(200.dp)
     ) {
         Text(
             text,
