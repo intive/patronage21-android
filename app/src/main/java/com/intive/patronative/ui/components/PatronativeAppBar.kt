@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.intive.patronative.R
@@ -21,18 +22,24 @@ fun PatronativeAppBar(
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     val backgroundColor = MaterialTheme.colors.background
-    Column(
-        Modifier.background(backgroundColor.copy(alpha = 0.95f))
+    Surface(
+        modifier = Modifier.shadow(dimensionResource(id = R.dimen.appbar_elevation)),
+        elevation = dimensionResource(id = R.dimen.appbar_elevation)
     ) {
-        TopAppBar(
-            modifier = modifier,
-            title = { Row { title() } },
-            backgroundColor = MaterialTheme.colors.background,
-            elevation = dimensionResource(id = R.dimen.appbar_elevation),
-            actions = actions
-        )
+        Column(
+            Modifier.background(backgroundColor.copy(alpha = 0.95f))
+        ) {
+            TopAppBar(
+                modifier = modifier,
+                title = { Row { title() } },
+                backgroundColor = MaterialTheme.colors.background,
+                elevation = dimensionResource(id = R.dimen.appbar_elevation),
+                actions = actions
+            )
+        }
     }
 }
+
 
 @Preview
 @Composable
