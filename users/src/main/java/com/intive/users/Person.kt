@@ -1,11 +1,7 @@
 package com.intive.users
 
-enum class Gender {
-    MALE, FEMALE, DIFFERENT
-}
-
 data class Person(
-    var gender: Gender,
+    var gender: String,
     var firstName: String,
     var lastName: String,
     var email: String,

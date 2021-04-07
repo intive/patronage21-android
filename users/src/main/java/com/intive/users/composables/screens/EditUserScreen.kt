@@ -62,7 +62,7 @@ fun EditUserScreen(
         Spacer(modifier = Modifier.size(10.dp))
         Row {
             GroupsSpinner(
-                groups = listOf("Mężczyzna", "Kobieta")
+                groups = listOf("Mężczyzna", "Kobieta", "Inna")
             ) {
 
             }

@@ -1,9 +1,7 @@
 package com.intive.users.edit_user
 
-import com.intive.users.Gender
-
 data class UserDataCredentials(
-    var gender: Gender,
+    var gender: String,
     var firstName: String,
     var lastName: String,
     var email: String,
