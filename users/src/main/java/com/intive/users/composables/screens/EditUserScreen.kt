@@ -55,8 +55,8 @@ fun EditUserScreen(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(top = 16.dp)
-                .width(70.dp)
-                .height(70.dp)
+                .width(150.dp)
+                .height(150.dp)
                 .clip(CircleShape)
         )
         Spacer(modifier = Modifier.size(10.dp))
