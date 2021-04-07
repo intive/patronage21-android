@@ -1,37 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="header_blue_style">
-        <item name="android:textColor">@color/vivid_blue</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="header_black_style">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="option_selected">
-        <item name="android:backgroundTint">@color/vivid_blue</item>
-        <item name="android:background">@color/vivid_blue</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">18dp</item>
-    </style>
-
-    <style name="option_not_selected">
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:padding">18dp</item>
-    </style>
-
     <style name="ThemeDialogFullScreen" parent="@style/ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
     </style>
-
-
 </resources>

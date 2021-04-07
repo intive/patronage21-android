@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeScreenFragment"
-        android:name="com.example.patron_a_tive.home_screen.HomeScreenFragment"
+        android:name="com.intive.patronative.home_screen.HomeScreenFragment"
         android:label="HomeScreenFragment">
         <action
             android:id="@+id/action_homeScreenFragment_to_calendarFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.patron_a_tive.calendar_module.CalendarHomeFragment"
+        android:name="com.intive.patronative.calendar_module.CalendarHomeFragment"
         android:label="CalendarFragment">
         <action
             android:id="@+id/action_calendarFragment_to_dayFragment"
@@ -30,19 +30,18 @@
 
     <fragment
         android:id="@+id/dayFragment"
-        android:name="com.example.patron_a_tive.calendar_module.DayFragment"
+        android:name="com.intive.patronative.calendar_module.DayFragment"
         android:label="DayFragment">
     </fragment>
 
     <fragment
         android:id="@+id/addEventFragment"
-        android:name="com.example.patron_a_tive.calendar_module.AddEventFragment"
+        android:name="com.intive.patronative.calendar_module.AddEventFragment"
         android:label="AddEventFragment">
         <action
             android:id="@+id/action_addEventFragment_to_calendarFragment"
             app:destination="@id/calendarFragment"
             />
     </fragment>
-
 
 </navigation>
