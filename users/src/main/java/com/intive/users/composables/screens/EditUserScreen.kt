@@ -25,12 +25,13 @@ import com.intive.users.DetailsViewModel
 import com.intive.users.Person
 import com.intive.users.R
 import com.intive.users.composables.GroupsSpinner
+import com.intive.users.edit_user.EditUserViewModel
 
 @Composable
 fun EditUserScreen(
     navController: NavController,
     user: Person,
-    viewModel: DetailsViewModel,
+    viewModel: EditUserViewModel,
 ) {
     val firstName = mutableStateOf(user.firstName)
     val lastName = mutableStateOf(user.lastName)
