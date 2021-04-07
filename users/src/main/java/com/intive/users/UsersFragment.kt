@@ -12,7 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
 import com.intive.users.composables.screens.UsersScreen
 
+enum class Gender {
+    MALE, FEMALE, DIFFERENT
+}
+
 data class Person(
+    var gender: Gender,
     var firstName: String,
     var lastName: String,
     var email: String,

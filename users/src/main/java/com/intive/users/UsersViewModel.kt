@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 class UsersViewModel : ViewModel() {
     val users = List(5) {
         Person(
+            Gender.MALE,
             "Jan",
             "Kowalski",
             "jankowalski@gmal.com",
