@@ -6,6 +6,7 @@ class DetailsViewModel : ViewModel(){
     data class Project(val name: String, val role: String)
 
     val user = Person(
+        Gender.MALE,
         "Jan",
         "Kowalski",
         "jankowalski@gmal.com",

@@ -1,7 +1,6 @@
 package com.intive.users
 
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,20 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
 import com.intive.users.composables.screens.UsersScreen
-
-enum class Gender {
-    MALE, FEMALE, DIFFERENT
-}
-
-data class Person(
-    var gender: Gender,
-    var firstName: String,
-    var lastName: String,
-    var email: String,
-    var phoneNumber: String,
-    var github: String,
-    var bio: String
-    )
 
 class UsersFragment : Fragment() {
 
