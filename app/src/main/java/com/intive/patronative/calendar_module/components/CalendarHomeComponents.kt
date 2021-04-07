@@ -108,7 +108,6 @@ fun WeekView(
     }
 }
 
-
 @ExperimentalFoundationApi
 @Composable
 fun MonthView(calendarViewModel: CalendarHomeViewModel = viewModel()) {
@@ -124,6 +123,30 @@ fun MonthView(calendarViewModel: CalendarHomeViewModel = viewModel()) {
         CalendarGrid()
     }
 }
+
+@ExperimentalFoundationApi
+@Composable
+fun CalendarGrid(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+    val currentMonth: List<String>? by calendarViewModel.currentMonth.observeAsState()
+    val items = currentMonth?.toList()
+
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(7)
+    ) {
+        if (items != null) {
+            items(items!!.size) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = items!![it],
+                        style = TextStyle(fontSize = 18.sp),
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel = viewModel()) {
@@ -277,27 +300,6 @@ fun CalendarViewOption(text: String, bColor: Color, tColor: Color, onClick: () -
     }
 }
 
-@ExperimentalFoundationApi
-@Composable
-fun CalendarGrid(calendarViewModel: CalendarHomeViewModel = viewModel()) {
-    val currentMonth: List<String>? by calendarViewModel.currentMonth.observeAsState()
-
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(7)
-    ) {
-        if (currentMonth != null) {
-            items(currentMonth!!.size) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = currentMonth!![it],
-                        style = TextStyle(fontSize = 18.sp),
-                        modifier = Modifier.padding(4.dp)
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun SpinnerComponent(calendarViewModel: CalendarHomeViewModel, calendarViewStr: String) {

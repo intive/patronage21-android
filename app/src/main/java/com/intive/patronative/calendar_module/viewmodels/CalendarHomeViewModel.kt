@@ -96,7 +96,6 @@ class CalendarHomeViewModel : ViewModel() {
 
 
     private fun getCurrentMonth(firstDay: Calendar): List<String> {
-
         val dayOfTheWeek = firstDay[Calendar.DAY_OF_WEEK]
         val daysNumber = firstDay.getActualMaximum(Calendar.DAY_OF_MONTH)
 
