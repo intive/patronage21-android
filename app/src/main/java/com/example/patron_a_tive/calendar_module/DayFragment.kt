@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
 import com.example.patron_a_tive.calendar_module.components.*
@@ -18,7 +19,11 @@ class DayFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                DayFragmentLayout({findNavController().popBackStack()}, {findNavController().popBackStack()})
+                MaterialTheme {
+                    DayFragmentLayout(
+                        { findNavController().popBackStack() },
+                        { findNavController().popBackStack() })
+                }
             }
         }
     }

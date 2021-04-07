@@ -3,27 +3,33 @@ package com.example.patron_a_tive.calendar_module
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat.recreate
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.example.patron_a_tive.R
 import com.example.patron_a_tive.calendar_module.components.*
+import com.example.patron_a_tive.calendar_module.viewmodels.AddEventViewModel
 import java.util.*
 
 
 class AddEventFragment : Fragment() {
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -31,31 +37,27 @@ class AddEventFragment : Fragment() {
 
         return ComposeView(requireContext()).apply {
             setContent {
-                AddEventFragmentLayout()
+                MaterialTheme {
+                    AddEventFragmentLayout()
+                }
             }
         }
     }
 
-    private fun getDate(): String {
-        val day = Calendar.getInstance()[Calendar.DAY_OF_MONTH].toString()
-        val month = Calendar.getInstance()[Calendar.MONTH].toString()
-        val year = Calendar.getInstance()[Calendar.YEAR].toString()
-
-        return "$day.$month.$year"
-    }
-
-    private fun getStartTime(): String {
-        val hour = (Calendar.getInstance()[Calendar.HOUR_OF_DAY] + 1).toString()
-        return "$hour:00"
-    }
-
-    private fun getEndTime(): String {
-        val hour = (Calendar.getInstance()[Calendar.HOUR_OF_DAY] + 2).toString()
-        return "$hour:00"
-    }
-
+    @ExperimentalComposeUiApi
     @Composable
-    fun AddEventFragmentLayout() {
+    fun AddEventFragmentLayout(addEventViewModel: AddEventViewModel = viewModel()) {
+
+        val date: String? by addEventViewModel.date.observeAsState()
+        val timeStart: String? by addEventViewModel.timeStart.observeAsState()
+        val timeEnd: String? by addEventViewModel.timeEnd.observeAsState()
+
+        val inputValue: String? by addEventViewModel.inputValue.observeAsState()
+
+        val checkbox1: Boolean? by addEventViewModel.checkbox1.observeAsState()
+        val checkbox2: Boolean? by addEventViewModel.checkbox2.observeAsState()
+        val checkbox3: Boolean? by addEventViewModel.checkbox3.observeAsState()
+        val checkbox4: Boolean? by addEventViewModel.checkbox4.observeAsState()
 
         val c: Calendar = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -64,37 +66,27 @@ class AddEventFragment : Fragment() {
         val hour = c[Calendar.HOUR_OF_DAY]
         val minute = c[Calendar.MINUTE]
 
-        val date = remember {
-            mutableStateOf(getDate())
-        }
-
-        val timeStart = remember {
-            mutableStateOf(getStartTime())
-        }
-
-        val timeEnd = remember {
-            mutableStateOf(getEndTime())
-        }
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), { _: DatePicker, year: Int, month: Int, day: Int ->
+                addEventViewModel.setDate("$day.$month.$year")
+            }, year, month, day
+        )
 
         val startTimePickerDialog = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                timeStart.value = "$hourOfDay:$minute"
+                addEventViewModel.setTimeStart("$hourOfDay:$minute")
             }, hour, minute, true
         )
 
         val endTimePickerDialog = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                timeEnd.value = "$hourOfDay:$minute"
+                addEventViewModel.setTimeEnd("$hourOfDay:$minute")
             }, hour, minute, true
         )
 
-        val datePickerDialog = DatePickerDialog(
-            requireContext(), { _: DatePicker, year: Int, month: Int, day: Int ->
-                date.value = "$day.$month.$year"
-            }, year, month, day
-        )
+
 
         Column(
             modifier = Modifier
@@ -104,19 +96,22 @@ class AddEventFragment : Fragment() {
             Column(modifier = Modifier.weight(1f)) {
 
                 HeaderLarge(stringResource(R.string.add_event))
-
-                InputText()
+                InputText(inputValue!!)
 
                 Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-                    PickerRow(stringResource(R.string.date_label), date.value, datePickerDialog)
+                    PickerRow(
+                        stringResource(R.string.date_label),
+                        date!!,
+                        datePickerDialog
+                    )
                     PickerRow(
                         stringResource(R.string.start_hour_label),
-                        timeStart.value,
+                        timeStart!!,
                         startTimePickerDialog
                     )
                     PickerRow(
                         stringResource(R.string.end_hour_label),
-                        timeEnd.value,
+                        timeEnd!!,
                         endTimePickerDialog
                     )
                 }
@@ -126,16 +121,34 @@ class AddEventFragment : Fragment() {
                     Modifier.padding(bottom = 24.dp)
                 )
 
-                CheckboxComponent(stringResource(R.string.checkbox_js_label))
-                CheckboxComponent(stringResource(R.string.checkbox_java_label))
-                CheckboxComponent(stringResource(R.string.checkbox_qa_label))
-                CheckboxComponent(stringResource(R.string.checkbox_mobile_label))
+                CheckboxComponent(
+                    stringResource(R.string.checkbox_js_label),
+                    checkbox1!!
+                ) { addEventViewModel.setCheckbox1() }
+                CheckboxComponent(
+                    stringResource(R.string.checkbox_java_label),
+                    checkbox2!!
+                ) { addEventViewModel.setCheckbox2() }
+                CheckboxComponent(
+                    stringResource(R.string.checkbox_qa_label),
+                    checkbox3!!
+                ) { addEventViewModel.setCheckbox3() }
+                CheckboxComponent(
+                    stringResource(R.string.checkbox_mobile_label),
+                    checkbox4!!
+                ) { addEventViewModel.setCheckbox4() }
+
+
             }
 
             Column {
                 // TODO: modify onClick handlers
-                OKButton(stringResource(R.string.accept_new_event)) { findNavController().popBackStack() }
-                CancelButton(stringResource(R.string.reject_new_event)) { findNavController().popBackStack() }
+                OKButton(stringResource(R.string.accept_new_event)) {
+                    findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
+                }
+                CancelButton(stringResource(R.string.reject_new_event)) {
+                    findNavController().popBackStack()
+                }
             }
         }
     }

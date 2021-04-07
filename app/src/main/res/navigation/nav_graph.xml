@@ -38,6 +38,10 @@
         android:id="@+id/addEventFragment"
         android:name="com.example.patron_a_tive.calendar_module.AddEventFragment"
         android:label="AddEventFragment">
+        <action
+            android:id="@+id/action_addEventFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment"
+            />
     </fragment>
 
 
