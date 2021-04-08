@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="field_required">Pole wymagane</string>
+    <string name="login_label_text">Login</string>
+    <string name="login_button">Zaloguj</string>
+    <string name="registration_button">Rejestracja</string>
+</resources>
