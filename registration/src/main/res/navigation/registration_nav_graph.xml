@@ -7,5 +7,15 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.intive.registration.fragments.LoginFragment"
-        android:label="LoginFragment" />
+        android:label="LoginFragment" >
+    <deepLink app:uri="intive://loginFragment" />
+        <action
+            android:id="@+id/action_register"
+            app:destination="@id/registrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.intive.registration.fragments.RegistrationFragment"
+        android:label="RegistrationFragment" />
+
 </navigation>

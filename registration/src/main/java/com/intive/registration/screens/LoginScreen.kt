@@ -3,7 +3,6 @@ package com.intive.registration.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,6 +16,7 @@ import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
+import com.intive.registration.fragments.LoginFragmentDirections
 
 
 @Composable
@@ -32,7 +32,7 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null)
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        TitleText(text = "Logowanie", modifier = Modifier)
+        TitleText(text = stringResource(R.string.login_title), modifier = Modifier)
         Spacer(modifier = Modifier.height(8.dp))
         LoginInput(login, viewmodel)
         Spacer(modifier = Modifier.height(8.dp))
@@ -48,7 +48,8 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null)
         CustomButton(
             text = stringResource(R.string.registration_button),
             {
-                //navigate to registration form
+                val action = LoginFragmentDirections.actionRegister()
+                navController?.navigate(action)
             }
         )
     }
@@ -73,8 +74,8 @@ private fun PasswordInput(
 ) {
     InputText(
         text = password,
-        onTextChange = viewmodel::onLoginChange,
-        label = stringResource(R.string.login_label_text),
+        onTextChange = viewmodel::onPasswordChange,
+        label = stringResource(R.string.password_label_text),
         keyboardType = KeyboardType.Password
     )
 }
