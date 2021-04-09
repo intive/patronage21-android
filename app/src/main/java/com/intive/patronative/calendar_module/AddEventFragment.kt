@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.intive.patronative.calendar_module.components.*
 import com.intive.patronative.calendar_module.viewmodels.AddEventViewModel
 import com.intive.patronative.R
@@ -46,9 +47,12 @@ class AddEventFragment : Fragment() {
     @Composable
     fun AddEventFragmentLayout(addEventViewModel: AddEventViewModel = viewModel()) {
 
-        val date: String? by addEventViewModel.date.observeAsState()
-        val timeStart: String? by addEventViewModel.timeStart.observeAsState()
-        val timeEnd: String? by addEventViewModel.timeEnd.observeAsState()
+        val date: Calendar? by addEventViewModel.date.observeAsState()
+
+        val hourStart: Int? by addEventViewModel.hourStart.observeAsState()
+        val hourEnd: Int? by addEventViewModel.hourEnd.observeAsState()
+        val minutesStart: Int? by addEventViewModel.minutesStart.observeAsState()
+        val minutesEnd: Int? by addEventViewModel.minutesEnd.observeAsState()
 
         val inputValue: String? by addEventViewModel.inputValue.observeAsState()
 
@@ -66,21 +70,27 @@ class AddEventFragment : Fragment() {
 
         val datePickerDialog = DatePickerDialog(
             requireContext(), { _: DatePicker, year: Int, month: Int, day: Int ->
-                addEventViewModel.setDate("$day.$month.$year")
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, day)
+                addEventViewModel.setDate(calendar)
             }, year, month, day
         )
+
+        //datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
 
         val startTimePickerDialog = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                addEventViewModel.setTimeStart("$hourOfDay:$minute")
+                addEventViewModel.setTimeStart(hourOfDay, minute)
             }, hour, minute, true
         )
 
         val endTimePickerDialog = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                addEventViewModel.setTimeEnd("$hourOfDay:$minute")
+                addEventViewModel.setTimeEnd(hourOfDay, minute)
             }, hour, minute, true
         )
 
@@ -99,17 +109,17 @@ class AddEventFragment : Fragment() {
                 Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                     PickerRow(
                         stringResource(R.string.date_label),
-                        date!!,
+                        "${date!![Calendar.DAY_OF_MONTH]}.${date!![Calendar.MONTH]+1}.${date!![Calendar.YEAR]}",
                         datePickerDialog
                     )
                     PickerRow(
                         stringResource(R.string.start_hour_label),
-                        timeStart!!,
+                        "$hourStart:$minutesStart",
                         startTimePickerDialog
                     )
                     PickerRow(
                         stringResource(R.string.end_hour_label),
-                        timeEnd!!,
+                        "$hourEnd:$minutesEnd",
                         endTimePickerDialog
                     )
                 }
@@ -140,9 +150,42 @@ class AddEventFragment : Fragment() {
             }
 
             Column {
-                // TODO: modify onClick handlers
                 OKButton(stringResource(R.string.accept_new_event)) {
-                    findNavController().navigate(R.id.action_addEventFragment_to_calendarFragment)
+                    if (!addEventViewModel.validateInput()) {
+                        view?.let {
+                            Snackbar.make(
+                                it,
+                                R.string.add_event_input_validation_message,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    } else if (!addEventViewModel.validateDate()) {
+                        view?.let {
+                            Snackbar.make(
+                                it,
+                                R.string.add_event_date_validation_message,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    } else if (!addEventViewModel.validateTime()) {
+                        view?.let {
+                            Snackbar.make(
+                                it,
+                                R.string.add_event_time_validation_message,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    } else if (!addEventViewModel.validateCheckboxes()) {
+                        view?.let {
+                            Snackbar.make(
+                                it,
+                                R.string.add_event_checkbox_validation_message,
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        findNavController().popBackStack()
+                    }
                 }
                 CancelButton(stringResource(R.string.reject_new_event)) {
                     findNavController().popBackStack()

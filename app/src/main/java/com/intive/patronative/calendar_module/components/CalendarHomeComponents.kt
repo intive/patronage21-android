@@ -16,8 +16,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -108,6 +106,63 @@ fun WeekView(
     }
 }
 
+@Composable
+fun DaysList(currentWeek: Array<Calendar>?, onClickDayItem: () -> Unit) {
+    val scrollState = rememberLazyListState()
+
+    LazyColumn(state = scrollState) {
+        items(7) {
+            currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it, onClickDayItem) }
+        }
+    }
+}
+
+@Composable
+fun DaysListItem(date: Calendar, index: Int, onClickDayItem: () -> Unit) {
+
+    var bkgColor: Color = Color.White
+    var txtColor: Color = Color.Black
+
+    if (isDateSame(date, Calendar.getInstance())) {
+        bkgColor = MaterialTheme.colors.secondary
+        txtColor = Color.White
+    } else if (date.before(Calendar.getInstance())) {
+        txtColor = Color.Gray
+    }
+
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(bkgColor)
+            .clickable(onClick = onClickDayItem)
+    ) {
+        Spacer(Modifier.width(10.dp))
+        Column {
+
+            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+                Text(
+                    "${weekDays[index]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}",
+                    style = TextStyle(
+                        color = txtColor,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                )
+            }
+            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+                Text(
+                    stringResource(R.string.no_events),
+                    style = TextStyle(color = txtColor),
+                    fontSize = 18.sp
+                )
+            }
+            Divider(color = Color.LightGray)
+        }
+    }
+}
+
 @ExperimentalFoundationApi
 @Composable
 fun MonthView(calendarViewModel: CalendarHomeViewModel = viewModel()) {
@@ -173,7 +228,7 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
     val bColorMonthBtn: Long? by calendarViewModel.bColorMonthBtn.observeAsState()
     val txtColorWeekBtn: Long? by calendarViewModel.txtColorWeekBtn.observeAsState()
     val txtColorMonthBtn: Long? by calendarViewModel.txtColorMonthBtn.observeAsState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -218,63 +273,7 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
     }
 }
 
-@Composable
-fun DaysList(currentWeek: Array<Calendar>?, onClickDayItem: () -> Unit) {
-    val scrollState = rememberLazyListState()
 
-    LazyColumn(state = scrollState) {
-        items(7) {
-            currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it, onClickDayItem) }
-        }
-    }
-}
-
-@Composable
-fun DaysListItem(date: Calendar, index: Int, onClickDayItem: () -> Unit) {
-
-    var bkgColor: Color = Color.White
-    var txtColor: Color = Color.Black
-
-    if (isDateSame(date, Calendar.getInstance())) {
-        bkgColor = MaterialTheme.colors.secondary
-        txtColor = Color.White
-    } else if (date.before(Calendar.getInstance())) {
-        txtColor = Color.Gray
-    }
-
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bkgColor)
-            .clickable(onClick = onClickDayItem)
-    ) {
-        Spacer(Modifier.width(10.dp))
-        Column {
-
-            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                Text(
-                    "${weekDays[index]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}",
-                    style = TextStyle(
-                        color = txtColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-                )
-            }
-            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                Text(
-                    stringResource(R.string.no_events),
-                    style = TextStyle(color = txtColor),
-                    fontSize = 18.sp
-                )
-            }
-
-            Divider(color = Color.LightGray)
-        }
-    }
-}
 
 @Composable
 fun CalendarViewOption(text: String, bColor: Color, tColor: Color, onClick: () -> Unit) {
@@ -347,7 +346,6 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.align(Alignment.CenterVertically)
-
         )
 
         IconButton(onClick = onClickNext) {

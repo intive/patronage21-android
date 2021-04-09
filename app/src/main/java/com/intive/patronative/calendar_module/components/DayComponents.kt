@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.intive.patronative.R
 
 
-
 @Composable
 fun DayFragmentLayout(onClickOKBtn: () -> Unit, onClickCancelBtn: () -> Unit) {
     Column(

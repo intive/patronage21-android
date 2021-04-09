@@ -165,5 +165,4 @@ class CalendarHomeViewModel : ViewModel() {
         _txtColorWeekBtn.value = 0xff000000
         _weekClicked.value = false
     }
-
 }

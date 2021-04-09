@@ -54,6 +54,10 @@
     <string name="logs_module_miniature_desc">Miniaturka modułu audytu zdarzeń</string>
     <string name="registration_module">Rejestracja</string>
     <string name="registration_module_miniature_desc">Miniaturka modułu rejestracji</string>
+    <string name="add_event_date_validation_message">Nieprawidłowa data lub godzina</string>
+    <string name="add_event_time_validation_message">Nieprawidłowe godziny</string>
+    <string name="add_event_checkbox_validation_message">Należy wybrać co najmniej 1 grupę technologiczną</string>
+    <string name="add_event_input_validation_message">Należy podać nazwę wydarzenia</string>
 
 
 </resources>

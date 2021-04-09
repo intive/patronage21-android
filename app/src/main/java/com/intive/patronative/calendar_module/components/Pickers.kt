@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PickerRow(label: String, placeholder: String, pickerDialog: AlertDialog) {
+fun PickerRow(label: String, value: String, pickerDialog: AlertDialog) {
     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.align(Alignment.CenterVertically)) {
             Row {
@@ -25,7 +25,7 @@ fun PickerRow(label: String, placeholder: String, pickerDialog: AlertDialog) {
                     label, modifier = Modifier
                         .padding(end = 8.dp), style = TextStyle(fontWeight = FontWeight.Bold)
                 )
-                Text(placeholder)
+                Text(value)
             }
         }
         IconButton(onClick = { pickerDialog.show() }) {
