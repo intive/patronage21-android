@@ -3,6 +3,8 @@ package com.intive.registration.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,6 +18,7 @@ import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
+import com.intive.registration.components.CustomSpacer
 import com.intive.registration.fragments.LoginFragmentDirections
 
 
@@ -33,24 +36,25 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null)
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.login_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         LoginInput(login, viewmodel)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         PasswordInput(password, viewmodel)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CustomButton(
             text = stringResource(R.string.login_button),
             {
                 //check login & password if correct navigate to HomeScreen
             }
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CustomButton(
             text = stringResource(R.string.registration_button),
-            {
+            onClick = {
                 val action = LoginFragmentDirections.actionRegister()
                 navController?.navigate(action)
-            }
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
         )
     }
 }

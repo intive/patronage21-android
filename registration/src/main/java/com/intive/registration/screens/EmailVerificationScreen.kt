@@ -3,6 +3,7 @@ package com.intive.registration.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
+import com.intive.registration.components.CustomSpacer
 import com.intive.registration.components.InputText
+import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
 import com.intive.ui.TitleText
 
@@ -43,14 +46,14 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.email_verification_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         Text(text = stringResource(R.string.email_verification_subtitle, viewmodel.email))
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CodeVerificationInput(code, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CustomButton(
             text = stringResource(R.string.confirm_code_button),
-            {
+            onClick = {
 //                val action =
 //                if(viewmodel.isCodeCorrect()) {
 //                    EmailVerificationFragmentDirections.actionSuccess()
@@ -60,16 +63,17 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
 //                }
 //                navController?.navigate(action)
             },
-            formValid.value
+            enabled = formValid.value
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CustomButton(
             text = stringResource(R.string.no_code_button),
-            {
-//                val action = RegistrationEmailVerificationFragmentDirections
-//                    .actionNoCode(viewmodel.email)
-//                navController?.navigate(action)
-            }
+            onClick = {
+                val action = EmailVerificationFragmentDirections
+                    .actionNoCode(viewmodel.email)
+                navController?.navigate(action)
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
         )
     }
 }

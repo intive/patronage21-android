@@ -57,57 +57,57 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             .verticalScroll(scrollState)
     ) {
         Logo()
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         TitleText(text = stringResource(R.string.registration_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         Text(text = stringResource(R.string.registration_subtitle))
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         TitlesSpinner(title, viewmodel::onTitleChange)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         FirstNameInput(firstName, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         LastNameInput(lastName, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         EmailInput(email, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         TechnologiesList(
             viewmodel.availableTechnologies,
             viewmodel::updateTechnologies,
             viewmodel::validateTechnologies,
             formChecker
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CodeVerificationInput(login, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         PasswordInput(password, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         ConfirmPasswordInput(confirmPassword, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         GithubInput(githubUrl, viewmodel, formChecker)
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         AgreeCheckBox(
             rodoAgree,
             viewmodel::onRodoAgreeChange,
             stringResource(R.string.rodo_agree_text),
             formChecker
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         AgreeCheckBox(
             regulationsAgree,
             viewmodel::onRegulationsAgreeChange,
             stringResource(R.string.regulations_agree_text),
             formChecker
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        CustomSpacer()
         CustomButton(
             text = stringResource(R.string.create_account_button),
-            {
+            onClick = {
                 val action = RegistrationFragmentDirections.actionVerifyEmail(email)
                 navController?.navigate(action)
             },
-            formValid.value
+            enabled = formValid.value
         )
     }
 }

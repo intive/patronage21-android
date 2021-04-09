@@ -27,6 +27,8 @@
     <string name="confirm_code_button">Zatwierdź kod</string>
     <string name="no_code_button">Nie otrzymałem/am kodu</string>
     <string name="code_verification">Kod *</string>
+    <string name="no_code_title">Weryfikacja adresu e-mail</string>
+    <string name="send_code_button">Wyślij kod</string>
 
 
     <string-array name="titles_array">

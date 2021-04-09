@@ -28,6 +28,20 @@
         <argument
             android:name="email"
             app:argType="string" />
+        <action
+            android:id="@+id/action_no_code"
+            app:destination="@id/noCodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noCodeFragment"
+        android:name="com.intive.registration.fragments.NoCodeFragment"
+        android:label="NoCodeFragment" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_verify_email_again"
+            app:destination="@id/emailVerificationFragment" />
     </fragment>
 
 </navigation>
