@@ -9,5 +9,6 @@
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.intive.patronative.home_screen.HomeScreenFragment"
-        android:label="HomeScreenFragment" />
+        android:label="HomeScreenFragment">
+    </fragment>
 </navigation>

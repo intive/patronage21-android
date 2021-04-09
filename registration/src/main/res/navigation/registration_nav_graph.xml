@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_error"
             app:destination="@id/errorFragment" />
+        <action
+            android:id="@+id/action_success"
+            app:destination="@id/id_to_return" />
     </fragment>
     <fragment
         android:id="@+id/noCodeFragment"
@@ -54,5 +57,17 @@
             android:id="@+id/action_back_to_login"
             app:destination="@id/loginFragment" />
     </fragment>
+
+    <navigation
+        android:id="@+id/id_to_return"
+        app:startDestination="@id/nav_graph">
+        <fragment
+            android:id="@+id/successFragment"
+            android:name="com.intive.registration.fragments.SuccessFragment">
+            <action
+                android:id="@+id/action_exit_flow"
+                app:destination="@id/id_to_return"/>
+        </fragment>
+    </navigation>
 
 </navigation>

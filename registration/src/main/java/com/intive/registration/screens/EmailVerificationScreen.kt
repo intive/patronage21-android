@@ -53,12 +53,12 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
             text = stringResource(R.string.confirm_code_button),
             onClick = {
                 val action =
-//                if(viewmodel.isCodeCorrect()) {
-//                    EmailVerificationFragmentDirections.actionSuccess()
-//                }
-//                else {
+                if(viewmodel.isCodeCorrect()) {
+                    EmailVerificationFragmentDirections.actionSuccess()
+                }
+                else {
                     EmailVerificationFragmentDirections.actionError()
-//                }
+                }
                 navController?.navigate(action)
             },
             enabled = formValid.value
