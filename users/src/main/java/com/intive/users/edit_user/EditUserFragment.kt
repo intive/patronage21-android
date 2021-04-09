@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
 import com.intive.users.DetailsViewModel
@@ -22,15 +22,22 @@ import com.intive.users.composables.screens.EditUserScreen
 
 class EditUserFragment : Fragment() {
 
-    private val viewModel: DetailsViewModel by activityViewModels()
+    private val viewModel: EditUserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mock = viewModel.user.copy()
-        val projects = viewModel.projects
+        val mock = Person(
+            "Mężczyzna",
+            "Jan",
+            "Kowalski",
+            "jankowalski@gmal.com",
+            "123456789",
+            "github.com/KowalskiJan",
+            "Jestem programista"
+        )
 
         val navController = findNavController()
 

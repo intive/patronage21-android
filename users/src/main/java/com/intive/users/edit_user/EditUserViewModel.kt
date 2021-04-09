@@ -1,5 +1,7 @@
 package com.intive.users.edit_user
 
+import androidx.lifecycle.ViewModel
+
 data class UserDataCredentials(
     var gender: String,
     var firstName: String,
@@ -10,7 +12,7 @@ data class UserDataCredentials(
     var bio: String
 )
 
-class EditUserViewModel {
+class EditUserViewModel : ViewModel(){
 
 
 
