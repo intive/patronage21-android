@@ -23,6 +23,7 @@ import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.*
+import com.intive.registration.fragments.RegistrationFragmentDirections
 
 
 @Composable
@@ -103,9 +104,8 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         CustomButton(
             text = stringResource(R.string.create_account_button),
             {
-//                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
-//                navController?.navigate(action)
-                println("Button click")
+                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
+                navController?.navigate(action)
             },
             formValid.value
         )

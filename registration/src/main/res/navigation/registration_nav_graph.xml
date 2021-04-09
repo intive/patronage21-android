@@ -16,6 +16,18 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.intive.registration.fragments.RegistrationFragment"
-        android:label="RegistrationFragment" />
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_verify_email"
+            app:destination="@id/emailVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailVerificationFragment"
+        android:name="com.intive.registration.fragments.EmailVerificationFragment"
+        android:label="EmailVerificationFragment" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
