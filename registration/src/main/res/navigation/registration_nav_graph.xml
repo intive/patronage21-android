@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_no_code"
             app:destination="@id/noCodeFragment" />
+        <action
+            android:id="@+id/action_error"
+            app:destination="@id/errorFragment" />
     </fragment>
     <fragment
         android:id="@+id/noCodeFragment"
@@ -42,6 +45,14 @@
         <action
             android:id="@+id/action_verify_email_again"
             app:destination="@id/emailVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.intive.registration.fragments.ErrorFragment"
+        android:label="ErrorFragment" >
+        <action
+            android:id="@+id/action_back_to_login"
+            app:destination="@id/loginFragment" />
     </fragment>
 
 </navigation>

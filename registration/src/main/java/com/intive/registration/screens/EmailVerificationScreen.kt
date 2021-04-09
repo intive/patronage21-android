@@ -37,8 +37,6 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
     val formChecker: () -> Unit = {
         formValidChanged(viewmodel.validateCode())
     }
-    MaterialTheme {
-    }
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -54,14 +52,14 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
         CustomButton(
             text = stringResource(R.string.confirm_code_button),
             onClick = {
-//                val action =
+                val action =
 //                if(viewmodel.isCodeCorrect()) {
 //                    EmailVerificationFragmentDirections.actionSuccess()
 //                }
 //                else {
-//                    EmailVerificationFragmentDirections.actionError()
+                    EmailVerificationFragmentDirections.actionError()
 //                }
-//                navController?.navigate(action)
+                navController?.navigate(action)
             },
             enabled = formValid.value
         )
