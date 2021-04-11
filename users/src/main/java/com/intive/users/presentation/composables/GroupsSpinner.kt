@@ -1,4 +1,4 @@
-package com.intive.users.composables
+package com.intive.users.presentation.composables
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import java.util.*
 
 @Composable
 fun GroupsSpinner(

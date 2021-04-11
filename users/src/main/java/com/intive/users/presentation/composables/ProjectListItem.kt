@@ -1,4 +1,4 @@
-package com.intive.users.composables
+package com.intive.users.presentation.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.intive.users.DetailsViewModel
+import com.intive.users.presentation.details.DetailsViewModel
 
 @Composable
 fun ProjectListItem(project: DetailsViewModel.Project) {

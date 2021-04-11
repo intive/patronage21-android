@@ -1,12 +1,13 @@
-package com.intive.users
+package com.intive.users.presentation.users
 
 import androidx.lifecycle.ViewModel
+import com.intive.users.repository.remote.model.UserDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class UsersViewModel : ViewModel() {
     val users = List(5) {
-        Person(
+        UserDTO(
             "Mężczyzna",
             "Jan",
             "Kowalski",

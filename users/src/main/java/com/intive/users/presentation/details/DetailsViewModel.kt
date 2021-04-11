@@ -1,11 +1,12 @@
-package com.intive.users
+package com.intive.users.presentation.details
 
 import androidx.lifecycle.ViewModel
+import com.intive.users.repository.remote.model.UserDTO
 
 class DetailsViewModel : ViewModel(){
     data class Project(val name: String, val role: String)
 
-    val user = Person(
+    val user = UserDTO(
         "Mężczyzna",
         "Jan",
         "Kowalski",

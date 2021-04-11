@@ -1,12 +1,9 @@
-package com.intive.users.composables
+package com.intive.users.presentation.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,12 +15,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.intive.users.Person
+import com.intive.users.repository.remote.model.UserDTO
 
 @Composable
 fun PersonListItem(
-    person: Person,
-    onItemClick: (Person) -> Unit
+    user: UserDTO,
+    onItemClick: (UserDTO) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -34,7 +31,7 @@ fun PersonListItem(
                 end = 16.dp
             )
             .clickable {
-                   onItemClick(person)
+                   onItemClick(user)
             },
         verticalAlignment = Alignment.CenterVertically,
 
@@ -50,7 +47,7 @@ fun PersonListItem(
                 .clip(CircleShape)
         )
         Text(
-            text = "${person.firstName} ${person.lastName}",
+            text = "${user.firstName} ${user.lastName}",
             fontSize = 15.sp,
             color = Color.Black,
             modifier = Modifier
