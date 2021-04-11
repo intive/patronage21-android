@@ -4,9 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.intive.patronative.calendar_module.utils.calendarHeader
+import java.io.Serializable
 import java.util.*
 
 class CalendarHomeViewModel : ViewModel() {
+
+    data class Event(
+        val id: Int,
+        val time: String,
+        val name: String
+    )
+
+    //data class Day(val date: Calendar, val events: List<Event>)
+    data class Day(val date: Int, val events: List<Event>)
+
+    val days: List<Day> = listOf(
+        Day(0, emptyList()),
+        Day(1, emptyList()),
+        Day(2, listOf(Event(1, "12:00-13:00","Daily"))),
+        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
+        Day(4, emptyList()),
+        Day(5, emptyList()),
+        Day(6, emptyList())
+    )
+
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<Calendar>> = _currentWeek
 

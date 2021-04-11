@@ -1,113 +1,82 @@
 package com.intive.patronative.calendar_module.components
 
-
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.intive.patronative.R
+import com.intive.patronative.calendar_module.viewmodels.CalendarHomeViewModel
 
 
 @Composable
-fun DayFragmentLayout(onClickOKBtn: () -> Unit, onClickCancelBtn: () -> Unit) {
+fun DayLayout(
+    navController: NavController,
+    date: String,
+    eventsList: List<CalendarHomeViewModel.Event>
+) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(24.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
-
-            HeaderLarge("Piątek, 05.03.2021")
-            HeaderMedium("Retrospective", Modifier.padding(bottom = 4.dp))
-
-            Text(
-                "Godzina: 15:00-16:00",
-                style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(colorResource(R.color.pale_blue))
-                    .padding(12.dp)
-            ) {
-                Text(
-                    stringResource(R.string.event_users_label),
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.secondary
-                )
-
-                Text(
-                    "10",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.secondary
-                )
-            }
-            UsersList()
+            HeaderLarge(date)
+            EventsList(eventsList, navController)
         }
 
         Column {
-            // TODO: modify onClick handlers
-            OKButton(stringResource(R.string.accept_event), onClickOKBtn)
-            CancelButton(stringResource(R.string.reject_event), onClickCancelBtn)
+            CancelButton(stringResource(R.string.go_back)) {
+                navController.popBackStack()
+            }
         }
     }
 }
 
 @Composable
-fun UsersList() {
+fun EventsList(eventsList: List<CalendarHomeViewModel.Event>, navController: NavController) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState) {
-        items(10) {
-            UsersListItem(it)
+        items(eventsList.size) {
+            EventsListItem(eventsList[it], navController)
         }
     }
 }
 
 @Composable
-fun UsersListItem(index: Int) {
+fun EventsListItem(event: CalendarHomeViewModel.Event, navController: NavController) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .clickable(onClick = { navController.navigate(R.id.action_dayFragment_to_eventFragment) })
     ) {
-        Image(
-            bitmap = ImageBitmap.imageResource(id = R.drawable.header),
-            contentDescription = "User's profile pic",
-            contentScale = ContentScale.Crop,
+        Column(
             modifier = Modifier
-                .padding(start = 8.dp)
-                .width(30.dp)
-                .height(30.dp)
-                .clip(CircleShape)
-        )
+                .fillMaxHeight()
+                .padding(8.dp)
+        ) {
 
-        Text(
-            "Uczestnik ${index + 1}",
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-        //Text("Organizator", style = MaterialTheme.typography.subtitle1)
+            Text(
+                "${event.name}",
+                style = MaterialTheme.typography.h6
+            )
+            Text(
+                "Godzina: ${event.time}",
+                style = MaterialTheme.typography.body1
+            )
+
+        }
     }
+
     Divider(color = Color.LightGray)
 }

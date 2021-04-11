@@ -25,18 +25,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.intive.patronative.calendar_module.viewmodels.CalendarHomeViewModel
 import com.intive.patronative.calendar_module.utils.isDateSame
 import com.intive.patronative.calendar_module.utils.weekDays
 import com.intive.patronative.R
+import com.intive.patronative.calendar_module.utils.week_days
 import java.util.*
 
 @ExperimentalFoundationApi
 @Composable
 fun CalendarHomeLayout(
-    onFabClicked: () -> Unit,
-    onDayItemClicked: () -> Unit,
+    navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
 
@@ -58,7 +62,7 @@ fun CalendarHomeLayout(
         backgroundColor = Color.White,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onFabClicked,
+                onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Add new event button")
@@ -80,7 +84,7 @@ fun CalendarHomeLayout(
 
                 SpinnerComponent(calendarViewModel, calendarViewStr)
 
-                WeekView(period, currentWeek, onDayItemClicked)
+                WeekView(period, currentWeek, navController)
                 MonthView()
             }
         }
@@ -92,7 +96,7 @@ fun CalendarHomeLayout(
 fun WeekView(
     period: String,
     currentWeek: Array<Calendar>?,
-    onDayItemClicked: () -> Unit,
+    navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
     val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
@@ -102,23 +106,32 @@ fun WeekView(
             period,
             { calendarViewModel.goToPreviousWeek() },
             { calendarViewModel.goToNextWeek() })
-        DaysList(currentWeek, onDayItemClicked)
+        DaysList(currentWeek, navController)
     }
 }
 
 @Composable
-fun DaysList(currentWeek: Array<Calendar>?, onClickDayItem: () -> Unit) {
+fun DaysList(
+    currentWeek: Array<Calendar>?,
+    navController: NavController,
+    calendarViewModel: CalendarHomeViewModel = viewModel()
+) {
     val scrollState = rememberLazyListState()
-
+    val days = calendarViewModel.days
     LazyColumn(state = scrollState) {
         items(7) {
-            currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it, onClickDayItem) }
+            currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it, navController, days[it]) }
         }
     }
 }
 
 @Composable
-fun DaysListItem(date: Calendar, index: Int, onClickDayItem: () -> Unit) {
+fun DaysListItem(
+    date: Calendar,
+    index: Int,
+    navController: NavController,
+    day: CalendarHomeViewModel.Day
+) {
 
     var bkgColor: Color = Color.White
     var txtColor: Color = Color.Black
@@ -130,7 +143,49 @@ fun DaysListItem(date: Calendar, index: Int, onClickDayItem: () -> Unit) {
         txtColor = Color.Gray
     }
 
+    when {
+        day.events.isEmpty() -> DayEvents(
+            bkgColor,
+            Color.Gray,
+            stringResource(R.string.no_events),
+            {},
+            index,
+            date
+        )
+        day.events.size == 1 -> DayEvents(
+            bkgColor,
+            txtColor,
+            "${day.events[0].name}, ${day.events[0].time}",
+            { navController.navigate(R.id.action_calendarFragment_to_eventFragment) }, // TODO: Pass data
+            index,
+            date
+        )
+        else -> {
+            val header = "${week_days[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH]+1}.${date[Calendar.YEAR]}"
 
+            val bundle = bundleOf("header" to header, "events" to Gson().toJson(day.events))
+            DayEvents(
+                bkgColor,
+                txtColor,
+                "Liczba wydarzeń: ${day.events.size}",
+                { navController.navigate(R.id.action_calendarFragment_to_dayFragment, bundle) },
+                index,
+                date
+            )
+        }
+    }
+}
+
+
+@Composable
+fun DayEvents(
+    bkgColor: Color,
+    txtColor: Color,
+    text: String,
+    onClickDayItem: () -> Unit,
+    index: Int,
+    date: Calendar
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -151,17 +206,21 @@ fun DaysListItem(date: Calendar, index: Int, onClickDayItem: () -> Unit) {
                     )
                 )
             }
+
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    stringResource(R.string.no_events),
+                    text,
                     style = TextStyle(color = txtColor),
                     fontSize = 18.sp
                 )
             }
+
+
             Divider(color = Color.LightGray)
         }
     }
 }
+
 
 @ExperimentalFoundationApi
 @Composable
@@ -272,7 +331,6 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
         }
     }
 }
-
 
 
 @Composable

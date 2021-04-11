@@ -18,20 +18,23 @@
         android:name="com.intive.patronative.calendar_module.CalendarHomeFragment"
         android:label="CalendarFragment">
         <action
-            android:id="@+id/action_calendarFragment_to_dayFragment"
-            app:destination="@id/dayFragment" />
+            android:id="@+id/action_calendarFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
         <action
             android:id="@+id/action_calendarFragment_to_addEventFragment"
             app:destination="@id/addEventFragment" />
         <action
             android:id="@+id/action_calendarFragment_to_homeScreenFragment"
             app:destination="@id/homeScreenFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_dayFragment"
+            app:destination="@id/dayFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/dayFragment"
-        android:name="com.intive.patronative.calendar_module.DayFragment"
-        android:label="DayFragment">
+        android:id="@+id/eventFragment"
+        android:name="com.intive.patronative.calendar_module.EventFragment"
+        android:label="EventFragment">
     </fragment>
 
     <fragment
@@ -42,6 +45,15 @@
             android:id="@+id/action_addEventFragment_to_calendarFragment"
             app:destination="@id/calendarFragment"
             />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dayFragment"
+        android:name="com.intive.patronative.calendar_module.DayFragment"
+        android:label="DayFragment">
+        <action
+            android:id="@+id/action_dayFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
 
 </navigation>
