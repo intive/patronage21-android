@@ -179,5 +179,6 @@ fun EditUserScreen(
                 fontSize = 18.sp
             )
         }
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }
