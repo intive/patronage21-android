@@ -1,4 +1,4 @@
-package com.intive.users.composables.screens
+package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.UsersViewModel
+import com.intive.users.presentation.users.UsersViewModel
 import com.intive.users.composables.*
+import com.intive.users.presentation.composables.*
 
 @Composable
 fun UsersScreen(
@@ -80,7 +81,7 @@ fun UsersScreen(
             }
 
             items(users) { person ->
-                PersonListItem(person = person, onItemClick = {
+                PersonListItem(user = person, onItemClick = {
                     navController.navigate(R.id.action_usersFragment_to_detailsFragment)
                 })
                 Divider(
@@ -112,7 +113,7 @@ fun UsersScreen(
             }
 
             items(users) { person ->
-                PersonListItem(person = person, onItemClick = {
+                PersonListItem(user = person, onItemClick = {
                     navController.navigate(R.id.action_usersFragment_to_detailsFragment)
                 })
                 Divider(

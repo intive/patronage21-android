@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
-import com.intive.users.repository.remote.model.UserDTO
+import com.intive.users.domain.User
 import com.intive.users.presentation.composables.screens.EditUserScreen
 
 class EditUserFragment : Fragment() {
@@ -25,7 +25,7 @@ class EditUserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mock = UserDTO(
+        val mock = User(
             "Mężczyzna",
             "Jan",
             "Kowalski",

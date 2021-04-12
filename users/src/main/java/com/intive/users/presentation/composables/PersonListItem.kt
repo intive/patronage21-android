@@ -15,12 +15,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.intive.users.repository.remote.model.UserDTO
+import com.intive.users.domain.User
 
 @Composable
 fun PersonListItem(
-    user: UserDTO,
-    onItemClick: (UserDTO) -> Unit
+    user: User,
+    onItemClick: (User) -> Unit
 ) {
     Row(
         modifier = Modifier

@@ -1,4 +1,4 @@
-package com.intive.users.composables.screens
+package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +20,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.users.DetailsViewModel
-import com.intive.users.Person
 import com.intive.users.R
-import com.intive.users.composables.GroupsSpinner
-import com.intive.users.edit_user.EditUserViewModel
+import com.intive.users.domain.User
+import com.intive.users.presentation.composables.GroupsSpinner
+import com.intive.users.presentation.edit_user.EditUserViewModel
 
 @Composable
 fun EditUserScreen(
     navController: NavController,
-    user: Person,
+    user: User,
     viewModel: EditUserViewModel,
 ) {
     val firstName = mutableStateOf(user.firstName)
