@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.registration.screens.LoginScreen
 import com.intive.registration.viewmodels.LoginViewModel
+import com.intive.ui.PatronativeTheme
 
 class LoginFragment : Fragment() {
 
@@ -21,7 +22,9 @@ class LoginFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                LoginScreen(viewModel, findNavController())
+                PatronativeTheme() {
+                    LoginScreen(viewModel, findNavController())
+                }
             }
         }
     }

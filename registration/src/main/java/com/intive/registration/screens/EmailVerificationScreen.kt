@@ -22,10 +22,15 @@ import com.intive.registration.components.CustomSpacer
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
+import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.TitleText
 
 @Composable
-fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController: NavController? = null) {
+fun EmailVerificationScreen(
+    viewmodel: EmailVerificationViewModel,
+    navController: NavController? = null,
+    sharedViewModel: SharedViewModel
+) {
     val scrollState = rememberScrollState()
 
     val code: String by viewmodel.code.observeAsState("")
@@ -53,12 +58,12 @@ fun EmailVerificationScreen(viewmodel: EmailVerificationViewModel, navController
             text = stringResource(R.string.confirm_code_button),
             onClick = {
                 val action =
-                if(viewmodel.isCodeCorrect()) {
-                    EmailVerificationFragmentDirections.actionSuccess()
-                }
-                else {
-                    EmailVerificationFragmentDirections.actionError()
-                }
+                    if (viewmodel.isCodeCorrect()) {
+                        sharedViewModel.test = "sukces"
+                        EmailVerificationFragmentDirections.actionSuccess()
+                    } else {
+                        EmailVerificationFragmentDirections.actionError()
+                    }
                 navController?.navigate(action)
             },
             enabled = formValid.value
@@ -85,7 +90,10 @@ private fun CodeVerificationInput(
 ) {
     InputText(
         code,
-        viewmodel::onCodeChange,
+        {
+            viewmodel.onCodeChange(it)
+            formChecker()
+        },
         stringResource(R.string.code_verification),
         viewmodel::validateCode,
         formChecker,

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.intive.registration.screens.NoCodeScreen
 import com.intive.registration.viewmodels.NoCodeViewModel
+import com.intive.ui.PatronativeTheme
 
 
 class NoCodeFragment : Fragment() {
@@ -26,7 +27,9 @@ class NoCodeFragment : Fragment() {
         viewmodel.firstEmail = args.email
         return ComposeView(requireContext()).apply {
             setContent {
-                NoCodeScreen(viewmodel, findNavController())
+                PatronativeTheme() {
+                    NoCodeScreen(viewmodel, findNavController())
+                }
             }
         }
     }

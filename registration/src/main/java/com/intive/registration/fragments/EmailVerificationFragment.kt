@@ -6,16 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.intive.registration.screens.EmailVerificationScreen
 import com.intive.registration.viewmodels.EmailVerificationViewModel
+import com.intive.registration.viewmodels.SharedViewModel
+import com.intive.ui.PatronativeTheme
 
 
 class EmailVerificationFragment : Fragment() {
 
     private val viewmodel: EmailVerificationViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     val args: EmailVerificationFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -26,7 +30,9 @@ class EmailVerificationFragment : Fragment() {
         viewmodel.email = email
         return ComposeView(requireContext()).apply {
             setContent {
-                EmailVerificationScreen(viewmodel, findNavController())
+                PatronativeTheme() {
+                    EmailVerificationScreen(viewmodel, findNavController(), sharedViewModel)
+                }
             }
         }
     }

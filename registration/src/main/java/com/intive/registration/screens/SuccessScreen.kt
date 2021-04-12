@@ -10,7 +10,6 @@ import com.intive.registration.components.CustomButton
 
 @Composable
 fun SuccessScreen(navController: NavController? = null) {
-    //HomeScreen(navController = navController)
     AlertDialogSample()
 }
 

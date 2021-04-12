@@ -12,6 +12,7 @@ import com.intive.registration.screens.LoginScreen
 import com.intive.registration.screens.RegistrationScreen
 import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.viewmodels.RegistrationViewModel
+import com.intive.ui.PatronativeTheme
 
 class RegistrationFragment : Fragment() {
 
@@ -23,7 +24,9 @@ class RegistrationFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                RegistrationScreen(viewModel, findNavController())
+                PatronativeTheme() {
+                    RegistrationScreen(viewModel, findNavController())
+                }
             }
         }
     }

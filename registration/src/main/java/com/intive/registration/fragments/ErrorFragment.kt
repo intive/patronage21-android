@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.intive.registration.screens.ErrorScreen
+import com.intive.ui.PatronativeTheme
 
 
 class ErrorFragment : Fragment() {
@@ -18,7 +19,9 @@ class ErrorFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                ErrorScreen(findNavController())
+                PatronativeTheme() {
+                    ErrorScreen(findNavController())
+                }
             }
         }
     }
