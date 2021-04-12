@@ -1,12 +1,16 @@
 package com.intive.users.composables.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -50,20 +54,35 @@ fun EditUserScreen(
        // verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+        Box(
+            contentAlignment = Alignment.BottomEnd,
             modifier = Modifier
-                .padding(top = 16.dp)
-                .width(150.dp)
-                .height(150.dp)
-                .clip(CircleShape)
-        )
+                .padding(top = 15.dp)
+                .size(150.dp)
+
+        ) {
+            Image(
+                bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(CircleShape)
+                    .clickable { /*TODO: place photo chosing here*/ }
+            )
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = stringResource(R.string.edit_icon)
+            )
+        }
         Spacer(modifier = Modifier.size(10.dp))
         Row {
             GroupsSpinner(
-                groups = listOf("Mężczyzna", "Kobieta", "Inna")
+                label = stringResource(R.string.gender),
+                groups = listOf(
+                    stringResource(R.string.male),
+                    stringResource(R.string.female),
+                    stringResource(R.string.different))
             ) {
 
             }

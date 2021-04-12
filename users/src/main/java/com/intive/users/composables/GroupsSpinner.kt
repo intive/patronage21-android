@@ -18,6 +18,7 @@ import java.util.*
 @Composable
 fun GroupsSpinner(
     groups: List<String>,
+    label: String? = null,
     onTitleSelected: (String) -> Unit
 ) {
     val text = remember { mutableStateOf(groups[0]) }
@@ -33,7 +34,12 @@ fun GroupsSpinner(
                 OutlinedTextField(
                     value = text.value,
                     onValueChange = { text.value = it },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        if (label != null) {
+                            Text(text = label)
+                        }
+                    }
                 )
             }
             DropDownList(
