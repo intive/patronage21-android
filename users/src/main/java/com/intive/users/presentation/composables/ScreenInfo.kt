@@ -1,4 +1,4 @@
-package com.intive.users.composables
+package com.intive.users.presentation.composables
 
 
 import androidx.compose.foundation.layout.padding

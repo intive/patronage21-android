@@ -1,10 +1,11 @@
-package com.intive.users.composables.screens
+package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -14,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.UsersViewModel
-import com.intive.users.composables.*
+import com.intive.users.presentation.users.UsersViewModel
+import com.intive.users.presentation.composables.*
 
 @Composable
 fun UsersScreen(
@@ -79,18 +80,20 @@ fun UsersScreen(
                 }
             }
 
-            items(users) { person ->
-                PersonListItem(person = person, onItemClick = {
+            itemsIndexed(users) { index, user ->
+                PersonListItem(user = user, onItemClick = {
                     navController.navigate(R.id.action_usersFragment_to_detailsFragment)
                 })
-                Divider(
-                    color = Color(0xFFF1F1F1),
-                    thickness = 2.dp,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        end = 16.dp
+                if(index != users.size - 1) {
+                    Divider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 2.dp,
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 16.dp
+                        )
                     )
-                )
+                }
             }
 
             item {
@@ -111,18 +114,20 @@ fun UsersScreen(
 
             }
 
-            items(users) { person ->
-                PersonListItem(person = person, onItemClick = {
+            itemsIndexed(users) { index, user ->
+                PersonListItem(user = user, onItemClick = {
                     navController.navigate(R.id.action_usersFragment_to_detailsFragment)
                 })
-                Divider(
-                    color = Color(0xFFF1F1F1),
-                    thickness = 2.dp,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        end = 16.dp
+                if(index != users.size - 1) {
+                    Divider(
+                        color = Color(0xFFF1F1F1),
+                        thickness = 2.dp,
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 16.dp
+                        )
                     )
-                )
+                }
             }
         }
     }

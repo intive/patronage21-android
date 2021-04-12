@@ -1,4 +1,4 @@
-package com.intive.users.composables.screens
+package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,16 +18,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.users.DetailsViewModel
-import com.intive.users.Person
+import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
-import com.intive.users.composables.Header
-import com.intive.users.composables.ProjectListItem
+import com.intive.users.domain.User
+import com.intive.users.presentation.composables.Header
+import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
     navController: NavController,
-    user: Person,
+    user: User,
     projects: List<DetailsViewModel.Project>
 ) {
     Column(

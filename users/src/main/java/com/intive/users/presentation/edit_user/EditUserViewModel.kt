@@ -1,6 +1,8 @@
-package com.intive.users
+package com.intive.users.presentation.edit_user
 
-data class Person(
+import androidx.lifecycle.ViewModel
+
+data class UserDataCredentials(
     var gender: String,
     var firstName: String,
     var lastName: String,
@@ -8,4 +10,10 @@ data class Person(
     var phoneNumber: String,
     var github: String,
     var bio: String
-    )
+)
+
+class EditUserViewModel : ViewModel(){
+
+
+
+}

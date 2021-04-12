@@ -1,4 +1,4 @@
-package com.intive.users.composables.screens
+package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.users.DeactivateUserViewModel
 import com.intive.users.R
+import com.intive.users.presentation.deactivate_user.DeactivateUserViewModel
 
 @Composable
 fun DeactivateUserScreen(

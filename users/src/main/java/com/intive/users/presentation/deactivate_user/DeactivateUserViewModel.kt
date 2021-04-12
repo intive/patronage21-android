@@ -1,4 +1,4 @@
-package com.intive.users
+package com.intive.users.presentation.deactivate_user
 
 import androidx.lifecycle.ViewModel
 

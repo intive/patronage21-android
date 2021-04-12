@@ -1,11 +1,7 @@
-package com.intive.users.composables
+package com.intive.users.presentation.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -29,9 +26,10 @@ fun Header(
             .fillMaxWidth()
             .height(60.dp)
             .background(backgroundColor),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+
             Text(
                 text = text,
                 color = textColor,
@@ -39,15 +37,21 @@ fun Header(
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .padding(start = 16.dp)
-                    .fillMaxWidth(0.9f)
             )
             if (count != null && showCount) {
                 Text(
                     text = count.toString(),
                     color = textColor,
                     fontSize = 16.sp,
+                    modifier = Modifier.padding(end = 16.dp)
                 )
             }
-        }
+
     }
+}
+
+@Preview
+@Composable
+fun HeaderPreview() {
+    Header(text = "Liderzy", count = 10, showCount = true)
 }
