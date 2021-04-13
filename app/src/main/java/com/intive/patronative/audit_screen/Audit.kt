@@ -6,5 +6,5 @@ data class Audit(
     val id: Long,
     val date: Date,
     val eventTitle: String,
-    val eventDesc: String
+    val userName: String
 )

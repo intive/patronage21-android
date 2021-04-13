@@ -23,17 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.intive.patronative.R
-import com.intive.ui.PatronativeTheme
-import com.intive.ui.SectionHeader
-import com.intive.ui.SectionHeaderText
-import com.intive.ui.TitleText
+import com.intive.ui.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 class AuditScreenFragment : Fragment() {
 
@@ -58,7 +57,7 @@ class AuditScreenFragment : Fragment() {
 @Composable
 fun AuditScreen(
     modifier: Modifier = Modifier,
-    audits: List<String> = List(1000) { "Audyt numer #$it" }
+    audits: List<Audit> = List(1000) { Audit(1, Date(), "Logowanie", "Adam Kowalski") }
 ) {
     Column(modifier) {
         val scrollState = rememberScrollState()
@@ -91,7 +90,7 @@ fun AuditScreen(
 @Composable
 fun MyScreenContent(
     modifier: Modifier = Modifier,
-    audits: List<String> = List(1000) { "Hello Android #$it" }
+    audits: List<Audit> = List(1000) { Audit(1, Date(), "Logowanie", "Adam Kowalski") }
 ) {
     Column(modifier = modifier.fillMaxHeight()) {
         AuditsList(
@@ -105,7 +104,7 @@ fun MyScreenContent(
 
 @ExperimentalAnimationApi
 @Composable
-fun AuditsList(audits: List<String>, modifier: Modifier = Modifier) {
+fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
 
     var showSearchField by remember { mutableStateOf(false) }
     var showFilterField by remember { mutableStateOf(false) }
@@ -162,23 +161,28 @@ fun AuditsList(audits: List<String>, modifier: Modifier = Modifier) {
             }
         }
 
-        Column(Modifier.fillMaxSize()) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.weight(1f)
-            ) {
-                items(items = audits) { audit ->
-                    Audit(
-                        modifier = Modifier.padding(15.dp),
-                        auditText = audit
-                    )
-                    Divider(
-                        color = Color.LightGray,
-                        thickness = 0.5.dp
-                    )
+        Box {
+            Column(Modifier.fillMaxSize()) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    items(items = audits) { audit ->
+                        Column(
+                            modifier = Modifier.padding(15.dp)
+                        ) {
+                            AuditField(
+                                modifier = Modifier.padding(15.dp),
+                                audit = audit
+                            )
+                        }
+                        Divider(
+                            color = Color.LightGray,
+                            thickness = 0.5.dp
+                        )
+                    }
                 }
             }
-
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -246,7 +250,7 @@ fun DropdownDemo(expanded: Boolean, updateExpand: (Boolean) -> Unit) {
                         )
                     }
                 }
-                if(index != items.size-1)
+                if (index != items.size - 1)
                     Divider(color = Color.LightGray)
             }
         }
@@ -254,12 +258,26 @@ fun DropdownDemo(expanded: Boolean, updateExpand: (Boolean) -> Unit) {
 }
 
 @Composable
-fun Audit(modifier: Modifier = Modifier, auditText: String) {
+fun AuditField(modifier: Modifier = Modifier, audit: Audit) {
     //TODO: place audit object formatter here
-    Text(
-        modifier = modifier,
-        text = auditText
-    )
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column {
+            Text(
+                text = audit.date.toString(),
+                style = PatronageTypography.subtitle2
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            Text(
+                text = audit.eventTitle,
+                style = PatronageTypography.subtitle2
+            )
+        }
+        Spacer(modifier = Modifier.size(15.dp))
+        Text(
+            text = audit.userName,
+            style = PatronageTypography.subtitle2
+        )
+    }
 }
 
 @ExperimentalAnimationApi
