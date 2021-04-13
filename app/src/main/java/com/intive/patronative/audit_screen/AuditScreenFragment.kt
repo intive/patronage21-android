@@ -80,7 +80,7 @@ fun AuditScreen(
         }
         AuditsList(
             modifier = Modifier
-                .padding(16.dp),
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             audits = audits
         )
     }
@@ -97,7 +97,7 @@ fun MyScreenContent(
             audits,
             Modifier
                 .weight(1f)
-                .padding(16.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
         )
     }
 }
@@ -161,7 +161,7 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
             }
         }
 
-        Box {
+        Box(contentAlignment = Alignment.BottomEnd) {
             Column(Modifier.fillMaxSize()) {
                 LazyColumn(
                     state = listState,
