@@ -132,7 +132,7 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
             actions = {
                 IconButton(onClick = {
                     showSearchField = !showSearchField
-                    // if(showSearchField) text.text = "" TODO: resetowanie pola tekstowego
+                    if(showSearchField) text = TextFieldValue("")
                 }) {
                     Icon(
                         Icons.Outlined.Search,
