@@ -15,9 +15,6 @@
     <string name="home_screen_text">Aplikacja Parton-a-tive pozwala na zarządzanie
         programem stażowym, jego użytkownikami oraz wydarzeniami</string>
 
-    <!--AuditScreen text content-->
-    <string name="audit_screen">Audyt zdarzeń</string>
-
     <!--Modules Names-->
     <string name="tech_groups_module">Grupy technologiczne</string>
     <string name="tech_groups_module_miniature_desc">Miniaturka modułu grup technologicznych</string>

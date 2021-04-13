@@ -1,4 +1,4 @@
-package com.intive.patronative.audit_screen
+package com.intive.audit.audit_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,18 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.intive.patronative.R
+import com.intive.audit.R
 import com.intive.ui.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AuditScreenFragment : Fragment() {
+class AuditFragment : Fragment() {
 
     private val viewModel: AuditScreenViewModel by viewModels()
 

@@ -1,3 +1,4 @@
 include ':app'
 rootProject.name = "Patron-a-tive"
 include ':ui'
+include ':audit'
