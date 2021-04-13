@@ -4,56 +4,13 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeScreenFragment">
 
+    <include app:graph="@navigation/calendar_nav_graph" />
 
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.intive.patronative.home_screen.HomeScreenFragment"
         android:label="HomeScreenFragment">
-        <action
-            android:id="@+id/action_homeScreenFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/calendarFragment"
-        android:name="com.intive.patronative.calendar_module.CalendarHomeFragment"
-        android:label="CalendarFragment">
-        <action
-            android:id="@+id/action_calendarFragment_to_eventFragment"
-            app:destination="@id/eventFragment" />
-        <action
-            android:id="@+id/action_calendarFragment_to_addEventFragment"
-            app:destination="@id/addEventFragment" />
-        <action
-            android:id="@+id/action_calendarFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
-        <action
-            android:id="@+id/action_calendarFragment_to_dayFragment"
-            app:destination="@id/dayFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/eventFragment"
-        android:name="com.intive.patronative.calendar_module.EventFragment"
-        android:label="EventFragment">
-    </fragment>
-
-    <fragment
-        android:id="@+id/addEventFragment"
-        android:name="com.intive.patronative.calendar_module.AddEventFragment"
-        android:label="AddEventFragment">
-        <action
-            android:id="@+id/action_addEventFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment"
-            />
-    </fragment>
-
-    <fragment
-        android:id="@+id/dayFragment"
-        android:name="com.intive.patronative.calendar_module.DayFragment"
-        android:label="DayFragment">
-        <action
-            android:id="@+id/action_dayFragment_to_eventFragment"
-            app:destination="@id/eventFragment" />
-    </fragment>
 
 </navigation>

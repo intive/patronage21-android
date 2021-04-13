@@ -1,5 +1,6 @@
 package com.intive.patronative.ui.components
 
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -122,7 +123,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.calendar_module),
-                    onClick = { navController?.navigate(R.id.action_homeScreenFragment_to_calendarFragment) }
+                    onClick = { navController?.navigate(Uri.parse("intive://calendarFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.CalendarToday,

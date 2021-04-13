@@ -1,0 +1,223 @@
+package com.intive.calendar.viewmodels
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.intive.calendar.utils.calendarHeader
+import java.util.*
+
+class CalendarHomeViewModel : ViewModel() {
+
+    data class Event(
+        val id: Int,
+        val time: String,
+        val name: String
+    )
+
+    //data class Day(val date: Calendar, val events: List<Event>)
+    data class Day(val index: Int, val events: List<Event>)
+
+    val days: List<Day> = listOf(
+        Day(0, emptyList()),
+        Day(1, emptyList()),
+        Day(2, listOf(Event(1, "12:00-13:00","Daily"))),
+        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
+        Day(4, emptyList()),
+        Day(5, emptyList()),
+        Day(6, emptyList())
+    )
+
+    val monthDays: List<Day> = listOf(
+        Day(1, emptyList()),
+        Day(2, listOf(Event(1, "12:00-13:00","Daily"))),
+        Day(3, emptyList()),
+        Day(4, emptyList()),
+        Day(5, emptyList()),
+        Day(6, emptyList()),
+        Day(7, emptyList()),
+        Day(8, emptyList()),
+        Day(9, emptyList()),
+        Day(10, listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))),
+        Day(11, emptyList()),
+        Day(12, emptyList()),
+        Day(13, emptyList()),
+        Day(14, emptyList()),
+        Day(15, emptyList()),
+        Day(16, emptyList()),
+        Day(17, emptyList()),
+        Day(18, emptyList()),
+        Day(19, emptyList()),
+        Day(20, emptyList()),
+        Day(21, emptyList()),
+        Day(22, emptyList()),
+        Day(23, emptyList()),
+        Day(24, emptyList()),
+        Day(25, emptyList()),
+        Day(26, emptyList()),
+        Day(27, emptyList()),
+        Day(28, listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))),
+        Day(29, emptyList()),
+        Day(30, emptyList())
+    )
+
+    private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
+    val currentWeek: LiveData<Array<Calendar>> = _currentWeek
+
+    private val _weekClicked = MutableLiveData(true)
+    val weekClicked: LiveData<Boolean> = _weekClicked
+
+    private val _month = MutableLiveData(Calendar.getInstance()[Calendar.MONTH])
+    val month: LiveData<Int> = _month
+
+    private val _year = MutableLiveData(Calendar.getInstance()[Calendar.YEAR])
+    val year: LiveData<Int> = _year
+
+    private val currentDate: Calendar = Calendar.getInstance()
+
+    private val _currentMonth = MutableLiveData(getCurrentMonth(getFirstDay()))
+    var currentMonth: LiveData<List<Any>> = _currentMonth
+
+    private val _showPeriodDialog = MutableLiveData(false)
+    val showPeriodDialog: LiveData<Boolean> = _showPeriodDialog
+
+    private val _showWeekView = MutableLiveData(true)
+    val showWeekView: LiveData<Boolean> = _showWeekView
+
+    private val _bColorWeekBtn = MutableLiveData(0xff52bcff)
+    val bColorWeekBtn: LiveData<Long> = _bColorWeekBtn
+
+    private val _bColorMonthBtn = MutableLiveData(0xffffffff)
+    val bColorMonthBtn: LiveData<Long> = _bColorMonthBtn
+
+    private val _txtColorWeekBtn = MutableLiveData(0xffffffff)
+    val txtColorWeekBtn: LiveData<Long> = _txtColorWeekBtn
+
+    private val _txtColorMonthBtn = MutableLiveData(0xff000000)
+    val txtColorMonthBtn: LiveData<Long> = _txtColorMonthBtn
+
+
+    private fun getCurrentWeek(date: Calendar): Array<Calendar> {
+        val dayOfTheWeek = date[Calendar.DAY_OF_WEEK]
+
+        when {
+            dayOfTheWeek == 2 -> {
+            }
+            dayOfTheWeek > 2 -> {
+                date.add(Calendar.DAY_OF_MONTH, -(dayOfTheWeek - 2))
+            }
+            else -> {
+                date.add(Calendar.DAY_OF_MONTH, -6)
+            }
+        }
+
+        var weekArray = arrayOf<Calendar>()
+        weekArray += date.clone() as Calendar
+
+        for (i in 1..6) {
+            date.add(Calendar.DAY_OF_MONTH, 1)
+            weekArray += date.clone() as Calendar
+        }
+
+        return weekArray
+
+    }
+
+    fun goToPreviousWeek() {
+        val weekPrev = currentWeek.value?.get(0)?.clone() as Calendar
+        weekPrev.add(Calendar.DAY_OF_MONTH, -7)
+        _currentWeek.value = getCurrentWeek(weekPrev)
+    }
+
+    fun goToNextWeek() {
+        val weekNext = currentWeek.value?.get(6)?.clone() as Calendar
+        weekNext.add(Calendar.DAY_OF_MONTH, 1)
+        _currentWeek.value = getCurrentWeek(weekNext)
+    }
+
+    fun showDialog() {
+        _showPeriodDialog.value = true
+    }
+
+    fun hideDialog() {
+        _showPeriodDialog.value = false
+    }
+
+    fun showWeekView() {
+        _showWeekView.value = true
+    }
+
+    fun showMonthView() {
+        _showWeekView.value = false
+    }
+
+
+    private fun getCurrentMonth(firstDay: Calendar): List<Any> {
+        val dayOfTheWeek = firstDay[Calendar.DAY_OF_WEEK]
+        val daysNumber = firstDay.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+
+        val offset: Int = when {
+            dayOfTheWeek == 2 -> {
+                0
+            }
+            dayOfTheWeek > 2 -> {
+                dayOfTheWeek - 2
+            }
+            else -> {
+                6
+            }
+        }
+
+        val offsetList = mutableListOf<String>()
+        //val numbers = (1..daysNumber).toList().map { it.toString() }
+
+        val numbers = monthDays
+
+        repeat(offset) {
+            offsetList += ""
+        }
+
+        return (calendarHeader + offsetList + numbers)
+
+    }
+
+    fun goToPreviousMonth() {
+        currentDate.add(Calendar.MONTH, -1)
+        currentDate.set(Calendar.DATE, 1)
+        _currentMonth.value = getCurrentMonth(currentDate)
+        _month.value = currentDate[Calendar.MONTH]
+        _year.value = currentDate[Calendar.YEAR]
+    }
+
+    fun goToNextMonth() {
+        currentDate.add(Calendar.MONTH, 1)
+        currentDate.set(Calendar.DATE, 1)
+        _currentMonth.value = getCurrentMonth(currentDate)
+        _month.value = currentDate[Calendar.MONTH]
+        _year.value = currentDate[Calendar.YEAR]
+    }
+
+    private fun getFirstDay(): Calendar {
+        val date = Calendar.getInstance()
+        _month.value?.let { date.set(Calendar.MONTH, it) }
+        date.set(Calendar.DATE, 1)
+        _year.value?.let { date.set(Calendar.YEAR, it) }
+        return date
+    }
+
+    fun weekClicked() {
+        _bColorWeekBtn.value = 0xff52bcff
+        _bColorMonthBtn.value = 0xffffffff
+        _txtColorWeekBtn.value = 0xffffffff
+        _txtColorMonthBtn.value = 0xff000000
+        _weekClicked.value = true
+    }
+
+    fun monthClicked() {
+        _bColorMonthBtn.value = 0xff52bcff
+        _bColorWeekBtn.value = 0xffffffff
+        _txtColorMonthBtn.value = 0xffffffff
+        _txtColorWeekBtn.value = 0xff000000
+        _weekClicked.value = false
+    }
+}
