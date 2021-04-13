@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 class UsersViewModel : ViewModel() {
     val users = List(5) {
         User(
-            "Mężczyzna",
-            "Jan",
-            "Kowalski",
-            "jankowalski@gmal.com",
-            "123456789",
-            "github.com/KowalskiJan",
-            "Jestem programista"
+            firstName = "Jan",
+            lastName = "Kowalski",
+            gender = "Mężczyzna",
+            email = "jankowalski@gmal.com",
+            phoneNumber = "123456789",
+            github = "github.com/KowalskiJan",
+            bio = "Jestem programista"
         )
     }
 

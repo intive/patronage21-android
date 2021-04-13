@@ -8,13 +8,13 @@ class DetailsViewModel : ViewModel(){
     data class Project(val name: String, val role: String)
 
     val user = User(
-        "Mężczyzna",
-        "Jan",
-        "Kowalski",
-        "jankowalski@gmal.com",
-        "123456789",
-        "github.com/KowalskiJan",
-        "Jestem programista",
+        firstName = "Jan",
+        lastName = "Kowalski",
+        gender = "Mężczyzna",
+        email = "jankowalski@gmal.com",
+        phoneNumber = "123456789",
+        github = "github.com/KowalskiJan",
+        bio = "Jestem programista",
     )
 
     val projects = listOf(
