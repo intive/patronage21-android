@@ -42,35 +42,36 @@ fun SectionHeader(
     action: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(MaterialTheme.colors.surface),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {
         Row(
             Modifier
-                .fillMaxHeight()
-                .padding(start = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            content = title
-        )
+                .fillMaxWidth()
+                .height(52.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                Modifier
+                    .fillMaxHeight()
+                    .padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                content = title
+            )
+            Row(
+                Modifier.fillMaxHeight(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                content = actions
+            )
+        }
         Row(
-            Modifier
-                .fillMaxHeight()
-                .weight(1f)
-                .padding(start = 16.dp),
+//            Modifier
+//                .fillMaxHeight()
+//                .weight(1f)
+//                .padding(8.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
             content = action
-        )
-        Row(
-            Modifier.fillMaxHeight(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-            content = actions
         )
     }
 }

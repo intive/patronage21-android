@@ -120,6 +120,7 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
                     visible = showSearchField
                 ) {
                     TextField(
+                        modifier = Modifier.fillMaxWidth(),
                         value = text,
                         onValueChange = {
                             text = it
@@ -184,7 +185,9 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
                 }
             }
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
