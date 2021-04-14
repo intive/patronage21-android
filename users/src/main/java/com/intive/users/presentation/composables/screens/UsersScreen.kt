@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,112 +25,117 @@ fun UsersScreen(
     viewModel: UsersViewModel,
     navController: NavController
 ) {
-    Column {
-        val users = viewModel.users
-        val query = viewModel.query.collectAsState()
 
+    val users = viewModel.users
+    val query = viewModel.query
 
-        val modifier = Modifier.padding(
-            start = 30.dp,
-            end = 30.dp,
-            bottom = 8.dp,
-            top = 16.dp
-        )
-        LazyColumn {
-            item {
-                Column(
-                    modifier = modifier
+    val lazyListState = rememberLazyListState()
+
+    val modifier = Modifier.padding(
+        start = 30.dp,
+        end = 30.dp,
+        bottom = 8.dp,
+        top = 16.dp
+    )
+
+    
+    LazyColumn(
+        state = lazyListState
+    ) {
+        item {
+            Column(
+                modifier = modifier
+            ) {
+                ScreenInfo()
+                Spacer(modifier = Modifier.padding(16.dp))
+                Search(
+                    query = query.value,
+                    onQueryChanged = {
+                        viewModel.onQueryChanged(it)
+                    },
+                    onExecuteSearch = {}
+                )
+                Spacer(modifier = Modifier.padding(16.dp))
+                GroupsSpinner(
+                    groups = listOf(
+                        "Wszystkie grupy",
+                        "Java",
+                        "QA",
+                        "Android",
+                        "JavaScript",
+                    )
                 ) {
-                    ScreenInfo()
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Search(
-                        query = query.value,
-                        onQueryChanged = {
-                            viewModel.onQueryChanged(it)
-                        },
-                        onExecuteSearch = {}
-                    )
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    GroupsSpinner(
-                        groups = listOf(
-                            "Wszystkie grupy",
-                            "Java",
-                            "QA",
-                            "Android",
-                            "JavaScript",
-                        )) {
-
-                    }
-                }
-            }
-
-
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp
-                        )
-                ) {
-                    Header(
-                        text = stringResource(id = R.string.leaders),
-                        count = users.size,
-                        showCount = true,
-                    )
-                }
-            }
-
-            itemsIndexed(users) { index, user ->
-                PersonListItem(user = user, onItemClick = {
-                    navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                })
-                if(index != users.size - 1) {
-                    Divider(
-                        color = Color(0xFFF1F1F1),
-                        thickness = 2.dp,
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 16.dp
-                        )
-                    )
-                }
-            }
-
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp
-                        )
-                ) {
-                    Header(
-                        text = stringResource(id = R.string.participants),
-                        count = users.size,
-                        showCount = true,
-                    )
-                }
-
-            }
-
-            itemsIndexed(users) { index, user ->
-                PersonListItem(user = user, onItemClick = {
-                    navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                })
-                if(index != users.size - 1) {
-                    Divider(
-                        color = Color(0xFFF1F1F1),
-                        thickness = 2.dp,
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 16.dp
-                        )
-                    )
                 }
             }
         }
+
+
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+            ) {
+                Header(
+                    text = stringResource(id = R.string.leaders),
+                    count = users.size,
+                    showCount = true,
+                )
+            }
+        }
+
+        itemsIndexed(users) { index, user ->
+            PersonListItem(user = user, onItemClick = {
+                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+            })
+            if (index != users.size - 1) {
+                Divider(
+                    color = Color(0xFFF1F1F1),
+                    thickness = 2.dp,
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+                )
+            }
+        }
+
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+            ) {
+                Header(
+                    text = stringResource(id = R.string.participants),
+                    count = users.size,
+                    showCount = true,
+                )
+            }
+
+        }
+
+        itemsIndexed(users) { index, user ->
+            PersonListItem(user = user, onItemClick = {
+                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+            })
+            if (index != users.size - 1) {
+                Divider(
+                    color = Color(0xFFF1F1F1),
+                    thickness = 2.dp,
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+                )
+            }
+        }
     }
+
 }
