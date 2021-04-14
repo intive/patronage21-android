@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gradebook_nav_graph"
+    app:startDestination="@id/gradebookFragment">
+
+    <fragment
+        android:id="@+id/gradebookFragment"
+        android:name="com.intive.gradebook.GradebookFragment"
+        android:label="GradebookFragment" >
+        <deepLink app:uri="intive://gradebookFragment" />
+        <action
+            android:id="@+id/action_gradebookFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_gradebookFragment_to_addColumnFragment"
+            app:destination="@id/addColumnFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.intive.gradebook.DetailsFragment"
+        android:label="DetailsFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/addColumnFragment"
+        android:name="com.intive.gradebook.AddColumnFragment"
+        android:label="addColumnFragment" />
+</navigation>

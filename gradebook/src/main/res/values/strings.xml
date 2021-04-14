@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Patron-a-tive</string>
+    <string name="page_name">Dzienniczek</string>
+    <string name="participants">Uczestnicy</string>
+    <string name="average_grade">Średnia</string>
+    <string name="description">Poniżej przedstawione są oceny uczestników programu Patron-a-tive. Kliknij na użytkownika aby przejść do szczegółów jego ocen.</string>
+    <string name="user_you">Ty</string>
+    <string name="grades">Oceny</string>
+    <string name="ground">Uzasadnienie</string>
+    <string name="max_grade">/5</string>
+    <string name="addcolumn_name">Dodaj kolumnę</string>
+    <string name="select_data">Wybierz dane do nowej kolumny.</string>
+    <string name="save_data">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+</resources>
