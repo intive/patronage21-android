@@ -150,7 +150,7 @@ fun EditUserScreen(
             onClick = {
                 //TODO: save changes here
             },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +167,7 @@ fun EditUserScreen(
             onClick = {
                 //TODO: cancel changes here
             },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
