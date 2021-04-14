@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeScreenFragment">
+
+    <include app:graph="@navigation/audit_nav_graph"/>
+
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.intive.patronative.home_screen.HomeScreenFragment"
+        android:label="HomeScreenFragment" >
+    </fragment>
+</navigation>
