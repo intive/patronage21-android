@@ -120,6 +120,7 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
                 ) {
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
+                        maxLines = 1,
                         value = text,
                         onValueChange = {
                             text = it
