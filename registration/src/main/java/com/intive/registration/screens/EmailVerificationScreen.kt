@@ -16,9 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
-import com.intive.registration.components.CustomSpacer
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
@@ -50,11 +50,11 @@ fun EmailVerificationScreen(
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.email_verification_title), modifier = Modifier)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         Text(text = stringResource(R.string.email_verification_subtitle, viewmodel.email))
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(code, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.confirm_code_button),
             onClick = {
@@ -69,7 +69,7 @@ fun EmailVerificationScreen(
             },
             enabled = formValid.value
         )
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.no_code_button),
             onClick = {

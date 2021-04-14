@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import com.intive.registration.R
+import com.intive.registration.components.InputTextState.*
 
 @Composable
 fun InputText(
@@ -27,8 +28,9 @@ fun InputText(
     visualTransformation: VisualTransformation = VisualTransformation.None
 
 ) {
-    val inputState = remember { mutableStateOf(0) } //-1:invalid, 0:notTouched, 1:valid
-    val inputStateChanged: (Int) -> Unit = {
+
+    val inputState = remember { mutableStateOf(NOT_TOUCHED) }
+    val inputStateChanged: (InputTextState) -> Unit = {
         inputState.value = it
     }
     val hasFirstFocus = remember { mutableStateOf(false) }
@@ -41,7 +43,7 @@ fun InputText(
         label = {
             Text(
                 when (inputState.value) {
-                    -1 -> stringResource(R.string.field_required)
+                    INVALID -> stringResource(R.string.field_required)
                     else -> label
                 }
             )
@@ -53,13 +55,16 @@ fun InputText(
                     hasFirstFocusChanged(true)
                 }
                 formChecker()
-                inputStateChanged(if (!hasFirstFocus.value) 0 else if (isValid()) 1 else -1)
+                inputStateChanged(
+                    if (!hasFirstFocus.value) NOT_TOUCHED
+                    else if (isValid()) VALID else INVALID
+                )
             }
             .fillMaxWidth(),
         colors = TextFieldDefaults.textFieldColors(
             unfocusedIndicatorColor = when (inputState.value) {
-                -1 -> Color.Red
-                1 -> Color.Green
+                INVALID -> Color.Red
+                VALID -> Color.Green
                 else -> Color.Gray
             }
         ),
@@ -69,4 +74,11 @@ fun InputText(
             keyboardType = keyboardType
         )
     )
+}
+
+
+enum class InputTextState {
+    INVALID,
+    NOT_TOUCHED,
+    VALID
 }
