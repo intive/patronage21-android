@@ -30,21 +30,18 @@ fun UsersScreen(
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
-
-    val modifier = Modifier.padding(
-        start = 30.dp,
-        end = 30.dp,
-        bottom = 8.dp,
-        top = 16.dp
-    )
-
     
     LazyColumn(
         state = lazyListState
     ) {
         item {
             Column(
-                modifier = modifier
+                modifier = Modifier.padding(
+                    start = 30.dp,
+                    end = 30.dp,
+                    bottom = 8.dp,
+                    top = 16.dp
+                )
             ) {
                 ScreenInfo()
                 Spacer(modifier = Modifier.padding(16.dp))
