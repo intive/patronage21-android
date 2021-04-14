@@ -17,12 +17,15 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +38,6 @@ import com.intive.calendar.R
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
-
 import com.intive.calendar.utils.week_days
 import java.util.*
 
@@ -47,19 +49,20 @@ fun CalendarHomeLayout(
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
 
-    val currentWeek: Array<Calendar>? by calendarViewModel.currentWeek.observeAsState()
+    val currentWeek: Array<CalendarHomeViewModel.DayWeek>? by calendarViewModel.currentWeek.observeAsState()
     val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
 
     val calendarViewStr: String =
         if (showWeekView == true) stringResource(R.string.week) else stringResource(R.string.month)
 
+
     val period =
-        "${currentWeek?.get(0)?.get(Calendar.DAY_OF_MONTH)}.${
-            currentWeek?.get(0)?.get(Calendar.MONTH)?.plus(1)
-        }.${currentWeek?.get(0)?.get(Calendar.YEAR)}" +
-                "-${currentWeek?.get(6)?.get(Calendar.DAY_OF_MONTH)}.${
-                    currentWeek?.get(6)?.get(Calendar.MONTH)?.plus(1)
-                }.${currentWeek?.get(6)?.get(Calendar.YEAR)}"
+        "${currentWeek?.get(0)?.date?.get(Calendar.DAY_OF_MONTH)}.${
+            currentWeek?.get(0)?.date?.get(Calendar.MONTH)?.plus(1)
+        }.${currentWeek?.get(0)?.date?.get(Calendar.YEAR)}" +
+                "-${currentWeek?.get(6)?.date?.get(Calendar.DAY_OF_MONTH)}.${
+                    currentWeek?.get(6)?.date?.get(Calendar.MONTH)?.plus(1)
+                }.${currentWeek?.get(6)?.date?.get(Calendar.YEAR)}"
 
     Scaffold(
         backgroundColor = Color.White,
@@ -98,13 +101,12 @@ fun CalendarHomeLayout(
 @Composable
 fun WeekView(
     period: String,
-    currentWeek: Array<Calendar>?,
+    currentWeek: Array<CalendarHomeViewModel.DayWeek>?,
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
     val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
     if (showWeekView == true) {
-
         CalendarHeader(
             period,
             { calendarViewModel.goToPreviousWeek() },
@@ -115,35 +117,36 @@ fun WeekView(
 
 @Composable
 fun DaysList(
-    currentWeek: Array<Calendar>?,
+    currentWeek: Array<CalendarHomeViewModel.DayWeek>?,
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
     val scrollState = rememberLazyListState()
-    val days = calendarViewModel.days
+    //val days = calendarViewModel.days
     LazyColumn(state = scrollState) {
         items(7) {
-            currentWeek?.get(it)?.let { it1 -> DaysListItem(it1, it, navController, days[it]) }
+            //currentWeek?.get(it)?.let { it1 -> DaysListItem(it, navController, days[it]) }
+            currentWeek?.get(it)?.let { it1 -> DaysListItem(index = it, navController = navController, day = it1) }
         }
     }
 }
 
+
 @Composable
 fun DaysListItem(
-    date: Calendar,
     index: Int,
     navController: NavController,
-    day: CalendarHomeViewModel.Day
+    day: CalendarHomeViewModel.DayWeek
 ) {
 
     var bkgColor: Color = Color.White
     var txtColor: Color = Color.Black
 
 
-    if (isDateSame(date, Calendar.getInstance())) {
+    if (isDateSame(day.date, Calendar.getInstance())) {
         bkgColor = colors.secondary
         txtColor = Color.White
-    } else if (date.before(Calendar.getInstance())) {
+    } else if (day.date.before(Calendar.getInstance())) {
         txtColor = Color.Gray
     }
 
@@ -151,7 +154,7 @@ fun DaysListItem(
 
     when {
         day.events.isEmpty() -> {
-            if (!isDateSame(date, Calendar.getInstance())) {
+            if (!isDateSame(day.date, Calendar.getInstance())) {
                 txtColor = Color.Gray
             }
             DayEvents(
@@ -161,13 +164,13 @@ fun DaysListItem(
                 stringResource(R.string.no_events),
                 {},
                 index,
-                date
+                day.date
             )
         }
         day.events.size == 1 -> {
 
             val header =
-                "${week_days[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
+                "${week_days[day.date[Calendar.DAY_OF_WEEK]]}, ${day.date[Calendar.DAY_OF_MONTH]}.${day.date[Calendar.MONTH] + 1}.${day.date[Calendar.YEAR]}"
             val bundle = bundleOf(
                 "date" to header,
                 "time" to day.events[0].time,
@@ -185,24 +188,103 @@ fun DaysListItem(
                     )
                 },
                 index,
-                date
+                day.date
             )
         }
         else -> {
-            val header =
-                "${week_days[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
 
-            val bundle = bundleOf("header" to header, "events" to Gson().toJson(day.events))
+            val eventsShow = remember { mutableStateOf(false) }
+
             DayEvents(
                 bkgColor,
                 headerColor,
                 txtColor,
                 "Liczba wydarzeń: ${day.events.size}",
-                { navController.navigate(R.id.action_calendarFragment_to_dayFragment, bundle) },
+                {
+                    eventsShow.value = eventsShow.value != true
+                },
                 index,
-                date
+                day.date,
+            )
+
+            if (eventsShow.value) {
+                EventsList(
+                    bkgColor,
+                    headerColor,
+                    day.events, day.date, navController
+                )
+            }
+        }
+    }
+    Divider(color = Color.LightGray)
+}
+
+
+@Composable
+fun EventsList(
+    bkgColor: Color,
+    headerColor: Color,
+    events: List<CalendarHomeViewModel.Event>,
+    date: Calendar,
+    navController: NavController
+) {
+    Column {
+        for (event in events) {
+            EventsItem(
+                bkgColor,
+                headerColor,
+                event, date, navController
             )
         }
+    }
+}
+
+@Composable
+fun EventsItem(
+    bkgColor: Color,
+    headerColor: Color,
+    event: CalendarHomeViewModel.Event,
+    date: Calendar,
+    navController: NavController
+) {
+
+    val header =
+        "${week_days[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
+    val bundle = bundleOf(
+        "date" to header,
+        "time" to event.time,
+        "name" to event.name
+    )
+
+    Row(
+        modifier = Modifier
+            .background(bkgColor)
+            .fillMaxWidth()
+            .clickable(onClick = {
+                navController.navigate(
+                    R.id.action_calendarFragment_to_eventFragment,
+                    bundle
+                )
+            })
+            .padding(start = 10.dp, top = 12.dp, bottom = 12.dp)
+    ) {
+
+        Text(
+            "${event.name}, ",
+            style = TextStyle(
+                color = headerColor,
+                fontStyle = FontStyle.Italic,
+                fontSize = 18.sp
+            )
+        )
+        Text(
+            "${event.time}",
+            style = TextStyle(
+                color = headerColor,
+                fontStyle = FontStyle.Italic,
+                fontSize = 18.sp
+            )
+        )
     }
 }
 
@@ -217,6 +299,7 @@ fun DayEvents(
     index: Int,
     date: Calendar
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -245,9 +328,6 @@ fun DayEvents(
                     fontSize = 18.sp
                 )
             }
-
-
-            Divider(color = Color.LightGray)
         }
     }
 }
@@ -260,12 +340,11 @@ fun MonthView(
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
     val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
-    val month: Int? by calendarViewModel.month.observeAsState()
-    val year: Int? by calendarViewModel.year.observeAsState()
+    val header: String? by calendarViewModel.monthHeader.observeAsState()
+
     if (showWeekView == false) {
-        val monthStr = "${month?.plus(1)}.${year}"
         CalendarHeader(
-            monthStr,
+            header!!,
             { calendarViewModel.goToPreviousMonth() },
             { calendarViewModel.goToNextMonth() })
         CalendarGrid(navController)
@@ -278,6 +357,7 @@ fun CalendarGrid(
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
+
     val currentMonth: List<Any>? by calendarViewModel.currentMonth.observeAsState()
     val items = currentMonth?.toList()
 
@@ -344,7 +424,6 @@ fun CalendarGrid(
                                     .padding(4.dp)
                             )
                         }
-
                     }
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -382,7 +461,6 @@ fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel = viewModel()) {
 fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
 
     val weekClicked: Boolean? by calendarViewModel.weekClicked.observeAsState()
-
     val bColorWeekBtn: Long? by calendarViewModel.bColorWeekBtn.observeAsState()
     val bColorMonthBtn: Long? by calendarViewModel.bColorMonthBtn.observeAsState()
     val txtColorWeekBtn: Long? by calendarViewModel.txtColorWeekBtn.observeAsState()
@@ -419,8 +497,10 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
             OKButton(stringResource(R.string.accept)) {
                 if (weekClicked == true) {
                     calendarViewModel.showWeekView()
+                    calendarViewModel.setCurrentMonth()
                 } else {
                     calendarViewModel.showMonthView()
+                    calendarViewModel.setCurrentWeek()
                 }
                 calendarViewModel.hideDialog()
             }
