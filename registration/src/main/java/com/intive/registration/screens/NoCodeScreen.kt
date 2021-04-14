@@ -13,9 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
-import com.intive.registration.components.CustomSpacer
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.NoCodeFragmentDirections
 import com.intive.registration.viewmodels.NoCodeViewModel
@@ -41,9 +41,9 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = nul
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.no_code_title), modifier = Modifier)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         EmailInput(email, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.send_code_button),
             onClick = {

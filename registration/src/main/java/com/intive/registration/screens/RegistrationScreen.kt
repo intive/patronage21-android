@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.ui.TitleText
 import com.intive.registration.R
@@ -54,50 +55,50 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             .verticalScroll(scrollState)
     ) {
         Logo()
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TitleText(text = stringResource(R.string.registration_title), modifier = Modifier)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         Text(text = stringResource(R.string.registration_subtitle))
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TitlesSpinner(title, viewmodel::onTitleChange)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         FirstNameInput(firstName, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         LastNameInput(lastName, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         EmailInput(email, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TechnologiesList(
             viewmodel.availableTechnologies,
             viewmodel::updateTechnologies,
             viewmodel::validateTechnologies,
             formChecker
         )
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(login, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PasswordInput(password, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         ConfirmPasswordInput(confirmPassword, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         GithubInput(githubUrl, viewmodel, formChecker)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         AgreeCheckBox(
             rodoAgree,
             viewmodel::onRodoAgreeChange,
             stringResource(R.string.rodo_agree_text),
             formChecker
         )
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         AgreeCheckBox(
             regulationsAgree,
             viewmodel::onRegulationsAgreeChange,
             stringResource(R.string.regulations_agree_text),
             formChecker
         )
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.create_account_button),
             onClick = {

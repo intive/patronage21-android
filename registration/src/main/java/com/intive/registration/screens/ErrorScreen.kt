@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.registration.Constants
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
-import com.intive.registration.components.CustomSpacer
 import com.intive.registration.fragments.ErrorFragmentDirections
 import com.intive.ui.TitleText
 
@@ -24,7 +24,7 @@ fun ErrorScreen(navController: NavController? = null) {
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.error_title), modifier = Modifier)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(Constants.SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.error_home_button),
             onClick = {

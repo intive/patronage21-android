@@ -13,12 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.components.InputText
 import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
-import com.intive.registration.components.CustomSpacer
 import com.intive.registration.fragments.LoginFragmentDirections
 
 
@@ -36,18 +36,18 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null)
             .verticalScroll(scrollState)
     ) {
         TitleText(text = stringResource(R.string.login_title), modifier = Modifier)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         LoginInput(login, viewmodel)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PasswordInput(password, viewmodel)
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.login_button),
             {
                 //check login & password if correct navigate to HomeScreen
             }
         )
-        CustomSpacer()
+        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.registration_button),
             onClick = {
