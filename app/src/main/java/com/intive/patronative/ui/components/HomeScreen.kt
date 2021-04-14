@@ -1,5 +1,6 @@
 package com.intive.patronative.ui.components
 
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.patronative.R
+import com.intive.patronative.home_screen.HomeScreenFragment
 import com.intive.ui.PatronageTypography
 
 @Composable
@@ -137,7 +139,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.logs_module),
-                    onClick = { /*TODO: Place logs module navDestination here*/ }
+                    onClick = { navController?.navigate(Uri.parse("intive://auditFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.MenuBook,

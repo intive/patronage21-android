@@ -18,6 +18,7 @@ fun PatronativeTheme(
     val pink300 = colorResource(R.color.pink300)
     val pink700 = colorResource(R.color.pink700)
 
+    val lightBlue0 = colorResource(R.color.light_blue0)
     val lightBlue400 = colorResource(R.color.light_blue400)
     val lightBlue700 = colorResource(R.color.light_blue700)
 
@@ -46,7 +47,9 @@ fun PatronativeTheme(
         secondary = lightBlue400,
         secondaryVariant = lightBlue700,
         onSecondary = Color.Black,
+        surface = lightBlue0,
         onSurface = Color.Black,
+        background = Color.White,
         onBackground = Color.Black,
         error = red800,
         onError = Color.Black
