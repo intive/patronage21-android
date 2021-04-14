@@ -3,34 +3,34 @@ package com.intive.registration.viewmodels
 import android.util.Patterns
 import androidx.lifecycle.*
 
-class RegistrationViewModel() : ViewModel() {
+class RegistrationViewModel : ViewModel() {
 
     val availableTechnologies = listOf("Java", "JavaScript", "QA", "Mobile (Android)")
 
-    private val _title = MutableLiveData<String>("Pan")
+    private val _title = MutableLiveData("Pan")
     val title: LiveData<String> = _title
-    private val _firstName = MutableLiveData<String>("")
+    private val _firstName = MutableLiveData("")
     val firstName: LiveData<String> = _firstName
-    private val _lastName = MutableLiveData<String>("")
+    private val _lastName = MutableLiveData("")
     val lastName: LiveData<String> = _lastName
-    private val _email = MutableLiveData<String>("")
+    private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
-    private val _phoneNumber = MutableLiveData<String>("")
+    private val _phoneNumber = MutableLiveData("")
     val phoneNumber:LiveData<String> = _phoneNumber
-    private val _login = MutableLiveData<String>("")
+    private val _login = MutableLiveData("")
     val login: LiveData<String> = _login
-    private val _password = MutableLiveData<String>("")
+    private val _password = MutableLiveData("")
     val password: LiveData<String> = _password
-    private val _confirmPassword = MutableLiveData<String>("")
+    private val _confirmPassword = MutableLiveData("")
     val confirmPassword: LiveData<String> = _confirmPassword
-    private val _githubUrl = MutableLiveData<String>("")
+    private val _githubUrl = MutableLiveData("")
     val githubUrl: LiveData<String> = _githubUrl
     private val _technologies = MutableLiveData<List<String>>(emptyList())
-    val technologies: LiveData<List<String>> = _technologies
-    val _technologiesList = mutableListOf<String>()
-    private val _rodoAgree = MutableLiveData<Boolean>(false)
+    private val technologies: LiveData<List<String>> = _technologies
+    private val _technologiesList = mutableListOf<String>()
+    private val _rodoAgree = MutableLiveData(false)
     val rodoAgree: LiveData<Boolean> = _rodoAgree
-    private val _regulationsAgree = MutableLiveData<Boolean>(false)
+    private val _regulationsAgree = MutableLiveData(false)
     val regulationsAgree: LiveData<Boolean> = _regulationsAgree
 
     fun onTitleChange(newValue: String) {
@@ -60,9 +60,6 @@ class RegistrationViewModel() : ViewModel() {
     fun onGithubUrlChange(newValue: String) {
         _githubUrl.value = newValue
     }
-    fun onTechnologiesChange(newValue: List<String>) {
-        _technologies.value = newValue
-    }
     fun onRodoAgreeChange(newValue: Boolean) {
         _rodoAgree.value = newValue
     }
@@ -83,7 +80,7 @@ class RegistrationViewModel() : ViewModel() {
     fun validateGithubUrl(): Boolean =
         githubUrl.value.isNullOrEmpty() || githubUrl.value!!.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[-a-zA-Z0-9]{1,39}"))
 
-    fun isLoginAvailable(): Boolean {
+    private fun isLoginAvailable(): Boolean {
         return true
     }
 

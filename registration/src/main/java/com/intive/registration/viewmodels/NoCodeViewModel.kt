@@ -3,11 +3,11 @@ package com.intive.registration.viewmodels
 import android.util.Patterns
 import androidx.lifecycle.*
 
-class NoCodeViewModel() : ViewModel() {
+class NoCodeViewModel : ViewModel() {
 
     lateinit var firstEmail: String //email entered in first screen
 
-    private val _email = MutableLiveData<String>("")
+    private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
 
      fun onEmailChange(newValue: String) {

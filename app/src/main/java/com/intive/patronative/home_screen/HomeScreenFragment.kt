@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.intive.patronative.R
 import com.intive.registration.screens.SuccessScreen
+import com.intive.registration.viewmodels.RegistrationSuccessDialog
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
@@ -43,9 +44,9 @@ class HomeScreenFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     HomeScreen(navController = findNavController())
-                    if(sharedViewModel.test=="sukces") {
+                    if(sharedViewModel.successDialog==RegistrationSuccessDialog.SHOW_DIALOG) {
                         SuccessScreen()
-                        sharedViewModel.test=""
+                        sharedViewModel.successDialog=RegistrationSuccessDialog.HIDE_DIALOG
                     }
                 }
             }

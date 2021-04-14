@@ -2,11 +2,11 @@ package com.intive.registration.viewmodels
 
 import androidx.lifecycle.*
 
-class LoginViewModel() : ViewModel() {
+class LoginViewModel : ViewModel() {
 
-    private val _login = MutableLiveData<String>("")
+    private val _login = MutableLiveData("")
     val login: LiveData<String> = _login
-    private val _password = MutableLiveData<String>("")
+    private val _password = MutableLiveData("")
     val password: LiveData<String> = _password
 
     fun onLoginChange(newValue: String) {

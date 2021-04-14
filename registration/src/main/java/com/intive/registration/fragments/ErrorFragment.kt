@@ -19,7 +19,7 @@ class ErrorFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PatronativeTheme() {
+                PatronativeTheme {
                     ErrorScreen(findNavController())
                 }
             }

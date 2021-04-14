@@ -5,7 +5,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 
 @Composable
@@ -29,16 +31,16 @@ fun AlertDialogSample() {
                     openDialog.value = false
                 },
                 title = {
-                    Text("Twoja rejestracja przebiegła pomyślnie!")
+                    Text(stringResource(R.string.registration_succes_title))
                 },
                 text = {
-                    Text("Konto zostało utworzone, możesz korzystać z aplikacji")
+                    Text(stringResource(R.string.registration_success_subtitle))
                 },
                 confirmButton = {
                     CustomButton(
                         onClick = {
                             openDialog.value = false
-                        }, text = "Zamknij", enabled = true
+                        }, text = stringResource(R.string.close_dialog), enabled = true
                     )
                 },
             )

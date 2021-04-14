@@ -2,9 +2,9 @@ package com.intive.registration.viewmodels
 
 import androidx.lifecycle.*
 
-class EmailVerificationViewModel() : ViewModel() {
+class EmailVerificationViewModel : ViewModel() {
 
-    private val _code = MutableLiveData<String>("")
+    private val _code = MutableLiveData("")
     val code: LiveData<String> = _code
     lateinit var email: String
 

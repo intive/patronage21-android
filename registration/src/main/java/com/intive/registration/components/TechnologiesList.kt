@@ -30,7 +30,7 @@ fun TechnologiesList(
     }
     Spacer(modifier = Modifier.height(4.dp))
     for(item in avalaibleTechnologies) {
-        Column() {
+        Column {
             Row {
                 val checkedState = remember { mutableStateOf(false) }
                 Checkbox(

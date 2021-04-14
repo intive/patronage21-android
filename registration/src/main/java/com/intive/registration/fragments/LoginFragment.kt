@@ -22,7 +22,7 @@ class LoginFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PatronativeTheme() {
+                PatronativeTheme {
                     LoginScreen(viewModel, findNavController())
                 }
             }

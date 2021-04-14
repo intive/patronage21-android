@@ -28,7 +28,7 @@ fun AgreeCheckBox(
                 formChecker()
             }
         )
-        Column() {
+        Column {
             if (!checkedState.value) {
                 Text(
                     text = stringResource(R.string.agree_required),

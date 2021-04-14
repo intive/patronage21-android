@@ -17,7 +17,7 @@ import com.intive.ui.PatronativeTheme
 class NoCodeFragment : Fragment() {
 
     private val viewmodel: NoCodeViewModel by viewModels()
-    val args: NoCodeFragmentArgs by navArgs()
+    private val args: NoCodeFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -27,7 +27,7 @@ class NoCodeFragment : Fragment() {
         viewmodel.firstEmail = args.email
         return ComposeView(requireContext()).apply {
             setContent {
-                PatronativeTheme() {
+                PatronativeTheme {
                     NoCodeScreen(viewmodel, findNavController())
                 }
             }

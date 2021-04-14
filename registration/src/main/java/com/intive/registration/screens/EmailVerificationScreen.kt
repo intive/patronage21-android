@@ -22,6 +22,7 @@ import com.intive.registration.components.CustomSpacer
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
+import com.intive.registration.viewmodels.RegistrationSuccessDialog
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.TitleText
 
@@ -59,7 +60,7 @@ fun EmailVerificationScreen(
             onClick = {
                 val action =
                     if (viewmodel.isCodeCorrect()) {
-                        sharedViewModel.test = "sukces"
+                        sharedViewModel.successDialog = RegistrationSuccessDialog.SHOW_DIALOG
                         EmailVerificationFragmentDirections.actionSuccess()
                     } else {
                         EmailVerificationFragmentDirections.actionError()
@@ -91,6 +92,7 @@ private fun CodeVerificationInput(
     InputText(
         code,
         {
+            //enable button when user enter eighth digit
             viewmodel.onCodeChange(it)
             formChecker()
         },

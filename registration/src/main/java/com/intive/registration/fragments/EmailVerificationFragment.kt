@@ -20,7 +20,7 @@ class EmailVerificationFragment : Fragment() {
 
     private val viewmodel: EmailVerificationViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    val args: EmailVerificationFragmentArgs by navArgs()
+    private val args: EmailVerificationFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class EmailVerificationFragment : Fragment() {
         viewmodel.email = email
         return ComposeView(requireContext()).apply {
             setContent {
-                PatronativeTheme() {
+                PatronativeTheme {
                     EmailVerificationScreen(viewmodel, findNavController(), sharedViewModel)
                 }
             }

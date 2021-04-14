@@ -8,9 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.intive.registration.screens.LoginScreen
 import com.intive.registration.screens.RegistrationScreen
-import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.ui.PatronativeTheme
 
@@ -24,7 +22,7 @@ class RegistrationFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PatronativeTheme() {
+                PatronativeTheme {
                     RegistrationScreen(viewModel, findNavController())
                 }
             }

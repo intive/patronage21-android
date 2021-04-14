@@ -31,6 +31,9 @@
     <string name="send_code_button">Wyślij kod</string>
     <string name="error_title">Wystąpił błąd</string>
     <string name="error_home_button">Strona główna</string>
+    <string name="registration_succes_title">Twoja rejestracja przebiegła pomyślnie!</string>
+    <string name="registration_success_subtitle">Konto zostało utworzone, możesz korzystać z aplikacji</string>
+    <string name="close_dialog">Zamknij</string>
 
 
     <string-array name="titles_array">

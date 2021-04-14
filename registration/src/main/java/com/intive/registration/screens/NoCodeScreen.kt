@@ -63,7 +63,11 @@ private fun EmailInput(
 ) {
     InputText(
         email,
-        viewmodel::onEmailChange,
+        {
+            //enable butten when user enter correct email
+            viewmodel.onEmailChange(it)
+            formChecker()
+        },
         stringResource(R.string.email_hint),
         viewmodel::validateEmail,
         formChecker,
