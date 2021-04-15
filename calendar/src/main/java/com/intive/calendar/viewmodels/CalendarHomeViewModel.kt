@@ -22,9 +22,9 @@ class CalendarHomeViewModel : ViewModel() {
         Day(0, emptyList()),
         Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
         Day(2, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
-        Day(4, emptyList()),
-        Day(3, listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))),
+        Day(3, listOf(Event(1, "12:00-13:00", "Daily"))),
+        Day(4, listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))),
+        Day(3, emptyList()),
         Day(6, emptyList())
     )
 
@@ -69,6 +69,9 @@ class CalendarHomeViewModel : ViewModel() {
 
     private val _monthHeader = MutableLiveData("")
     val monthHeader: LiveData<String> = _monthHeader
+
+    private val _weekHeader = MutableLiveData(setWeekHeader())
+    val weekHeader: LiveData<String> = _weekHeader
 
     private var currentDate: Calendar = Calendar.getInstance()
 
@@ -132,12 +135,14 @@ class CalendarHomeViewModel : ViewModel() {
         val weekPrev = currentWeek.value?.get(0)
         weekPrev?.date?.add(Calendar.DAY_OF_MONTH, -7)
         _currentWeek.value = weekPrev?.let { getCurrentWeek(it.date) }
+        _weekHeader.value = setWeekHeader()
     }
 
     fun goToNextWeek() {
         val weekNext = currentWeek.value?.get(6)
         weekNext?.date?.add(Calendar.DAY_OF_MONTH, 1)
         _currentWeek.value = weekNext?.let { getCurrentWeek(it.date) }
+        _weekHeader.value = setWeekHeader()
     }
 
     fun showDialog() {
@@ -155,7 +160,6 @@ class CalendarHomeViewModel : ViewModel() {
     fun showMonthView() {
         _showWeekView.value = false
     }
-
 
     private fun getCurrentMonth(): List<Any> {
         currentDate.set(Calendar.DATE, 1)
@@ -216,5 +220,14 @@ class CalendarHomeViewModel : ViewModel() {
         _txtColorMonthBtn.value = 0xffffffff
         _txtColorWeekBtn.value = 0xff000000
         _weekClicked.value = false
+    }
+
+    private fun setWeekHeader(): String{
+        return "${_currentWeek.value!![0].date[Calendar.DAY_OF_MONTH]}.${
+                _currentWeek.value!![0].date[Calendar.MONTH].plus(1)
+            }.${_currentWeek.value!![0].date[Calendar.YEAR]}" +
+                    "-${_currentWeek.value!![6].date[Calendar.DAY_OF_MONTH]}.${
+                        _currentWeek.value!![6].date[Calendar.MONTH].plus(1)
+                    }.${_currentWeek.value!![6].date[Calendar.YEAR]}"
     }
 }
