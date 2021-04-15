@@ -25,7 +25,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.intive.patronative.R
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
-import com.intive.ui.TitleText
+import com.intive.ui.components.*
 
 
 class HomeScreenFragment : Fragment() {
