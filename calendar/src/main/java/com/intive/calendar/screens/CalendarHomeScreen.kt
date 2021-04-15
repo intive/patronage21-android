@@ -18,20 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
-import com.intive.calendar.utils.weekDays
-import com.intive.calendar.utils.weekDaysCalendarClass
-import java.util.*
 
 
 @ExperimentalFoundationApi
@@ -54,7 +49,10 @@ fun CalendarHomeLayout(
                 onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
                 backgroundColor = colors.primary
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "Add new event button")
+                Icon(
+                    Icons.Filled.Add,
+                    contentDescription = stringResource(R.string.add_event_btn_desc)
+                )
             }
         }
     ) {
@@ -75,118 +73,6 @@ fun CalendarHomeLayout(
 
                 WeekView(currentWeek, navController)
                 MonthView(navController)
-            }
-        }
-    }
-}
-
-@Composable
-fun EventsList(
-    bkgColor: Color,
-    headerColor: Color,
-    events: List<CalendarHomeViewModel.Event>,
-    date: Calendar,
-    navController: NavController
-) {
-    Column {
-        for (event in events) {
-            EventsItem(
-                bkgColor,
-                headerColor,
-                event, date, navController
-            )
-        }
-    }
-}
-
-@Composable
-fun EventsItem(
-    bkgColor: Color,
-    headerColor: Color,
-    event: CalendarHomeViewModel.Event,
-    date: Calendar,
-    navController: NavController
-) {
-
-    val header =
-        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
-    val bundle = bundleOf(
-        "date" to header,
-        "time" to event.time,
-        "name" to event.name
-    )
-
-    Row(
-        modifier = Modifier
-            .background(bkgColor)
-            .fillMaxWidth()
-            .clickable(onClick = {
-                navController.navigate(
-                    R.id.action_calendarFragment_to_eventFragment,
-                    bundle
-                )
-            })
-            .padding(start = 10.dp, top = 12.dp, bottom = 12.dp)
-    ) {
-
-        Text(
-            "${event.name}, ",
-            style = TextStyle(
-                color = headerColor,
-                fontStyle = FontStyle.Italic,
-                fontSize = 18.sp
-            )
-        )
-        Text(
-            event.time,
-            style = TextStyle(
-                color = headerColor,
-                fontStyle = FontStyle.Italic,
-                fontSize = 18.sp
-            )
-        )
-    }
-}
-
-
-@Composable
-fun DayEvents(
-    bkgColor: Color,
-    headerColor: Color,
-    txtColor: Color,
-    text: String,
-    onClickDayItem: () -> Unit,
-    index: Int,
-    date: Calendar
-) {
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bkgColor)
-            .clickable(onClick = onClickDayItem)
-    ) {
-        Spacer(Modifier.width(10.dp))
-        Column {
-
-            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                Text(
-                    "${weekDays[index]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}",
-                    style = TextStyle(
-                        color = headerColor,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-                )
-            }
-
-            Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-                Text(
-                    text,
-                    style = TextStyle(color = txtColor),
-                    fontSize = 18.sp
-                )
             }
         }
     }
@@ -298,13 +184,12 @@ fun SpinnerComponent(calendarViewModel: CalendarHomeViewModel, calendarViewStr: 
             calendarViewStr,
             style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.align(Alignment.CenterVertically)
-
         )
 
         IconButton(onClick = { calendarViewModel.showDialog() }) {
             Icon(
                 Icons.Default.KeyboardArrowRight,
-                contentDescription = "Right button",
+                contentDescription = stringResource(R.string.spinner_component_btn_desc),
                 tint = Color.Black
             )
         }
@@ -323,7 +208,7 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
         IconButton(onClick = onClickPrev) {
             Icon(
                 Icons.Default.KeyboardArrowLeft,
-                contentDescription = "Left button",
+                contentDescription = stringResource(R.string.calendar_header_left_btn_desc),
                 tint = Color.White
             )
         }
@@ -341,7 +226,7 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
         IconButton(onClick = onClickNext) {
             Icon(
                 Icons.Default.KeyboardArrowRight,
-                contentDescription = "Right button",
+                contentDescription = stringResource(R.string.calendar_header_right_btn_desc),
                 tint = Color.White
             )
         }

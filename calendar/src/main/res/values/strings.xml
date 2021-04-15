@@ -33,10 +33,14 @@
 
     <string name="events_number">Liczba wydarzeń</string>
     <string name="hour">Godzina</string>
-    <string name="event_user">\"Uczestnik \"</string>
+    <string name="event_user">Uczestnik"</string>
     <string name="user_image_desc">User\'s profile pic</string>
     <string name="exit_dialog_btn_desc">Exit dialog button</string>
     <string name="edit_btn_desc">Edit button</string>
+    <string name="add_event_btn_desc">New event button</string>
+    <string name="calendar_header_right_btn_desc">Right button</string>
+    <string name="calendar_header_left_btn_desc">Left button</string>
+    <string name="spinner_component_btn_desc">Right button</string>
 
 
 </resources>

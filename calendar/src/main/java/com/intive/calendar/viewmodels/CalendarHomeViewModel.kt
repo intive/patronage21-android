@@ -9,7 +9,6 @@ import java.util.*
 class CalendarHomeViewModel : ViewModel() {
 
     data class Event(
-        //val date: Calendar,
         val id: Int,
         val time: String,
         val name: String
@@ -20,10 +19,16 @@ class CalendarHomeViewModel : ViewModel() {
 
     private val days: List<Day> = listOf(
         Day(0, emptyList()),
-        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
+        Day(
+            3,
+            listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))
+        ),
         Day(2, listOf(Event(1, "12:00-13:00", "Daily"))),
         Day(3, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(4, listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))),
+        Day(
+            4,
+            listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))
+        ),
         Day(3, emptyList()),
         Day(6, emptyList())
     )
@@ -38,7 +43,10 @@ class CalendarHomeViewModel : ViewModel() {
         Day(7, emptyList()),
         Day(8, emptyList()),
         Day(9, emptyList()),
-        Day(10, listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))),
+        Day(
+            10,
+            listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))
+        ),
         Day(11, emptyList()),
         Day(12, emptyList()),
         Day(13, emptyList()),
@@ -56,7 +64,10 @@ class CalendarHomeViewModel : ViewModel() {
         Day(25, emptyList()),
         Day(26, emptyList()),
         Day(27, emptyList()),
-        Day(28, listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))),
+        Day(
+            28,
+            listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))
+        ),
         Day(29, emptyList()),
         Day(30, emptyList())
     )
@@ -222,12 +233,12 @@ class CalendarHomeViewModel : ViewModel() {
         _weekClicked.value = false
     }
 
-    private fun setWeekHeader(): String{
+    private fun setWeekHeader(): String {
         return "${_currentWeek.value!![0].date[Calendar.DAY_OF_MONTH]}.${
-                _currentWeek.value!![0].date[Calendar.MONTH].plus(1)
-            }.${_currentWeek.value!![0].date[Calendar.YEAR]}" +
-                    "-${_currentWeek.value!![6].date[Calendar.DAY_OF_MONTH]}.${
-                        _currentWeek.value!![6].date[Calendar.MONTH].plus(1)
-                    }.${_currentWeek.value!![6].date[Calendar.YEAR]}"
+            _currentWeek.value!![0].date[Calendar.MONTH].plus(1)
+        }.${_currentWeek.value!![0].date[Calendar.YEAR]}" +
+                "-${_currentWeek.value!![6].date[Calendar.DAY_OF_MONTH]}.${
+                    _currentWeek.value!![6].date[Calendar.MONTH].plus(1)
+                }.${_currentWeek.value!![6].date[Calendar.YEAR]}"
     }
 }
