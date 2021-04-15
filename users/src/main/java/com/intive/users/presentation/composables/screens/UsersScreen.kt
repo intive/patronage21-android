@@ -4,21 +4,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
+import com.intive.users.presentation.composables.Header
+import com.intive.users.presentation.composables.PersonListItem
+import com.intive.users.presentation.composables.ScreenInfo
+import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
-import com.intive.users.presentation.composables.*
+import com.intive.ui.components.Spinner
 
 @Composable
 fun UsersScreen(
@@ -53,8 +54,8 @@ fun UsersScreen(
                     onExecuteSearch = {}
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
-                GroupsSpinner(
-                    groups = listOf(
+                Spinner(
+                    items = listOf(
                         "Wszystkie grupy",
                         "Java",
                         "QA",

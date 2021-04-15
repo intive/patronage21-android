@@ -1,4 +1,4 @@
-package com.intive.users.presentation.composables
+package com.intive.ui.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -15,12 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun GroupsSpinner(
-    groups: List<String>,
+fun Spinner(
+    items: List<String>,
     label: String? = null,
     onTitleSelected: (String) -> Unit
 ) {
-    val text = remember { mutableStateOf(groups[0]) }
+    val text = remember { mutableStateOf(items[0]) }
     val isOpen = remember { mutableStateOf(false) }
     val openCloseOfDropDownList: (Boolean) -> Unit = {
         isOpen.value = it
@@ -43,7 +43,7 @@ fun GroupsSpinner(
             }
             DropDownList(
                 requestToOpen = isOpen.value,
-                list = groups,
+                list = items,
                 openCloseOfDropDownList,
                 selectedString = {
                     onTitleSelected(it)
@@ -75,15 +75,16 @@ fun DropDownList(
         expanded = requestToOpen,
         onDismissRequest = { request(false) },
     ) {
-        list.forEach {
+        list.forEach { item ->
             DropdownMenuItem(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     request(false)
-                    selectedString(it)
+                    selectedString(item)
                 }
             ) {
-                Text(it,
+                Text(
+                    item,
                     modifier = Modifier.wrapContentWidth()
                 )
             }

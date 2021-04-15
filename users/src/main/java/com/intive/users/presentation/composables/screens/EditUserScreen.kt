@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.users.R
 import com.intive.users.domain.User
-import com.intive.users.presentation.composables.GroupsSpinner
+import com.intive.ui.components.Spinner
 import com.intive.users.presentation.edit_user.EditUserViewModel
 
 @Composable
@@ -49,7 +49,7 @@ fun EditUserScreen(
             .fillMaxWidth()
             .fillMaxHeight()
             .padding(start = 20.dp, end = 20.dp),
-       // verticalArrangement = Arrangement.SpaceEvenly,
+        // verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
@@ -75,12 +75,13 @@ fun EditUserScreen(
         }
         Spacer(modifier = Modifier.size(10.dp))
         Row {
-            GroupsSpinner(
+            Spinner(
                 label = stringResource(R.string.gender),
-                groups = listOf(
+                items = listOf(
                     stringResource(R.string.male),
                     stringResource(R.string.female),
-                    stringResource(R.string.different))
+                    stringResource(R.string.different)
+                )
             ) {
 
             }
