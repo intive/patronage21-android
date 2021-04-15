@@ -3,3 +3,4 @@ rootProject.name = "Patron-a-tive"
 include ':users'
 
 include ':ui'
+include ':audit'

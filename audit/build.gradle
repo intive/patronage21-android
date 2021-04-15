@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs.kotlin'
 }
@@ -9,7 +9,6 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId 'com.intive.patronative'
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -42,11 +41,10 @@ android {
 }
 
 dependencies {
+
     def nav_version = "2.3.4"
 
     implementation project(":ui")
-    implementation project(":audit")
-    implementation project(":users")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -84,12 +82,5 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-rxjava2:1.0.0-beta01"
 
     // UI Tests
-     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
-     
-    def appCenterSdkVersion = '4.1.0'
-    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-   
-
-    
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta01"
 }

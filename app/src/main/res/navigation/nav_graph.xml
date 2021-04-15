@@ -6,8 +6,11 @@
 
     <include app:graph="@navigation/users_nav_graph" />
 
+    <include app:graph="@navigation/audit_nav_graph"/>
+
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.intive.patronative.home_screen.HomeScreenFragment"
-        android:label="HomeScreenFragment" />
+        android:label="HomeScreenFragment" >
+    </fragment>
 </navigation>
