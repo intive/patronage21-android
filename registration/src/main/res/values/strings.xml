@@ -34,6 +34,7 @@
     <string name="registration_succes_title">Twoja rejestracja przebiegła pomyślnie!</string>
     <string name="registration_success_subtitle">Konto zostało utworzone, możesz korzystać z aplikacji</string>
     <string name="close_dialog">Zamknij</string>
+    <string name="no_code_subtitle">Wpisz ponownie swój adres e-mail</string>
 
 
     <string-array name="titles_array">

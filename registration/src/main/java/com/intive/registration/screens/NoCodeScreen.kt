@@ -3,6 +3,7 @@ package com.intive.registration.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -42,6 +43,8 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = nul
     ) {
         TitleText(text = stringResource(R.string.no_code_title), modifier = Modifier)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+        Text(stringResource(R.string.no_code_subtitle))
+        Spacer(modifier = Modifier.height(12.dp))
         EmailInput(email, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
