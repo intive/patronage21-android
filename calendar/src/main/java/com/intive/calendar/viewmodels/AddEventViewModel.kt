@@ -24,17 +24,17 @@ class AddEventViewModel : ViewModel() {
     private val _minutesEnd = MutableLiveData(0)
     var minutesEnd: LiveData<Int> = _minutesEnd
 
-    private val _checkbox1 = MutableLiveData(false)
-    var checkbox1: LiveData<Boolean> = _checkbox1
+    private val _checkboxJS = MutableLiveData(false)
+    var checkboxJS: LiveData<Boolean> = _checkboxJS
 
-    private val _checkbox2 = MutableLiveData(false)
-    var checkbox2: LiveData<Boolean> = _checkbox2
+    private val _checkboxJava = MutableLiveData(false)
+    var checkboxJava: LiveData<Boolean> = _checkboxJava
 
-    private val _checkbox3 = MutableLiveData(false)
-    var checkbox3: LiveData<Boolean> = _checkbox3
+    private val _checkboxQA = MutableLiveData(false)
+    var checkboxQA: LiveData<Boolean> = _checkboxQA
 
-    private val _checkbox4 = MutableLiveData(false)
-    var checkbox4: LiveData<Boolean> = _checkbox4
+    private val _checkboxMobile = MutableLiveData(false)
+    var checkboxMobile: LiveData<Boolean> = _checkboxMobile
 
     private val _inputValue = MutableLiveData("")
     var inputValue: LiveData<String> = _inputValue
@@ -57,20 +57,20 @@ class AddEventViewModel : ViewModel() {
         _minutesEnd.value = minutes
     }
 
-    fun setCheckbox1() {
-        _checkbox1.value = _checkbox1.value != true
+    fun setCheckboxJS() {
+        _checkboxJS.value = _checkboxJS.value != true
     }
 
-    fun setCheckbox2() {
-        _checkbox2.value = _checkbox2.value != true
+    fun setCheckboxJava() {
+        _checkboxJava.value = _checkboxJava.value != true
     }
 
-    fun setCheckbox3() {
-        _checkbox3.value = _checkbox3.value != true
+    fun setCheckboxQA() {
+        _checkboxQA.value = _checkboxQA.value != true
     }
 
-    fun setCheckbox4() {
-        _checkbox4.value = _checkbox4.value != true
+    fun setCheckboxMobile() {
+        _checkboxMobile.value = _checkboxMobile.value != true
     }
 
     fun validateDate(): Boolean {
@@ -88,7 +88,7 @@ class AddEventViewModel : ViewModel() {
     }
 
     fun validateCheckboxes(): Boolean {
-        return _checkbox1.value == true || _checkbox2.value == true || _checkbox3.value == true || _checkbox4.value == true
+        return _checkboxJS.value == true || _checkboxJava.value == true || _checkboxQA.value == true || _checkboxMobile.value == true
     }
 
     fun validateInput(): Boolean {
