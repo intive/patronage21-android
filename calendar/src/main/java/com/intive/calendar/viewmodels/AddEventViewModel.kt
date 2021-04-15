@@ -77,16 +77,13 @@ class AddEventViewModel : ViewModel() {
         val today: Calendar = Calendar.getInstance()
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it) }
         _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it) }
-
         return today.before(_date.value)
-
     }
 
     fun validateTime(): Boolean {
         val endDate = _date.value?.clone() as Calendar
         _hourEnd.value?.let { endDate.set(Calendar.HOUR, it) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it) }
-
         return !endDate.before(_date.value)
     }
 
@@ -97,6 +94,5 @@ class AddEventViewModel : ViewModel() {
     fun validateInput(): Boolean {
         return _inputValue.value != ""
     }
-
 
 }

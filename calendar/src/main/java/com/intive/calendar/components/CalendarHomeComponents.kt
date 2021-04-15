@@ -38,7 +38,7 @@ import com.intive.calendar.R
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
-import com.intive.calendar.utils.week_days
+import com.intive.calendar.utils.weekDaysCalendarClass
 import java.util.*
 
 
@@ -123,7 +123,8 @@ fun DaysList(
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            currentWeek?.get(it)?.let { it1 -> DaysListItem(index = it, navController = navController, day = it1) }
+            currentWeek?.get(it)
+                ?.let { it1 -> DaysListItem(index = it, navController = navController, day = it1) }
         }
     }
 }
@@ -167,7 +168,7 @@ fun DaysListItem(
         day.events.size == 1 -> {
 
             val header =
-                "${week_days[day.date[Calendar.DAY_OF_WEEK]]}, ${day.date[Calendar.DAY_OF_MONTH]}.${day.date[Calendar.MONTH] + 1}.${day.date[Calendar.YEAR]}"
+                "${weekDaysCalendarClass[day.date[Calendar.DAY_OF_WEEK]]}, ${day.date[Calendar.DAY_OF_MONTH]}.${day.date[Calendar.MONTH] + 1}.${day.date[Calendar.YEAR]}"
             val bundle = bundleOf(
                 "date" to header,
                 "time" to day.events[0].time,
@@ -246,7 +247,7 @@ fun EventsItem(
 ) {
 
     val header =
-        "${week_days[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
+        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
     val bundle = bundleOf(
         "date" to header,
         "time" to event.time,
@@ -403,24 +404,13 @@ fun CalendarGrid(
                             .background(bgColor)
                             .clickable(onClick = onClick)
                     ) {
-                        if ((items[it] as CalendarHomeViewModel.Day).index == 12) {
-                            Text(
-                                text = (items[it] as CalendarHomeViewModel.Day).index.toString(),
-                                style = TextStyle(
-                                    fontSize = 19.sp,
-                                    fontWeight = FontWeight.ExtraBold
-                                ),
-                                modifier = Modifier
-                                    .padding(4.dp)
-                            )
-                        } else {
-                            Text(
-                                text = (items[it] as CalendarHomeViewModel.Day).index.toString(),
-                                style = TextStyle(fontSize = 18.sp),
-                                modifier = Modifier
-                                    .padding(4.dp)
-                            )
-                        }
+                        Text(
+                            text = (items[it] as CalendarHomeViewModel.Day).index.toString(),
+                            style = TextStyle(fontSize = 18.sp),
+                            modifier = Modifier
+                                .padding(4.dp)
+                        )
+
                     }
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {

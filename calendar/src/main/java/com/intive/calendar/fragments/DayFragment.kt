@@ -33,8 +33,7 @@ class DayFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     if (date != null) {
-                        DayLayout(findNavController(), date, eventsList
-                        )
+                        DayLayout(findNavController(), date, eventsList)
                     }
                 }
             }
