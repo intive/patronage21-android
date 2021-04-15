@@ -47,7 +47,7 @@ fun PatronativeTheme(
         secondary = lightBlue400,
         secondaryVariant = lightBlue700,
         onSecondary = Color.Black,
-        surface = lightBlue0,
+        surface = Color.White,
         onSurface = Color.Black,
         background = Color.White,
         onBackground = Color.Black,
