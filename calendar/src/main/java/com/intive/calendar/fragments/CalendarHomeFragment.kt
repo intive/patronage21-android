@@ -11,7 +11,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
 import com.intive.calendar.R
-import com.intive.calendar.components.*
+import com.intive.calendar.screens.CalendarHomeLayout
+import com.intive.calendar.screens.ChoosePeriodDialog
 import com.intive.ui.PatronativeTheme
 
 

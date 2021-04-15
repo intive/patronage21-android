@@ -1,4 +1,4 @@
-package com.intive.calendar.components
+package com.intive.calendar.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 
 

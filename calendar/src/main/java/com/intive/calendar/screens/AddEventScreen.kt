@@ -1,4 +1,4 @@
-package com.intive.calendar.components
+package com.intive.calendar.screens
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
+import com.intive.calendar.components.*
 
 @ExperimentalComposeUiApi
 @Composable

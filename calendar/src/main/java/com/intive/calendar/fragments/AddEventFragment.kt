@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
-import com.intive.calendar.components.*
+import com.intive.calendar.screens.AddEventLayout
 import com.intive.ui.PatronativeTheme
 
 

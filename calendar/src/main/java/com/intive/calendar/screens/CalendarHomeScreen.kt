@@ -1,4 +1,4 @@
-package com.intive.calendar.components
+package com.intive.calendar.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -35,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
+import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays

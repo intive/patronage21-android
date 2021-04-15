@@ -1,4 +1,4 @@
-package com.intive.calendar.components
+package com.intive.calendar.screens
 
 
 import androidx.compose.foundation.Image
@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.components.*
 
 
 @Composable
