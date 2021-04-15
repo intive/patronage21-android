@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.intive.calendar.CalendarHomeFragment"
+        android:name="com.intive.calendar.fragments.CalendarHomeFragment"
         android:label="CalendarFragment">
         <deepLink app:uri="intive://calendarFragment" />
 
@@ -23,13 +23,13 @@
 
     <fragment
         android:id="@+id/eventFragment"
-        android:name="com.intive.calendar.EventFragment"
+        android:name="com.intive.calendar.fragments.EventFragment"
         android:label="EventFragment">
     </fragment>
 
     <fragment
         android:id="@+id/addEventFragment"
-        android:name="com.intive.calendar.AddEventFragment"
+        android:name="com.intive.calendar.fragments.AddEventFragment"
         android:label="AddEventFragment">
         <action
             android:id="@+id/action_addEventFragment_to_calendarFragment"
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/dayFragment"
-        android:name="com.intive.calendar.DayFragment"
+        android:name="com.intive.calendar.fragments.DayFragment"
         android:label="DayFragment">
         <action
             android:id="@+id/action_dayFragment_to_eventFragment"

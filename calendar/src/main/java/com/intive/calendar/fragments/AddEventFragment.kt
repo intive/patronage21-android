@@ -1,4 +1,4 @@
-package com.intive.calendar
+package com.intive.calendar.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.AddEventViewModel
 import com.intive.ui.PatronativeTheme

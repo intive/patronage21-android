@@ -1,6 +1,6 @@
 @file:JvmName("CalendarMainFragmentKt")
 
-package com.intive.calendar
+package com.intive.calendar.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
+import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.ui.PatronativeTheme
 

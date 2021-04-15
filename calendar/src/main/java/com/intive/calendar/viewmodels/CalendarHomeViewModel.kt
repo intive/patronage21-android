@@ -15,27 +15,16 @@ class CalendarHomeViewModel : ViewModel() {
         val name: String
     )
 
-    //data class Day(val date: Calendar, val events: List<Event>)
     data class Day(val index: Int, val events: List<Event>)
     data class DayWeek(val date: Calendar, val events: List<Event>)
 
-
     private val days: List<Day> = listOf(
         Day(0, emptyList()),
-        Day(
-            3,
-            listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))
-        ),
+        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
         Day(2, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(
-            3,
-            listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))
-        ),
+        Day(3, listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))),
         Day(4, emptyList()),
-        Day(
-            3,
-            listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))
-        ),
+        Day(3, listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))),
         Day(6, emptyList())
     )
 
@@ -49,10 +38,7 @@ class CalendarHomeViewModel : ViewModel() {
         Day(7, emptyList()),
         Day(8, emptyList()),
         Day(9, emptyList()),
-        Day(
-            10,
-            listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))
-        ),
+        Day(10, listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))),
         Day(11, emptyList()),
         Day(12, emptyList()),
         Day(13, emptyList()),
@@ -70,10 +56,7 @@ class CalendarHomeViewModel : ViewModel() {
         Day(25, emptyList()),
         Day(26, emptyList()),
         Day(27, emptyList()),
-        Day(
-            28,
-            listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))
-        ),
+        Day(28, listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))),
         Day(29, emptyList()),
         Day(30, emptyList())
     )
@@ -180,7 +163,6 @@ class CalendarHomeViewModel : ViewModel() {
         currentDate.set(Calendar.DATE, 1)
         val dayOfTheWeek = currentDate[Calendar.DAY_OF_WEEK]
         //val daysNumber = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-
 
         val offset: Int = when {
             dayOfTheWeek == 2 -> {

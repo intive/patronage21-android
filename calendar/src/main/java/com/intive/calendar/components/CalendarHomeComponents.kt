@@ -118,14 +118,11 @@ fun WeekView(
 @Composable
 fun DaysList(
     currentWeek: Array<CalendarHomeViewModel.DayWeek>?,
-    navController: NavController,
-    calendarViewModel: CalendarHomeViewModel = viewModel()
+    navController: NavController
 ) {
     val scrollState = rememberLazyListState()
-    //val days = calendarViewModel.days
     LazyColumn(state = scrollState) {
         items(7) {
-            //currentWeek?.get(it)?.let { it1 -> DaysListItem(it, navController, days[it]) }
             currentWeek?.get(it)?.let { it1 -> DaysListItem(index = it, navController = navController, day = it1) }
         }
     }

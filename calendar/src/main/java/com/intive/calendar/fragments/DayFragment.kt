@@ -1,4 +1,4 @@
-package com.intive.calendar
+package com.intive.calendar.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.intive.calendar.R
 import com.intive.calendar.components.DayLayout
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme

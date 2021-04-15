@@ -1,4 +1,4 @@
-package com.intive.calendar
+package com.intive.calendar.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
