@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.intive.ui.PatronageTypography
+import com.intive.ui.R
 
 @Composable
 fun TitleText(
@@ -29,11 +31,12 @@ fun TitleText(
 
 @Composable
 fun SectionHeader(
+    backgroundColor: Color = colorResource(R.color.light_blue0),
     title: @Composable RowScope.() -> Unit,
     action: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    Column(modifier = Modifier.background(MaterialTheme.colors.surface)) {
+    Column(modifier = Modifier.background(backgroundColor)) {
         Row(
             Modifier
                 .fillMaxWidth()
