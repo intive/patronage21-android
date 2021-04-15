@@ -20,16 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.viewmodels.RegistrationViewModel
-import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
+import com.intive.ui.components.Spinner
+import com.intive.ui.components.TitleText
 
 
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController? = null) {
     val scrollState = rememberScrollState()
-    val title: String by viewmodel.title.observeAsState(stringArrayResource(R.array.titles_array)[0])
+    val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
     val lastName: String by viewmodel.lastName.observeAsState("")
     val email: String by viewmodel.email.observeAsState("")
@@ -60,7 +61,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         Text(text = stringResource(R.string.registration_subtitle))
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        TitlesSpinner(title, viewmodel::onTitleChange)
+        Spinner(items = titles, onTitleSelected = viewmodel::onTitleChange)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         FirstNameInput(firstName, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))

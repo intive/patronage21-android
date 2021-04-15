@@ -12,7 +12,7 @@ import com.intive.registration.Constants
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 import com.intive.registration.fragments.ErrorFragmentDirections
-import com.intive.ui.TitleText
+import com.intive.ui.components.TitleText
 
 @Composable
 fun ErrorScreen(navController: NavController? = null) {

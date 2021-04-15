@@ -24,7 +24,7 @@ import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
 import com.intive.registration.viewmodels.RegistrationSuccessDialog
 import com.intive.registration.viewmodels.SharedViewModel
-import com.intive.ui.TitleText
+import com.intive.ui.components.TitleText
 
 @Composable
 fun EmailVerificationScreen(

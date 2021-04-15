@@ -29,6 +29,7 @@ import com.intive.registration.viewmodels.RegistrationSuccessDialog
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
+import com.intive.ui.components.*
 
 
 class HomeScreenFragment : Fragment() {
@@ -67,13 +68,13 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
         Column(
             modifier = Modifier
                 .padding(
-                    start = dimensionResource(id = R.dimen.activity_padding),
-                    end = dimensionResource(id = R.dimen.activity_padding),
+                    start = dimensionResource(id = R.dimen.screen_padding),
+                    end = dimensionResource(id = R.dimen.screen_padding),
                 )
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            Text(
+            TitleText(
                 text = stringResource(R.string.home_screen_greeting),
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.secondary,

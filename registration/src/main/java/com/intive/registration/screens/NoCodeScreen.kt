@@ -20,7 +20,7 @@ import com.intive.registration.components.CustomButton
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.NoCodeFragmentDirections
 import com.intive.registration.viewmodels.NoCodeViewModel
-import com.intive.ui.TitleText
+import com.intive.ui.components.TitleText
 
 @Composable
 fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = null) {

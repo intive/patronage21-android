@@ -16,10 +16,10 @@ import androidx.navigation.NavController
 import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.components.InputText
 import com.intive.registration.viewmodels.LoginViewModel
-import com.intive.ui.TitleText
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 import com.intive.registration.fragments.LoginFragmentDirections
+import com.intive.ui.components.TitleText
 
 
 @Composable
