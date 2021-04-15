@@ -18,10 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.intive.ui.components.UsersHeader
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.users.domain.User
-import com.intive.users.presentation.composables.Header
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
@@ -59,7 +59,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = stringResource(R.string.bio))
+        UsersHeader(text = stringResource(R.string.bio))
         Text(
             text = user.bio,
             modifier = Modifier
@@ -68,7 +68,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = stringResource(R.string.projects), count = projects.size, showCount = true)
+        UsersHeader(text = stringResource(R.string.projects), count = projects.size, showCount = true)
         projects.forEach { project ->
             ProjectListItem(project)
             Divider(
@@ -79,7 +79,7 @@ fun DetailsScreen(
     }
 
     Column {
-        Header(text = stringResource(R.string.contact))
+        UsersHeader(text = stringResource(R.string.contact))
 
         Text(user.email, modifier = Modifier.padding(16.dp))
         ContactActionButton(stringResource(R.string.send_message)) {

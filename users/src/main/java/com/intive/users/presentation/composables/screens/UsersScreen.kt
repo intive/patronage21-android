@@ -1,5 +1,6 @@
 package com.intive.users.presentation.composables.screens
 
+import android.preference.PreferenceActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -14,12 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.presentation.composables.Header
 import com.intive.users.presentation.composables.PersonListItem
 import com.intive.users.presentation.composables.ScreenInfo
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
+import com.intive.ui.components.UsersHeader
 
 @Composable
 fun UsersScreen(
@@ -77,7 +78,7 @@ fun UsersScreen(
                         end = 16.dp
                     )
             ) {
-                Header(
+                UsersHeader(
                     text = stringResource(id = R.string.leaders),
                     count = users.size,
                     showCount = true,
@@ -110,7 +111,7 @@ fun UsersScreen(
                         end = 16.dp
                     )
             ) {
-                Header(
+                UsersHeader(
                     text = stringResource(id = R.string.participants),
                     count = users.size,
                     showCount = true,
