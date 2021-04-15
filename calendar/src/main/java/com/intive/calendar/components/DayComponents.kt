@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -70,12 +70,12 @@ fun EventsListItem(event: CalendarHomeViewModel.Event, date: String, navControll
         ) {
 
             Text(
-                "${event.name}",
-                style = MaterialTheme.typography.h6
+                event.name,
+                style = typography.h6
             )
             Text(
-                "Godzina: ${event.time}",
-                style = MaterialTheme.typography.body1
+                "${stringResource(R.string.hour)}: ${event.time}",
+                style = typography.body1
             )
 
         }

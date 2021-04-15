@@ -38,7 +38,7 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
             HeaderMedium(name, Modifier.padding(bottom = 4.dp))
 
             Text(
-                "Godzina: $time",
+                "${stringResource(R.string.hour)}: $time",
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -66,7 +66,6 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
         }
 
         Column {
-            // TODO: modify onClick handlers
             OKButton(stringResource(R.string.accept_event)) { navController.popBackStack() }
             CancelButton(stringResource(R.string.reject_event)) { navController.popBackStack() }
         }
@@ -94,7 +93,7 @@ fun UsersListItem(index: Int) {
     ) {
         Image(
             bitmap = ImageBitmap.imageResource(id = R.drawable.header),
-            contentDescription = "User's profile pic",
+            contentDescription = stringResource(R.string.user_image_desc),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(start = 8.dp)
@@ -104,11 +103,10 @@ fun UsersListItem(index: Int) {
         )
 
         Text(
-            "Uczestnik ${index + 1}",
+            "${stringResource(R.string.event_user)} ${index + 1}",
             style = MaterialTheme.typography.body1,
             modifier = Modifier.padding(start = 16.dp)
         )
-        //Text("Organizator", style = MaterialTheme.typography.subtitle1)
     }
     Divider(color = Color.LightGray)
 }

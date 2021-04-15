@@ -122,12 +122,10 @@ class CalendarHomeViewModel : ViewModel() {
 
         for (i in 1..6) {
             date.add(Calendar.DAY_OF_MONTH, 1)
-            // TODO: get events for given week
             weekArray += DayWeek(date.clone() as Calendar, days[i].events)
         }
 
         return weekArray
-
     }
 
     fun goToPreviousWeek() {

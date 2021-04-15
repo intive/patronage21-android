@@ -12,9 +12,11 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.intive.calendar.R
 
 @Composable
 fun PickerRow(label: String, value: String, pickerDialog: AlertDialog) {
@@ -31,7 +33,7 @@ fun PickerRow(label: String, value: String, pickerDialog: AlertDialog) {
         IconButton(onClick = { pickerDialog.show() }) {
             Icon(
                 Icons.Default.Edit,
-                contentDescription = "Edit button",
+                contentDescription = stringResource(R.string.edit_btn_desc),
                 tint = MaterialTheme.colors.secondary,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )

@@ -10,8 +10,10 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.intive.calendar.R
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 
 
@@ -33,7 +35,6 @@ fun OKButton(text: String, onClick: () -> Unit){
 }
 
 @Composable
-// TODO: add onClick parameter
 fun CancelButton(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
@@ -59,7 +60,7 @@ fun ClearButton(calendarViewModel: CalendarHomeViewModel = viewModel()) {
         IconButton(onClick = { calendarViewModel.hideDialog() }) {
             Icon(
                 Icons.Default.Clear,
-                contentDescription = "Exit dialog button",
+                contentDescription = stringResource(R.string.exit_dialog_btn_desc),
                 tint = Color.Black
             )
         }

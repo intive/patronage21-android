@@ -69,7 +69,7 @@ fun CalendarHomeLayout(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
-                backgroundColor = MaterialTheme.colors.primary
+                backgroundColor = colors.primary
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Add new event button")
             }
@@ -147,7 +147,7 @@ fun DaysListItem(
         txtColor = Color.Gray
     }
 
-    var headerColor: Color = txtColor
+    val headerColor: Color = txtColor
 
     when {
         day.events.isEmpty() -> {
@@ -196,7 +196,7 @@ fun DaysListItem(
                 bkgColor,
                 headerColor,
                 txtColor,
-                "Liczba wydarzeń: ${day.events.size}",
+                "${stringResource(R.string.events_number)}: ${day.events.size}",
                 {
                     eventsShow.value = eventsShow.value != true
                 },
@@ -275,7 +275,7 @@ fun EventsItem(
             )
         )
         Text(
-            "${event.time}",
+            event.time,
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,
@@ -562,7 +562,7 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colors.primary)
+            .background(colors.primary)
     ) {
 
         IconButton(onClick = onClickPrev) {
