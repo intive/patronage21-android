@@ -5,6 +5,8 @@
     app:startDestination="@id/homeScreenFragment">
 
     <include app:graph="@navigation/registration_nav_graph" />
+    <include app:graph="@navigation/users_nav_graph" />
+    <include app:graph="@navigation/audit_nav_graph"/>
 
     <fragment
         android:id="@+id/homeScreenFragment"

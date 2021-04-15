@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -29,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.0.0-beta01'
@@ -44,6 +45,9 @@ dependencies {
     def nav_version = "2.3.4"
 
     implementation project(":ui")
+    implementation project(":audit")
+    implementation project(":users")
+    implementation project(":registration")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -81,7 +85,10 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-rxjava2:1.0.0-beta01"
 
     // UI Tests
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta01"
-
-    implementation project(":registration")
+     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
+     
+    def appCenterSdkVersion = '4.1.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+  
 }
