@@ -102,14 +102,5 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-
-//    // Koin for Android
-//    implementation "org.koin:koin-android:$koin_version"
-//    // Koin Android Scope features
-//    implementation "org.koin:koin-android-scope:$koin_version"
-//    // Koin Android ViewModel features
-//    implementation "org.koin:koin-android-viewmodel:$koin_version"
-//    // Koin Android Experimental features
-//    implementation "org.koin:koin-android-ext:$koin_version"
     
 }
