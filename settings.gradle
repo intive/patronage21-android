@@ -4,3 +4,4 @@ include ':users'
 
 include ':ui'
 include ':audit'
+include ':repository'
