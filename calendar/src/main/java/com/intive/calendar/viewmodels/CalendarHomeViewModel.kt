@@ -215,7 +215,7 @@ class CalendarHomeViewModel : ViewModel() {
         currentDate.set(Calendar.DATE, 1)
         _currentMonth.value = getCurrentMonth()
     }
-    
+
     fun weekClicked() {
         _bColorWeekBtn.value = colorBlue
         _bColorMonthBtn.value = colorWhite
