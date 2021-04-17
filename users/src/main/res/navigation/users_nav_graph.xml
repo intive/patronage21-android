@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/users_nav_graph"
+    app:startDestination="@id/usersFragment">
+
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.intive.users.presentation.users.UsersFragment"
+        android:label="UsersFragment" >
+        <deepLink app:uri="intive://usersFragment" />
+        <action
+            android:id="@+id/action_usersFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.intive.users.presentation.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <action
+            android:id="@+id/action_detailsFragment_to_deactivateUserFragment"
+            app:destination="@id/deactivateUserFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_editUserFragment"
+            app:destination="@id/editUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deactivateUserFragment"
+        android:name="com.intive.users.presentation.deactivate_user.DeactivateUserFragment"
+        android:label="DeactivateUserFragment" />
+    <fragment
+        android:id="@+id/editUserFragment"
+        android:name="com.intive.users.presentation.edit_user.EditUserFragment"
+        android:label="EditUserFragment" />
+</navigation>

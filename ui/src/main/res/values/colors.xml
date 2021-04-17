@@ -3,6 +3,7 @@
     <!-- Light -->
     <color name="pink300">#f06292</color>
     <color name="pink700">#c2185a</color>
+    <color name="light_blue0">#eff9ff</color>
     <color name="light_blue400">#29b6f6</color>
     <color name="light_blue700">#0288d1</color>
     <color name="red800">#c62828</color>

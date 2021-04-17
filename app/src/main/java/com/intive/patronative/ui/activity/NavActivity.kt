@@ -20,11 +20,20 @@ import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.R
 import com.intive.patronative.databinding.ContentMainBinding
 import com.intive.ui.PatronativeTheme
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 
 class NavActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppCenter.start(
+            application, "b5843062-fd8e-4699-9533-a396f7f8c4b9",
+            Analytics::class.java,
+            Crashes::class.java
+        )
 
         setContentView(R.layout.content_main).apply {
             findViewById<ComposeView>(R.id.compose_view).setContent {
