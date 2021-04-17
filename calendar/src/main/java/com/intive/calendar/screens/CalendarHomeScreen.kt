@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.calendar.domain.DayWeek
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.components.HeaderMedium
 import com.intive.ui.components.TitleText
@@ -38,7 +39,7 @@ fun CalendarHomeLayout(
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
 
-    val currentWeek: Array<CalendarHomeViewModel.DayWeek>? by calendarViewModel.currentWeek.observeAsState()
+    val currentWeek: Array<DayWeek>? by calendarViewModel.currentWeek.observeAsState()
     val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
 
     val calendarViewStr: String =

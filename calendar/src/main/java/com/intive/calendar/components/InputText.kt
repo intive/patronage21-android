@@ -14,10 +14,10 @@ import com.intive.calendar.R
 @ExperimentalComposeUiApi
 @Composable
 fun InputText(textState: String, addEventViewModel: AddEventViewModel = viewModel()) {
-        TextField(
-            value = textState,
-            onValueChange = { addEventViewModel.setInputValue(it) },
-            label = { Text(stringResource(R.string.add_event_hint)) },
-            modifier = Modifier.fillMaxWidth()
-        )
+    TextField(
+        value = textState,
+        onValueChange = { addEventViewModel.setInputValue(it) },
+        label = { Text(stringResource(R.string.add_event_hint)) },
+        modifier = Modifier.fillMaxWidth()
+    )
 }

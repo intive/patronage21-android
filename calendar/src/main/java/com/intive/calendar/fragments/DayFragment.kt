@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.intive.calendar.R
+import com.intive.calendar.domain.Event
 import com.intive.calendar.screens.DayLayout
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
 
 
@@ -24,10 +24,10 @@ class DayFragment : Fragment() {
         context?.theme?.applyStyle(R.style.ThemeDialogFullScreen, true)
 
         val date = arguments?.getString("header")
-        val events= arguments?.getString("events")
+        val events = arguments?.getString("events")
 
-        val itemType = object : TypeToken<List<CalendarHomeViewModel.Event>>() {}.type
-        val eventsList = Gson().fromJson<List<CalendarHomeViewModel.Event>>(events, itemType)
+        val itemType = object : TypeToken<List<Event>>() {}.type
+        val eventsList = Gson().fromJson<List<Event>>(events, itemType)
 
         return ComposeView(requireContext()).apply {
             setContent {

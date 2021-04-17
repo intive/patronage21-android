@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
+import com.intive.calendar.domain.Day
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 
@@ -59,18 +61,18 @@ fun CalendarGrid(
     ) {
         if (items != null) {
             items(items.size) {
-                if (items[it] is CalendarHomeViewModel.Day) {
+                if (items[it] is Day) {
                     var bgColor = Color.White
                     var onClick = {}
-                    if ((items[it] as CalendarHomeViewModel.Day).events.isNotEmpty()) {
+                    if ((items[it] as Day).events.isNotEmpty()) {
 
                         bgColor = colorResource(R.color.pale_blue)
 
-                        if ((items[it] as CalendarHomeViewModel.Day).events.size == 1) {
+                        if ((items[it] as Day).events.size == 1) {
                             val bundle = bundleOf(
-                                "date" to "${(items[it] as CalendarHomeViewModel.Day).index}.04.2021",
-                                "time" to (items[it] as CalendarHomeViewModel.Day).events[0].time,
-                                "name" to (items[it] as CalendarHomeViewModel.Day).events[0].name
+                                "date" to "${(items[it] as Day).index}.04.2021",
+                                "time" to (items[it] as Day).events[0].time,
+                                "name" to (items[it] as Day).events[0].name
                             )
                             onClick =
                                 {
@@ -79,10 +81,10 @@ fun CalendarGrid(
                                         bundle
                                     )
                                 }
-                        } else if ((items[it] as CalendarHomeViewModel.Day).events.size > 1) {
+                        } else if ((items[it] as Day).events.size > 1) {
                             val bundle = bundleOf(
-                                "header" to "${(items[it] as CalendarHomeViewModel.Day).index}.04.2021",
-                                "events" to Gson().toJson((items[it] as CalendarHomeViewModel.Day).events)
+                                "header" to "${(items[it] as Day).index}${stringResource(R.string.mock_date)}",
+                                "events" to Gson().toJson((items[it] as Day).events)
                             )
                             onClick =
                                 {
@@ -100,12 +102,11 @@ fun CalendarGrid(
                             .clickable(onClick = onClick)
                     ) {
                         Text(
-                            text = (items[it] as CalendarHomeViewModel.Day).index.toString(),
+                            text = (items[it] as Day).index.toString(),
                             style = TextStyle(fontSize = 18.sp),
                             modifier = Modifier
                                 .padding(4.dp)
                         )
-
                     }
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {

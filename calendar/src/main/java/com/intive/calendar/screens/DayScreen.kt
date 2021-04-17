@@ -16,7 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.calendar.domain.Event
 import com.intive.ui.components.TitleText
 
 
@@ -24,7 +24,7 @@ import com.intive.ui.components.TitleText
 fun DayLayout(
     navController: NavController,
     date: String,
-    eventsList: List<CalendarHomeViewModel.Event>
+    eventsList: List<Event>
 ) {
     Column(
         modifier = Modifier
@@ -46,7 +46,7 @@ fun DayLayout(
 
 @Composable
 fun EventsList(
-    eventsList: List<CalendarHomeViewModel.Event>,
+    eventsList: List<Event>,
     date: String,
     navController: NavController
 ) {
@@ -60,7 +60,7 @@ fun EventsList(
 }
 
 @Composable
-fun EventsListItem(event: CalendarHomeViewModel.Event, date: String, navController: NavController) {
+fun EventsListItem(event: Event, date: String, navController: NavController) {
 
     val bundle = bundleOf("date" to date, "time" to event.time, "name" to event.name)
 

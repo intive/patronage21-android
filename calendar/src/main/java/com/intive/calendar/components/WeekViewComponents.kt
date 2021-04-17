@@ -26,6 +26,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.domain.*
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
@@ -35,7 +36,7 @@ import java.util.*
 
 @Composable
 fun WeekView(
-    currentWeek: Array<CalendarHomeViewModel.DayWeek>?,
+    currentWeek: Array<DayWeek>?,
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel = viewModel()
 ) {
@@ -53,7 +54,7 @@ fun WeekView(
 
 @Composable
 fun DaysList(
-    currentWeek: Array<CalendarHomeViewModel.DayWeek>?,
+    currentWeek: Array<DayWeek>?,
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
@@ -70,7 +71,7 @@ fun DaysList(
 fun DaysListItem(
     index: Int,
     navController: NavController,
-    day: CalendarHomeViewModel.DayWeek
+    day: DayWeek
 ) {
 
     var bkgColor: Color = Color.White
@@ -200,7 +201,7 @@ fun WeekDayWithEvents(
 fun EventsList(
     bkgColor: Color,
     headerColor: Color,
-    events: List<CalendarHomeViewModel.Event>,
+    events: List<Event>,
     date: Calendar,
     navController: NavController
 ) {
@@ -219,7 +220,7 @@ fun EventsList(
 fun EventsItem(
     bkgColor: Color,
     headerColor: Color,
-    event: CalendarHomeViewModel.Event,
+    event: Event,
     date: Calendar,
     navController: NavController
 ) {

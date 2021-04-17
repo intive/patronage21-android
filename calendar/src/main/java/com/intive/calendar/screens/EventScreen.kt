@@ -1,6 +1,5 @@
 package com.intive.calendar.screens
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

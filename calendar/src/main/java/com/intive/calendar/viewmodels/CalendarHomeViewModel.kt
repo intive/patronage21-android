@@ -3,19 +3,11 @@ package com.intive.calendar.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.intive.calendar.domain.*
 import com.intive.calendar.utils.*
 import java.util.*
 
 class CalendarHomeViewModel : ViewModel() {
-
-    data class Event(
-        val id: Int,
-        val time: String,
-        val name: String
-    )
-
-    data class Day(val index: Int, val events: List<Event>)
-    data class DayWeek(val date: Calendar, val events: List<Event>)
 
     private val days: List<Day> = listOf(
         Day(0, emptyList()),
@@ -71,6 +63,7 @@ class CalendarHomeViewModel : ViewModel() {
         Day(29, emptyList()),
         Day(30, emptyList())
     )
+
 
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<DayWeek>> = _currentWeek
