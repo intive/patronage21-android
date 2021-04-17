@@ -27,6 +27,8 @@ import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.ui.components.HeaderMedium
+import com.intive.ui.components.TitleText
 
 
 @ExperimentalFoundationApi
@@ -62,8 +64,7 @@ fun CalendarHomeLayout(
                 .padding(24.dp)
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                HeaderLarge(stringResource(R.string.calendar))
-
+                TitleText(stringResource(R.string.calendar), Modifier.padding(bottom = 24.dp))
                 Paragraph(
                     stringResource(R.string.lorem_ipsum),
                     Modifier.padding(bottom = 24.dp)

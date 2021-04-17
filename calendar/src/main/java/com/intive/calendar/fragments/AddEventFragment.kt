@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
-import com.intive.calendar.screens.AddEventLayout
+import com.intive.calendar.screens.AddEventScreen
 import com.intive.ui.PatronativeTheme
 
 
@@ -23,7 +23,7 @@ class AddEventFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    view?.let { AddEventLayout(it, requireContext(), findNavController()) }
+                    view?.let { AddEventScreen(it, requireContext(), findNavController()) }
                 }
             }
         }

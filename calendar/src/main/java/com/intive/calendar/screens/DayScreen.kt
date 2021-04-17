@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.ui.components.TitleText
 
 
 @Composable
@@ -31,7 +32,7 @@ fun DayLayout(
             .padding(24.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            HeaderLarge(date)
+            TitleText(date, Modifier.padding(bottom = 24.dp))
             EventsList(eventsList, date, navController)
         }
 
@@ -44,7 +45,11 @@ fun DayLayout(
 }
 
 @Composable
-fun EventsList(eventsList: List<CalendarHomeViewModel.Event>, date: String, navController: NavController) {
+fun EventsList(
+    eventsList: List<CalendarHomeViewModel.Event>,
+    date: String,
+    navController: NavController
+) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState) {
@@ -62,7 +67,12 @@ fun EventsListItem(event: CalendarHomeViewModel.Event, date: String, navControll
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = { navController.navigate(R.id.action_dayFragment_to_eventFragment, bundle) })
+            .clickable(onClick = {
+                navController.navigate(
+                    R.id.action_dayFragment_to_eventFragment,
+                    bundle
+                )
+            })
     ) {
         Column(
             modifier = Modifier

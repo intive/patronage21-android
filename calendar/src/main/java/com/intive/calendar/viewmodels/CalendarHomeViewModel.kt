@@ -3,7 +3,7 @@ package com.intive.calendar.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.intive.calendar.utils.calendarHeader
+import com.intive.calendar.utils.*
 import java.util.*
 
 class CalendarHomeViewModel : ViewModel() {
@@ -95,16 +95,16 @@ class CalendarHomeViewModel : ViewModel() {
     private val _showWeekView = MutableLiveData(true)
     val showWeekView: LiveData<Boolean> = _showWeekView
 
-    private val _bColorWeekBtn = MutableLiveData(0xff52bcff)
+    private val _bColorWeekBtn = MutableLiveData(colorBlue)
     val bColorWeekBtn: LiveData<Long> = _bColorWeekBtn
 
-    private val _bColorMonthBtn = MutableLiveData(0xffffffff)
+    private val _bColorMonthBtn = MutableLiveData(colorWhite)
     val bColorMonthBtn: LiveData<Long> = _bColorMonthBtn
 
-    private val _txtColorWeekBtn = MutableLiveData(0xffffffff)
+    private val _txtColorWeekBtn = MutableLiveData(colorWhite)
     val txtColorWeekBtn: LiveData<Long> = _txtColorWeekBtn
 
-    private val _txtColorMonthBtn = MutableLiveData(0xff000000)
+    private val _txtColorMonthBtn = MutableLiveData(colorBlack)
     val txtColorMonthBtn: LiveData<Long> = _txtColorMonthBtn
 
 
@@ -215,21 +215,20 @@ class CalendarHomeViewModel : ViewModel() {
         currentDate.set(Calendar.DATE, 1)
         _currentMonth.value = getCurrentMonth()
     }
-
-
+    
     fun weekClicked() {
-        _bColorWeekBtn.value = 0xff52bcff
-        _bColorMonthBtn.value = 0xffffffff
-        _txtColorWeekBtn.value = 0xffffffff
-        _txtColorMonthBtn.value = 0xff000000
+        _bColorWeekBtn.value = colorBlue
+        _bColorMonthBtn.value = colorWhite
+        _txtColorWeekBtn.value = colorWhite
+        _txtColorMonthBtn.value = colorBlack
         _weekClicked.value = true
     }
 
     fun monthClicked() {
-        _bColorMonthBtn.value = 0xff52bcff
-        _bColorWeekBtn.value = 0xffffffff
-        _txtColorMonthBtn.value = 0xffffffff
-        _txtColorWeekBtn.value = 0xff000000
+        _bColorMonthBtn.value = colorBlue
+        _bColorWeekBtn.value = colorWhite
+        _txtColorMonthBtn.value = colorWhite
+        _txtColorWeekBtn.value = colorBlack
         _weekClicked.value = false
     }
 

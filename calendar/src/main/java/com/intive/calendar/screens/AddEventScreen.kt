@@ -22,10 +22,12 @@ import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
 import com.intive.calendar.components.*
+import com.intive.ui.components.HeaderMedium
+import com.intive.ui.components.TitleText
 
 @ExperimentalComposeUiApi
 @Composable
-fun AddEventLayout(
+fun AddEventScreen(
     view: View,
     context: Context,
     navController: NavController,
@@ -81,7 +83,7 @@ fun AddEventLayout(
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            HeaderLarge(stringResource(R.string.add_event))
+            TitleText(stringResource(R.string.add_event), Modifier.padding(bottom = 24.dp))
             InputText(inputValue!!)
 
             Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {

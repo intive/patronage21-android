@@ -119,3 +119,13 @@ fun SectionHeaderText(
         color = MaterialTheme.colors.secondary
     )
 }
+
+@Composable
+fun HeaderMedium(text: String, modifier: Modifier) {
+    Text(
+        text,
+        style = MaterialTheme.typography.h6,
+        color = Color.Black,
+        modifier = modifier
+    )
+}

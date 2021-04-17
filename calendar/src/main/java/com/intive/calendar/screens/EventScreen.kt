@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.ui.components.HeaderMedium
+import com.intive.ui.components.TitleText
 
 
 @Composable
@@ -35,7 +37,7 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            HeaderLarge(date)
+            TitleText(date, Modifier.padding(bottom = 24.dp))
             HeaderMedium(name, Modifier.padding(bottom = 4.dp))
 
             Text(
