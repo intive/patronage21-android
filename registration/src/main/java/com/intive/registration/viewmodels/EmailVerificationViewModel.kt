@@ -12,6 +12,6 @@ class EmailVerificationViewModel : ViewModel() {
         _code.value = newValue
     }
 
-    fun validateCode(): Boolean = code.value?.matches(Regex("\\d{8,8}")) ?: false
+    fun isCodeValid(): Boolean = code.value?.matches(Regex("\\d{8,8}")) ?: false
     fun isCodeCorrect(): Boolean = code.value.toString().toLong()> 55555555L //repository.isCodeCorrect(code.value)
 }

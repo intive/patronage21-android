@@ -15,7 +15,7 @@ import com.intive.registration.fragments.ErrorFragmentDirections
 import com.intive.ui.components.TitleText
 
 @Composable
-fun ErrorScreen(navController: NavController? = null) {
+fun ErrorScreen(navController: NavController) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -29,7 +29,7 @@ fun ErrorScreen(navController: NavController? = null) {
             text = stringResource(R.string.error_home_button),
             onClick = {
                 val action = ErrorFragmentDirections.actionBackToLogin()
-                navController?.navigate(action)
+                navController.navigate(action)
             }
         )
     }

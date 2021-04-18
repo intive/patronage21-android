@@ -23,7 +23,7 @@ import com.intive.registration.viewmodels.NoCodeViewModel
 import com.intive.ui.components.TitleText
 
 @Composable
-fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = null) {
+fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
 
     val email: String by viewmodel.email.observeAsState("")
@@ -33,7 +33,7 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = nul
         formValid.value = it
     }
     val formChecker: () -> Unit = {
-        formValidChanged(viewmodel.validateEmail())
+        formValidChanged(viewmodel.isEmailValid())
     }
     Column(
         modifier = Modifier
@@ -51,7 +51,7 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController? = nul
             text = stringResource(R.string.send_code_button),
             onClick = {
                 val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email)
-                navController?.navigate(action)
+                navController.navigate(action)
             },
             enabled = formValid.value
         )
@@ -65,15 +65,15 @@ private fun EmailInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        email,
-        {
+        text = email,
+        onTextChange = {
             //enable butten when user enter correct email
             viewmodel.onEmailChange(it)
             formChecker()
         },
-        stringResource(R.string.email_hint),
-        viewmodel::validateEmail,
-        formChecker,
-        KeyboardType.Email
+        label = stringResource(R.string.email_hint),
+        isValid = viewmodel::isEmailValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Email
     )
 }

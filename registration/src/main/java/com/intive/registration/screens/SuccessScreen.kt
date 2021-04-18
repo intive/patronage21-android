@@ -6,12 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 
 @Composable
-fun SuccessScreen(navController: NavController? = null) {
+fun SuccessScreen() {
     AlertDialogSample()
 }
 

@@ -14,7 +14,7 @@ import com.intive.registration.R
 
 @Composable
 fun TechnologiesList(
-    avalaibleTechnologies: List<String>,
+    availableTechnologies: List<String>,
     onItemSelected: (String) -> Unit,
     isValid: () -> Boolean,
     formChecker: () -> Unit,
@@ -29,7 +29,7 @@ fun TechnologiesList(
         Text(text = stringResource(R.string.select_technologies_error), color = Color.Red)
     }
     Spacer(modifier = Modifier.height(4.dp))
-    for(item in avalaibleTechnologies) {
+    for(item in availableTechnologies) {
         Column {
             Row {
                 val checkedState = remember { mutableStateOf(false) }

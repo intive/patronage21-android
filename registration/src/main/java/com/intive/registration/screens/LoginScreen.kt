@@ -23,7 +23,7 @@ import com.intive.ui.components.TitleText
 
 
 @Composable
-fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null) {
+fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
 
     val login: String by viewmodel.login.observeAsState("")
@@ -52,7 +52,7 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController? = null)
             text = stringResource(R.string.registration_button),
             onClick = {
                 val action = LoginFragmentDirections.actionRegister()
-                navController?.navigate(action)
+                navController.navigate(action)
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
         )

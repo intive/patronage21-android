@@ -29,7 +29,7 @@ import com.intive.ui.components.TitleText
 @Composable
 fun EmailVerificationScreen(
     viewmodel: EmailVerificationViewModel,
-    navController: NavController? = null,
+    navController: NavController,
     sharedViewModel: SharedViewModel
 ) {
     val scrollState = rememberScrollState()
@@ -41,7 +41,7 @@ fun EmailVerificationScreen(
         formValid.value = it
     }
     val formChecker: () -> Unit = {
-        formValidChanged(viewmodel.validateCode())
+        formValidChanged(viewmodel.isCodeValid())
     }
     Column(
         modifier = Modifier
@@ -65,7 +65,7 @@ fun EmailVerificationScreen(
                     } else {
                         EmailVerificationFragmentDirections.actionError()
                     }
-                navController?.navigate(action)
+                navController.navigate(action)
             },
             enabled = formValid.value
         )
@@ -75,7 +75,7 @@ fun EmailVerificationScreen(
             onClick = {
                 val action = EmailVerificationFragmentDirections
                     .actionNoCode(viewmodel.email)
-                navController?.navigate(action)
+                navController.navigate(action)
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
         )
@@ -90,15 +90,15 @@ private fun CodeVerificationInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        code,
-        {
+        text = code,
+        onTextChange = {
             //enable button when user enter eighth digit
             viewmodel.onCodeChange(it)
             formChecker()
         },
-        stringResource(R.string.code_verification),
-        viewmodel::validateCode,
-        formChecker,
-        KeyboardType.Number
+        label = stringResource(R.string.code_verification),
+        isValid = viewmodel::isCodeValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Number
     )
 }

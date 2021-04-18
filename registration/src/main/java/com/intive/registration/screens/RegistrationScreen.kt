@@ -28,7 +28,7 @@ import com.intive.ui.components.TitleText
 
 
 @Composable
-fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController? = null) {
+fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
@@ -47,7 +47,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         formValid.value = it
     }
     val formChecker: () -> Unit = {
-        formValidChanged(viewmodel.validateForm())
+        formValidChanged(viewmodel.isFormValid())
     }
     Column(
         modifier = Modifier
@@ -72,10 +72,10 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TechnologiesList(
-            viewmodel.availableTechnologies,
-            viewmodel::updateTechnologies,
-            viewmodel::validateTechnologies,
-            formChecker
+            availableTechnologies = viewmodel.availableTechnologies,
+            onItemSelected = viewmodel::updateTechnologies,
+            isValid = viewmodel::isTechnologiesListValid,
+            formChecker = formChecker
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(login, viewmodel, formChecker)
@@ -87,24 +87,24 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         GithubInput(githubUrl, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         AgreeCheckBox(
-            rodoAgree,
-            viewmodel::onRodoAgreeChange,
-            stringResource(R.string.rodo_agree_text),
-            formChecker
+            agree = rodoAgree,
+            onAgreeChange = viewmodel::onRodoAgreeChange,
+            label = stringResource(R.string.rodo_agree_text),
+            formChecker = formChecker
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         AgreeCheckBox(
-            regulationsAgree,
-            viewmodel::onRegulationsAgreeChange,
-            stringResource(R.string.regulations_agree_text),
-            formChecker
+            agree = regulationsAgree,
+            onAgreeChange = viewmodel::onRegulationsAgreeChange,
+            label = stringResource(R.string.regulations_agree_text),
+            formChecker = formChecker
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
             text = stringResource(R.string.create_account_button),
             onClick = {
                 val action = RegistrationFragmentDirections.actionVerifyEmail(email)
-                navController?.navigate(action)
+                navController.navigate(action)
             },
             enabled = formValid.value
         )
@@ -115,7 +115,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
 private fun Logo() {
     Image(
         painter = painterResource(R.drawable.logo),
-        contentDescription = "Logo",
+        contentDescription = stringResource(R.string.logo_image_content_description),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -127,12 +127,12 @@ private fun PhoneNumberInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        phoneNumber,
-        viewmodel::onPhoneNumberChange,
-        stringResource(R.string.phone_number_hint),
-        viewmodel::validatePhoneNumber,
-        formChecker,
-        KeyboardType.Phone
+        text = phoneNumber,
+        onTextChange = viewmodel::onPhoneNumberChange,
+        label = stringResource(R.string.phone_number_hint),
+        isValid = viewmodel::isPhoneNumberValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Phone
     )
 }
 
@@ -143,11 +143,11 @@ private fun GithubInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        githubUrl,
-        viewmodel::onGithubUrlChange,
-        stringResource(R.string.github_url_hint),
-        viewmodel::validateGithubUrl,
-        formChecker
+        text = githubUrl,
+        onTextChange = viewmodel::onGithubUrlChange,
+        label = stringResource(R.string.github_url_hint),
+        isValid = viewmodel::isGithubUrlValid,
+        formChecker = formChecker
     )
 }
 
@@ -158,13 +158,13 @@ private fun ConfirmPasswordInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        confirmPassword,
-        viewmodel::onConfirmPasswordChange,
-        stringResource(R.string.confirm_password_hint),
-        viewmodel::validateConfirmPassword,
-        formChecker,
-        KeyboardType.Password,
-        PasswordVisualTransformation()
+        text = confirmPassword,
+        onTextChange = viewmodel::onConfirmPasswordChange,
+        label = stringResource(R.string.confirm_password_hint),
+        isValid = viewmodel::isConfirmPasswordValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Password,
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
@@ -175,13 +175,13 @@ private fun PasswordInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        password,
-        viewmodel::onPasswordChange,
-        stringResource(R.string.password_hint),
-        viewmodel::validatePassword,
-        formChecker,
-        KeyboardType.Password,
-        PasswordVisualTransformation()
+        text = password,
+        onTextChange = viewmodel::onPasswordChange,
+        label = stringResource(R.string.password_hint),
+        isValid = viewmodel::isPasswordValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Password,
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
@@ -192,11 +192,11 @@ private fun CodeVerificationInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        login,
-        viewmodel::onLoginChange,
-        stringResource(R.string.login_hint),
-        viewmodel::validateLogin,
-        formChecker
+        text = login,
+        onTextChange = viewmodel::onLoginChange,
+        label = stringResource(R.string.login_hint),
+        isValid = viewmodel::isLoginValid,
+        formChecker = formChecker
     )
 }
 
@@ -207,12 +207,12 @@ private fun EmailInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        email,
-        viewmodel::onEmailChange,
-        stringResource(R.string.email_hint),
-        viewmodel::validateEmail,
-        formChecker,
-        KeyboardType.Email
+        text = email,
+        onTextChange = viewmodel::onEmailChange,
+        label = stringResource(R.string.email_hint),
+        isValid = viewmodel::isEmailValid,
+        formChecker = formChecker,
+        keyboardType = KeyboardType.Email
     )
 }
 
@@ -223,11 +223,11 @@ private fun LastNameInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        lastName,
-        viewmodel::onLastNameChange,
-        stringResource(R.string.last_name_hint),
-        viewmodel::validateLastName,
-        formChecker
+        text = lastName,
+        onTextChange = viewmodel::onLastNameChange,
+        label = stringResource(R.string.last_name_hint),
+        isValid = viewmodel::isLastNameValid,
+        formChecker = formChecker
     )
 }
 
@@ -238,10 +238,10 @@ private fun FirstNameInput(
     formChecker: () -> Unit
 ) {
     InputText(
-        firstName,
-        viewmodel::onFirstNameChange,
-        stringResource(R.string.first_name_hint),
-        viewmodel::validateFirstName,
-        formChecker
+        text = firstName,
+        onTextChange = viewmodel::onFirstNameChange,
+        label = stringResource(R.string.first_name_hint),
+        isValid = viewmodel::isFirstNameValid,
+        formChecker = formChecker
     )
 }

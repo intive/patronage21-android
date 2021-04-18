@@ -14,5 +14,5 @@ class NoCodeViewModel : ViewModel() {
         _email.value = newValue
     }
 
-    fun validateEmail(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
+    fun isEmailValid(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
 }
