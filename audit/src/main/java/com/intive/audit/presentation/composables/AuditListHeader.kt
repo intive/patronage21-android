@@ -41,7 +41,7 @@ fun AuditListHeader(
 
     SectionHeader(
         title = {
-            SectionHeaderText(text = "Lista")
+            SectionHeaderText(text = stringResource(R.string.logs_module))
         },
         action = {
             AnimatedVisibility(

@@ -53,16 +53,23 @@ fun AuditsList(
         }
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+
+            ,
             contentAlignment = Alignment.BottomEnd
         ) {
             LazyColumn(
                 state = listState,
             ) {
                 items(items = audits) { audit ->
-                    Audit(
-                        audit = audit
-                    )
+                    Row (
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                    ){
+                        Audit(
+                            audit = audit
+                        )
+                    }
                     Divider(
                         color = Color.LightGray,
                         thickness = 0.5.dp

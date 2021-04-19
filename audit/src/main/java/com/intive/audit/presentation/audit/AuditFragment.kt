@@ -54,27 +54,27 @@ class AuditFragment : Fragment() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         val scrollState = rememberScrollState()
-                        Column(
-                            modifier = Modifier
-                                .padding(
-                                    start = dimensionResource(id = R.dimen.screen_padding),
-                                    end = dimensionResource(id = R.dimen.screen_padding),
-                                )
-                                .fillMaxWidth()
-                                .verticalScroll(scrollState),
-                        ) {
-                            TitleText(
-                                text = stringResource(R.string.audit_screen),
-                                style = MaterialTheme.typography.h5,
-                                color = MaterialTheme.colors.secondary,
-                                modifier = Modifier
-                                    .padding(top = 15.dp, bottom = 15.dp)
-                            )
-                        }
+//                        Column(
+//                            modifier = Modifier
+//                                .padding(
+//                                    start = dimensionResource(id = R.dimen.screen_padding),
+//                                    end = dimensionResource(id = R.dimen.screen_padding),
+//                                )
+//                                .fillMaxWidth()
+//                                .verticalScroll(scrollState),
+//                        ) {
+//                            TitleText(
+//                                text = stringResource(R.string.audit_screen),
+//                                style = MaterialTheme.typography.h5,
+//                                color = MaterialTheme.colors.secondary,
+//                                modifier = Modifier
+//                                    .padding(top = 15.dp, bottom = 15.dp)
+//                            )
+//                        }
                         AuditsList(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                                .padding(top = 25.dp),
                             audits = audits,
                             query = query,
                             onQueryChanged = viewModel::onQueryChanged,
