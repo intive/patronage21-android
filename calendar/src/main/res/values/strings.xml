@@ -1,0 +1,47 @@
+<resources>
+    <string name="calendar">Kalendarz</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="add_event">Dodaj nowe wydarzenie</string>
+    <string name="accept">Zatwierdź</string>
+    <string name="go_back">Powrót</string>
+    <string name="add_event_hint">Nazwa wydarzenia</string>
+    <string name="choose_period">Wybierz zakres czasu</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="accept_event">Potwierdź udział</string>
+    <string name="reject_event">Odrzuć</string>
+
+    <string name="accept_new_event">Zatwierdź</string>
+    <string name="reject_new_event">Powrót</string>
+
+    <string name="date_label">Data</string>
+    <string name="start_hour_label">Od</string>
+    <string name="end_hour_label">Do</string>
+    <string name="add_event_checkbox_header">Grupy technologiczne</string>
+
+    <string name="checkbox_js_label">JavaScript</string>
+    <string name="checkbox_java_label">Java</string>
+    <string name="checkbox_qa_label">QA</string>
+    <string name="checkbox_mobile_label">Mobile (Android)</string>
+    <string name="event_users_label">Uczestnicy</string>
+    <string name="no_events">Brak wydarzeń</string>
+
+    <string name="add_event_date_validation_message">Nieprawidłowa data lub godzina</string>
+    <string name="add_event_time_validation_message">Nieprawidłowe godziny</string>
+    <string name="add_event_checkbox_validation_message">Należy wybrać co najmniej 1 grupę technologiczną</string>
+    <string name="add_event_input_validation_message">Należy podać nazwę wydarzenia</string>
+
+    <string name="events_number">Liczba wydarzeń</string>
+    <string name="hour">Godzina</string>
+    <string name="event_user">Uczestnik"</string>
+    <string name="user_image_desc">User\'s profile pic</string>
+    <string name="exit_dialog_btn_desc">Exit dialog button</string>
+    <string name="edit_btn_desc">Edit button</string>
+    <string name="add_event_btn_desc">New event button</string>
+    <string name="calendar_header_right_btn_desc">Right button</string>
+    <string name="calendar_header_left_btn_desc">Left button</string>
+    <string name="spinner_component_btn_desc">Right button</string>
+    <string name="mock_date">.04.2021</string>
+
+
+</resources>

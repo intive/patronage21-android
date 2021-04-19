@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Patronative" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/deep_purple_300</item>
-        <item name="colorPrimaryVariant">@color/deep_purple_700</item>
+        <item name="colorPrimary">@color/pink300</item>
+        <item name="colorPrimaryVariant">@color/pink700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_blue400</item>
@@ -12,9 +12,7 @@
         <!-- Background color. -->
         <item name="android:colorBackground">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <!-- Customize your theme here. -->
-        <item name="colorError">@color/red900</item>
-        <item name="colorOnError">@color/white</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/grey</item>
+
     </style>
 </resources>
