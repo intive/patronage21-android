@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.patronative.R
-import com.intive.patronative.home_screen.HomeScreenFragment
 import com.intive.ui.PatronageTypography
 
 @Composable
