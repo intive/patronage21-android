@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.intive.calendar.R
-import com.intive.calendar.domain.Event
 import com.intive.calendar.screens.DayLayout
+import com.intive.repository.domain.model.Event
 import com.intive.ui.PatronativeTheme
 
 

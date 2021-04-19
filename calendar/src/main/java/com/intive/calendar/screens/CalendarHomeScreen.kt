@@ -22,13 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
-import com.intive.calendar.domain.DayWeek
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
-import com.intive.ui.components.HeaderMedium
 import com.intive.ui.components.TitleText
 
 
@@ -36,18 +33,40 @@ import com.intive.ui.components.TitleText
 @Composable
 fun CalendarHomeLayout(
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel = viewModel()
+    calendarViewModel: CalendarHomeViewModel
 ) {
 
-    val currentWeek: Array<DayWeek>? by calendarViewModel.currentWeek.observeAsState()
-    val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
+    val currentWeek by calendarViewModel.currentWeek.observeAsState()
+    val showWeekView by calendarViewModel.showWeekView.observeAsState()
 
     val calendarViewStr: String =
         if (showWeekView == true) stringResource(R.string.week) else stringResource(R.string.month)
 
-    Scaffold(
-        backgroundColor = Color.White,
-        floatingActionButton = {
+    Box(contentAlignment = Alignment.BottomEnd) {
+        Column(
+            Modifier
+                .fillMaxHeight()
+                .padding(24.dp)
+        ) {
+            TitleText(stringResource(R.string.calendar), Modifier.padding(bottom = 24.dp))
+            Paragraph(
+                stringResource(R.string.lorem_ipsum),
+                Modifier.padding(bottom = 24.dp)
+            )
+
+            SpinnerComponent({ calendarViewModel.showDialog() }, calendarViewStr)
+
+            currentWeek?.let { it1 -> WeekView(it1, navController, calendarViewModel) }
+            MonthView(navController, calendarViewModel)
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(bottom = 24.dp, end = 24.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom
+        ) {
             FloatingActionButton(
                 onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
                 backgroundColor = colors.primary
@@ -58,53 +77,34 @@ fun CalendarHomeLayout(
                 )
             }
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(24.dp)
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                TitleText(stringResource(R.string.calendar), Modifier.padding(bottom = 24.dp))
-                Paragraph(
-                    stringResource(R.string.lorem_ipsum),
-                    Modifier.padding(bottom = 24.dp)
-                )
-
-                SpinnerComponent(calendarViewModel, calendarViewStr)
-
-                WeekView(currentWeek, navController)
-                MonthView(navController)
-            }
-        }
     }
 }
 
 
 @Composable
-fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel = viewModel()) {
-    val showPeriodDialog: Boolean? by calendarViewModel.showPeriodDialog.observeAsState()
+fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel) {
+    val showPeriodDialog by calendarViewModel.showPeriodDialog.observeAsState()
     if (showPeriodDialog == true) {
         Dialog(onDismissRequest = { calendarViewModel.hideDialog() }) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.White
             ) {
-                ClearButton()
-                PeriodDialogLayout()
+                ClearButton { calendarViewModel.hideDialog() }
+                PeriodDialogLayout(calendarViewModel)
             }
         }
     }
 }
 
 @Composable
-fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel) {
 
-    val weekClicked: Boolean? by calendarViewModel.weekClicked.observeAsState()
-    val bColorWeekBtn: Long? by calendarViewModel.bColorWeekBtn.observeAsState()
-    val bColorMonthBtn: Long? by calendarViewModel.bColorMonthBtn.observeAsState()
-    val txtColorWeekBtn: Long? by calendarViewModel.txtColorWeekBtn.observeAsState()
-    val txtColorMonthBtn: Long? by calendarViewModel.txtColorMonthBtn.observeAsState()
+    val weekClicked by calendarViewModel.weekClicked.observeAsState()
+    val bColorWeekBtn by calendarViewModel.bColorWeekBtn.observeAsState()
+    val bColorMonthBtn by calendarViewModel.bColorMonthBtn.observeAsState()
+    val txtColorWeekBtn by calendarViewModel.txtColorWeekBtn.observeAsState()
+    val txtColorMonthBtn by calendarViewModel.txtColorMonthBtn.observeAsState()
 
     Column(
         modifier = Modifier
@@ -113,9 +113,11 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel = viewModel()) {
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            HeaderMedium(
+            TitleText(
                 stringResource(R.string.choose_period),
-                Modifier.padding(bottom = 24.dp)
+                Modifier.padding(bottom = 24.dp),
+                MaterialTheme.typography.h6,
+                Color.Black
             )
 
             CalendarViewOption(
@@ -174,7 +176,7 @@ fun CalendarViewOption(text: String, bgColor: Color, txtColor: Color, onClick: (
 
 
 @Composable
-fun SpinnerComponent(calendarViewModel: CalendarHomeViewModel, calendarViewStr: String) {
+fun SpinnerComponent(showDialog: () -> Unit, calendarViewStr: String) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -188,7 +190,7 @@ fun SpinnerComponent(calendarViewModel: CalendarHomeViewModel, calendarViewStr: 
             modifier = Modifier.align(Alignment.CenterVertically)
         )
 
-        IconButton(onClick = { calendarViewModel.showDialog() }) {
+        IconButton(onClick = showDialog) {
             Icon(
                 Icons.Default.KeyboardArrowRight,
                 contentDescription = stringResource(R.string.spinner_component_btn_desc),

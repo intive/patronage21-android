@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.calendar.screens.AddEventScreen
+import com.intive.calendar.viewmodels.AddEventViewModel
 import com.intive.ui.PatronativeTheme
 
 
 class AddEventFragment : Fragment() {
+
+    private val viewModel: AddEventViewModel by viewModels()
 
     @ExperimentalComposeUiApi
     override fun onCreateView(
@@ -23,7 +27,14 @@ class AddEventFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    view?.let { AddEventScreen(it, requireContext(), findNavController()) }
+                    view?.let {
+                        AddEventScreen(
+                            it,
+                            requireContext(),
+                            findNavController(),
+                            viewModel
+                        )
+                    }
                 }
             }
         }

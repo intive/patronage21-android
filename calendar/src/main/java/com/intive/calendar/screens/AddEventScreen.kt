@@ -8,21 +8,21 @@ import android.widget.DatePicker
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.android.material.snackbar.Snackbar
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
 import com.intive.calendar.components.*
-import com.intive.ui.components.HeaderMedium
 import com.intive.ui.components.TitleText
 
 @ExperimentalComposeUiApi
@@ -31,19 +31,19 @@ fun AddEventScreen(
     view: View,
     context: Context,
     navController: NavController,
-    addEventViewModel: AddEventViewModel = viewModel()
+    addEventViewModel: AddEventViewModel
 ) {
 
-    val date: Calendar? by addEventViewModel.date.observeAsState()
-    val hourStart: Int? by addEventViewModel.hourStart.observeAsState()
-    val hourEnd: Int? by addEventViewModel.hourEnd.observeAsState()
-    val minutesStart: Int? by addEventViewModel.minutesStart.observeAsState()
-    val minutesEnd: Int? by addEventViewModel.minutesEnd.observeAsState()
-    val inputValue: String? by addEventViewModel.inputValue.observeAsState()
-    val checkboxJS: Boolean? by addEventViewModel.checkboxJS.observeAsState()
-    val checkboxJava: Boolean? by addEventViewModel.checkboxJava.observeAsState()
-    val checkboxQA: Boolean? by addEventViewModel.checkboxQA.observeAsState()
-    val checkboxMobile: Boolean? by addEventViewModel.checkboxMobile.observeAsState()
+    val date by addEventViewModel.date.observeAsState()
+    val hourStart by addEventViewModel.hourStart.observeAsState()
+    val hourEnd by addEventViewModel.hourEnd.observeAsState()
+    val minutesStart by addEventViewModel.minutesStart.observeAsState()
+    val minutesEnd by addEventViewModel.minutesEnd.observeAsState()
+    val inputValue by addEventViewModel.inputValue.observeAsState()
+    val checkboxJS by addEventViewModel.checkboxJS.observeAsState()
+    val checkboxJava by addEventViewModel.checkboxJava.observeAsState()
+    val checkboxQA by addEventViewModel.checkboxQA.observeAsState()
+    val checkboxMobile by addEventViewModel.checkboxMobile.observeAsState()
 
     val c: Calendar = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
@@ -84,7 +84,7 @@ fun AddEventScreen(
         Column(modifier = Modifier.weight(1f)) {
 
             TitleText(stringResource(R.string.add_event), Modifier.padding(bottom = 24.dp))
-            InputText(inputValue!!)
+            InputText(inputValue!!, addEventViewModel)
 
             Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                 PickerRow(
@@ -104,9 +104,11 @@ fun AddEventScreen(
                 )
             }
 
-            HeaderMedium(
-                text = stringResource(R.string.add_event_checkbox_header),
-                Modifier.padding(bottom = 24.dp)
+            TitleText(
+                stringResource(R.string.add_event_checkbox_header),
+                Modifier.padding(bottom = 24.dp),
+                MaterialTheme.typography.h6,
+                Color.Black
             )
 
             CheckboxComponent(

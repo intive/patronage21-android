@@ -23,25 +23,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.calendar.R
-import com.intive.calendar.domain.*
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
 import com.intive.calendar.utils.weekDaysCalendarClass
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
+import com.intive.repository.domain.model.DayWeek
+import com.intive.repository.domain.model.Event
+
 
 @Composable
 fun WeekView(
-    currentWeek: Array<DayWeek>?,
+    currentWeek: Array<DayWeek>,
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel = viewModel()
+    calendarViewModel: CalendarHomeViewModel
 ) {
-    val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
-    val header: String? by calendarViewModel.weekHeader.observeAsState()
+    val showWeekView by calendarViewModel.showWeekView.observeAsState()
+    val header by calendarViewModel.weekHeader.observeAsState()
 
     if (showWeekView == true) {
         CalendarHeader(
@@ -54,14 +55,13 @@ fun WeekView(
 
 @Composable
 fun DaysList(
-    currentWeek: Array<DayWeek>?,
+    currentWeek: Array<DayWeek>,
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            currentWeek?.get(it)
-                ?.let { day -> DaysListItem(it, navController, day) }
+            DaysListItem(it, navController, currentWeek[it])
         }
     }
 }

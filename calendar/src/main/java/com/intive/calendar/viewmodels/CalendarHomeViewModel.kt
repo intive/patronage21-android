@@ -3,8 +3,10 @@ package com.intive.calendar.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.intive.calendar.domain.*
 import com.intive.calendar.utils.*
+import com.intive.repository.domain.model.Day
+import com.intive.repository.domain.model.DayWeek
+import com.intive.repository.domain.model.Event
 import java.util.*
 
 class CalendarHomeViewModel : ViewModel() {

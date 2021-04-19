@@ -1,4 +1,4 @@
-package com.intive.calendar.domain
+package com.intive.repository.domain.model
 
 import java.util.*
 

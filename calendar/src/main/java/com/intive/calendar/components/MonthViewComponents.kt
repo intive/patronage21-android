@@ -20,29 +20,29 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
-import com.intive.calendar.domain.Day
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.repository.domain.model.Day
+
 
 @ExperimentalFoundationApi
 @Composable
 fun MonthView(
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel = viewModel()
+    calendarViewModel: CalendarHomeViewModel
 ) {
-    val showWeekView: Boolean? by calendarViewModel.showWeekView.observeAsState()
-    val header: String? by calendarViewModel.monthHeader.observeAsState()
+    val showWeekView by calendarViewModel.showWeekView.observeAsState()
+    val header by calendarViewModel.monthHeader.observeAsState()
 
     if (showWeekView == false) {
         CalendarHeader(
             header!!,
             { calendarViewModel.goToPreviousMonth() },
             { calendarViewModel.goToNextMonth() })
-        CalendarGrid(navController)
+        CalendarGrid(navController, calendarViewModel)
     }
 }
 
@@ -50,10 +50,10 @@ fun MonthView(
 @Composable
 fun CalendarGrid(
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel = viewModel()
+    calendarViewModel: CalendarHomeViewModel
 ) {
 
-    val currentMonth: List<Any>? by calendarViewModel.currentMonth.observeAsState()
+    val currentMonth by calendarViewModel.currentMonth.observeAsState()
     val items = currentMonth?.toList()
 
     LazyVerticalGrid(

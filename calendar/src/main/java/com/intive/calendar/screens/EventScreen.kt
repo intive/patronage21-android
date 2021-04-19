@@ -1,7 +1,6 @@
 package com.intive.calendar.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,15 +15,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
-import com.intive.ui.components.HeaderMedium
 import com.intive.ui.components.TitleText
+import com.intive.ui.components.UsersHeader
 
 
 @Composable
@@ -37,7 +35,12 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
         Column(modifier = Modifier.weight(1f)) {
 
             TitleText(date, Modifier.padding(bottom = 24.dp))
-            HeaderMedium(name, Modifier.padding(bottom = 4.dp))
+            TitleText(
+                name,
+                Modifier.padding(bottom = 4.dp),
+                MaterialTheme.typography.h6,
+                Color.Black
+            )
 
             Text(
                 "${stringResource(R.string.hour)}: $time",
@@ -45,25 +48,12 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(colorResource(R.color.pale_blue))
-                    .padding(12.dp)
-            ) {
-                Text(
-                    stringResource(R.string.event_users_label),
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.secondary
-                )
+            UsersHeader(
+                text = stringResource(R.string.event_users_label),
+                count = 10,
+                showCount = true,
+            )
 
-                Text(
-                    "10",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.secondary
-                )
-            }
             UsersList()
         }
 

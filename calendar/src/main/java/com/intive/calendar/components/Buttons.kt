@@ -12,13 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.intive.calendar.R
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
 
 
 @Composable
-fun OKButton(text: String, onClick: () -> Unit){
+fun OKButton(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
@@ -52,12 +50,12 @@ fun CancelButton(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun ClearButton(calendarViewModel: CalendarHomeViewModel = viewModel()) {
+fun ClearButton(onClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.End,
         modifier = Modifier.padding(12.dp)
     ) {
-        IconButton(onClick = { calendarViewModel.hideDialog() }) {
+        IconButton(onClick = onClick) {
             Icon(
                 Icons.Default.Clear,
                 contentDescription = stringResource(R.string.exit_dialog_btn_desc),

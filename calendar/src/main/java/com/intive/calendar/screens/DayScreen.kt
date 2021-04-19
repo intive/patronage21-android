@@ -16,7 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
-import com.intive.calendar.domain.Event
+import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
 

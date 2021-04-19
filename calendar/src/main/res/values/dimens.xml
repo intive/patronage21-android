@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="margin_wide">24dp</dimen>
-    <dimen name="activity_padding">30dp</dimen>
-    <dimen name="appbar_elevation">50dp</dimen>
-    <dimen name="appbar_icons_spacer_size">5dp</dimen>
-</resources>
