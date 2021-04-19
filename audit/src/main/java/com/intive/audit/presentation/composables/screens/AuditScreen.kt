@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.intive.audit.R
 import com.intive.audit.audit_screen.Audit
+import com.intive.audit.presentation.audit.AuditViewModel
+import com.intive.audit.presentation.composables.AuditHeader
 import com.intive.ui.PatronageTypography
 import com.intive.ui.components.SectionHeader
 import com.intive.ui.components.SectionHeaderText
@@ -44,7 +46,8 @@ import java.util.*
 @Composable
 fun AuditScreen(
     modifier: Modifier = Modifier,
-    audits: List<Audit> = List(1000) { Audit(1, Date(), "Logowanie", "Adam Kowalski") }
+    audits: List<Audit> = List(1000) { Audit(1, Date(), "Logowanie", "Adam Kowalski") },
+    auditViewModel: AuditViewModel
 ) {
     Column(modifier) {
         val scrollState = rememberScrollState()
@@ -68,7 +71,8 @@ fun AuditScreen(
         AuditsList(
             modifier = Modifier
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            audits = audits
+            audits = audits,
+            auditViewModel = auditViewModel
         )
     }
 }
@@ -76,86 +80,25 @@ fun AuditScreen(
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-fun MyScreenContent(
-    modifier: Modifier = Modifier,
-    audits: List<Audit> = List(1000) { Audit(1, Date(), "Logowanie", "Adam Kowalski") }
-) {
-    Column(modifier = modifier.fillMaxHeight()) {
-        AuditsList(
-            audits,
-            Modifier
-                .weight(1f)
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-        )
-    }
-}
+fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier, auditViewModel: AuditViewModel) {
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
-@Composable
-fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
+    val query = auditViewModel.query.value
 
-    var showSearchField by remember { mutableStateOf(false) }
+    val showSearchField = auditViewModel.showSearchField.value
 
-    var showFilterField by remember { mutableStateOf(false) }
-
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-
-    val keyboardController = LocalSoftwareKeyboardController.current
+    val showFilterField = auditViewModel.showFilterField.value
 
     Column(modifier = modifier) {
-        SectionHeader(
-            title = {
-                SectionHeaderText(text = "Lista")
-            },
-            action = {
-                AnimatedVisibility(
-                    visible = showSearchField
-                ) {
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        maxLines = 1,
-                        value = text,
-                        onValueChange = {
-                            text = it
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Search
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onSearch = {
-                                keyboardController?.hideSoftwareKeyboard()
-                            }
-                        ),
-                        label = { Text("Wyszukaj") }
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = {
-                    showSearchField = !showSearchField
-                    if(showSearchField) text = TextFieldValue("")
-                }) {
-                    Icon(
-                        Icons.Outlined.Search,
-                        contentDescription = stringResource(R.string.search_icon_desc)
-                    )
-                }
-                IconButton(onClick = { showFilterField = !showFilterField }) {
-                    Icon(
-                        Icons.Outlined.FilterAlt,
-                        contentDescription = stringResource(R.string.filter_icon_desc)
-                    )
-                    DropdownDemo(
-                        expanded = showFilterField,
-                        updateExpand = { newExpanded ->
-                            showFilterField = !showFilterField
-                        }
-                    )
-                }
-            }
+
+        AuditHeader(
+            query = query,
+            onQueryChanged = auditViewModel::onQueryChanged,
+            showSearchField = showSearchField,
+            showFilterField = showFilterField,
+            onSearchIconClick = auditViewModel::onSearchIconClick,
+            onFilterIconClick = auditViewModel::onFilterIconClick
         )
+
         val listState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
 
@@ -286,18 +229,10 @@ fun AuditField(modifier: Modifier = Modifier, audit: Audit) {
     }
 }
 
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
-@Preview
-@Composable
-fun AuditScreenPreview() {
-    AuditScreen()
-}
-
-@ExperimentalComposeUiApi
-@ExperimentalAnimationApi
-@Preview
-@Composable
-fun MyScreenContentPreview() {
-    MyScreenContent()
-}
+//@ExperimentalComposeUiApi
+//@ExperimentalAnimationApi
+//@Preview
+//@Composable
+//fun AuditScreenPreview() {
+//    AuditScreen()
+//}

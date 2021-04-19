@@ -26,7 +26,9 @@ class AuditFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    AuditScreen()
+                    AuditScreen(
+                        auditViewModel = viewModel
+                    )
                 }
             }
         }
