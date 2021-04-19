@@ -2,7 +2,9 @@ package com.intive.audit.presentation.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -19,22 +21,22 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import com.intive.audit.R
-import com.intive.audit.presentation.composables.screens.DropdownDemo
 import com.intive.ui.components.SectionHeader
 import com.intive.ui.components.SectionHeaderText
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-fun AuditHeader(
+fun AuditListHeader(
     query: String,
     onQueryChanged: (String) -> Unit,
     showSearchField: Boolean,
     showFilterField: Boolean,
     onSearchIconClick: (Boolean) -> Unit,
     onFilterIconClick: (Boolean) -> Unit
-){
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     SectionHeader(
@@ -61,14 +63,20 @@ fun AuditHeader(
                             keyboardController?.hideSoftwareKeyboard()
                         }
                     ),
-                    label = { Text("Wyszukaj") }
+                    label = { Text("Wyszukaj") },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Outlined.Search,
+                            contentDescription = stringResource(R.string.search_icon_desc)
+                        )
+                    }
                 )
             }
         },
         actions = {
             IconButton(onClick = {
                 onSearchIconClick(!showSearchField)
-                if(showSearchField) onQueryChanged("")
+                if (showSearchField) onQueryChanged("")
             }) {
                 Icon(
                     Icons.Outlined.Search,
@@ -80,7 +88,7 @@ fun AuditHeader(
                     Icons.Outlined.FilterAlt,
                     contentDescription = stringResource(R.string.filter_icon_desc)
                 )
-                DropdownDemo(
+                FilterDropdown(
                     expanded = showFilterField,
                     updateExpand = { newExpanded ->
                         onFilterIconClick(!showFilterField)
