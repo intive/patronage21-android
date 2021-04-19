@@ -124,7 +124,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.calendar_module),
-                    onClick = { /*TODO: Place calendar module navDestination here*/ }
+                    onClick = { navController?.navigate(Uri.parse("intive://calendarFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.CalendarToday,
