@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Modules Names-->
+    <string name="tech_groups_module">Grupy technologiczne</string>
+    <string name="users_module">Użytkownicy</string>
+    <string name="diary_module">Dzienniczek</string>
+    <string name="calendar_module">Kalendarz</string>
+    <string name="logs_module">Audyt zdarzeń</string>
+    <string name="registration_module">Rejestracja</string>
+</resources>
