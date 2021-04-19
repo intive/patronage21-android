@@ -54,9 +54,7 @@ fun AuditsList(
 
         Box(
             modifier = Modifier
-                .fillMaxSize()
-
-            ,
+                .fillMaxSize(),
             contentAlignment = Alignment.BottomEnd
         ) {
             LazyColumn(
