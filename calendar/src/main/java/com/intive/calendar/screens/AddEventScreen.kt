@@ -84,7 +84,7 @@ fun AddEventScreen(
         Column(modifier = Modifier.weight(1f)) {
 
             TitleText(stringResource(R.string.add_event), Modifier.padding(bottom = 24.dp))
-            InputText(inputValue!!, addEventViewModel)
+            InputText(inputValue!!, addEventViewModel::setInputValue)
 
             Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                 PickerRow(

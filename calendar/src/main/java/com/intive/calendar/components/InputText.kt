@@ -7,15 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.intive.calendar.viewmodels.AddEventViewModel
 import com.intive.calendar.R
 
 @ExperimentalComposeUiApi
 @Composable
-fun InputText(textState: String, addEventViewModel: AddEventViewModel) {
+fun InputText(textState: String, setInputValue: (String) -> Unit) {
     TextField(
         value = textState,
-        onValueChange = { addEventViewModel.setInputValue(it) },
+        onValueChange = { setInputValue(it) },
         label = { Text(stringResource(R.string.add_event_hint)) },
         modifier = Modifier.fillMaxWidth()
     )
