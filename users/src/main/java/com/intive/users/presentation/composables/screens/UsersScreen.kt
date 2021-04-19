@@ -1,6 +1,5 @@
 package com.intive.users.presentation.composables.screens
 
-import android.preference.PreferenceActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -15,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.presentation.composables.PersonListItem
+import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
@@ -28,7 +27,7 @@ fun UsersScreen(
     navController: NavController
 ) {
 
-    val users = viewModel.users
+    val users = viewModel.users.value
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -87,7 +86,7 @@ fun UsersScreen(
         }
 
         itemsIndexed(users) { index, user ->
-            PersonListItem(user = user, onItemClick = {
+            UserListItem(user = user, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
             if (index != users.size - 1) {
@@ -121,7 +120,7 @@ fun UsersScreen(
         }
 
         itemsIndexed(users) { index, user ->
-            PersonListItem(user = user, onItemClick = {
+            UserListItem(user = user, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
             if (index != users.size - 1) {

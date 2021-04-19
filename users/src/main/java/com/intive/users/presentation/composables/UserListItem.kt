@@ -15,10 +15,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 
 @Composable
-fun PersonListItem(
+fun UserListItem(
     user: User,
     onItemClick: (User) -> Unit
 ) {

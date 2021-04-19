@@ -6,30 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class UsersViewModel(
     private val repository: Repository
 ) : ViewModel() {
-    val users = List(5) {
-        User(
-            firstName = "Jan",
-            lastName = "Kowalski",
-            gender = "Mężczyzna",
-            email = "jankowalski@gmal.com",
-            phoneNumber = "123456789",
-            github = "github.com/KowalskiJan",
-            bio = "Jestem programista"
-        )
-    }
-
+    val users = mutableStateOf<List<User>>(emptyList())
 
     init {
         viewModelScope.launch(Dispatchers.IO){
             try{
-                println("USERS: " + repository.getUsers())
+                users.value = repository.getUsers()
             } catch (e: Exception) {
                 println("EXCEPTION VM: " + e.localizedMessage)
             }

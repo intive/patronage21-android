@@ -1,7 +1,7 @@
 package com.intive.users.presentation.details
 
 import androidx.lifecycle.ViewModel
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 
 class DetailsViewModel : ViewModel(){
     data class Project(val name: String, val role: String)
@@ -14,6 +14,7 @@ class DetailsViewModel : ViewModel(){
         phoneNumber = "123456789",
         github = "github.com/KowalskiJan",
         bio = "Jestem programista",
+        role = "Candidate"
     )
 
     val projects = listOf(
