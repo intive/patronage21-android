@@ -1,9 +1,5 @@
-package com.intive.audit.audit_screen
+package com.intive.audit.presentation.composables.screens
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -12,47 +8,38 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.intive.audit.R
-import com.intive.ui.*
-import com.intive.ui.components.*
+import com.intive.audit.audit_screen.Audit
+import com.intive.ui.PatronageTypography
+import com.intive.ui.components.SectionHeader
+import com.intive.ui.components.SectionHeaderText
+import com.intive.ui.components.TitleText
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AuditFragment : Fragment() {
-
-    private val viewModel: AuditScreenViewModel by viewModels()
-
-    @ExperimentalAnimationApi
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                PatronativeTheme {
-                    AuditScreen()
-                }
-            }
-        }
-    }
-}
-
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun AuditScreen(
@@ -86,6 +73,7 @@ fun AuditScreen(
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun MyScreenContent(
@@ -102,13 +90,18 @@ fun MyScreenContent(
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
 
     var showSearchField by remember { mutableStateOf(false) }
+
     var showFilterField by remember { mutableStateOf(false) }
+
     var text by remember { mutableStateOf(TextFieldValue("")) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier) {
         SectionHeader(
@@ -126,6 +119,15 @@ fun AuditsList(audits: List<Audit>, modifier: Modifier = Modifier) {
                         onValueChange = {
                             text = it
                         },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Search
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onSearch = {
+                                keyboardController?.hideSoftwareKeyboard()
+                            }
+                        ),
                         label = { Text("Wyszukaj") }
                     )
                 }
@@ -284,6 +286,7 @@ fun AuditField(modifier: Modifier = Modifier, audit: Audit) {
     }
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Preview
 @Composable
@@ -291,6 +294,7 @@ fun AuditScreenPreview() {
     AuditScreen()
 }
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Preview
 @Composable
