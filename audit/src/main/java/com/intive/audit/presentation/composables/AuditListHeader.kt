@@ -63,7 +63,7 @@ fun AuditListHeader(
                             keyboardController?.hideSoftwareKeyboard()
                         }
                     ),
-                    label = { Text("Wyszukaj") },
+                    label = { Text(stringResource(R.string.search)) },
                     leadingIcon = {
                         Icon(
                             Icons.Outlined.Search,
