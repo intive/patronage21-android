@@ -42,6 +42,10 @@ android {
 
 
 dependencies {
+
+    implementation project(":ui")
+    implementation project(":repository")
+
     def nav_version = "2.3.4"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -98,6 +102,7 @@ dependencies {
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
-    implementation project(":ui")
-    implementation project(":repository")
+    //Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-beta03"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha08"
 }

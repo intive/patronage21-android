@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
@@ -27,11 +29,11 @@ fun UsersScreen(
     navController: NavController
 ) {
 
-    val users = viewModel.users.value
+    val users = viewModel.getCandidatesPagination().collectAsLazyPagingItems()
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
-    
+
     LazyColumn(
         state = lazyListState
     ) {
@@ -79,26 +81,24 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.leaders),
-                    count = users.size,
+                    count = users.itemCount,
                     showCount = true,
                 )
             }
         }
 
-        itemsIndexed(users) { index, user ->
-            UserListItem(user = user, onItemClick = {
+        items(users) { user ->
+            UserListItem(user = user!!, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
-            if (index != users.size - 1) {
-                Divider(
-                    color = Color(0xFFF1F1F1),
-                    thickness = 2.dp,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        end = 16.dp
-                    )
+            Divider(
+                color = Color(0xFFF1F1F1),
+                thickness = 2.dp,
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp
                 )
-            }
+            )
         }
 
         item {
@@ -112,27 +112,25 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.participants),
-                    count = users.size,
+                    count = users.itemCount,
                     showCount = true,
                 )
             }
 
         }
 
-        itemsIndexed(users) { index, user ->
-            UserListItem(user = user, onItemClick = {
+        items(users) { user ->
+            UserListItem(user = user!!, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
-            if (index != users.size - 1) {
-                Divider(
-                    color = Color(0xFFF1F1F1),
-                    thickness = 2.dp,
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        end = 16.dp
-                    )
+            Divider(
+                color = Color(0xFFF1F1F1),
+                thickness = 2.dp,
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp
                 )
-            }
+            )
         }
     }
 

@@ -4,31 +4,28 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.intive.repository.network.CandidatesSource
+import kotlinx.coroutines.flow.Flow
 
 class UsersViewModel(
     private val repository: Repository
 ) : ViewModel() {
-    val users = mutableStateOf<List<User>>(emptyList())
-
-    init {
-        viewModelScope.launch(Dispatchers.IO){
-            try{
-                users.value = repository.getUsers()
-            } catch (e: Exception) {
-                println("EXCEPTION VM: " + e.localizedMessage)
-            }
-        }
-    }
 
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
 
     fun onQueryChanged(value: String) {
         _query.value = value
+    }
+
+    fun getCandidatesPagination(): Flow<PagingData<User>> {
+        return Pager(PagingConfig(pageSize = 24)) {
+            CandidatesSource(repository)
+        }.flow
     }
 }

@@ -55,4 +55,8 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
+    //Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-beta03"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha08"
 }
