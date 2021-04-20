@@ -13,4 +13,8 @@ class RepositoryImpl(
             mapper.mapToDomainModel(user)
         }
     }
+
+    override suspend fun getTechnologyGroups(): List<String> {
+        return networkRepository.getTechnologyGroups()
+    }
 }
