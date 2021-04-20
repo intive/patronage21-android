@@ -26,6 +26,8 @@ import com.intive.audit.R
 import com.intive.ui.components.SectionHeader
 import com.intive.ui.components.SectionHeaderText
 
+const val MAX_TEXT_FIELD_LENGTH = 50
+
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
@@ -38,8 +40,6 @@ fun AuditListHeader(
     onFilterIconClick: (Boolean) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    val maxTextFieldLength = 50
 
     SectionHeader(
         title = {
@@ -54,7 +54,7 @@ fun AuditListHeader(
                     maxLines = 1,
                     value = query,
                     onValueChange = {
-                        if (it.length <= maxTextFieldLength) onQueryChanged(it)
+                        if (it.length <= MAX_TEXT_FIELD_LENGTH) onQueryChanged(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
