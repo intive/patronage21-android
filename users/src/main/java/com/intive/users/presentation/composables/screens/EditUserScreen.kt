@@ -1,55 +1,38 @@
 package com.intive.users.presentation.composables.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusOrder
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory
-import androidx.compose.ui.focus.focusOrder
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.intive.users.R
 import com.intive.users.domain.User
 import com.intive.ui.components.Spinner
 import com.intive.users.presentation.composables.ImageEdit
 import com.intive.users.presentation.edit_user.EditUserViewModel
 
+const val MAX_TEXT_FIELD_LENGTH = 35
+
 @ExperimentalComposeUiApi
 @Composable
 fun EditUserScreen(
     navController: NavController,
     user: User,
-    viewModel: EditUserViewModel,
 ) {
     val firstName = mutableStateOf(user.firstName)
     val lastName = mutableStateOf(user.lastName)
@@ -60,8 +43,6 @@ fun EditUserScreen(
 
     val scrollState = rememberScrollState()
 
-    val maxTextFieldLength = 20
-
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -70,7 +51,6 @@ fun EditUserScreen(
             .fillMaxWidth()
             .fillMaxHeight()
             .padding(start = 20.dp, end = 20.dp),
-        // verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ImageEdit(
@@ -92,7 +72,7 @@ fun EditUserScreen(
             maxLines = 1,
             value = firstName.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength
+                if (it.length <= MAX_TEXT_FIELD_LENGTH
                     &&
                     it.all { char -> char.isLetter() }
                 ) {
@@ -118,7 +98,7 @@ fun EditUserScreen(
             maxLines = 1,
             value = lastName.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength
+                if (it.length <= MAX_TEXT_FIELD_LENGTH
                     &&
                     it.all { char -> char.isLetter() }
                 ) {
@@ -144,7 +124,7 @@ fun EditUserScreen(
             maxLines = 1,
             value = email.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength) {
+                if (it.length <= MAX_TEXT_FIELD_LENGTH) {
                     email.value = it
                     user.email = it
                 }
@@ -167,7 +147,7 @@ fun EditUserScreen(
             maxLines = 1,
             value = phoneNumber.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength) {
+                if (it.length <= MAX_TEXT_FIELD_LENGTH) {
                     phoneNumber.value = it
                     user.phoneNumber = it
                 }
@@ -190,7 +170,7 @@ fun EditUserScreen(
             maxLines = 1,
             value = github.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength) {
+                if (it.length <= MAX_TEXT_FIELD_LENGTH) {
                     github.value = it
                     user.github = it
                 }
@@ -212,10 +192,8 @@ fun EditUserScreen(
                 .fillMaxWidth(),
             value = bio.value,
             onValueChange = {
-                if (it.length <= maxTextFieldLength) {
-                    bio.value = it
-                    user.bio = it
-                }
+                bio.value = it
+                user.bio = it
             },
             label = { Text(text = stringResource(R.string.bio)) },
             keyboardOptions = KeyboardOptions(
