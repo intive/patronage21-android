@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import com.intive.users.R
 import com.intive.users.domain.User
 import com.intive.ui.components.Spinner
+import com.intive.users.presentation.composables.ImageEdit
 import com.intive.users.presentation.edit_user.EditUserViewModel
 
 @Composable
@@ -52,27 +53,9 @@ fun EditUserScreen(
         // verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            contentAlignment = Alignment.BottomEnd,
-            modifier = Modifier
-                .padding(top = 15.dp)
-                .size(150.dp)
-
-        ) {
-            Image(
-                bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-                    .clickable { /*TODO: place photo chosing here*/ }
-            )
-            Icon(
-                imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.edit_icon)
-            )
-        }
+        ImageEdit(
+                onClick = { /*TODO: goto Image Chooser*/ }
+        )
         Spacer(modifier = Modifier.size(10.dp))
         Row {
             Spinner(
