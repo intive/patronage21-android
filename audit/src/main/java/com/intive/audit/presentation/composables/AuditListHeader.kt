@@ -39,6 +39,8 @@ fun AuditListHeader(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val maxTextFieldLength = 50
+
     SectionHeader(
         title = {
             SectionHeaderText(text = stringResource(R.string.logs_module))
@@ -52,7 +54,7 @@ fun AuditListHeader(
                     maxLines = 1,
                     value = query,
                     onValueChange = {
-                        onQueryChanged(it)
+                        if (it.length <= maxTextFieldLength) onQueryChanged(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
