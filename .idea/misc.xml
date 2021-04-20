@@ -8,11 +8,9 @@
         <entry key="..\:/Intive/Patronative/app/src/main/res/layout/activity_main.xml" value="0.21739130434782608" />
         <entry key="..\:/Intive/Patronative/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/masla/Documents/Patronage-Project/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/apki/commonelements/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_13" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

@@ -12,4 +12,26 @@
     <string name="select_data">Wybierz dane do nowej kolumny.</string>
     <string name="save_data">Zapisz</string>
     <string name="cancel">Anuluj</string>
+    <string name="addcolumn_button_description">"Open popup to add column"</string>
+    <string-array name="addcolumn_spinner">
+        <item>"Grupa"</item>
+        <item>"Ostatnia ocena"</item>
+        <item>"Ocena za etap I"</item>
+        <item>"Ocena za etap II"</item>
+        <item>"Ocena za etap III"</item>
+        <item>"Ocena za etap IV"</item>
+        <item>"Ocena za etap V"</item>
+    </string-array>
+    <string-array name="groups_spinner">
+        <item>"Wszystkie grupy"</item>
+        <item>"Java"</item>
+        <item>"QA"</item>
+        <item>"Android"</item>
+        <item>"JavaScript"</item>
+    </string-array>
+    <string-array name="sort_spinner">
+        <item>"Od najwyższych ocen"</item>
+        <item>"Od najniższych ocen"</item>
+        <item>"Alfabetycznie"</item>
+    </string-array>
 </resources>

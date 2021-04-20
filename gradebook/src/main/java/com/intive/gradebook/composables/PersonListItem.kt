@@ -17,14 +17,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.intive.gradebook.Person
-import com.intive.gradebook.DetailsViewModel.Grade
+import com.intive.gradebook.domain.Person
+import com.intive.gradebook.domain.Grade
 import com.intive.gradebook.R
 
 @Composable
 fun PersonListItem(
     person: Person,
-    addedColumn: String="",
+    addedColumn: String = "",
     onItemClick: (Person) -> Unit
 ) {
     Row(
@@ -36,16 +36,16 @@ fun PersonListItem(
                 end = 16.dp
             )
             .clickable {
-                   onItemClick(person)
+                onItemClick(person)
             },
         verticalAlignment = Alignment.CenterVertically,
 
-    ) {
+        ) {
         Row(modifier = Modifier.fillMaxWidth(0.50f))
         {
             Image(
                 bitmap = ImageBitmap.imageResource(id = com.intive.gradebook.R.drawable.aaa),
-                contentDescription = null,
+                contentDescription = "Random guy",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(start = 16.dp)
@@ -62,8 +62,7 @@ fun PersonListItem(
             )
         }
         Row(modifier = Modifier.fillMaxWidth(0.60f)) {
-            if(addedColumn!="")
-            {
+            if (addedColumn != "") {
                 Text(
                     text = "Lorem ipsum",
                     fontSize = 15.sp,

@@ -1,20 +1,15 @@
 package com.intive.gradebook.composables.screens
 
-import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -25,27 +20,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.gradebook.DetailsViewModel
-import com.intive.gradebook.Person
+import com.intive.gradebook.domain.Person
+import com.intive.gradebook.domain.Grade
 import com.intive.gradebook.R
 import com.intive.gradebook.composables.Header
 import com.intive.gradebook.composables.GradeListItem
 
 @Composable
 fun DetailsScreen(
-     navController: NavController,
-     user: Person,
-     grades: List<DetailsViewModel.Grade>
+    navController: NavController,
+    user: Person,
+    grades: List<Grade>
 ) {
     val context = LocalContext.current.resources
     val displayMetrics = context.displayMetrics
-    val dsize = displayMetrics.heightPixels/displayMetrics.density
+    val dsize = displayMetrics.heightPixels / displayMetrics.density
 
-    Column (Modifier.height(dsize.dp-115.dp)) {
+    Column(Modifier.height(dsize.dp - 115.dp)) {
         Row(Modifier.height(90.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(
                 bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-                contentDescription = null,
+                contentDescription = "Random guy",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(16.dp)
@@ -63,14 +58,14 @@ fun DetailsScreen(
             )
         }
         Header(
-            text = stringResource(R.string.grades),
+            text_col1 = stringResource(R.string.grades),
             count = grades.size, showCount = true
         )
         Column(Modifier.verticalScroll(rememberScrollState())) {
             grades.forEach { grade ->
                 GradeListItem(grade)
                 Divider(
-                    color = Color(0xFFF1F1F1),
+                    color = Color.LightGray,
                     thickness = 2.dp
                 )
             }
@@ -80,12 +75,12 @@ fun DetailsScreen(
     Row(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
-    ){
+    ) {
         Header(
-            text = stringResource(R.string.average_grade),
-            text2 = "${4.5}${stringResource(R.string.max_grade)}",
+            text_col1 = stringResource(R.string.average_grade),
+            text_col2 = "${4.5}${stringResource(R.string.max_grade)}",
             showText2 = true,
-            backgroundColor = Color(0xFFC2185A),
+            backgroundColor = MaterialTheme.colors.primaryVariant,
             textColor = Color.White,
             fraction = 0.85f
         )

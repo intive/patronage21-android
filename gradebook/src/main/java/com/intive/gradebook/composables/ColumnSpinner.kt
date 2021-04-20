@@ -28,7 +28,7 @@ fun ColumnSpinner(
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 OutlinedTextField(
                     value = text.value,
                     onValueChange = { text.value = it },
@@ -77,7 +77,8 @@ fun DropDownListColumn(
                     selectedString(it)
                 }
             ) {
-                Text(it,
+                Text(
+                    it,
                     modifier = Modifier.wrapContentWidth()
                 )
             }

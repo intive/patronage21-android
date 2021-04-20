@@ -10,20 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.intive.gradebook.DetailsViewModel
 import com.intive.gradebook.R
+import com.intive.gradebook.domain.Grade
 
 @Composable
-fun GradeListItem(grade: DetailsViewModel.Grade) {
-    var g=grade.grade
-    var i=g.toInt()
-    var fin=""
-    if(g==i.toDouble())
-        fin=i.toString() + stringResource(R.string.max_grade)
+fun GradeListItem(grade: Grade) {
+    val gradeDouble = grade.grade
+    val gradeInt = gradeDouble.toInt()
+    val gradePrint: String
+    if (gradeDouble == gradeInt.toDouble())
+        gradePrint = gradeInt.toString() + stringResource(R.string.max_grade)
     else
-        fin=g.toString() + stringResource(R.string.max_grade)
+        gradePrint = gradeDouble.toString() + stringResource(R.string.max_grade)
     Column(modifier = Modifier.padding(16.dp)) {
-        Row(modifier=Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = grade.name,
                 fontWeight = FontWeight.Bold,
@@ -32,7 +32,7 @@ fun GradeListItem(grade: DetailsViewModel.Grade) {
                     .fillMaxWidth(0.9f)
             )
             Text(
-                text=fin,
+                text = gradePrint,
                 fontWeight = FontWeight.Bold
             )
         }

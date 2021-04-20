@@ -28,7 +28,7 @@ fun SortSpinner(
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 OutlinedTextField(
                     value = text.value,
                     onValueChange = { text.value = it },
@@ -77,7 +77,8 @@ fun DropDownListSort(
                     selectedString(it)
                 }
             ) {
-                Text(it,
+                Text(
+                    it,
                     modifier = Modifier.wrapContentWidth()
                 )
             }

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.compose.ui:ui-viewbinding:1.0.0-beta01@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/013c7ed41af3f84988db519eef61fd94/transformed/jetified-ui-viewbinding-1.0.0-beta01/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/013c7ed41af3f84988db519eef61fd94/transformed/jetified-ui-viewbinding-1.0.0-beta01/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/013c7ed41af3f84988db519eef61fd94/transformed/jetified-ui-viewbinding-1.0.0-beta01/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-viewbinding/1.0.0-beta01/9591207adfea76dbcd65e6b1c79ad9a34dc92d86/ui-viewbinding-1.0.0-beta01-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

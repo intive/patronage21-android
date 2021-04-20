@@ -10,15 +10,14 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.gradebook.R
-import com.intive.gradebook.GradebookViewModel
+import com.intive.gradebook.gradebook.GradebookViewModel
 import com.intive.gradebook.composables.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -27,7 +26,7 @@ fun GradebookScreen(
     viewModel: GradebookViewModel,
     navController: NavController
 ) {
-    val (showDialog, setShowDialog) =  remember { mutableStateOf(false) }
+    val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     val setting = remember { mutableStateOf("") }
     Column {
         val users = viewModel.users
@@ -48,22 +47,14 @@ fun GradebookScreen(
                     ScreenInfo()
                     Spacer(modifier = Modifier.padding(16.dp))
                     GroupsSpinner(
-                        groups = listOf(
-                            "Wszystkie grupy",
-                            "Java",
-                            "QA",
-                            "Android",
-                            "JavaScript"
-                        )) {
+                        groups = stringArrayResource(id = R.array.groups_spinner).asList()
+                    ) {
 
                     }
                     Spacer(modifier = Modifier.padding(16.dp))
                     SortSpinner(
-                        groups = listOf(
-                            "Od najwyższych ocen",
-                            "Od najniższych ocen",
-                            "Alfabetycznie"
-                        )) {
+                        groups = stringArrayResource(id = R.array.sort_spinner).asList()
+                    ) {
 
                     }
                 }
@@ -77,23 +68,25 @@ fun GradebookScreen(
                             end = 16.dp
                         )
                 ) {
-                    Header(text = stringResource(id = R.string.participants),
-                        text2 = stringResource(id = R.string.average_grade),
-                        text3 = setting.value,
+                    Header(
+                        text_col1 = stringResource(id = R.string.participants),
+                        text_col2 = stringResource(id = R.string.average_grade),
+                        text_col3 = setting.value,
                         showText2 = true,
                         showText3 = true,
                         fraction = 0.50f,
-                        fraction2 = 0.60f)
+                        fraction2 = 0.60f
+                    )
                 }
 
             }
 
             items(users) { person ->
-                PersonListItem(person = person,onItemClick = {
+                PersonListItem(person = person, onItemClick = {
                     navController.navigate(R.id.action_gradebookFragment_to_detailsFragment)
                 }, addedColumn = setting.value)
                 Divider(
-                    color = Color(0xFFF1F1F1),
+                    color = Color.LightGray,
                     thickness = 2.dp,
                     modifier = Modifier.padding(
                         start = 16.dp,
@@ -111,18 +104,18 @@ fun GradebookScreen(
         verticalAlignment = Alignment.Bottom
     ) {
         FloatingActionButton(
-            backgroundColor = Color(0xFFC2185A),
+            backgroundColor = MaterialTheme.colors.primaryVariant,
             contentColor = Color.White,
-            onClick = {setShowDialog(true)}
+            onClick = { setShowDialog(true) }
         ) {
-            Icon(Icons.Filled.Add, "")
+            Icon(Icons.Filled.Add, stringResource(id = R.string.select_data))
         }
     }
-    var addedColumn="Grupa"
+    var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
     if (showDialog) {
         AlertDialog(
             onDismissRequest = {},
-            text= {
+            text = {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -135,28 +128,23 @@ fun GradebookScreen(
                         fontWeight = FontWeight.Bold
                     )
                     ColumnSpinner(
-                        columns = listOf(
-                            "Grupa",
-                            "Ostatnia ocena",
-                            "Ocena za etap I",
-                            "Ocena za etap II",
-                            "Ocena za etap III",
-                            "Ocena za etap IV",
-                            "Ocena za etap V",
-                        )
+                        columns = stringArrayResource(id = R.array.addcolumn_spinner).asList()
                     ) {
-                        addedColumn=it
+                        addedColumn = it
                     }
                 }
             },
             dismissButton = {
-                Column (horizontalAlignment = Alignment.CenterHorizontally){
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Button(
                         onClick = {
                             setting.value = addedColumn
                             setShowDialog(false)
                         },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFC2185A)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
                         shape = RoundedCornerShape(24.dp),
                         modifier = Modifier
                             .height(50.dp)
@@ -171,12 +159,15 @@ fun GradebookScreen(
                 }
             },
             confirmButton = {
-                Column (horizontalAlignment = Alignment.CenterHorizontally){
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Button(
                         onClick = {
                             setShowDialog(false)
                         },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFC2185A)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
                         shape = RoundedCornerShape(24.dp),
                         modifier = Modifier
                             .height(50.dp)

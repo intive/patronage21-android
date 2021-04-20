@@ -5,23 +5,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.intive.ui.R
 
 @Composable
 fun Header(
-    text: String,
-    text2: String?=null,
-    text3: String?=null,
-    textColor: Color = Color(0xFF52BCFF),
-    backgroundColor: Color = Color(0xFFEFF9FF),
+    text_col1: String,
+    text_col2: String? = null,
+    text_col3: String? = null,
+    textColor: Color = MaterialTheme.colors.secondary,
+    backgroundColor: Color = colorResource(R.color.light_blue0),
     count: Int? = null,
     showCount: Boolean = false,
     showText2: Boolean = false,
@@ -38,7 +41,7 @@ fun Header(
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = text,
+                text = text_col1,
                 color = textColor,
                 fontSize = 18.sp,
                 style = TextStyle(fontWeight = FontWeight.Bold),
@@ -46,13 +49,13 @@ fun Header(
                     .padding(start = 16.dp)
                     .fillMaxWidth(fraction)
             )
-            if(text3 != null && showText3) {
+            if (text_col3 != null && showText3) {
                 Text(
-                    text = text3,
+                    text = text_col3,
                     color = textColor,
                     fontSize = 18.sp,
                     style = TextStyle(fontWeight = FontWeight.Bold),
-                    modifier=Modifier.fillMaxWidth(fraction2)
+                    modifier = Modifier.fillMaxWidth(fraction2)
                 )
             }
             if (count != null && showCount) {
@@ -61,10 +64,9 @@ fun Header(
                     color = textColor,
                     fontSize = 16.sp
                 )
-            }
-            else if(text2 != null && showText2) {
+            } else if (text_col2 != null && showText2) {
                 Text(
-                    text = text2,
+                    text = text_col2,
                     color = textColor,
                     fontSize = 18.sp,
                     style = TextStyle(fontWeight = FontWeight.Bold)
