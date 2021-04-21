@@ -167,38 +167,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             date.add(Calendar.DAY_OF_MONTH, 1)
             weekArray += date.clone() as Calendar
         }
-
-        /*
-        runBlocking {
-
-            val job: Job = launch(context = Dispatchers.IO) {
-
-                try {
-                    events = repository.getEvents("1-04-2021", "30-04-2021")
-                    /*
-                    Log.d("kliku", events.toString())
-
-                    for (i in 1 until events!!.size) {
-                        for(j in 1 until _currentWeek.value!!.size){
-                            if(getDateString(_currentWeek.value!![j].date) == events!![i].date){
-                                Log.d("klikuIN", "xyz")
-                                _currentWeek.value!![j].events += events!![i]
-                            }
-                        }
-                    }
-
-                     */
-
-                } catch (e: KotlinNullPointerException) {
-                } catch (e: HttpException) {
-                }
-            }
-
-            job.join()
-        }
-
-         */
-
+        
         getWeekEvents(firstDay, getDateString(weekArray[0]), getDateString(weekArray[6]))
         return weekArray
     }
