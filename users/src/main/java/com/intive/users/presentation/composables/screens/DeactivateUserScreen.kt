@@ -26,7 +26,7 @@ fun DeactivateUserScreen(
     viewModel: DeactivateUserViewModel,
     navController: NavController
 ) {
-    val query = mutableStateOf("")
+    val lastName = viewModel.lastName
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -54,9 +54,8 @@ fun DeactivateUserScreen(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = query.value,
+            value = lastName.value,
             onValueChange = {
-                query.value = it
                 viewModel.onValueChange(it)
             },
             label = { Text(text = stringResource(R.string.last_name)) },
