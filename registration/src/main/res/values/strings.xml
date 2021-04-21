@@ -10,7 +10,7 @@
     <string name="registration_subtitle">Wystarczy, że wypełnisz poniższy formularz zgłoszeniowy.</string>
     <string name="create_account_button">Załóż konto</string>
     <string name="phone_number_hint">Numer telefonu *</string>
-    <string name="github_url_hint">Github</string>
+    <string name="github_url_hint">Github URL</string>
     <string name="confirm_password_hint">Potwierdź hasło *</string>
     <string name="password_hint">Hasło *</string>
     <string name="login_hint">Login *</string>

@@ -4,9 +4,14 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId 'com.intive.patronative'
@@ -42,9 +47,12 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.navigation:navigation-runtime:2.3.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def nav_version = "2.3.4"
 
     implementation project(":ui")
+    implementation project(":calendar")
     implementation project(":repository")
     implementation project(":audit")
     implementation project(":users")
@@ -86,8 +94,10 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-rxjava2:1.0.0-beta01"
 
     // UI Tests
-     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
-     
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
     def appCenterSdkVersion = '4.1.0'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
@@ -103,4 +113,5 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
 }

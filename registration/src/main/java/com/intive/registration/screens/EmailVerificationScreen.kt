@@ -22,7 +22,7 @@ import com.intive.registration.components.CustomButton
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.viewmodels.EmailVerificationViewModel
-import com.intive.registration.viewmodels.RegistrationSuccessDialog
+import com.intive.registration.viewmodels.RegistrationSuccessDialogState
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.components.TitleText
 
@@ -60,7 +60,7 @@ fun EmailVerificationScreen(
             onClick = {
                 val action =
                     if (viewmodel.isCodeCorrect()) {
-                        sharedViewModel.successDialog = RegistrationSuccessDialog.SHOW_DIALOG
+                        sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
                         EmailVerificationFragmentDirections.actionSuccess()
                     } else {
                         EmailVerificationFragmentDirections.actionError()

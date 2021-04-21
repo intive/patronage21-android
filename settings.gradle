@@ -4,5 +4,6 @@ include ':users'
 
 include ':ui'
 include ':registration'
+include ':calendar'
 include ':audit'
 include ':repository'
