@@ -30,4 +30,16 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             role = domainModel.role
         )
     }
+
+    fun mapToDomainList(model: List<UserDto>): List<User> {
+        return model.map { user ->
+            mapToDomainModel(user)
+        }
+    }
+
+    fun mapFromDomainList(model: List<User>): List<UserDto> {
+        return model.map { user ->
+            mapFromDomainModel(user)
+        }
+    }
 }

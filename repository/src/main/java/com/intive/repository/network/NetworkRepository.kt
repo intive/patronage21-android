@@ -3,9 +3,11 @@ package com.intive.repository.network
 import com.intive.repository.network.response.UsersResponse
 
 class NetworkRepository(private val usersService: UsersService) {
-    suspend fun getCandidates(
+
+    suspend fun getUsersByRole(
+        role: String,
         page: Int
     ): UsersResponse {
-        return usersService.getCandidates(page = page)
+        return usersService.getUsersByRole(role = role, page = page)
     }
 }

@@ -1,13 +1,11 @@
 package com.intive.repository
 
+import androidx.paging.PagingData
 import com.intive.repository.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface Repository {
-    suspend fun getCandidates(
-        page: Int
-    ): List<User>
-
-    suspend fun getLeaders(
-        page: Int
-    ): List<User>
+    suspend fun getUsersByRole(
+        role: String
+    ): Flow<PagingData<User>>
 }

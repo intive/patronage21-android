@@ -4,9 +4,15 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.User
+import com.intive.repository.network.util.UserDtoMapper
 
 
-class CandidatesSource(private val repository: Repository) : PagingSource<Int, User>() {
+class CandidatesSource(
+    private val networkRepository: NetworkRepository,
+    private val usersMapper: UserDtoMapper,
+    private val role: String
+    ) : PagingSource<Int, User>() {
+
     override fun getRefreshKey(state: PagingState<Int, User>): Int? {
         TODO("Not yet implemented")
     }
@@ -14,9 +20,9 @@ class CandidatesSource(private val repository: Repository) : PagingSource<Int, U
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         return try {
             val page = params.key ?: 1
-            val usersResponse = repository.getCandidates(page = page) //TODO: make role not hardcoded
+            val usersResponse = networkRepository.getUsersByRole(role = role, page = page)
             LoadResult.Page(
-                data = usersResponse,
+                data = usersMapper.mapToDomainList(usersResponse.users),
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = page.plus(1)
             )

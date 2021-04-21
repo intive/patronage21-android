@@ -1,9 +1,11 @@
 package com.intive.users.presentation.composables.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.intive.repository.domain.model.User
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
@@ -29,7 +32,8 @@ fun UsersScreen(
     navController: NavController
 ) {
 
-    val users = viewModel.getCandidatesPagination().collectAsLazyPagingItems()
+    val candidates = viewModel.candidates.collectAsLazyPagingItems()
+    val users = emptyList<User>()
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -81,14 +85,14 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.leaders),
-                    count = users.itemCount,
+                    count = users.size,
                     showCount = true,
                 )
             }
         }
 
         items(users) { user ->
-            UserListItem(user = user!!, onItemClick = {
+            UserListItem(user = user, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
             Divider(
@@ -112,14 +116,14 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.participants),
-                    count = users.itemCount,
+                    count = candidates.itemCount,
                     showCount = true,
                 )
             }
 
         }
 
-        items(users) { user ->
+        items(candidates) { user ->
             UserListItem(user = user!!, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
