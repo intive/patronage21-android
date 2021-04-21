@@ -8,6 +8,6 @@ data class Day(
 )
 
 data class DayWeek(
-    val date: Calendar,
-    val events: List<Event>
+    val date: Calendar?,
+    var events: List<Event2>?
 )

@@ -33,11 +33,13 @@ import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
 import com.intive.repository.domain.model.DayWeek
 import com.intive.repository.domain.model.Event
+import com.intive.repository.domain.model.Event2
 
 
 @Composable
 fun WeekView(
-    currentWeek: Array<DayWeek>,
+    currentWeek: Array<Calendar>,
+    weekEventsList: List<DayWeek>,
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel
 ) {
@@ -49,19 +51,28 @@ fun WeekView(
             header!!,
             { calendarViewModel.goToPreviousWeek() },
             { calendarViewModel.goToNextWeek() })
-        DaysList(currentWeek, navController)
+        DaysList(currentWeek, weekEventsList, navController)
     }
 }
 
 @Composable
 fun DaysList(
-    currentWeek: Array<DayWeek>,
+    currentWeek: Array<Calendar>,
+    weekEventsList: List<DayWeek>,
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            DaysListItem(it, navController, currentWeek[it])
+            if(weekEventsList[it].date == null){
+                DaysListItem(it, navController, currentWeek[it], emptyList())
+            } else {
+                weekEventsList[it].events?.let { it1 ->
+                    DaysListItem(it, navController, currentWeek[it],
+                        it1
+                    )
+                }
+            }
         }
     }
 }
@@ -71,25 +82,26 @@ fun DaysList(
 fun DaysListItem(
     index: Int,
     navController: NavController,
-    day: DayWeek
+    day: Calendar,
+    events: List<Event2>
 ) {
 
     var bkgColor: Color = Color.White
     var txtColor: Color = Color.Black
 
 
-    if (isDateSame(day.date, Calendar.getInstance())) {
+    if (isDateSame(day, Calendar.getInstance())) {
         bkgColor = MaterialTheme.colors.secondary
         txtColor = Color.White
-    } else if (day.date.before(Calendar.getInstance())) {
+    } else if (day.before(Calendar.getInstance())) {
         txtColor = Color.Gray
     }
 
     val headerColor: Color = txtColor
 
     when {
-        day.events.isEmpty() -> {
-            if (!isDateSame(day.date, Calendar.getInstance())) {
+        events.isEmpty() -> {
+            if (!isDateSame(day, Calendar.getInstance())) {
                 txtColor = Color.Gray
             }
             WeekDayWithEvents(
@@ -99,23 +111,23 @@ fun DaysListItem(
                 stringResource(R.string.no_events),
                 {},
                 index,
-                day.date
+                day
             )
         }
-        day.events.size == 1 -> {
+        events.size == 1 -> {
 
             val header =
-                "${weekDaysCalendarClass[day.date[Calendar.DAY_OF_WEEK]]}, ${day.date[Calendar.DAY_OF_MONTH]}.${day.date[Calendar.MONTH] + 1}.${day.date[Calendar.YEAR]}"
+                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${day[Calendar.DAY_OF_MONTH]}.${day[Calendar.MONTH] + 1}.${day[Calendar.YEAR]}"
             val bundle = bundleOf(
                 "date" to header,
-                "time" to day.events[0].time,
-                "name" to day.events[0].name
+                "time" to "${events[0].timeStart} - ${events[0].timeEnd}",
+                "name" to events[0].name
             )
 
             WeekDayWithEvents(
                 bkgColor, headerColor,
                 txtColor,
-                "${day.events[0].name}, ${day.events[0].time}",
+                "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
                 {
                     navController.navigate(
                         R.id.action_calendarFragment_to_eventFragment,
@@ -123,7 +135,7 @@ fun DaysListItem(
                     )
                 },
                 index,
-                day.date
+                day
             )
         }
         else -> {
@@ -134,19 +146,19 @@ fun DaysListItem(
                 bkgColor,
                 headerColor,
                 txtColor,
-                "${stringResource(R.string.events_number)}: ${day.events.size}",
+                "${stringResource(R.string.events_number)}: ${events.size}",
                 {
                     eventsShow.value = eventsShow.value != true
                 },
                 index,
-                day.date,
+                day,
             )
 
             if (eventsShow.value) {
                 EventsList(
                     bkgColor,
                     headerColor,
-                    day.events, day.date, navController
+                    events, day, navController
                 )
             }
         }
@@ -201,7 +213,7 @@ fun WeekDayWithEvents(
 fun EventsList(
     bkgColor: Color,
     headerColor: Color,
-    events: List<Event>,
+    events: List<Event2>,
     date: Calendar,
     navController: NavController
 ) {
@@ -220,7 +232,7 @@ fun EventsList(
 fun EventsItem(
     bkgColor: Color,
     headerColor: Color,
-    event: Event,
+    event: Event2,
     date: Calendar,
     navController: NavController
 ) {
@@ -230,7 +242,7 @@ fun EventsItem(
 
     val bundle = bundleOf(
         "date" to header,
-        "time" to event.time,
+        "time" to "${event.timeStart} - ${event.timeEnd}",
         "name" to event.name
     )
 
@@ -256,7 +268,7 @@ fun EventsItem(
             )
         )
         Text(
-            event.time,
+            "${event.timeStart} - ${event.timeEnd}",
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,

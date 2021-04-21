@@ -16,11 +16,12 @@ import com.intive.calendar.screens.CalendarHomeLayout
 import com.intive.calendar.screens.ChoosePeriodDialog
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class CalendarHomeFragment : Fragment() {
 
-    private val viewModel: CalendarHomeViewModel by viewModels()
+    private val viewModel by viewModel<CalendarHomeViewModel>()
 
     @ExperimentalFoundationApi
     override fun onCreateView(

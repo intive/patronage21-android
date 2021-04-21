@@ -1,31 +1,22 @@
 package com.intive.calendar.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
+import com.intive.repository.Repository
 import com.intive.repository.domain.model.Day
 import com.intive.repository.domain.model.DayWeek
 import com.intive.repository.domain.model.Event
+import com.intive.repository.domain.model.Event2
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.util.*
 
-class CalendarHomeViewModel : ViewModel() {
-
-    private val days: List<Day> = listOf(
-        Day(0, emptyList()),
-        Day(
-            3,
-            listOf(Event(2, "12:00-13:00", "Retrospective"), Event(3, "13:00-14:00", "Planning"))
-        ),
-        Day(2, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(3, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(
-            4,
-            listOf(Event(4, "12:00-13:00", "Retrospective"), Event(5, "13:00-14:00", "Planning"))
-        ),
-        Day(3, emptyList()),
-        Day(6, emptyList())
-    )
+class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
     private val monthDays: List<Day> = listOf(
         Day(1, emptyList()),
@@ -67,8 +58,49 @@ class CalendarHomeViewModel : ViewModel() {
     )
 
 
+    private fun getWeekEvents(calendar: Calendar, dateStart: String, dateEnd: String) {
+
+        var events: List<Event2>?
+        val weekArray = mutableListOf<DayWeek>()
+        weekArray += DayWeek(calendar.clone() as Calendar, emptyList())
+
+        for (i in 1..6) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            weekArray += DayWeek(calendar.clone() as Calendar, emptyList())
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _weekEvents.postValue(List(7){DayWeek(null, null)})
+            try {
+
+                events = repository.getEvents(dateStart, dateEnd)
+
+                for (i in weekArray.indices) {
+                    for(j in events!!.indices){
+                        if(getDateString(weekArray[i].date!!) == events!![j].date){
+                            weekArray[i].events = weekArray[i].events?.plus(events!![j])
+                        }
+                    }
+                    _weekEvents.postValue(weekArray)
+                }
+
+            } catch (e: KotlinNullPointerException) {
+            } catch (e: HttpException) {
+            }
+
+        }
+    }
+
+    private fun getDateString(date: Calendar): String {
+        return "${date[Calendar.DAY_OF_MONTH]}-0${date[Calendar.MONTH] + 1}-${date[Calendar.YEAR]}"
+    }
+
+
+    private val _weekEvents: MutableLiveData<List<DayWeek>> = MutableLiveData(List(7){DayWeek(null, null)})
+    val weekEvents: LiveData<List<DayWeek>> = _weekEvents
+
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
-    val currentWeek: LiveData<Array<DayWeek>> = _currentWeek
+    val currentWeek: LiveData<Array<Calendar>> = _currentWeek
 
     private val _weekClicked = MutableLiveData(true)
     val weekClicked: LiveData<Boolean> = _weekClicked
@@ -112,7 +144,8 @@ class CalendarHomeViewModel : ViewModel() {
         _currentMonth.value = getCurrentMonth()
     }
 
-    private fun getCurrentWeek(date: Calendar): Array<DayWeek> {
+    private fun getCurrentWeek(date: Calendar): Array<Calendar> {
+
         val dayOfTheWeek = date[Calendar.DAY_OF_WEEK]
 
         when {
@@ -126,28 +159,61 @@ class CalendarHomeViewModel : ViewModel() {
             }
         }
 
-        var weekArray = arrayOf<DayWeek>()
-        weekArray += DayWeek(date.clone() as Calendar, emptyList())
+        val firstDay = date.clone() as Calendar
+        var weekArray = arrayOf<Calendar>()
+        weekArray += date.clone() as Calendar
 
         for (i in 1..6) {
             date.add(Calendar.DAY_OF_MONTH, 1)
-            weekArray += DayWeek(date.clone() as Calendar, days[i].events)
+            weekArray += date.clone() as Calendar
         }
 
+        /*
+        runBlocking {
+
+            val job: Job = launch(context = Dispatchers.IO) {
+
+                try {
+                    events = repository.getEvents("1-04-2021", "30-04-2021")
+                    /*
+                    Log.d("kliku", events.toString())
+
+                    for (i in 1 until events!!.size) {
+                        for(j in 1 until _currentWeek.value!!.size){
+                            if(getDateString(_currentWeek.value!![j].date) == events!![i].date){
+                                Log.d("klikuIN", "xyz")
+                                _currentWeek.value!![j].events += events!![i]
+                            }
+                        }
+                    }
+
+                     */
+
+                } catch (e: KotlinNullPointerException) {
+                } catch (e: HttpException) {
+                }
+            }
+
+            job.join()
+        }
+
+         */
+
+        getWeekEvents(firstDay, getDateString(weekArray[0]), getDateString(weekArray[6]))
         return weekArray
     }
 
     fun goToPreviousWeek() {
         val weekPrev = currentWeek.value?.get(0)
-        weekPrev?.date?.add(Calendar.DAY_OF_MONTH, -7)
-        _currentWeek.value = weekPrev?.let { getCurrentWeek(it.date) }
+        weekPrev?.add(Calendar.DAY_OF_MONTH, -7)
+        _currentWeek.value = weekPrev?.let { getCurrentWeek(it) }
         _weekHeader.value = setWeekHeader()
     }
 
     fun goToNextWeek() {
         val weekNext = currentWeek.value?.get(6)
-        weekNext?.date?.add(Calendar.DAY_OF_MONTH, 1)
-        _currentWeek.value = weekNext?.let { getCurrentWeek(it.date) }
+        weekNext?.add(Calendar.DAY_OF_MONTH, 1)
+        _currentWeek.value = weekNext?.let { getCurrentWeek(it) }
         _weekHeader.value = setWeekHeader()
     }
 
@@ -228,11 +294,12 @@ class CalendarHomeViewModel : ViewModel() {
     }
 
     private fun setWeekHeader(): String {
-        return "${_currentWeek.value!![0].date[Calendar.DAY_OF_MONTH]}.${
-            _currentWeek.value!![0].date[Calendar.MONTH].plus(1)
-        }.${_currentWeek.value!![0].date[Calendar.YEAR]}" +
-                "-${_currentWeek.value!![6].date[Calendar.DAY_OF_MONTH]}.${
-                    _currentWeek.value!![6].date[Calendar.MONTH].plus(1)
-                }.${_currentWeek.value!![6].date[Calendar.YEAR]}"
+        return "${_currentWeek.value!![0][Calendar.DAY_OF_MONTH]}.${
+            _currentWeek.value!![0][Calendar.MONTH].plus(1)
+        }.${_currentWeek.value!![0][Calendar.YEAR]}" +
+                "-${_currentWeek.value!![6][Calendar.DAY_OF_MONTH]}.${
+                    _currentWeek.value!![6][Calendar.MONTH].plus(1)
+                }.${_currentWeek.value!![6][Calendar.YEAR]}"
     }
 }
+

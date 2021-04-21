@@ -37,6 +37,7 @@ fun CalendarHomeLayout(
 ) {
 
     val currentWeek by calendarViewModel.currentWeek.observeAsState()
+    val weekEventsList by calendarViewModel.weekEvents.observeAsState()
     val showWeekView by calendarViewModel.showWeekView.observeAsState()
 
     val calendarViewStr: String =
@@ -56,7 +57,7 @@ fun CalendarHomeLayout(
 
             SpinnerComponent({ calendarViewModel.showDialog() }, calendarViewStr)
 
-            currentWeek?.let { it1 -> WeekView(it1, navController, calendarViewModel) }
+            WeekView(currentWeek!!, weekEventsList!!, navController, calendarViewModel)
             MonthView(navController, calendarViewModel)
         }
 
