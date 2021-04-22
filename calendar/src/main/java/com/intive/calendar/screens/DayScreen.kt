@@ -16,6 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
@@ -24,7 +25,8 @@ import com.intive.ui.components.TitleText
 fun DayLayout(
     navController: NavController,
     date: String,
-    eventsList: List<Event>
+    eventsList: List<Event>,
+    refreshCalendar:() -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -38,6 +40,7 @@ fun DayLayout(
 
         Column {
             CancelButton(stringResource(R.string.go_back)) {
+                refreshCalendar()
                 navController.popBackStack()
             }
         }
@@ -62,7 +65,7 @@ fun EventsList(
 @Composable
 fun EventsListItem(event: Event, date: String, navController: NavController) {
 
-    val bundle = bundleOf("date" to date, "time" to event.time, "name" to event.name)
+    val bundle = bundleOf("date" to date, "time" to "${event.timeStart} - ${event.timeEnd}", "name" to event.name)
 
     Row(
         modifier = Modifier
@@ -85,7 +88,7 @@ fun EventsListItem(event: Event, date: String, navController: NavController) {
                 style = typography.h6
             )
             Text(
-                "${stringResource(R.string.hour)}: ${event.time}",
+                "${stringResource(R.string.hour)}: ${event.timeStart} - ${event.timeEnd}",
                 style = typography.body1
             )
 

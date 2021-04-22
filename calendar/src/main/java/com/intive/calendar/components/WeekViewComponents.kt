@@ -31,15 +31,14 @@ import com.intive.calendar.utils.weekDays
 import com.intive.calendar.utils.weekDaysCalendarClass
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
-import com.intive.repository.domain.model.DayWeek
+import com.intive.repository.domain.model.Day
 import com.intive.repository.domain.model.Event
-import com.intive.repository.domain.model.Event2
 
 
 @Composable
 fun WeekView(
     currentWeek: Array<Calendar>,
-    weekEventsList: List<DayWeek>,
+    weekEventsList: List<Day>,
     navController: NavController,
     calendarViewModel: CalendarHomeViewModel
 ) {
@@ -58,13 +57,13 @@ fun WeekView(
 @Composable
 fun DaysList(
     currentWeek: Array<Calendar>,
-    weekEventsList: List<DayWeek>,
+    weekEventsList: List<Day>,
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            if(weekEventsList[it].date == null){
+            if(weekEventsList[it].events == null){
                 DaysListItem(it, navController, currentWeek[it], emptyList())
             } else {
                 weekEventsList[it].events?.let { it1 ->
@@ -83,7 +82,7 @@ fun DaysListItem(
     index: Int,
     navController: NavController,
     day: Calendar,
-    events: List<Event2>
+    events: List<Event>
 ) {
 
     var bkgColor: Color = Color.White
@@ -213,7 +212,7 @@ fun WeekDayWithEvents(
 fun EventsList(
     bkgColor: Color,
     headerColor: Color,
-    events: List<Event2>,
+    events: List<Event>,
     date: Calendar,
     navController: NavController
 ) {
@@ -232,7 +231,7 @@ fun EventsList(
 fun EventsItem(
     bkgColor: Color,
     headerColor: Color,
-    event: Event2,
+    event: Event,
     date: Calendar,
     navController: NavController
 ) {

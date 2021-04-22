@@ -31,7 +31,8 @@ fun AddEventScreen(
     view: View,
     context: Context,
     navController: NavController,
-    addEventViewModel: AddEventViewModel
+    addEventViewModel: AddEventViewModel,
+    refreshCalendar:() -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()
@@ -164,11 +165,14 @@ fun AddEventScreen(
                         ).show()
                     }
                 } else {
+                    // TODO: Add new event
+                    refreshCalendar()
                     navController.popBackStack()
                 }
             }
 
             CancelButton(stringResource(R.string.reject_new_event)) {
+                refreshCalendar()
                 navController.popBackStack()
             }
         }

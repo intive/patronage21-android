@@ -1,6 +1,5 @@
 package com.intive.calendar.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,69 +7,60 @@ import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.Day
-import com.intive.repository.domain.model.DayWeek
+import com.intive.repository.domain.model.DayMonth
 import com.intive.repository.domain.model.Event
-import com.intive.repository.domain.model.Event2
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.util.*
 
 class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
-    private val monthDays: List<Day> = listOf(
-        Day(1, emptyList()),
-        Day(2, listOf(Event(1, "12:00-13:00", "Daily"))),
-        Day(3, emptyList()),
-        Day(4, emptyList()),
-        Day(5, emptyList()),
-        Day(6, emptyList()),
-        Day(7, emptyList()),
-        Day(8, emptyList()),
-        Day(9, emptyList()),
-        Day(
-            10,
-            listOf(Event(5, "12:00-13:00", "Retrospective"), Event(6, "13:00-14:00", "Planning"))
-        ),
-        Day(11, emptyList()),
-        Day(12, emptyList()),
-        Day(13, emptyList()),
-        Day(14, emptyList()),
-        Day(15, emptyList()),
-        Day(16, emptyList()),
-        Day(17, emptyList()),
-        Day(18, emptyList()),
-        Day(19, emptyList()),
-        Day(20, emptyList()),
-        Day(21, emptyList()),
-        Day(22, emptyList()),
-        Day(23, emptyList()),
-        Day(24, emptyList()),
-        Day(25, emptyList()),
-        Day(26, emptyList()),
-        Day(27, emptyList()),
-        Day(
-            28,
-            listOf(Event(11, "12:00-13:00", "Retrospective"), Event(12, "13:00-14:00", "Planning"))
-        ),
-        Day(29, emptyList()),
-        Day(30, emptyList())
-    )
+    private fun getMonthEvents(
+        dateStart: String,
+        dateEnd: String
+    ) {
 
+        var events: List<Event>?
+        val monthArray = mutableListOf<DayMonth>()
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            _monthEvents.postValue(listOf(DayMonth(null, emptyList())))
+
+            try {
+
+                events = repository.getEvents(dateStart, dateEnd)
+
+                for(i in events!!.indices){
+                    val index = monthArray.indexOfFirst { it.date!! == events!![i].date }
+                    if(index != -1) {
+                        monthArray[index].events = monthArray[index].events?.plus(events!![i])
+                    } else {
+                        monthArray += DayMonth(events!![i].date, listOf(events!![i]))
+                    }
+                }
+
+                _monthEvents.postValue(monthArray)
+
+            } catch (e: KotlinNullPointerException) {
+            } catch (e: HttpException) {
+            }
+        }
+    }
 
     private fun getWeekEvents(calendar: Calendar, dateStart: String, dateEnd: String) {
 
-        var events: List<Event2>?
-        val weekArray = mutableListOf<DayWeek>()
-        weekArray += DayWeek(calendar.clone() as Calendar, emptyList())
+        var events: List<Event>?
+        val weekArray = mutableListOf<Day>()
+        weekArray += Day(calendar.clone() as Calendar, emptyList())
 
         for (i in 1..6) {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
-            weekArray += DayWeek(calendar.clone() as Calendar, emptyList())
+            weekArray += Day(calendar.clone() as Calendar, emptyList())
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            _weekEvents.postValue(List(7){DayWeek(null, null)})
+            _weekEvents.postValue(List(7){Day(null, null)})
             try {
 
                 events = repository.getEvents(dateStart, dateEnd)
@@ -91,13 +81,13 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    private fun getDateString(date: Calendar): String {
-        return "${date[Calendar.DAY_OF_MONTH]}-0${date[Calendar.MONTH] + 1}-${date[Calendar.YEAR]}"
-    }
 
 
-    private val _weekEvents: MutableLiveData<List<DayWeek>> = MutableLiveData(List(7){DayWeek(null, null)})
-    val weekEvents: LiveData<List<DayWeek>> = _weekEvents
+    private val _weekEvents: MutableLiveData<List<Day>> = MutableLiveData(List(7){Day(null, null)})
+    val weekEvents: LiveData<List<Day>> = _weekEvents
+
+    private val _monthEvents: MutableLiveData<List<DayMonth>> = MutableLiveData(listOf(DayMonth(null, emptyList())))
+    val monthEvents: LiveData<List<DayMonth>> = _monthEvents
 
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<Calendar>> = _currentWeek
@@ -167,7 +157,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             date.add(Calendar.DAY_OF_MONTH, 1)
             weekArray += date.clone() as Calendar
         }
-        
+
         getWeekEvents(firstDay, getDateString(weekArray[0]), getDateString(weekArray[6]))
         return weekArray
     }
@@ -203,9 +193,10 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
     }
 
     private fun getCurrentMonth(): List<Any> {
+
         currentDate.set(Calendar.DATE, 1)
         val dayOfTheWeek = currentDate[Calendar.DAY_OF_WEEK]
-        //val daysNumber = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val daysNumber = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         val offset: Int = when {
             dayOfTheWeek == 2 -> {
@@ -220,9 +211,18 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         }
 
         val offsetList = mutableListOf<String>()
-        //val numbers = (1..daysNumber).toList().map { it.toString() }
+        val date = currentDate.clone() as Calendar
+        val firstDay = currentDate.clone() as Calendar
 
-        val numbers = monthDays
+
+        var numbers = arrayOf<Calendar>()
+        numbers += date.clone() as Calendar
+
+        for(i in 1 until daysNumber){
+            date.add(Calendar.DAY_OF_MONTH, 1)
+            numbers += date.clone() as Calendar
+        }
+
 
         repeat(offset) {
             offsetList += ""
@@ -230,6 +230,9 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
         _monthHeader.value = "${currentDate[Calendar.MONTH] + 1}.${currentDate[Calendar.YEAR]}"
 
+
+        val lastDay = numbers.last()
+        getMonthEvents(getDateString(firstDay), getDateString(lastDay))
         return (calendarHeader + offsetList + numbers)
 
     }
@@ -260,6 +263,11 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         _txtColorMonthBtn.value = colorWhite
         _txtColorWeekBtn.value = colorBlack
         _weekClicked.value = false
+    }
+
+    fun refreshCalendar(){
+        setCurrentWeek()
+        setCurrentMonth()
     }
 
     private fun setWeekHeader(): String {

@@ -1,7 +1,6 @@
 package com.intive.repository
 
-import android.util.Log
-import com.intive.repository.domain.model.Event2
+import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.EventDtoMapper
@@ -19,7 +18,7 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event2> {
+    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
 
         return networkRepository.getEvents(dateStart, dateEnd).map { event ->
             eventMapper.mapToDomainModel(event)

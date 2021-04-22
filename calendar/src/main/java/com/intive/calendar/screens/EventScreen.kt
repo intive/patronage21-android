@@ -26,7 +26,13 @@ import com.intive.ui.components.UsersHeader
 
 
 @Composable
-fun EventFragmentLayout(navController: NavController, date: String, time: String, name: String) {
+fun EventFragmentLayout(
+    navController: NavController,
+    date: String,
+    time: String,
+    name: String,
+    refreshCalendar:() -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -58,8 +64,14 @@ fun EventFragmentLayout(navController: NavController, date: String, time: String
         }
 
         Column {
-            OKButton(stringResource(R.string.accept_event)) { navController.popBackStack() }
-            CancelButton(stringResource(R.string.reject_event)) { navController.popBackStack() }
+            OKButton(stringResource(R.string.accept_event)) {
+                refreshCalendar()
+                navController.popBackStack()
+            }
+            CancelButton(stringResource(R.string.reject_event)) {
+                refreshCalendar()
+                navController.popBackStack()
+            }
         }
     }
 }

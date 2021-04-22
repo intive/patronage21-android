@@ -1,5 +1,6 @@
 package com.intive.calendar.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,8 +25,11 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
+import com.intive.calendar.utils.getDateString
+import com.intive.calendar.utils.weekDaysCalendarClass
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Day
+import java.util.*
 
 
 @ExperimentalFoundationApi
@@ -54,71 +58,80 @@ fun CalendarGrid(
 ) {
 
     val currentMonth by calendarViewModel.currentMonth.observeAsState()
-    val items = currentMonth?.toList()
+    val monthEvents by calendarViewModel.monthEvents.observeAsState()
+    val items = currentMonth!!.toList()
+
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(7)
     ) {
-        if (items != null) {
-            items(items.size) {
-                if (items[it] is Day) {
-                    var bgColor = Color.White
-                    var onClick = {}
-                    if ((items[it] as Day).events.isNotEmpty()) {
 
-                        bgColor = colorResource(R.color.pale_blue)
+        items(items.size) {
 
-                        if ((items[it] as Day).events.size == 1) {
-                            val bundle = bundleOf(
-                                "date" to "${(items[it] as Day).index}.04.2021",
-                                "time" to (items[it] as Day).events[0].time,
-                                "name" to (items[it] as Day).events[0].name
-                            )
-                            onClick =
-                                {
-                                    navController.navigate(
-                                        R.id.action_calendarFragment_to_eventFragment,
-                                        bundle
-                                    )
-                                }
-                        } else if ((items[it] as Day).events.size > 1) {
-                            val bundle = bundleOf(
-                                "header" to "${(items[it] as Day).index}${stringResource(R.string.mock_date)}",
-                                "events" to Gson().toJson((items[it] as Day).events)
-                            )
-                            onClick =
-                                {
-                                    navController.navigate(
-                                        R.id.action_calendarFragment_to_dayFragment,
-                                        bundle
-                                    )
-                                }
-                        }
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .background(bgColor)
-                            .clickable(onClick = onClick)
-                    ) {
-                        Text(
-                            text = (items[it] as Day).index.toString(),
-                            style = TextStyle(fontSize = 18.sp),
-                            modifier = Modifier
-                                .padding(4.dp)
+            if (items[it] is Calendar) {
+
+                var bgColor = Color.White
+                var onClick = {}
+
+                if (monthEvents!!.find{ it1 -> it1.date == getDateString(items[it] as Calendar)} != null) {
+
+                    val index = monthEvents!!.indexOfFirst { it2 -> it2.date!! == getDateString(items[it] as Calendar) }
+
+                    bgColor = colorResource(R.color.pale_blue)
+
+                    if (monthEvents!![index].events!!.size == 1) {
+                        val bundle = bundleOf(
+                            "date" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${getDateString((items[it] as Calendar), ".")}",
+                            "time" to "${monthEvents!![index].events!![0].timeStart} - ${monthEvents!![index].events!![0].timeEnd}",
+                            "name" to monthEvents!![index].events!![0].name
                         )
-                    }
-                } else {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = items[it].toString(),
-                            style = TextStyle(fontSize = 18.sp),
-                            modifier = Modifier.padding(4.dp)
+                        onClick =
+                            {
+                                navController.navigate(
+                                    R.id.action_calendarFragment_to_eventFragment,
+                                    bundle
+                                )
+                            }
+                    } else if (monthEvents!![index].events!!.size > 1) {
+                        val bundle = bundleOf(
+                            "header" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${getDateString((items[it] as Calendar), ".")}",
+                            "events" to Gson().toJson(monthEvents!![index].events!!)
                         )
+                        onClick =
+                            {
+                                navController.navigate(
+                                    R.id.action_calendarFragment_to_dayFragment,
+                                    bundle
+                                )
+                            }
                     }
+
                 }
 
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .background(bgColor)
+                        .clickable(onClick = onClick)
+                ) {
+                    Text(
+                        text = (items[it] as Calendar)[Calendar.DAY_OF_MONTH].toString(),
+                        style = TextStyle(fontSize = 18.sp),
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
+                }
+
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = items[it].toString(),
+                        style = TextStyle(fontSize = 18.sp),
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
             }
+
         }
     }
 }

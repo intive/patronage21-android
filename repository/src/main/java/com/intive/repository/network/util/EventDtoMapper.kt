@@ -1,13 +1,13 @@
 package com.intive.repository.network.util
 
 
-import com.intive.repository.domain.model.Event2
+import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.util.DomainMapper
 import com.intive.repository.network.model.EventDto
 
-class EventDtoMapper : DomainMapper<EventDto, Event2> {
-    override fun mapToDomainModel(model: EventDto): Event2 {
-        return Event2(
+class EventDtoMapper : DomainMapper<EventDto, Event> {
+    override fun mapToDomainModel(model: EventDto): Event {
+        return Event(
             id = model.id.toInt(),
             date = model.date,
             timeStart = model.timeStart,
@@ -17,7 +17,7 @@ class EventDtoMapper : DomainMapper<EventDto, Event2> {
         )
     }
 
-    override fun mapFromDomainModel(domainModel: Event2): EventDto {
+    override fun mapFromDomainModel(domainModel: Event): EventDto {
         return EventDto(
             id = domainModel.id.toString(),
             date = domainModel.date,

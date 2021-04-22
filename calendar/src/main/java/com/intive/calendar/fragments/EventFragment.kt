@@ -8,9 +8,14 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
 import com.intive.calendar.screens.EventFragmentLayout
+import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EventFragment : Fragment() {
+
+    private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +35,7 @@ class EventFragment : Fragment() {
                             date,
                             time,
                             name
-                        )
+                        ) { calendarHomeViewModel.refreshCalendar() }
                     }
                 }
             }

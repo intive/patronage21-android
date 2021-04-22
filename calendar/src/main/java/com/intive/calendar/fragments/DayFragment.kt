@@ -11,11 +11,16 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.intive.calendar.R
 import com.intive.calendar.screens.DayLayout
+import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Event
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DayFragment : Fragment() {
+
+    private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +38,8 @@ class DayFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     if (date != null) {
-                        DayLayout(findNavController(), date, eventsList)
+                        DayLayout(findNavController(), date, eventsList
+                        ) { calendarHomeViewModel.refreshCalendar() }
                     }
                 }
             }

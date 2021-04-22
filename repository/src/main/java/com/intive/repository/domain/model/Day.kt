@@ -3,11 +3,11 @@ package com.intive.repository.domain.model
 import java.util.*
 
 data class Day(
-    val index: Int,
-    val events: List<Event>
+    var date: Calendar?,
+    var events: List<Event>?
 )
 
-data class DayWeek(
-    val date: Calendar?,
-    var events: List<Event2>?
+data class DayMonth(
+    var date: String?,
+    var events: List<Event>?
 )
