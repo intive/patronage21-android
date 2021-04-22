@@ -26,12 +26,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
+import com.intive.calendar.utils.getDateString
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
 import com.intive.calendar.utils.weekDaysCalendarClass
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
-import com.intive.repository.domain.model.Day
+import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 
 
@@ -63,10 +64,11 @@ fun DaysList(
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            if(weekEventsList[it].events == null){
+            if(weekEventsList!!.find{ it1 -> it1.date == getDateString(currentWeek[it])} == null){
                 DaysListItem(it, navController, currentWeek[it], emptyList())
             } else {
-                weekEventsList[it].events?.let { it1 ->
+                val index = weekEventsList!!.indexOfFirst { it2 -> it2.date!! == getDateString(currentWeek[it]) }
+                weekEventsList[index].events?.let { it1 ->
                     DaysListItem(it, navController, currentWeek[it],
                         it1
                     )
@@ -75,6 +77,9 @@ fun DaysList(
         }
     }
 }
+
+
+
 
 
 @Composable

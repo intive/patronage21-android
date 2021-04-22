@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
-import com.intive.repository.domain.model.Day
-import com.intive.repository.domain.model.DayMonth
+import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -15,17 +14,14 @@ import java.util.*
 
 class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
-    private fun getMonthEvents(
-        dateStart: String,
-        dateEnd: String
-    ) {
+    private fun getMonthEvents(dateStart: String, dateEnd: String) {
 
         var events: List<Event>?
-        val monthArray = mutableListOf<DayMonth>()
+        val monthArray = mutableListOf<Day>()
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            _monthEvents.postValue(listOf(DayMonth(null, emptyList())))
+            _monthEvents.postValue(listOf(Day(null, emptyList())))
 
             try {
 
@@ -36,7 +32,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
                     if(index != -1) {
                         monthArray[index].events = monthArray[index].events?.plus(events!![i])
                     } else {
-                        monthArray += DayMonth(events!![i].date, listOf(events!![i]))
+                        monthArray += Day(events!![i].date, listOf(events!![i]))
                     }
                 }
 
@@ -48,31 +44,30 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    private fun getWeekEvents(calendar: Calendar, dateStart: String, dateEnd: String) {
+
+    private fun getWeekEvents(dateStart: String, dateEnd: String) {
 
         var events: List<Event>?
         val weekArray = mutableListOf<Day>()
-        weekArray += Day(calendar.clone() as Calendar, emptyList())
 
-        for (i in 1..6) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
-            weekArray += Day(calendar.clone() as Calendar, emptyList())
-        }
 
         viewModelScope.launch(Dispatchers.IO) {
-            _weekEvents.postValue(List(7){Day(null, null)})
+            _weekEvents.postValue(listOf(Day(null, emptyList())))
+
             try {
 
                 events = repository.getEvents(dateStart, dateEnd)
 
-                for (i in weekArray.indices) {
-                    for(j in events!!.indices){
-                        if(getDateString(weekArray[i].date!!) == events!![j].date){
-                            weekArray[i].events = weekArray[i].events?.plus(events!![j])
-                        }
+                for(i in events!!.indices){
+                    val index = weekArray.indexOfFirst { it.date!! == events!![i].date }
+                    if(index != -1) {
+                        weekArray[index].events = weekArray[index].events?.plus(events!![i])
+                    } else {
+                        weekArray += Day(events!![i].date, listOf(events!![i]))
                     }
-                    _weekEvents.postValue(weekArray)
                 }
+
+                _weekEvents.postValue(weekArray)
 
             } catch (e: KotlinNullPointerException) {
             } catch (e: HttpException) {
@@ -83,11 +78,11 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
 
 
-    private val _weekEvents: MutableLiveData<List<Day>> = MutableLiveData(List(7){Day(null, null)})
+    private val _weekEvents: MutableLiveData<List<Day>> = MutableLiveData(List(7){ Day(null, null) })
     val weekEvents: LiveData<List<Day>> = _weekEvents
 
-    private val _monthEvents: MutableLiveData<List<DayMonth>> = MutableLiveData(listOf(DayMonth(null, emptyList())))
-    val monthEvents: LiveData<List<DayMonth>> = _monthEvents
+    private val _monthEvents: MutableLiveData<List<Day>> = MutableLiveData(listOf(Day(null, emptyList())))
+    val monthEvents: LiveData<List<Day>> = _monthEvents
 
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<Calendar>> = _currentWeek
@@ -149,7 +144,6 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             }
         }
 
-        val firstDay = date.clone() as Calendar
         var weekArray = arrayOf<Calendar>()
         weekArray += date.clone() as Calendar
 
@@ -158,7 +152,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             weekArray += date.clone() as Calendar
         }
 
-        getWeekEvents(firstDay, getDateString(weekArray[0]), getDateString(weekArray[6]))
+        getWeekEvents(getDateString(weekArray[0]), getDateString(weekArray[6]))
         return weekArray
     }
 
