@@ -65,12 +65,14 @@ fun DaysList(
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            if(weekEventsList!!.find{ it1 -> it1.date == getDateString(currentWeek[it])} == null){
+            if (weekEventsList!!.find { it1 -> it1.date == getDateString(currentWeek[it]) } == null) {
                 DaysListItem(it, navController, currentWeek[it], emptyList())
             } else {
-                val index = weekEventsList!!.indexOfFirst { it2 -> it2.date!! == getDateString(currentWeek[it]) }
+                val index =
+                    weekEventsList!!.indexOfFirst { it2 -> it2.date!! == getDateString(currentWeek[it]) }
                 weekEventsList[index].events?.let { it1 ->
-                    DaysListItem(it, navController, currentWeek[it],
+                    DaysListItem(
+                        it, navController, currentWeek[it],
                         it1
                     )
                 }
@@ -78,9 +80,6 @@ fun DaysList(
         }
     }
 }
-
-
-
 
 
 @Composable
@@ -267,15 +266,7 @@ fun EventsItem(
     ) {
 
         Text(
-            "${event.name}, ",
-            style = TextStyle(
-                color = headerColor,
-                fontStyle = FontStyle.Italic,
-                fontSize = 18.sp
-            )
-        )
-        Text(
-            "${event.timeStart} - ${event.timeEnd}",
+            "${event.name}, ${event.timeStart} - ${event.timeEnd}",
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,
