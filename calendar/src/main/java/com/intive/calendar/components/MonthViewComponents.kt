@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
@@ -26,6 +28,7 @@ import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.getDateString
+import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDaysCalendarClass
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Day
@@ -71,6 +74,7 @@ fun CalendarGrid(
             if (items[it] is Calendar) {
 
                 var bgColor = Color.White
+                var txtColor = Color.Black
                 var onClick = {}
 
                 if (monthEvents!!.find{ it1 -> it1.date == getDateString(items[it] as Calendar)} != null) {
@@ -108,6 +112,12 @@ fun CalendarGrid(
 
                 }
 
+                if(isDateSame((items[it] as Calendar), Calendar.getInstance())){
+                    bgColor = MaterialTheme.colors.secondary
+                    txtColor = Color.White
+                }
+
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -116,7 +126,7 @@ fun CalendarGrid(
                 ) {
                     Text(
                         text = (items[it] as Calendar)[Calendar.DAY_OF_MONTH].toString(),
-                        style = TextStyle(fontSize = 18.sp),
+                        style = TextStyle(fontSize = 18.sp, color = txtColor),
                         modifier = Modifier
                             .padding(4.dp)
                     )
@@ -126,7 +136,7 @@ fun CalendarGrid(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = items[it].toString(),
-                        style = TextStyle(fontSize = 18.sp),
+                        style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
                         modifier = Modifier.padding(4.dp)
                     )
                 }
