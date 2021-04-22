@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.getDateString
@@ -125,7 +126,8 @@ fun DaysListItem(
             val bundle = bundleOf(
                 "date" to header,
                 "time" to "${events[0].timeStart} - ${events[0].timeEnd}",
-                "name" to events[0].name
+                "name" to events[0].name,
+                "users" to Gson().toJson(events[0].users)
             )
 
             WeekDayWithEvents(
@@ -247,7 +249,8 @@ fun EventsItem(
     val bundle = bundleOf(
         "date" to header,
         "time" to "${event.timeStart} - ${event.timeEnd}",
-        "name" to event.name
+        "name" to event.name,
+        "users" to Gson().toJson(event.users)
     )
 
     Row(

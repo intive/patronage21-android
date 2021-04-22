@@ -21,16 +21,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
 import com.intive.ui.components.UsersHeader
+import androidx.compose.foundation.lazy.items
 
 
 @Composable
-fun EventFragmentLayout(
+fun EventScreenLayout(
     navController: NavController,
     date: String,
     time: String,
     name: String,
+    users: List<User>,
     refreshCalendar:() -> Unit
 ) {
     Column(
@@ -56,11 +59,11 @@ fun EventFragmentLayout(
 
             UsersHeader(
                 text = stringResource(R.string.event_users_label),
-                count = 10,
+                count = users.size,
                 showCount = true,
             )
 
-            UsersList()
+            UsersList(users)
         }
 
         Column {
@@ -77,40 +80,58 @@ fun EventFragmentLayout(
 }
 
 @Composable
-fun UsersList() {
+fun UsersList(users: List<User>) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState) {
-        items(10) {
-            UsersListItem(it)
+        items(users) { user ->
+            UsersListItem(user)
         }
     }
 }
 
 @Composable
-fun UsersListItem(index: Int) {
+fun UsersListItem(user: User) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Image(
-            bitmap = ImageBitmap.imageResource(id = R.drawable.header),
-            contentDescription = stringResource(R.string.user_image_desc),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .width(30.dp)
-                .height(30.dp)
-                .clip(CircleShape)
-        )
+        Column{
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    bitmap = ImageBitmap.imageResource(id = R.drawable.header),
+                    contentDescription = stringResource(R.string.user_image_desc),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .width(30.dp)
+                        .height(30.dp)
+                        .clip(CircleShape)
+                )
 
-        Text(
-            "${stringResource(R.string.event_user)} ${index + 1}",
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+                Text(
+                    "${user.firstName} ${user.lastName}",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+
+        }
+
+
+        Column{
+            Text(
+                user.role,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
+
+
     }
     Divider(color = Color.LightGray)
 }

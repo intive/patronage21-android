@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
-import com.intive.calendar.screens.EventFragmentLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.intive.calendar.screens.EventScreenLayout
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.repository.domain.model.Event
+import com.intive.repository.domain.model.User
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EventFragment : Fragment() {
 
@@ -26,15 +29,20 @@ class EventFragment : Fragment() {
         val time = arguments?.getString("time")
         val name = arguments?.getString("name")
 
+        val users = arguments?.getString("users")
+        val itemType = object : TypeToken<List<User>>() {}.type
+        val usersList = Gson().fromJson<List<User>>(users, itemType)
+
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
                     if (date != null && time != null && name != null) {
-                        EventFragmentLayout(
+                        EventScreenLayout(
                             findNavController(),
                             date,
                             time,
-                            name
+                            name,
+                            usersList
                         ) { calendarHomeViewModel.refreshCalendar() }
                     }
                 }

@@ -84,7 +84,8 @@ fun CalendarGrid(
                         val bundle = bundleOf(
                             "date" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${getDateString((items[it] as Calendar), ".")}",
                             "time" to "${monthEvents!![index].events!![0].timeStart} - ${monthEvents!![index].events!![0].timeEnd}",
-                            "name" to monthEvents!![index].events!![0].name
+                            "name" to monthEvents!![index].events!![0].name,
+                            "users" to Gson().toJson(monthEvents!![index].events!![0].users)
                         )
                         onClick =
                             {

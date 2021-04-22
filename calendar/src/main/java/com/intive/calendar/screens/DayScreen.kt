@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
@@ -65,7 +66,7 @@ fun EventsList(
 @Composable
 fun EventsListItem(event: Event, date: String, navController: NavController) {
 
-    val bundle = bundleOf("date" to date, "time" to "${event.timeStart} - ${event.timeEnd}", "name" to event.name)
+    val bundle = bundleOf("date" to date, "time" to "${event.timeStart} - ${event.timeEnd}", "name" to event.name, "users" to Gson().toJson(event.users))
 
     Row(
         modifier = Modifier
