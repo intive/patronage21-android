@@ -1,5 +1,7 @@
 package com.intive.audit.presentation.composables
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -22,6 +24,7 @@ import com.intive.audit.presentation.audit.PAGE_SIZE
 import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
