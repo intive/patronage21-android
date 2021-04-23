@@ -202,7 +202,8 @@ fun UsersScreen(
 
 @Composable
 fun LoadingView(modifier: Modifier) {
-    Box(modifier = modifier,
+    Box(modifier = modifier
+            .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
