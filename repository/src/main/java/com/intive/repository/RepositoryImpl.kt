@@ -22,4 +22,8 @@ class RepositoryImpl(
             auditMapped.mapToDomainModel(audit)
         }
     }
+
+    override suspend fun getTechnologyGroups(): List<String> {
+        return networkRepository.getTechnologyGroups()
+    }
 }

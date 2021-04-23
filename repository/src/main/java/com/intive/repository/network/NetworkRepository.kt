@@ -5,7 +5,8 @@ import com.intive.repository.network.model.UserDto
 
 class NetworkRepository(
         private val usersService: UsersService,
-        private val auditService: AuditService
+        private val auditService: AuditService,
+        private val technologyGroupsService: TechnologyGroupsService
 ) {
     suspend fun getUsers(): List<UserDto> {
         return usersService.getUsers()
@@ -13,5 +14,9 @@ class NetworkRepository(
 
     suspend fun getAudits(): List<AuditDto>{
         return auditService.getAudits()
+    }
+  
+    suspend fun getTechnologyGroups(): List<String> {
+        return technologyGroupsService.getTechGroups()
     }
 }
