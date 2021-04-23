@@ -13,6 +13,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.intive.users.R
 
+const val MAX_QUERY_SIZE = 35
+const val MAX_LINES = 1
+
 @Composable
 fun Search(
     query: String,
@@ -24,7 +27,13 @@ fun Search(
         modifier = Modifier
             .fillMaxWidth(),
         value = query,
-        onValueChange = { onQueryChanged(it) },
+        singleLine = true,
+        maxLines = MAX_LINES,
+        onValueChange = { newValue ->
+            if(isValueCorrect(newValue)) {
+                onQueryChanged(newValue)
+            }
+        },
         label = { Text(text = stringResource(R.string.search_user)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -49,4 +58,12 @@ fun Search(
             cursorColor = MaterialTheme.colors.secondaryVariant,
         ),
     )
+}
+
+private fun isValueCorrect(value: String): Boolean {
+    if (value.length <= MAX_QUERY_SIZE &&
+            value.all { char -> char.isLetter() || char.isWhitespace() } ) {
+        return true
+    }
+    return false
 }
