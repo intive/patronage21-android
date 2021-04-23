@@ -1,9 +1,11 @@
 package com.intive.audit.presentation.audit
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +25,7 @@ class AuditFragment : Fragment() {
 
     private val viewModel by viewModel<AuditViewModel>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @ExperimentalComposeUiApi
     @ExperimentalAnimationApi
     override fun onCreateView(
