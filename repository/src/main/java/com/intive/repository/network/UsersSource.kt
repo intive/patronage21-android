@@ -21,8 +21,8 @@ class UsersSource(
 
             LoadResult.Page(
                 data = usersMapper.mapToDomainList(users),
-                prevKey = if (page == USERS_STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (users.isEmpty()) null else page + 1
+                prevKey = usersResponse.previousPage,
+                nextKey = usersResponse.nextPage
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
