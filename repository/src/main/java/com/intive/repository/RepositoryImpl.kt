@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.intive.repository.domain.model.User
-import com.intive.repository.network.CandidatesSource
+import com.intive.repository.network.UsersSource
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.USERS_PAGE_SIZE
@@ -21,7 +21,7 @@ class RepositoryImpl(
     override suspend fun getUsersByRole(
         role: String
     ): Flow<PagingData<User>> = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-        CandidatesSource(networkRepository, mapper, role)
+        UsersSource(networkRepository, mapper, role)
     }.flow
     
     override suspend fun getAudits(): List<Audit> {

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.ROLE_CANDIDATE
@@ -25,7 +26,7 @@ class UsersViewModel(
 
     init {
          viewModelScope.launch {
-           candidates = repository.getUsersByRole(ROLE_CANDIDATE)
+           candidates = repository.getUsersByRole(ROLE_CANDIDATE).cachedIn(viewModelScope)
         }
     }
 
