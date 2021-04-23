@@ -21,7 +21,7 @@ class RepositoryImpl(
     override suspend fun getUsersByRole(
         role: String
     ): Flow<PagingData<User>> = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-        UsersSource(networkRepository, mapper, role)
+        UsersSource(networkRepository, userMapper, role)
     }.flow
     
     override suspend fun getAudits(): List<Audit> {
