@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ class EditUserFragment : Fragment() {
 
     private val viewModel: EditUserViewModel by viewModels()
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,7 +51,6 @@ class EditUserFragment : Fragment() {
                         EditUserScreen(
                             navController = navController,
                             user = mock,
-                            viewModel = viewModel
                         )
                     }
                 }
