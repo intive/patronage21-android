@@ -1,6 +1,6 @@
-package com.intive.audit.domain
+package com.intive.repository.network.model
 
-data class Audit(
+data class AuditDto(
     val id: Long,
     val title: String,
     val date: String,
