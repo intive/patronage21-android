@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
-import com.intive.audit.presentation.audit.AuditEvent.*
+import com.intive.audit.presentation.audit.AuditListEvent.*
 
 const val TAG = "AuditViewModel"
 const val PAGE_SIZE = 30
@@ -19,7 +19,7 @@ class AuditViewModel(
 
     val audits: MutableState<List<Audit>> = mutableStateOf(listOf())
 
-    val query = mutableStateOf("a")
+    val query = mutableStateOf("")
 
     val showSearchField = mutableStateOf(false)
 
@@ -33,7 +33,7 @@ class AuditViewModel(
         onTriggerEvent(NewSearchEvent)
     }
 
-    fun onTriggerEvent(event: AuditEvent){
+    fun onTriggerEvent(event: AuditListEvent){
         viewModelScope.launch {
             try {
                 when (event) {

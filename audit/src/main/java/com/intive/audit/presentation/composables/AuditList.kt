@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.audit.R
+import com.intive.audit.presentation.audit.AuditListEvent
+import com.intive.audit.presentation.audit.PAGE_SIZE
 import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
 
@@ -33,7 +35,9 @@ fun AuditsList(
         showFilterField: Boolean,
         onSearchIconClick: (Boolean) -> Unit,
         onFilterIconClick: (Boolean) -> Unit,
-        onExecuteSearch: () -> Unit
+        onExecuteSearch: () -> Unit,
+        page: Int,
+        onNextPage: (AuditListEvent) -> Unit,
 ) {
     Column(modifier = modifier) {
         AuditListHeader(
@@ -58,13 +62,16 @@ fun AuditsList(
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
+            contentAlignment = Alignment.TopCenter
         ) {
             LazyColumn(
                 state = listState,
             ) {
                 itemsIndexed(items = audits) { index, audit ->
                     onChangeAuditScrollPosition(index)
+                    if((index + 1) >= (page * PAGE_SIZE)){
+                        onNextPage(AuditListEvent.NextPageEvent)
+                    }
                     Row (
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                     ){
@@ -81,7 +88,8 @@ fun AuditsList(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp),
+                    .padding(bottom = 10.dp)
+                    .align(Alignment.BottomEnd),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {

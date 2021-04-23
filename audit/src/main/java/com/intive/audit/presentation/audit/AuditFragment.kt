@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.intive.audit.presentation.composables.AuditsList
 import com.intive.ui.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.intive.audit.presentation.audit.AuditListEvent.*
 
 class AuditFragment : Fragment() {
 
@@ -42,14 +43,16 @@ class AuditFragment : Fragment() {
 
                 val showFilterField = viewModel.showFilterField.value
 
+                val page = viewModel.page.value
+
                 PatronativeTheme {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         AuditsList(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 25.dp),
+                                    .fillMaxWidth()
+                                    .padding(top = 25.dp),
                             audits = audits,
                             query = query,
                             onChangeAuditScrollPosition = viewModel::onChangeAuditScrollPosition,
@@ -58,8 +61,12 @@ class AuditFragment : Fragment() {
                             showFilterField = showFilterField,
                             onSearchIconClick = viewModel::onSearchIconClick,
                             onFilterIconClick = viewModel::onFilterIconClick,
-                            onExecuteSearch = { viewModel.onTriggerEvent(AuditEvent.NewSearchEvent) }
-                        )
+                            onExecuteSearch = { viewModel.onTriggerEvent(NewSearchEvent) },
+                            page = page,
+                            onNextPage = {
+                                viewModel.onTriggerEvent(NextPageEvent)
+                            }
+                            )
                     }
                 }
             }
