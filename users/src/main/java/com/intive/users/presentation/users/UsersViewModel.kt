@@ -10,6 +10,7 @@ import androidx.paging.cachedIn
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.ROLE_CANDIDATE
+import com.intive.repository.network.ROLE_LEADER
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -22,10 +23,12 @@ class UsersViewModel(
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
 
+    var leaders: Flow<PagingData<User>> = flowOf()
     var candidates: Flow<PagingData<User>> = flowOf()
 
     init {
          viewModelScope.launch {
+           leaders = repository.getUsersByRole(ROLE_LEADER).cachedIn(viewModelScope)
            candidates = repository.getUsersByRole(ROLE_CANDIDATE).cachedIn(viewModelScope)
         }
     }

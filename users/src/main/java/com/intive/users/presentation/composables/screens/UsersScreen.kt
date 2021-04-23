@@ -34,7 +34,7 @@ fun UsersScreen(
 ) {
 
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
-    val users = emptyList<User>()
+    val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -86,14 +86,14 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.leaders),
-                    count = users.size,
+                    count = leaders.itemCount,
                     showCount = true,
                 )
             }
         }
 
-        items(users) { user ->
-            UserListItem(user = user, onItemClick = {
+        items(leaders) { user ->
+            UserListItem(user = user!!, onItemClick = {
                 navController.navigate(R.id.action_usersFragment_to_detailsFragment)
             })
             Divider(
@@ -104,6 +104,36 @@ fun UsersScreen(
                     end = 16.dp
                 )
             )
+        }
+
+        leaders.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingItem() }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val e = leaders.loadState.refresh as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            modifier = Modifier.fillParentMaxWidth(),
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = leaders.loadState.append as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
+            }
         }
 
         item {
@@ -182,7 +212,8 @@ fun LoadingView(modifier: Modifier) {
 @Composable
 fun LoadingItem() {
     CircularProgressIndicator(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
     )
