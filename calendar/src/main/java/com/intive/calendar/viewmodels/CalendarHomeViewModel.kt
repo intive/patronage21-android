@@ -264,19 +264,6 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         setCurrentMonth()
     }
 
-    /*
-    private fun setWeekHeader(): String {
-        return "${_currentWeek.value!![0][Calendar.DAY_OF_MONTH]}.${
-            _currentWeek.value!![0][Calendar.MONTH].plus(1)
-        }.${_currentWeek.value!![0][Calendar.YEAR]}" +
-                "-${_currentWeek.value!![6][Calendar.DAY_OF_MONTH]}.${
-                    _currentWeek.value!![6][Calendar.MONTH].plus(1)
-                }.${_currentWeek.value!![6][Calendar.YEAR]}"
-    }
-
-     */
-
-
     private fun setWeekHeader(): String {
         return "${getDateString(_currentWeek.value!![0], ".")} - ${getDateString(_currentWeek.value!![6], ".")}"
     }
