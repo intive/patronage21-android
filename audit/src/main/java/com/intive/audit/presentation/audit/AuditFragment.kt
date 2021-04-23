@@ -2,6 +2,7 @@ package com.intive.audit.presentation.audit
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.SearchEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -55,7 +56,8 @@ class AuditFragment : Fragment() {
                             showSearchField = showSearchField,
                             showFilterField = showFilterField,
                             onSearchIconClick = viewModel::onSearchIconClick,
-                            onFilterIconClick = viewModel::onFilterIconClick
+                            onFilterIconClick = viewModel::onFilterIconClick,
+                            onExecuteSearch = { viewModel.onTriggerEvent(AuditEvent.NewSearchEvent) }
                         )
                     }
                 }

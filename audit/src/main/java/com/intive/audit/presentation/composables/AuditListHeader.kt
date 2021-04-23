@@ -37,7 +37,8 @@ fun AuditListHeader(
     showSearchField: Boolean,
     showFilterField: Boolean,
     onSearchIconClick: (Boolean) -> Unit,
-    onFilterIconClick: (Boolean) -> Unit
+    onFilterIconClick: (Boolean) -> Unit,
+    onExecuteSearch: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -62,6 +63,7 @@ fun AuditListHeader(
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
+                            onExecuteSearch()
                             keyboardController?.hideSoftwareKeyboard()
                         }
                     ),

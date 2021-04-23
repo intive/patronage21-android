@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @Composable
 fun AuditsList(
+    audits: List<Audit>,
     modifier: Modifier = Modifier,
     query: String,
     onQueryChanged: (String) -> Unit,
@@ -31,7 +32,7 @@ fun AuditsList(
     showFilterField: Boolean,
     onSearchIconClick: (Boolean) -> Unit,
     onFilterIconClick: (Boolean) -> Unit,
-    audits: List<Audit>
+    onExecuteSearch: () -> Unit
 ) {
     Column(modifier = modifier) {
         AuditListHeader(
@@ -40,7 +41,8 @@ fun AuditsList(
             showSearchField = showSearchField,
             showFilterField = showFilterField,
             onSearchIconClick = onSearchIconClick,
-            onFilterIconClick = onFilterIconClick
+            onFilterIconClick = onFilterIconClick,
+            onExecuteSearch = onExecuteSearch
         )
 
         val listState = rememberLazyListState()
