@@ -1,5 +1,6 @@
 package com.intive.audit.presentation.audit
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
 import com.intive.audit.presentation.audit.AuditEvent.*
 
+const val TAG = "AuditViewModel"
 const val PAGE_SIZE = 30
 
 class AuditViewModel(
@@ -27,15 +29,23 @@ class AuditViewModel(
 
     private var auditListScrollPosition = 0
 
+    init {
+        onTriggerEvent(NewSearchEvent)
+    }
+
     fun onTriggerEvent(event: AuditEvent){
         viewModelScope.launch {
-            when(event){
-                is NewSearchEvent -> {
-                    newSearch()
+            try {
+                when (event) {
+                    is NewSearchEvent -> {
+                        newSearch()
+                    }
+                    is NextPageEvent -> {
+                        nextPage()
+                    }
                 }
-                is NextPageEvent -> {
-                    nextPage()
-                }
+            } catch (e: Exception){
+                Log.e(TAG, "onTriggerEvent: Exception: ${e}, ${e.cause}")
             }
         }
     }

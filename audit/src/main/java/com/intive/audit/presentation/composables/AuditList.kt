@@ -4,7 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,22 +17,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.audit.R
-import com.intive.audit.domain.Audit
+import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun AuditsList(
-    audits: List<Audit>,
-    modifier: Modifier = Modifier,
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    showSearchField: Boolean,
-    showFilterField: Boolean,
-    onSearchIconClick: (Boolean) -> Unit,
-    onFilterIconClick: (Boolean) -> Unit,
-    onExecuteSearch: () -> Unit
+        modifier: Modifier = Modifier,
+        audits: List<Audit>,
+        onChangeAuditScrollPosition: (Int) -> Unit,
+        query: String,
+        onQueryChanged: (String) -> Unit,
+        showSearchField: Boolean,
+        showFilterField: Boolean,
+        onSearchIconClick: (Boolean) -> Unit,
+        onFilterIconClick: (Boolean) -> Unit,
+        onExecuteSearch: () -> Unit
 ) {
     Column(modifier = modifier) {
         AuditListHeader(
@@ -62,7 +63,8 @@ fun AuditsList(
             LazyColumn(
                 state = listState,
             ) {
-                items(items = audits) { audit ->
+                itemsIndexed(items = audits) { index, audit ->
+                    onChangeAuditScrollPosition(index)
                     Row (
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                     ){

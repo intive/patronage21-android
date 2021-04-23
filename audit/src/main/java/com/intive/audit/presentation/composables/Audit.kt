@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.intive.audit.domain.Audit
+import com.intive.repository.domain.model.Audit
 import com.intive.ui.PatronageTypography
 
 @Composable

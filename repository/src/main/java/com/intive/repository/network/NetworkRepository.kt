@@ -13,7 +13,7 @@ class NetworkRepository(
     }
 
     suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
-        return auditService.searchAudits(page, query)
+        return auditService.searchAudits(page, query).audits
     }
   
     suspend fun getTechnologyGroups(): List<String> {
