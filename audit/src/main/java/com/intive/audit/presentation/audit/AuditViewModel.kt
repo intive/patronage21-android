@@ -19,7 +19,7 @@ class AuditViewModel(
 
     val audits: MutableState<List<Audit>> = mutableStateOf(listOf())
 
-    val query = mutableStateOf("")
+    val query = mutableStateOf("a")
 
     val showSearchField = mutableStateOf(false)
 
