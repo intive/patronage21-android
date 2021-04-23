@@ -13,38 +13,32 @@ import com.intive.ui.PatronageTypography
 fun Audit(audit: Audit) {
     Column(
         modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
+                .padding(8.dp)
+                .fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+           modifier = Modifier.fillMaxWidth(),
+           verticalAlignment = Alignment.CenterVertically
         ) {
-            audit.title?.let { title ->
-                Text(
-                    modifier = Modifier
+            Text(
+                modifier = Modifier
                         .fillMaxWidth(0.50f)
                         .wrapContentWidth(Alignment.Start),
-                    text = title,
-                    style = PatronageTypography.body1
-                )
-            }
-            audit.date?.let { date ->
-                Text(
-                    modifier = Modifier
+                text = audit.title,
+                style = PatronageTypography.body1
+            )
+            Text(
+                modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.End),
-                    text = date,
-                    style = PatronageTypography.body1
-                )
-            }
-        }
-        audit.userName?.let { userName ->
-            Spacer(modifier = Modifier.size(15.dp))
-            Text(
-                text = userName,
+                text = audit.date,
                 style = PatronageTypography.body1
             )
         }
+        Spacer(modifier = Modifier.size(15.dp))
+        Text(
+             text = audit.userName,
+             style = PatronageTypography.body1
+        )
     }
 }
