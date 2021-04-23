@@ -17,8 +17,8 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getAudits(): List<Audit> {
-        return networkRepository.getAudits().map { audit ->
+    override suspend fun searchAudits(page: Int, query: String): List<Audit> {
+        return networkRepository.searchAudits(page, query).map { audit ->
             auditMapped.mapToDomainModel(audit)
         }
     }
