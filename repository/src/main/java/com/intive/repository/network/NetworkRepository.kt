@@ -5,7 +5,7 @@ import com.intive.repository.network.model.UserDto
 
 class NetworkRepository(
         private val usersService: UsersService,
-        private val auditService: AuditService
+        private val auditService: AuditService,
         private val technologyGroupsService: TechnologyGroupsService
 ) {
     suspend fun getUsers(): List<UserDto> {

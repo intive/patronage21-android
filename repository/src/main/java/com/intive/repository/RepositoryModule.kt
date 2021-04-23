@@ -17,7 +17,7 @@ private const val BASE_URL = "https://64z31.mocklab.io/"
 val repositoryModule = module {
   
     single<Repository> { RepositoryImpl(get(), get(), get()) }
-    single { NetworkRepository(get(), get()) }
+    single { NetworkRepository(get(), get(), get()) }
     single { createRetrofit() }
     single { createUsersService(get()) }
     single { createUserMapper() }
@@ -40,12 +40,12 @@ private fun createUsersService(retrofit: Retrofit): UsersService {
 
 private fun createUserMapper(): UserDtoMapper = UserDtoMapper()
 
-private fun createTechnologyGroupsService(retrofit: Retrofit): TechnologyGroupsService {
-    return retrofit.create(TechnologyGroupsService::class.java)
-}
-
 private fun createAuditService(retrofit: Retrofit): AuditService {
     return retrofit.create(AuditService::class.java)
 }
 
 private fun createAuditMapper(): AuditDtoMapper = AuditDtoMapper()
+
+private fun createTechnologyGroupsService(retrofit: Retrofit): TechnologyGroupsService {
+    return retrofit.create(TechnologyGroupsService::class.java)
+}
