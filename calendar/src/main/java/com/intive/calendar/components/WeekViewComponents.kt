@@ -121,7 +121,7 @@ fun DaysListItem(
         events.size == 1 -> {
 
             val header =
-                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${day[Calendar.DAY_OF_MONTH]}.${day[Calendar.MONTH] + 1}.${day[Calendar.YEAR]}"
+                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
             val bundle = bundleOf(
                 "date" to header,
                 "time" to "${events[0].timeStart} - ${events[0].timeEnd}",
@@ -194,7 +194,7 @@ fun WeekDayWithEvents(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    "${weekDays[index]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}",
+                    "${weekDays[index]}, ${getDateString(date, ".")}",
                     style = TextStyle(
                         color = headerColor,
                         fontWeight = FontWeight.Bold,
@@ -243,7 +243,7 @@ fun EventsItem(
 ) {
 
     val header =
-        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
+        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
 
     val bundle = bundleOf(
         "date" to header,
