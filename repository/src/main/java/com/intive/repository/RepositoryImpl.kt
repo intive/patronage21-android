@@ -21,13 +21,6 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
-        return networkRepository.getEvents(dateStart, dateEnd).map { event ->
-            eventMapper.mapToDomainModel(event)
-        }
-
-    }
-
     override suspend fun getAudits(): List<Audit> {
         return networkRepository.getAudits().map { audit ->
             auditMapped.mapToDomainModel(audit)
@@ -36,5 +29,11 @@ class RepositoryImpl(
 
     override suspend fun getTechnologyGroups(): List<String> {
         return networkRepository.getTechnologyGroups()
+    }
+
+    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
+        return networkRepository.getEvents(dateStart, dateEnd).map { event ->
+            eventMapper.mapToDomainModel(event)
+        }
     }
 }

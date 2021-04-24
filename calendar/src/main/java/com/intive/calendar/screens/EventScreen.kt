@@ -34,7 +34,7 @@ fun EventScreenLayout(
     time: String,
     name: String,
     users: List<User>,
-    refreshCalendar:() -> Unit
+    refreshCalendar: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -99,7 +99,7 @@ fun UsersListItem(user: User) {
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Column{
+        Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     bitmap = ImageBitmap.imageResource(id = R.drawable.header),
@@ -118,20 +118,15 @@ fun UsersListItem(user: User) {
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-
         }
 
-
-        Column{
+        Column {
             Text(
                 user.role,
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(start = 16.dp)
             )
         }
-
-
-
     }
     Divider(color = Color.LightGray)
 }

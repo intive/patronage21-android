@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +23,10 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
+import com.intive.calendar.utils.Day
 import com.intive.calendar.utils.getDateString
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDaysCalendarClass
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
 
 
@@ -36,17 +34,21 @@ import java.util.*
 @Composable
 fun MonthView(
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel
+    showWeekView: Boolean?,
+    headerMonth: String?,
+    currentMonth: List<Any>?,
+    monthEvents: List<Day>?,
+    goToPreviousMonth: () -> Unit,
+    goToNextMonth: () -> Unit,
 ) {
-    val showWeekView by calendarViewModel.showWeekView.observeAsState()
-    val header by calendarViewModel.monthHeader.observeAsState()
+
 
     if (showWeekView == false) {
         CalendarHeader(
-            header!!,
-            { calendarViewModel.goToPreviousMonth() },
-            { calendarViewModel.goToNextMonth() })
-        CalendarGrid(navController, calendarViewModel)
+            headerMonth!!,
+            { goToPreviousMonth() },
+            { goToNextMonth() })
+        CalendarGrid(navController, currentMonth, monthEvents)
     }
 }
 
@@ -54,13 +56,11 @@ fun MonthView(
 @Composable
 fun CalendarGrid(
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel
+    currentMonth: List<Any>?,
+    monthEvents: List<Day>?,
 ) {
 
-    val currentMonth by calendarViewModel.currentMonth.observeAsState()
-    val monthEvents by calendarViewModel.monthEvents.observeAsState()
     val items = currentMonth!!.toList()
-
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(7)
@@ -74,18 +74,24 @@ fun CalendarGrid(
                 var txtColor = Color.Black
                 var onClick = {}
 
-                if (monthEvents!!.find{ it1 -> it1.date == getDateString(items[it] as Calendar)} != null) {
+                if (monthEvents!!.find { event -> event.date == getDateString(items[it] as Calendar) } != null) {
 
-                    val index = monthEvents!!.indexOfFirst { it2 -> it2.date!! == getDateString(items[it] as Calendar) }
+                    val index =
+                        monthEvents.indexOfFirst { event -> event.date!! == getDateString(items[it] as Calendar) }
 
                     bgColor = colorResource(R.color.pale_blue)
 
-                    if (monthEvents!![index].events!!.size == 1) {
+                    if (monthEvents[index].events!!.size == 1) {
                         val bundle = bundleOf(
-                            "date" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${getDateString((items[it] as Calendar), ".")}",
-                            "time" to "${monthEvents!![index].events!![0].timeStart} - ${monthEvents!![index].events!![0].timeEnd}",
-                            "name" to monthEvents!![index].events!![0].name,
-                            "users" to Gson().toJson(monthEvents!![index].events!![0].users)
+                            "date" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+                                getDateString(
+                                    (items[it] as Calendar),
+                                    "."
+                                )
+                            }",
+                            "time" to "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
+                            "name" to monthEvents[index].events!![0].name,
+                            "users" to Gson().toJson(monthEvents[index].events!![0].users)
                         )
                         onClick =
                             {
@@ -94,10 +100,15 @@ fun CalendarGrid(
                                     bundle
                                 )
                             }
-                    } else if (monthEvents!![index].events!!.size > 1) {
+                    } else if (monthEvents[index].events!!.size > 1) {
                         val bundle = bundleOf(
-                            "header" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${getDateString((items[it] as Calendar), ".")}",
-                            "events" to Gson().toJson(monthEvents!![index].events!!)
+                            "header" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+                                getDateString(
+                                    (items[it] as Calendar),
+                                    "."
+                                )
+                            }",
+                            "events" to Gson().toJson(monthEvents[index].events!!)
                         )
                         onClick =
                             {
@@ -110,7 +121,7 @@ fun CalendarGrid(
 
                 }
 
-                if(isDateSame((items[it] as Calendar), Calendar.getInstance())){
+                if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
                     bgColor = MaterialTheme.colors.secondary
                     txtColor = Color.White
                 }

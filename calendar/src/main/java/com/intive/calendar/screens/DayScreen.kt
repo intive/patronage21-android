@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.components.*
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
@@ -27,7 +26,7 @@ fun DayLayout(
     navController: NavController,
     date: String,
     eventsList: List<Event>,
-    refreshCalendar:() -> Unit,
+    refreshCalendar: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -66,7 +65,12 @@ fun EventsList(
 @Composable
 fun EventsListItem(event: Event, date: String, navController: NavController) {
 
-    val bundle = bundleOf("date" to date, "time" to "${event.timeStart} - ${event.timeEnd}", "name" to event.name, "users" to Gson().toJson(event.users))
+    val bundle = bundleOf(
+        "date" to date,
+        "time" to "${event.timeStart} - ${event.timeEnd}",
+        "name" to event.name,
+        "users" to Gson().toJson(event.users)
+    )
 
     Row(
         modifier = Modifier

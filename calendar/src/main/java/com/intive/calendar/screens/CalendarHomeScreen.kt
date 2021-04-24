@@ -39,6 +39,10 @@ fun CalendarHomeLayout(
     val currentWeek by calendarViewModel.currentWeek.observeAsState()
     val weekEventsList by calendarViewModel.weekEvents.observeAsState()
     val showWeekView by calendarViewModel.showWeekView.observeAsState()
+    val weekHeader by calendarViewModel.weekHeader.observeAsState()
+    val monthHeader by calendarViewModel.monthHeader.observeAsState()
+    val currentMonth by calendarViewModel.currentMonth.observeAsState()
+    val monthEvents by calendarViewModel.monthEvents.observeAsState()
 
     val calendarViewStr: String =
         if (showWeekView == true) stringResource(R.string.week) else stringResource(R.string.month)
@@ -55,10 +59,24 @@ fun CalendarHomeLayout(
                 Modifier.padding(bottom = 24.dp)
             )
 
-            SpinnerComponent({ calendarViewModel.showDialog() }, calendarViewStr)
+            ViewOptionsComponent({ calendarViewModel.showDialog() }, calendarViewStr)
 
-            WeekView(currentWeek!!, weekEventsList!!, navController, calendarViewModel)
-            MonthView(navController, calendarViewModel)
+            WeekView(
+                currentWeek!!,
+                weekEventsList!!,
+                navController,
+                showWeekView,
+                weekHeader,
+                { calendarViewModel.goToPreviousWeek() },
+                { calendarViewModel.goToNextWeek() })
+            MonthView(
+                navController,
+                showWeekView,
+                monthHeader,
+                currentMonth,
+                monthEvents,
+                { calendarViewModel.goToPreviousMonth() },
+                { calendarViewModel.goToNextMonth() })
         }
 
         Column(
@@ -85,6 +103,7 @@ fun CalendarHomeLayout(
 @Composable
 fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel) {
     val showPeriodDialog by calendarViewModel.showPeriodDialog.observeAsState()
+
     if (showPeriodDialog == true) {
         Dialog(onDismissRequest = { calendarViewModel.hideDialog() }) {
             Surface(
@@ -140,10 +159,10 @@ fun PeriodDialogLayout(calendarViewModel: CalendarHomeViewModel) {
             OKButton(stringResource(R.string.accept)) {
                 if (weekClicked == true) {
                     calendarViewModel.showWeekView()
-                    calendarViewModel.setCurrentMonth()
+                    calendarViewModel.refreshCalendar()
                 } else {
                     calendarViewModel.showMonthView()
-                    calendarViewModel.setCurrentWeek()
+                    calendarViewModel.refreshCalendar()
                 }
                 calendarViewModel.hideDialog()
             }
@@ -177,7 +196,7 @@ fun CalendarViewOption(text: String, bgColor: Color, txtColor: Color, onClick: (
 
 
 @Composable
-fun SpinnerComponent(showDialog: () -> Unit, calendarViewStr: String) {
+fun ViewOptionsComponent(showDialog: () -> Unit, calendarViewStr: String) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier

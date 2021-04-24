@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AddEventFragment : Fragment() {
 
-    private val viewModel: AddEventViewModel by viewModels()
+    private val addEventViewModel: AddEventViewModel by viewModels()
     private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
     @ExperimentalComposeUiApi
@@ -30,14 +30,12 @@ class AddEventFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    view?.let {
-                        AddEventScreen(
-                            it,
-                            requireContext(),
-                            findNavController(),
-                            viewModel
-                        ) { calendarHomeViewModel.refreshCalendar() }
-                    }
+                    AddEventScreen(
+                        requireView(),
+                        requireContext(),
+                        findNavController(),
+                        addEventViewModel
+                    ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }
         }

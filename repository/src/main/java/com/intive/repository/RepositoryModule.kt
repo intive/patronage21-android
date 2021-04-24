@@ -42,13 +42,6 @@ private fun createUsersService(retrofit: Retrofit): UsersService {
     return retrofit.create(UsersService::class.java)
 }
 
-private fun createUserMapper(): UserDtoMapper = UserDtoMapper()
-
-
-private fun createEventsService(retrofit: Retrofit): EventsService {
-    return retrofit.create(EventsService::class.java)
-}
-
 private fun createEventsMapper(): EventDtoMapper = EventDtoMapper()
 
 private fun createAuditService(retrofit: Retrofit): AuditService {
@@ -61,3 +54,8 @@ private fun createTechnologyGroupsService(retrofit: Retrofit): TechnologyGroupsS
     return retrofit.create(TechnologyGroupsService::class.java)
 }
 
+private fun createUserMapper(): UserDtoMapper = UserDtoMapper()
+
+private fun createEventsService(retrofit: Retrofit): EventsService {
+    return retrofit.create(EventsService::class.java)
+}

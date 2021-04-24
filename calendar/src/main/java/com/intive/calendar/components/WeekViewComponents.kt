@@ -9,8 +9,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,7 +29,6 @@ import com.intive.calendar.utils.getDateString
 import com.intive.calendar.utils.isDateSame
 import com.intive.calendar.utils.weekDays
 import com.intive.calendar.utils.weekDaysCalendarClass
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import java.util.*
 import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
@@ -42,16 +39,18 @@ fun WeekView(
     currentWeek: Array<Calendar>,
     weekEventsList: List<Day>,
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel
+    showWeekView: Boolean?,
+    header: String?,
+    goToPreviousWeek: () -> Unit,
+    goToNextWeek: () -> Unit,
 ) {
-    val showWeekView by calendarViewModel.showWeekView.observeAsState()
-    val header by calendarViewModel.weekHeader.observeAsState()
+
 
     if (showWeekView == true) {
         CalendarHeader(
             header!!,
-            { calendarViewModel.goToPreviousWeek() },
-            { calendarViewModel.goToNextWeek() })
+            { goToPreviousWeek() },
+            { goToNextWeek() })
         DaysList(currentWeek, weekEventsList, navController)
     }
 }
@@ -65,15 +64,15 @@ fun DaysList(
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            if (weekEventsList!!.find { it1 -> it1.date == getDateString(currentWeek[it]) } == null) {
+            if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
                 DaysListItem(it, navController, currentWeek[it], emptyList())
             } else {
                 val index =
-                    weekEventsList!!.indexOfFirst { it2 -> it2.date!! == getDateString(currentWeek[it]) }
-                weekEventsList[index].events?.let { it1 ->
+                    weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
+                weekEventsList[index].events?.let { event ->
                     DaysListItem(
                         it, navController, currentWeek[it],
-                        it1
+                        event
                     )
                 }
             }
