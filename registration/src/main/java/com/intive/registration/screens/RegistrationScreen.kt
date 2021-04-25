@@ -76,7 +76,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         when (formState) {
             RegistrationFormState.DOWNLOADING_DATA -> {
-                Text("Pobieranie dostępnych grup technologicznych...")
+                Text(stringResource(R.string.downloading_available_tech_groups))
                 CircularProgressIndicator()
             }
             RegistrationFormState.OK -> {

@@ -36,6 +36,7 @@
     <string name="close_dialog">Zamknij</string>
     <string name="no_code_subtitle">Wpisz ponownie swój adres e-mail</string>
     <string name="logo_image_content_description">Logo</string>
+    <string name="downloading_available_tech_groups">Pobieranie dostępnych grup technologicznych...</string>
 
 
     <string-array name="titles_array">
