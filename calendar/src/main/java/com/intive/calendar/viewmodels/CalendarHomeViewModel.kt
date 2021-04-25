@@ -239,6 +239,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
     fun refreshCalendar() {
         _currentWeek.value = getCurrentWeek(Calendar.getInstance())
+        _weekHeader.value = setWeekHeader()
         currentDate = Calendar.getInstance()
         _currentMonth.value = getCurrentMonth()
     }
