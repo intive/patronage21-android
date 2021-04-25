@@ -3,6 +3,7 @@ package com.intive.registration.viewmodels
 import android.icu.text.DateTimePatternGenerator.PatternInfo.OK
 import android.util.Patterns
 import androidx.lifecycle.*
+import com.intive.registration.R
 import com.intive.repository.Repository
 import kotlinx.coroutines.launch
 import java.util.Collections.emptyList
@@ -23,10 +24,10 @@ class RegistrationViewModel(
                 availableTechnologies = repository.getTechnologyGroups()
             }
             catch (ex: Exception) {
-                _registrationFormState.value = RegistrationFormState.Error("Błąd pobierania danych")
+                _registrationFormState.value = RegistrationFormState.Error(R.string.downloading_data_error)
             }
             if(availableTechnologies.isEmpty()) {
-                _registrationFormState.value = RegistrationFormState.Error("Błąd pobierania danych")
+                _registrationFormState.value = RegistrationFormState.Error(R.string.downloading_data_error)
             }
             else {
                 _registrationFormState.value = RegistrationFormState.Ok
@@ -144,5 +145,5 @@ sealed class RegistrationFormState {
     object Downloading: RegistrationFormState()
     object Sending: RegistrationFormState()
     object Ok: RegistrationFormState()
-    data class Error(val message: String): RegistrationFormState()
+    data class Error(val messageResourceId: Int): RegistrationFormState()
 }

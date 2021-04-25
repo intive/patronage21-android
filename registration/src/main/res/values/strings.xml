@@ -38,6 +38,7 @@
     <string name="logo_image_content_description">Logo</string>
     <string name="downloading_available_tech_groups">Pobieranie dostępnych grup technologicznych...</string>
     <string name="wrong_code">Niepoprawny kod</string>
+    <string name="downloading_data_error">Błąd pobierania danych</string>
 
 
     <string-array name="titles_array">

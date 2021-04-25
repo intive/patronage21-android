@@ -16,7 +16,7 @@ import com.intive.registration.fragments.ErrorFragmentDirections
 import com.intive.ui.components.TitleText
 
 @Composable
-fun ErrorScreen(navController: NavController, message: String = "") {
+fun ErrorScreen(navController: NavController, messageResourceId: Int) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -26,7 +26,7 @@ fun ErrorScreen(navController: NavController, message: String = "") {
     ) {
         TitleText(text = stringResource(R.string.error_title), modifier = Modifier)
         Spacer(modifier = Modifier.height(Constants.SPACER_HEIGHT))
-        Text(message)
+        Text(stringResource(id = messageResourceId))
         CustomButton(
             text = stringResource(R.string.error_home_button),
             onClick = {

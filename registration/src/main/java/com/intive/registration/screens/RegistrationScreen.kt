@@ -59,7 +59,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             .verticalScroll(scrollState)
     ) {
         if(formState is RegistrationFormState.Error) {
-            val action = RegistrationFragmentDirections.actionError((formState as RegistrationFormState.Error).message)
+            val action = RegistrationFragmentDirections.actionError((formState as RegistrationFormState.Error).messageResourceId)
             navController.navigate(action)
         }
         Logo()

@@ -63,7 +63,7 @@ fun EmailVerificationScreen(
                         sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
                         EmailVerificationFragmentDirections.actionSuccess()
                     } else {
-                        EmailVerificationFragmentDirections.actionError("Niepoprawny kod")//stringResource(R.string.wrong_code)) onClick nie przyjmuje composable??
+                        EmailVerificationFragmentDirections.actionError(R.string.wrong_code)//stringResource(R.string.wrong_code)) onClick nie przyjmuje composable??
                     }
                 navController.navigate(action)
             },

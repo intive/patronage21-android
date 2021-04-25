@@ -60,8 +60,8 @@
             android:id="@+id/action_back_to_login"
             app:destination="@id/loginFragment" />
         <argument
-            android:name="message"
-            app:argType="string"/>
+            android:name="messageResourceId"
+            app:argType="integer"/>
     </fragment>
 
 </navigation>
