@@ -15,7 +15,6 @@ import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.repository.domain.model.Event
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DayFragment : Fragment() {

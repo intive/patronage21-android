@@ -92,7 +92,6 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         currentDate.set(Calendar.DATE, 1)
         val dayOfTheWeek = currentDate[Calendar.DAY_OF_WEEK]
         val daysNumber = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-        val offsetList = mutableListOf<String>()
         val date = currentDate.clone() as Calendar
 
         val offset: Int = when {
@@ -115,9 +114,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             numbers += date.clone() as Calendar
         }
 
-        repeat(offset) {
-            offsetList += ""
-        }
+        val offsetList = List(offset) { "" }
 
         _monthHeader.value = getMonthAndYearString(currentDate)
 
