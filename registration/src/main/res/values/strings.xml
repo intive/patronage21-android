@@ -6,7 +6,7 @@
     <string name="registration_button">Rejestracja</string>
     <string name="password_label_text">Hasło</string>
     <string name="login_title">Logowanie</string>
-    <string name="registration_title">Zgłoś się do programu Patrontive już dziś!</string>
+    <string name="registration_title">Zgłoś się do programu Patron-a-tive już dziś!</string>
     <string name="registration_subtitle">Wystarczy, że wypełnisz poniższy formularz zgłoszeniowy.</string>
     <string name="create_account_button">Załóż konto</string>
     <string name="phone_number_hint">Numer telefonu *</string>
