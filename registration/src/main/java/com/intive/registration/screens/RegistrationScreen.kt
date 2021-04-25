@@ -75,7 +75,10 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         when (formState) {
-            RegistrationFormState.DOWNLOADING_DATA -> CircularProgressIndicator()
+            RegistrationFormState.DOWNLOADING_DATA -> {
+                Text("Pobieranie dostępnych grup technologicznych...")
+                CircularProgressIndicator()
+            }
             RegistrationFormState.OK -> {
                 TechnologiesList(
                     availableTechnologies = viewmodel.availableTechnologies,
