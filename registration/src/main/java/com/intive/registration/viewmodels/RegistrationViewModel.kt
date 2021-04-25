@@ -2,10 +2,28 @@ package com.intive.registration.viewmodels
 
 import android.util.Patterns
 import androidx.lifecycle.*
+import com.intive.registration.viewmodels.RegistrationFormState.DOWNLOADING_DATA
+import com.intive.registration.viewmodels.RegistrationFormState.OK
+import com.intive.repository.Repository
+import kotlinx.coroutines.launch
+import java.util.Collections.emptyList
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel(
+    private val repository: Repository
+) : ViewModel() {
 
-    val availableTechnologies = listOf("Java", "JavaScript", "QA", "Mobile (Android)")
+    private val _registrationFormState = MutableLiveData(OK)
+    val registrationFormState: LiveData<String> = _registrationFormState
+
+    var availableTechnologies: List<String> = emptyList() //listOf("Java", "JavaScript", "QA", "Mobile (Android)")
+
+    init {
+        viewModelScope.launch {
+            _registrationFormState.value = DOWNLOADING_DATA
+            availableTechnologies = repository.getTechnologyGroups()
+            _registrationFormState.value = OK
+        }
+    }
 
     private val _title = MutableLiveData("")
     private val _firstName = MutableLiveData("")
@@ -15,7 +33,7 @@ class RegistrationViewModel : ViewModel() {
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
     private val _phoneNumber = MutableLiveData("")
-    val phoneNumber:LiveData<String> = _phoneNumber
+    val phoneNumber: LiveData<String> = _phoneNumber
     private val _login = MutableLiveData("")
     val login: LiveData<String> = _login
     private val _password = MutableLiveData("")
@@ -33,33 +51,43 @@ class RegistrationViewModel : ViewModel() {
     fun onTitleChange(newValue: String) {
         _title.value = newValue
     }
+
     fun onFirstNameChange(newValue: String) {
         _firstName.value = newValue
     }
+
     fun onLastNameChange(newValue: String) {
         _lastName.value = newValue
     }
+
     fun onEmailChange(newValue: String) {
         _email.value = newValue
     }
+
     fun onPhoneNumberChange(newValue: String) {
         _phoneNumber.value = newValue
     }
+
     fun onLoginChange(newValue: String) {
         _login.value = newValue
     }
+
     fun onPasswordChange(newValue: String) {
         _password.value = newValue
     }
+
     fun onConfirmPasswordChange(newValue: String) {
         _confirmPassword.value = newValue
     }
+
     fun onGithubUrlChange(newValue: String) {
         _githubUrl.value = newValue
     }
+
     fun onRodoAgreeChange(newValue: Boolean) {
         _rodoAgree.value = newValue
     }
+
     fun onRegulationsAgreeChange(newValue: Boolean) {
         _regulationsAgree.value = newValue
     }
@@ -101,4 +129,10 @@ class RegistrationViewModel : ViewModel() {
         }
     }
 
+}
+
+object RegistrationFormState {
+    const val DOWNLOADING_DATA = "downloading"
+    const val SENDING_DATA = "sending"
+    const val OK = "ok"
 }

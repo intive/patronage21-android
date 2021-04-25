@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,12 +24,14 @@ import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
+import com.intive.registration.viewmodels.RegistrationFormState
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 
 
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
+    val formState by viewmodel.registrationFormState.observeAsState()
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
@@ -71,12 +74,17 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        TechnologiesList(
-            availableTechnologies = viewmodel.availableTechnologies,
-            onItemSelected = viewmodel::updateTechnologies,
-            isValid = viewmodel::isTechnologiesListValid,
-            formChecker = formChecker
-        )
+        when (formState) {
+            RegistrationFormState.DOWNLOADING_DATA -> CircularProgressIndicator()
+            RegistrationFormState.OK -> {
+                TechnologiesList(
+                    availableTechnologies = viewmodel.availableTechnologies,
+                    onItemSelected = viewmodel::updateTechnologies,
+                    isValid = viewmodel::isTechnologiesListValid,
+                    formChecker = formChecker
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(login, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
