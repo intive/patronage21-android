@@ -39,7 +39,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
     private var currentDate: Calendar = Calendar.getInstance()
 
     private val _currentMonth = MutableLiveData(getCurrentMonth())
-    var currentMonth: LiveData<List<Any>> = _currentMonth
+    var currentMonth: LiveData<CurrentMonth> = _currentMonth
 
     private val _showPeriodDialog = MutableLiveData(false)
     val showPeriodDialog: LiveData<Boolean> = _showPeriodDialog
@@ -87,11 +87,13 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         return weekArray
     }
 
-    private fun getCurrentMonth(): List<Any> {
+    private fun getCurrentMonth(): CurrentMonth {
 
         currentDate.set(Calendar.DATE, 1)
         val dayOfTheWeek = currentDate[Calendar.DAY_OF_WEEK]
         val daysNumber = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val offsetList = mutableListOf<String>()
+        val date = currentDate.clone() as Calendar
 
         val offset: Int = when {
             dayOfTheWeek == 2 -> {
@@ -105,12 +107,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             }
         }
 
-        val offsetList = mutableListOf<String>()
-        val date = currentDate.clone() as Calendar
-        val firstDay = currentDate.clone() as Calendar
-
-
-        var numbers = arrayOf<Calendar>()
+        val numbers = mutableListOf<Calendar>()
         numbers += date.clone() as Calendar
 
         for (i in 1 until daysNumber) {
@@ -118,23 +115,20 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             numbers += date.clone() as Calendar
         }
 
-
         repeat(offset) {
             offsetList += ""
         }
 
         _monthHeader.value = getMonthAndYearString(currentDate)
 
-
-        val lastDay = numbers.last()
-        getMonthEvents(getDateString(firstDay), getDateString(lastDay))
-        return (calendarHeader + offsetList + numbers)
+        getMonthEvents(getDateString(numbers.first()), getDateString(numbers.last()))
+        return CurrentMonth(offset = offsetList, days = numbers)
 
     }
 
     private fun getMonthEvents(dateStart: String, dateEnd: String) {
 
-        var events: List<Event>?
+        var events: List<Event>
         val monthArray = mutableListOf<Day>()
 
         viewModelScope.launch(Dispatchers.IO + handler) {
@@ -143,27 +137,24 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
             events = repository.getEvents(dateStart, dateEnd)
 
-            if (events != null) {
-                for (i in events!!.indices) {
-                    val index = monthArray.indexOfFirst { it.date!! == events!![i].date }
-                    if (index != -1) {
-                        monthArray[index].events = monthArray[index].events?.plus(events!![i])
-                    } else {
-                        monthArray += Day(events!![i].date, listOf(events!![i]))
-                    }
+            for (i in events.indices) {
+                val index = monthArray.indexOfFirst { it.date!! == events[i].date }
+                if (index != -1) {
+                    monthArray[index].events = monthArray[index].events?.plus(events[i])
+                } else {
+                    monthArray += Day(events[i].date, listOf(events[i]))
                 }
-
-                _monthEvents.postValue(monthArray)
             }
+
+            _monthEvents.postValue(monthArray)
         }
     }
 
 
     private fun getWeekEvents(dateStart: String, dateEnd: String) {
 
-        var events: List<Event>?
+        var events: List<Event>
         val weekArray = mutableListOf<Day>()
-
 
         viewModelScope.launch(Dispatchers.IO + handler) {
             _weekEvents.postValue(listOf(Day(null, emptyList())))
@@ -171,19 +162,17 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
             events = repository.getEvents(dateStart, dateEnd)
 
-            if (events != null) {
-                for (i in events!!.indices) {
-                    val index = weekArray.indexOfFirst { it.date!! == events!![i].date }
-                    if (index != -1) {
-                        weekArray[index].events = weekArray[index].events?.plus(events!![i])
-                    } else {
-                        weekArray += Day(events!![i].date, listOf(events!![i]))
-                    }
+            for (i in events.indices) {
+                val index = weekArray.indexOfFirst { it.date!! == events[i].date }
+                if (index != -1) {
+                    weekArray[index].events = weekArray[index].events?.plus(events[i])
+                } else {
+                    weekArray += Day(events[i].date, listOf(events[i]))
                 }
-
-                _weekEvents.postValue(weekArray)
-
             }
+
+            _weekEvents.postValue(weekArray)
+
         }
     }
 

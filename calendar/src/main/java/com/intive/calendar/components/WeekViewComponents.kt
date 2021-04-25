@@ -36,8 +36,8 @@ import com.intive.repository.domain.model.Event
 
 @Composable
 fun WeekView(
-    currentWeek: Array<Calendar>,
-    weekEventsList: List<Day>,
+    currentWeek: Array<Calendar>?,
+    weekEventsList: List<Day>?,
     navController: NavController,
     showWeekView: Boolean?,
     header: String?,
@@ -45,13 +45,16 @@ fun WeekView(
     goToNextWeek: () -> Unit,
 ) {
 
-
     if (showWeekView == true) {
         CalendarHeader(
-            header!!,
-            { goToPreviousWeek() },
-            { goToNextWeek() })
-        DaysList(currentWeek, weekEventsList, navController)
+            period = header!!,
+            onClickPrev = { goToPreviousWeek() },
+            onClickNext = { goToNextWeek() })
+        DaysList(
+            currentWeek = currentWeek!!,
+            weekEventsList = weekEventsList!!,
+            navController = navController
+        )
     }
 }
 
@@ -65,14 +68,21 @@ fun DaysList(
     LazyColumn(state = scrollState) {
         items(7) {
             if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
-                DaysListItem(it, navController, currentWeek[it], emptyList())
+                DaysListItem(
+                    index = it,
+                    navController = navController,
+                    day = currentWeek[it],
+                    events = emptyList()
+                )
             } else {
                 val index =
                     weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
                 weekEventsList[index].events?.let { event ->
                     DaysListItem(
-                        it, navController, currentWeek[it],
-                        event
+                        index = it,
+                        navController = navController,
+                        day = currentWeek[it],
+                        events = event
                     )
                 }
             }
@@ -108,13 +118,13 @@ fun DaysListItem(
                 txtColor = Color.Gray
             }
             WeekDayWithEvents(
-                bkgColor,
-                headerColor,
-                txtColor,
-                stringResource(R.string.no_events),
-                {},
-                index,
-                day
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                txtColor = txtColor,
+                text = stringResource(R.string.no_events),
+                onClickDayItem = {},
+                index = index,
+                date = day
             )
         }
         events.size == 1 -> {
@@ -129,17 +139,17 @@ fun DaysListItem(
             )
 
             WeekDayWithEvents(
-                bkgColor, headerColor,
-                txtColor,
-                "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
-                {
+                bkgColor = bkgColor, headerColor = headerColor,
+                txtColor = txtColor,
+                text = "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
+                onClickDayItem = {
                     navController.navigate(
                         R.id.action_calendarFragment_to_eventFragment,
                         bundle
                     )
                 },
-                index,
-                day
+                index = index,
+                date = day
             )
         }
         else -> {
@@ -147,22 +157,22 @@ fun DaysListItem(
             val eventsShow = remember { mutableStateOf(false) }
 
             WeekDayWithEvents(
-                bkgColor,
-                headerColor,
-                txtColor,
-                "${stringResource(R.string.events_number)}: ${events.size}",
-                {
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                txtColor = txtColor,
+                text = "${stringResource(R.string.events_number)}: ${events.size}",
+                onClickDayItem = {
                     eventsShow.value = eventsShow.value != true
                 },
-                index,
-                day,
+                index = index,
+                date = day,
             )
 
             if (eventsShow.value) {
                 EventsList(
-                    bkgColor,
-                    headerColor,
-                    events, day, navController
+                    bkgColor = bkgColor,
+                    headerColor = headerColor,
+                    events = events, date = day, navController = navController
                 )
             }
         }
@@ -204,7 +214,7 @@ fun WeekDayWithEvents(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text,
+                    text = text,
                     style = TextStyle(color = txtColor),
                     fontSize = 18.sp
                 )
@@ -224,9 +234,11 @@ fun EventsList(
     Column {
         for (event in events) {
             EventsItem(
-                bkgColor,
-                headerColor,
-                event, date, navController
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                event = event,
+                date = date,
+                navController = navController
             )
         }
     }
@@ -265,7 +277,7 @@ fun EventsItem(
     ) {
 
         Text(
-            "${event.name}, ${event.timeStart} - ${event.timeEnd}",
+            text = "${event.name}, ${event.timeStart} - ${event.timeEnd}",
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,

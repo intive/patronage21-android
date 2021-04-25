@@ -14,7 +14,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,21 +60,21 @@ fun CalendarHomeLayout(
             ViewOptionsComponent({ calendarViewModel.showDialog() }, calendarViewStr)
 
             WeekView(
-                currentWeek!!,
-                weekEventsList!!,
-                navController,
-                showWeekView,
-                weekHeader,
-                { calendarViewModel.goToPreviousWeek() },
-                { calendarViewModel.goToNextWeek() })
+                currentWeek = currentWeek,
+                weekEventsList = weekEventsList,
+                navController = navController,
+                showWeekView = showWeekView,
+                header = weekHeader,
+                goToPreviousWeek = { calendarViewModel.goToPreviousWeek() }
+            ) { calendarViewModel.goToNextWeek() }
             MonthView(
-                navController,
-                showWeekView,
-                monthHeader,
-                currentMonth,
-                monthEvents,
-                { calendarViewModel.goToPreviousMonth() },
-                { calendarViewModel.goToNextMonth() })
+                navController = navController,
+                showWeekView = showWeekView,
+                headerMonth = monthHeader,
+                currentMonth = currentMonth,
+                monthEvents = monthEvents,
+                goToPreviousMonth = { calendarViewModel.goToPreviousMonth() }
+            ) { calendarViewModel.goToNextMonth() }
         }
 
         Column(
@@ -123,31 +122,31 @@ fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel) {
                     Column(modifier = Modifier.weight(1f)) {
 
                         TitleText(
-                            stringResource(R.string.choose_period),
-                            Modifier.padding(bottom = 24.dp),
-                            MaterialTheme.typography.h6,
-                            Color.Black
+                            text = stringResource(R.string.choose_period),
+                            modifier = Modifier.padding(bottom = 24.dp),
+                            style = MaterialTheme.typography.h6,
+                            color = Color.Black
                         )
 
                         CalendarViewOption(
-                            stringResource(R.string.week),
-                            Color(bColorWeekBtn!!),
-                            Color(txtColorWeekBtn!!)
+                            text = stringResource(R.string.week),
+                            bgColor = Color(bColorWeekBtn!!),
+                            txtColor = Color(txtColorWeekBtn!!)
                         ) {
                             calendarViewModel.weekClicked()
                         }
 
                         CalendarViewOption(
-                            stringResource(R.string.month),
-                            Color(bColorMonthBtn!!),
-                            Color(txtColorMonthBtn!!)
+                            text = stringResource(R.string.month),
+                            bgColor = Color(bColorMonthBtn!!),
+                            txtColor = Color(txtColorMonthBtn!!)
                         ) {
                             calendarViewModel.monthClicked()
                         }
                     }
 
                     Column {
-                        OKButton(stringResource(R.string.accept)) {
+                        OKButton(text = stringResource(R.string.accept)) {
                             if (weekClicked == true) {
                                 calendarViewModel.showWeekView()
                                 calendarViewModel.refreshCalendar()
@@ -158,7 +157,7 @@ fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel) {
                             calendarViewModel.hideDialog()
                         }
 
-                        CancelButton(stringResource(R.string.go_back)) {
+                        CancelButton(text = stringResource(R.string.go_back)) {
                             calendarViewModel.hideDialog()
                         }
                     }
@@ -178,7 +177,7 @@ fun CalendarViewOption(text: String, bgColor: Color, txtColor: Color, onClick: (
             .clickable(onClick = onClick)
     ) {
         Text(
-            text,
+            text = text,
             modifier = Modifier.padding(8.dp),
             style = TextStyle(
                 color = txtColor,
@@ -190,7 +189,7 @@ fun CalendarViewOption(text: String, bgColor: Color, txtColor: Color, onClick: (
 
 
 @Composable
-fun ViewOptionsComponent(showDialog: () -> Unit, calendarViewStr: String) {
+fun ViewOptionsComponent(showDialog: () -> Unit, calendarViewString: String) {
 
     Card(
         border = BorderStroke(0.5.dp,Color.Black), modifier = Modifier.padding(top = 12.dp, bottom = 12.dp)){
@@ -201,7 +200,7 @@ fun ViewOptionsComponent(showDialog: () -> Unit, calendarViewStr: String) {
         ) {
 
             Text(
-                calendarViewStr,
+                text = calendarViewString,
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.align(Alignment.CenterVertically).padding(start = 12.dp)
             )
@@ -235,7 +234,7 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
         }
 
         Text(
-            period,
+            text = period,
             style = TextStyle(
                 color = Color.White,
                 fontSize = 20.sp,

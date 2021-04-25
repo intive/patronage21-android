@@ -23,10 +23,7 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
-import com.intive.calendar.utils.Day
-import com.intive.calendar.utils.getDateString
-import com.intive.calendar.utils.isDateSame
-import com.intive.calendar.utils.weekDaysCalendarClass
+import com.intive.calendar.utils.*
 import java.util.*
 
 
@@ -36,7 +33,7 @@ fun MonthView(
     navController: NavController,
     showWeekView: Boolean?,
     headerMonth: String?,
-    currentMonth: List<Any>?,
+    currentMonth: CurrentMonth?,
     monthEvents: List<Day>?,
     goToPreviousMonth: () -> Unit,
     goToNextMonth: () -> Unit,
@@ -48,7 +45,7 @@ fun MonthView(
             headerMonth!!,
             { goToPreviousMonth() },
             { goToNextMonth() })
-        CalendarGrid(navController, currentMonth, monthEvents)
+        CalendarGrid(navController, currentMonth!!, monthEvents)
     }
 }
 
@@ -56,11 +53,11 @@ fun MonthView(
 @Composable
 fun CalendarGrid(
     navController: NavController,
-    currentMonth: List<Any>?,
+    currentMonth: CurrentMonth,
     monthEvents: List<Day>?,
 ) {
 
-    val items = currentMonth!!.toList()
+    val items: List<Any> = currentMonth.header + currentMonth.offset + currentMonth.days
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(7)
