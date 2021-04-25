@@ -58,6 +58,10 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
+        if(formState is RegistrationFormState.Error) {
+            val action = RegistrationFragmentDirections.actionError((formState as RegistrationFormState.Error).message)
+            navController.navigate(action)
+        }
         Logo()
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TitleText(text = stringResource(R.string.registration_title), modifier = Modifier)
@@ -75,11 +79,11 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         when (formState) {
-            RegistrationFormState.DOWNLOADING_DATA -> {
+            is RegistrationFormState.Downloading -> {
                 Text(stringResource(R.string.downloading_available_tech_groups))
                 CircularProgressIndicator()
             }
-            RegistrationFormState.OK -> {
+            is RegistrationFormState.Ok -> {
                 TechnologiesList(
                     availableTechnologies = viewmodel.availableTechnologies,
                     onItemSelected = viewmodel::updateTechnologies,

@@ -1,9 +1,8 @@
 package com.intive.registration.viewmodels
 
+import android.icu.text.DateTimePatternGenerator.PatternInfo.OK
 import android.util.Patterns
 import androidx.lifecycle.*
-import com.intive.registration.viewmodels.RegistrationFormState.DOWNLOADING_DATA
-import com.intive.registration.viewmodels.RegistrationFormState.OK
 import com.intive.repository.Repository
 import kotlinx.coroutines.launch
 import java.util.Collections.emptyList
@@ -12,16 +11,26 @@ class RegistrationViewModel(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _registrationFormState = MutableLiveData(OK)
-    val registrationFormState: LiveData<String> = _registrationFormState
+    private val _registrationFormState = MutableLiveData<RegistrationFormState>(RegistrationFormState.Ok)
+    val registrationFormState: LiveData<RegistrationFormState> = _registrationFormState
 
-    var availableTechnologies: List<String> = emptyList() //listOf("Java", "JavaScript", "QA", "Mobile (Android)")
+    var availableTechnologies: List<String> = emptyList()
 
     init {
         viewModelScope.launch {
-            _registrationFormState.value = DOWNLOADING_DATA
-            availableTechnologies = repository.getTechnologyGroups()
-            _registrationFormState.value = OK
+            _registrationFormState.value = RegistrationFormState.Downloading
+            try {
+                availableTechnologies = repository.getTechnologyGroups()
+            }
+            catch (ex: Exception) {
+                _registrationFormState.value = RegistrationFormState.Error("Błąd pobierania danych")
+            }
+            if(availableTechnologies.isEmpty()) {
+                _registrationFormState.value = RegistrationFormState.Error("Błąd pobierania danych")
+            }
+            else {
+                _registrationFormState.value = RegistrationFormState.Ok
+            }
         }
     }
 
@@ -131,8 +140,9 @@ class RegistrationViewModel(
 
 }
 
-object RegistrationFormState {
-    const val DOWNLOADING_DATA = "downloading"
-    const val SENDING_DATA = "sending"
-    const val OK = "ok"
+sealed class RegistrationFormState {
+    object Downloading: RegistrationFormState()
+    object Sending: RegistrationFormState()
+    object Ok: RegistrationFormState()
+    data class Error(val message: String): RegistrationFormState()
 }
