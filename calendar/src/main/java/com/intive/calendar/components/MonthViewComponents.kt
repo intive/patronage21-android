@@ -1,5 +1,6 @@
 package com.intive.calendar.components
 
+import android.os.Bundle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,9 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
@@ -79,17 +78,21 @@ fun CalendarGrid(
                     bgColor = colorResource(R.color.pale_blue)
 
                     if (monthEvents[index].events!!.size == 1) {
-                        val bundle = bundleOf(
-                            "date" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+
+                        val eventBundle = EventBundle(
+                            date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
                                 getDateString(
                                     (items[it] as Calendar),
                                     "."
                                 )
                             }",
-                            "time" to "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
-                            "name" to monthEvents[index].events!![0].name,
-                            "users" to Gson().toJson(monthEvents[index].events!![0].users)
+                            time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
+                            name = monthEvents[index].events!![0].name,
+                            users = monthEvents[index].events!![0].users
                         )
+                        val bundle = Bundle()
+                        bundle.putParcelable("event", eventBundle)
+
                         onClick =
                             {
                                 navController.navigate(
@@ -98,15 +101,20 @@ fun CalendarGrid(
                                 )
                             }
                     } else if (monthEvents[index].events!!.size > 1) {
-                        val bundle = bundleOf(
-                            "header" to "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+
+                        val dayBundle = DayBundle(
+                            date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
                                 getDateString(
                                     (items[it] as Calendar),
                                     "."
                                 )
                             }",
-                            "events" to Gson().toJson(monthEvents[index].events!!)
+                            events = monthEvents[index].events!!
                         )
+                        val bundle = Bundle()
+                        bundle.putParcelable("day", dayBundle)
+
+
                         onClick =
                             {
                                 navController.navigate(

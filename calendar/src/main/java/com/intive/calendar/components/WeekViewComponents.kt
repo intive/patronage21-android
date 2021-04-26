@@ -1,5 +1,6 @@
 package com.intive.calendar.components
 
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,17 +21,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
-import com.intive.calendar.utils.getDateString
-import com.intive.calendar.utils.isDateSame
-import com.intive.calendar.utils.weekDays
-import com.intive.calendar.utils.weekDaysCalendarClass
+import com.intive.calendar.utils.*
 import java.util.*
-import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 
 
@@ -131,12 +126,16 @@ fun DaysListItem(
 
             val header =
                 "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
-            val bundle = bundleOf(
-                "date" to header,
-                "time" to "${events[0].timeStart} - ${events[0].timeEnd}",
-                "name" to events[0].name,
-                "users" to Gson().toJson(events[0].users)
+
+            val event = EventBundle(
+                date = header,
+                time = "${events[0].timeStart} - ${events[0].timeEnd}",
+                name = events[0].name,
+                users = events[0].users
             )
+            val bundle = Bundle()
+            bundle.putParcelable("event", event)
+
 
             WeekDayWithEvents(
                 bkgColor = bkgColor, headerColor = headerColor,
@@ -256,12 +255,14 @@ fun EventsItem(
     val header =
         "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
 
-    val bundle = bundleOf(
-        "date" to header,
-        "time" to "${event.timeStart} - ${event.timeEnd}",
-        "name" to event.name,
-        "users" to Gson().toJson(event.users)
+    val eventBundle = EventBundle(
+        date = header,
+        time = "${event.timeStart} - ${event.timeEnd}",
+        name = event.name,
+        users = event.users
     )
+    val bundle = Bundle()
+    bundle.putParcelable("event", eventBundle)
 
     Row(
         modifier = Modifier

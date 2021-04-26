@@ -1,5 +1,6 @@
 package com.intive.calendar.screens
 
+import android.os.Bundle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,11 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.calendar.utils.EventBundle
 import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
@@ -65,12 +65,14 @@ fun EventsList(
 @Composable
 fun EventsListItem(event: Event, date: String, navController: NavController) {
 
-    val bundle = bundleOf(
-        "date" to date,
-        "time" to "${event.timeStart} - ${event.timeEnd}",
-        "name" to event.name,
-        "users" to Gson().toJson(event.users)
+    val eventBundle = EventBundle(
+        date = date,
+        time = "${event.timeStart} - ${event.timeEnd}",
+        name = event.name,
+        users = event.users
     )
+    val bundle = Bundle()
+    bundle.putParcelable("event", eventBundle)
 
     Row(
         modifier = Modifier
