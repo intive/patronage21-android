@@ -8,5 +8,5 @@ interface Repository {
 
     suspend fun getTechnologyGroups(): List<String>
 
-    suspend fun getAudits(): List<Audit>
+    suspend fun searchAudits(page: Int, query: String): List<Audit>
 }

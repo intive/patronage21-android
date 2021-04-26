@@ -12,8 +12,8 @@ class NetworkRepository(
         return usersService.getUsers()
     }
 
-    suspend fun getAudits(): List<AuditDto>{
-        return auditService.getAudits()
+    suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
+        return auditService.searchAudits(page, query).audits
     }
   
     suspend fun getTechnologyGroups(): List<String> {
