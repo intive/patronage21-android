@@ -149,7 +149,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    
+
     private fun getWeekEvents(dateStart: String, dateEnd: String) {
 
         var events: List<Event>
@@ -252,4 +252,3 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         } - ${getDateString(_currentWeek.value!![6], ".")}"
     }
 }
-

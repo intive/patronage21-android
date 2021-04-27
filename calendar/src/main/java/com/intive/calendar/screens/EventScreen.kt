@@ -17,6 +17,9 @@ import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
 import com.intive.ui.components.UsersHeader
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.colorResource
 import com.intive.ui.components.PersonListItem
 
 
@@ -32,7 +35,7 @@ fun EventScreenLayout(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(16.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
@@ -60,11 +63,9 @@ fun EventScreenLayout(
         }
 
         Column {
-            OKButton(stringResource(R.string.accept_event)) {
-                refreshCalendar()
-                navController.popBackStack()
-            }
-            CancelButton(stringResource(R.string.reject_event)) {
+
+            InviteResponseButtons()
+            CancelButton(stringResource(R.string.go_back)) {
                 refreshCalendar()
                 navController.popBackStack()
             }
@@ -73,10 +74,58 @@ fun EventScreenLayout(
 }
 
 @Composable
+fun InviteResponseButtons() {
+
+    val acceptBtnSelected = remember { mutableStateOf(false) }
+    val unknownBtnSelected = remember { mutableStateOf(false) }
+    val declineBtnSelected = remember { mutableStateOf(false) }
+
+    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.accept_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_green),
+                selected = acceptBtnSelected
+            )
+            {
+                acceptBtnSelected.value = true
+                unknownBtnSelected.value = false
+                declineBtnSelected.value = false
+            }
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.unknown_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_gray),
+                selected = unknownBtnSelected
+            )
+            {
+                acceptBtnSelected.value = false
+                unknownBtnSelected.value = true
+                declineBtnSelected.value = false
+            }
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.decline_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_red),
+                selected = declineBtnSelected
+            )
+            {
+                acceptBtnSelected.value = false
+                unknownBtnSelected.value = false
+                declineBtnSelected.value = true
+            }
+        }
+    }
+
+}
+
+@Composable
 fun UsersList(users: List<User>) {
     val scrollState = rememberLazyListState()
 
-    LazyColumn(state = scrollState) {
+    LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
             PersonListItem(user, {}, 0.dp, true)
         }

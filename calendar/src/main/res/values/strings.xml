@@ -41,7 +41,11 @@
     <string name="calendar_header_right_btn_desc">Right button</string>
     <string name="calendar_header_left_btn_desc">Left button</string>
     <string name="spinner_component_btn_desc">Right button</string>
-    <string name="mock_date">.04.2021</string>
+
+    <string name="accept_invite_btn_label">Tak</string>
+    <string name="unknown_invite_btn_label">Może</string>
+    <string name="decline_invite_btn_label">Nie</string>
+
 
 
 </resources>
