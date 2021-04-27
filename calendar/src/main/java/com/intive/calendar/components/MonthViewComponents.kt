@@ -88,7 +88,9 @@ fun CalendarGrid(
                             }",
                             time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
                             name = monthEvents[index].events!![0].name,
+                            invite = monthEvents[index].events!![0].invite,
                             users = monthEvents[index].events!![0].users
+
                         )
                         val bundle = Bundle()
                         bundle.putParcelable("event", eventBundle)

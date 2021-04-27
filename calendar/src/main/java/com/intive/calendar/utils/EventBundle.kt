@@ -11,5 +11,6 @@ data class EventBundle(
     val date: String,
     val time: String,
     val name: String,
+    val invite: String,
     val users: @RawValue List<User>
 ): Parcelable

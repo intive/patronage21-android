@@ -34,10 +34,7 @@ class EventFragment : Fragment() {
                 PatronativeTheme {
                     EventScreenLayout(
                         findNavController(),
-                        event.date,
-                        event.time,
-                        event.name,
-                        event.users
+                        event
                     ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }

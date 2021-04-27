@@ -69,6 +69,7 @@ fun EventsListItem(event: Event, date: String, navController: NavController) {
         date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
+        invite = event.invite,
         users = event.users
     )
     val bundle = Bundle()

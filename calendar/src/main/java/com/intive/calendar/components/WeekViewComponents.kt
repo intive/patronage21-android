@@ -131,6 +131,7 @@ fun DaysListItem(
                 date = header,
                 time = "${events[0].timeStart} - ${events[0].timeEnd}",
                 name = events[0].name,
+                invite = events[0].invite,
                 users = events[0].users
             )
             val bundle = Bundle()
@@ -259,6 +260,7 @@ fun EventsItem(
         date = header,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
+        invite = event.invite,
         users = event.users
     )
     val bundle = Bundle()

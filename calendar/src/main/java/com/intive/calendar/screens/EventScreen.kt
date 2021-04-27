@@ -20,16 +20,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
+import com.intive.calendar.utils.EventBundle
+import com.intive.calendar.utils.InviteResponse
 import com.intive.ui.components.PersonListItem
 
 
 @Composable
 fun EventScreenLayout(
     navController: NavController,
-    date: String,
-    time: String,
-    name: String,
-    users: List<User>,
+    event: EventBundle,
     refreshCalendar: () -> Unit
 ) {
     Column(
@@ -39,32 +38,31 @@ fun EventScreenLayout(
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(date, Modifier.padding(bottom = 24.dp))
+            TitleText(event.date, Modifier.padding(bottom = 24.dp))
             TitleText(
-                name,
+                event.name,
                 Modifier.padding(bottom = 4.dp),
                 MaterialTheme.typography.h6,
                 Color.Black
             )
 
             Text(
-                "${stringResource(R.string.hour)}: $time",
+                "${stringResource(R.string.hour)}: ${event.time}",
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
             UsersHeader(
                 text = stringResource(R.string.event_users_label),
-                count = users.size,
+                count = event.users.size,
                 showCount = true,
             )
 
-            UsersList(users)
+            UsersList(event.users)
         }
 
         Column {
-
-            InviteResponseButtons()
+            InviteResponseButtons(event)
             CancelButton(stringResource(R.string.go_back)) {
                 refreshCalendar()
                 navController.popBackStack()
@@ -74,11 +72,17 @@ fun EventScreenLayout(
 }
 
 @Composable
-fun InviteResponseButtons() {
+fun InviteResponseButtons(event: EventBundle) {
 
     val acceptBtnSelected = remember { mutableStateOf(false) }
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
+
+    when (event.invite) {
+        InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
+        InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
+        InviteResponse.DECLINED.name -> declineBtnSelected.value = true
+    }
 
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
@@ -88,6 +92,7 @@ fun InviteResponseButtons() {
                 selected = acceptBtnSelected
             )
             {
+                // TODO: send decision to API
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = false
@@ -100,6 +105,7 @@ fun InviteResponseButtons() {
                 selected = unknownBtnSelected
             )
             {
+                // TODO: send decision to API
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = true
                 declineBtnSelected.value = false
@@ -112,13 +118,13 @@ fun InviteResponseButtons() {
                 selected = declineBtnSelected
             )
             {
+                // TODO: send decision to API
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = true
             }
         }
     }
-
 }
 
 @Composable
