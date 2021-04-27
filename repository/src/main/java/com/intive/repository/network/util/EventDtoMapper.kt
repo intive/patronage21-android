@@ -13,6 +13,7 @@ class EventDtoMapper : DomainMapper<EventDto, Event> {
             timeStart = model.timeStart,
             timeEnd = model.timeEnd,
             name = model.name,
+            invite = model.invite,
             users = model.users
         )
     }
@@ -24,6 +25,7 @@ class EventDtoMapper : DomainMapper<EventDto, Event> {
             timeStart = domainModel.timeStart,
             timeEnd = domainModel.timeEnd,
             name = domainModel.name,
+            invite = domainModel.invite,
             users = domainModel.users
         )
     }

@@ -14,6 +14,8 @@ import java.util.*
 
 class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
+    private val userId: Long = 1
+
     private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 
     private val _weekEvents: MutableLiveData<List<Day>> =
@@ -132,7 +134,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
             _monthEvents.postValue(listOf(Day(null, emptyList())))
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = monthArray.indexOfFirst { it.date!! == events[i].date }
@@ -147,7 +149,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-
+    
     private fun getWeekEvents(dateStart: String, dateEnd: String) {
 
         var events: List<Event>
@@ -157,7 +159,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             _weekEvents.postValue(listOf(Day(null, emptyList())))
 
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = weekArray.indexOfFirst { it.date!! == events[i].date }

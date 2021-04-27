@@ -7,6 +7,10 @@ import retrofit2.http.Query
 interface EventsService {
 
     @GET("api/events")
-    suspend fun getEvents(@Query("dateStart") dateStart: String, @Query("dateEnd") dateEnd: String): List<EventDto>
+    suspend fun getEvents(
+        @Query("dateStart") dateStart: String,
+        @Query("dateEnd") dateEnd: String,
+        @Query("userId") userId: Long
+    ): List<EventDto>
 
 }

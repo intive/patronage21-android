@@ -6,5 +6,6 @@ data class Event(
     val timeStart: String,
     val timeEnd: String,
     val name: String,
+    val invite: String,
     val users: List<User>
 )

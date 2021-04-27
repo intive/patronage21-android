@@ -24,7 +24,7 @@ class NetworkRepository(
         return technologyGroupsService.getTechGroups()
     }
 
-    suspend fun getEvents(dateStart: String, dateEnd: String): List<EventDto> {
-        return eventsService.getEvents(dateStart, dateEnd)
+    suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<EventDto> {
+        return eventsService.getEvents(dateStart, dateEnd, userId)
     }
 }
