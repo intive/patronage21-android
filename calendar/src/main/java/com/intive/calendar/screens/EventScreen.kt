@@ -1,21 +1,13 @@
 package com.intive.calendar.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -25,6 +17,7 @@ import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
 import com.intive.ui.components.UsersHeader
 import androidx.compose.foundation.lazy.items
+import com.intive.ui.components.PersonListItem
 
 
 @Composable
@@ -39,7 +32,7 @@ fun EventScreenLayout(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(24.dp)
+            .padding(start = 16.dp, end = 16.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
@@ -85,48 +78,7 @@ fun UsersList(users: List<User>) {
 
     LazyColumn(state = scrollState) {
         items(users) { user ->
-            UsersListItem(user)
+            PersonListItem(user, {}, 0.dp, true)
         }
     }
-}
-
-@Composable
-fun UsersListItem(user: User) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    bitmap = ImageBitmap.imageResource(id = R.drawable.header),
-                    contentDescription = stringResource(R.string.user_image_desc),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .width(30.dp)
-                        .height(30.dp)
-                        .clip(CircleShape)
-                )
-
-                Text(
-                    "${user.firstName} ${user.lastName}",
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-        }
-
-        Column {
-            Text(
-                user.role,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-    }
-    Divider(color = Color.LightGray)
 }

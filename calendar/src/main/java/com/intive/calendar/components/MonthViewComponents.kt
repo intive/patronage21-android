@@ -155,7 +155,6 @@ fun CalendarGrid(
                     )
                 }
             }
-
         }
     }
 }
