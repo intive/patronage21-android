@@ -1,6 +1,9 @@
 package com.intive.repository
 
+
 import com.intive.repository.domain.model.Event
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.EventDtoMapper
@@ -21,8 +24,9 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getAudits(): List<Audit> {
-        return networkRepository.getAudits().map { audit ->
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun searchAudits(page: Int, query: String): List<Audit> {
+        return networkRepository.searchAudits(page, query).map { audit ->
             auditMapped.mapToDomainModel(audit)
         }
     }
