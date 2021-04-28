@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.intive.audit.presentation.composables.AuditsList
 import com.intive.ui.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +39,7 @@ class AuditFragment : Fragment() {
                 //temporary
                 //val audits: List<Audit> = List(1000) { Audit(1, "14-04-2021", "Logowanie", "Adam Kowalski") }
 
-                val audits = viewModel.audits.value
+                val audits = viewModel.audits.collectAsLazyPagingItems()
 
                 val query = viewModel.query.value
 
@@ -54,8 +55,8 @@ class AuditFragment : Fragment() {
                     ) {
                         AuditsList(
                             modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 25.dp),
+                                .fillMaxWidth()
+                                .padding(top = 25.dp),
                             audits = audits,
                             query = query,
                             onChangeAuditScrollPosition = viewModel::onChangeAuditScrollPosition,
@@ -65,11 +66,10 @@ class AuditFragment : Fragment() {
                             onSearchIconClick = viewModel::onSearchIconClick,
                             onFilterIconClick = viewModel::onFilterIconClick,
                             onExecuteSearch = { viewModel.onTriggerEvent(NewSearchEvent) },
-                            page = page,
-                            onNextPage = {
-                                viewModel.onTriggerEvent(NextPageEvent)
-                            }
-                            )
+                            page = page
+                        ) {
+                            viewModel.onTriggerEvent(NextPageEvent)
+                        }
                     }
                 }
             }

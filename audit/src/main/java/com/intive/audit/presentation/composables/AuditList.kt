@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import com.intive.audit.R
 import com.intive.audit.presentation.audit.AuditListEvent
 import com.intive.audit.presentation.audit.PAGE_SIZE
@@ -29,18 +30,18 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @Composable
 fun AuditsList(
-        modifier: Modifier = Modifier,
-        audits: List<Audit>,
-        onChangeAuditScrollPosition: (Int) -> Unit,
-        query: String,
-        onQueryChanged: (String) -> Unit,
-        showSearchField: Boolean,
-        showFilterField: Boolean,
-        onSearchIconClick: (Boolean) -> Unit,
-        onFilterIconClick: (Boolean) -> Unit,
-        onExecuteSearch: () -> Unit,
-        page: Int,
-        onNextPage: (AuditListEvent) -> Unit,
+    modifier: Modifier = Modifier,
+    audits: LazyPagingItems<Audit>,
+    onChangeAuditScrollPosition: (Int) -> Unit,
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    showSearchField: Boolean,
+    showFilterField: Boolean,
+    onSearchIconClick: (Boolean) -> Unit,
+    onFilterIconClick: (Boolean) -> Unit,
+    onExecuteSearch: () -> Unit,
+    page: Int,
+    onNextPage: (AuditListEvent) -> Unit,
 ) {
     Column(modifier = modifier) {
         AuditListHeader(
@@ -70,11 +71,11 @@ fun AuditsList(
             LazyColumn(
                 state = listState,
             ) {
-                itemsIndexed(items = audits) { index, audit ->
-                    onChangeAuditScrollPosition(index)
-                    if((index + 1) >= (page * PAGE_SIZE)){
-                        onNextPage(AuditListEvent.NextPageEvent)
-                    }
+                items(audits) { audit ->
+                   // onChangeAuditScrollPosition(index)
+//                    if((index + 1) >= (page * PAGE_SIZE)){
+//                        onNextPage(AuditListEvent.NextPageEvent)
+//                    }
                     Row (
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                     ){

@@ -2,6 +2,7 @@ package com.intive.repository.network
 
 import com.intive.repository.network.model.AuditDto
 import com.intive.repository.network.model.UserDto
+import com.intive.repository.network.response.AuditResponse
 
 class NetworkRepository(
         private val usersService: UsersService,
@@ -12,8 +13,8 @@ class NetworkRepository(
         return usersService.getUsers()
     }
 
-    suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
-        return auditService.searchAudits(page, query).audits
+    suspend fun searchAudits(page: Int, query: String): AuditResponse{
+        return auditService.searchAudits(page, query)
     }
   
     suspend fun getTechnologyGroups(): List<String> {
