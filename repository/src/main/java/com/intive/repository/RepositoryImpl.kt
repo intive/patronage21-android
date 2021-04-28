@@ -8,14 +8,17 @@ import com.intive.repository.domain.model.User
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.network.util.AuditDtoMapper
+import com.intive.repository.network.util.NewEventDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
 
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     private val userMapper: UserDtoMapper,
     private val auditMapped: AuditDtoMapper,
-    private val eventMapper: EventDtoMapper
+    private val eventMapper: EventDtoMapper,
+    private val newEventMapper: NewEventDtoMapper
 ) : Repository {
 
     override suspend fun getUsers(): List<User> {
@@ -39,5 +42,9 @@ class RepositoryImpl(
         return networkRepository.getEvents(dateStart, dateEnd).map { event ->
             eventMapper.mapToDomainModel(event)
         }
+    }
+
+    override suspend fun addNewEvent(event: NewEvent) {
+        return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 }

@@ -1,12 +1,16 @@
 package com.intive.repository.network
 
 import com.intive.repository.network.model.EventDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.intive.repository.network.model.NewEventDto
+import retrofit2.http.*
 
 interface EventsService {
 
     @GET("api/events")
     suspend fun getEvents(@Query("dateStart") dateStart: String, @Query("dateEnd") dateEnd: String): List<EventDto>
+
+    @POST("api/events")
+    @Headers( "Content-Type: application/json" )
+    suspend fun addNewEvent(@Body event: NewEventDto)
 
 }

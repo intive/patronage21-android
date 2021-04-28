@@ -1,11 +1,23 @@
 package com.intive.calendar.viewmodels
 
+import android.content.Context
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.google.android.material.snackbar.Snackbar
+import com.intive.calendar.R
+import com.intive.calendar.utils.formatTime
+import com.intive.calendar.utils.isOnline
+import com.intive.repository.Repository
+import com.intive.repository.domain.model.NewEvent
+import kotlinx.coroutines.*
 import java.util.*
 
-class AddEventViewModel : ViewModel() {
+class AddEventViewModel(private val repository: Repository) : ViewModel() {
+
     private val c: Calendar = Calendar.getInstance()
     private val hour = c[Calendar.HOUR_OF_DAY]
 
@@ -47,22 +59,6 @@ class AddEventViewModel : ViewModel() {
         _date.value = value
     }
 
-    private fun formatTime(hour: Int, minutes: Int): Pair<String, String> {
-
-        val hourString = when {
-            hour < 10 -> "0$hour"
-            else -> "$hour"
-        }
-
-        val minutesString = when {
-            minutes == 0 -> "00"
-            minutes < 10 -> "0${minutes}"
-            else -> "$minutes"
-        }
-
-        return Pair(hourString, minutesString)
-    }
-
     fun setTimeStart(hour: Int, minutes: Int) {
 
         val (hourString, minutesString) = formatTime(hour, minutes)
@@ -78,7 +74,6 @@ class AddEventViewModel : ViewModel() {
         _hourEnd.value = hourString
         _minutesEnd.value = minutesString
     }
-
 
     fun setCheckboxJS() {
         _checkboxJS.value = _checkboxJS.value != true
@@ -116,6 +111,65 @@ class AddEventViewModel : ViewModel() {
 
     fun validateInput(): Boolean {
         return _inputValue.value != ""
+    }
+
+
+    fun addNewEvent(
+        date: String,
+        timeStart: String,
+        timeEnd: String,
+        name: String,
+        view: View,
+        context: Context,
+        refreshCalendar: () -> Unit,
+        navController: NavController
+    ) {
+
+        val newEvent = NewEvent(date, timeStart, timeEnd, name, getGroupsList(context))
+        val handler = CoroutineExceptionHandler { _, _ ->
+            view.let {
+                Snackbar.make(
+                    it,
+                    context.getString(R.string.add_event_error_msg),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        if (isOnline(context)) {
+
+            viewModelScope.launch(handler) {
+
+                withContext(Dispatchers.IO) {
+                    repository.addNewEvent(newEvent)
+                }
+
+                refreshCalendar()
+                navController.popBackStack()
+
+            }
+        } else {
+            view.let {
+                Snackbar.make(
+                    it,
+                    context.getString(R.string.add_event_no_connection_error_msg),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun getGroupsList(context: Context): List<String> {
+        val groupsList = mutableListOf<String>()
+
+        when {
+            _checkboxJS.value == true -> groupsList += context.getString(R.string.js_label)
+            _checkboxJava.value == true -> groupsList += context.getString(R.string.java_label)
+            _checkboxQA.value == true -> groupsList += context.getString(R.string.qa_label)
+            _checkboxMobile.value == true -> groupsList += context.getString(R.string.mobile_label)
+        }
+
+        return groupsList
     }
 
 }
