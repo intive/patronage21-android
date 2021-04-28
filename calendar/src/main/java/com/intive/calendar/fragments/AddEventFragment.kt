@@ -31,10 +31,10 @@ class AddEventFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     AddEventScreen(
-                        requireView(),
-                        requireContext(),
-                        findNavController(),
-                        addEventViewModel
+                        view = requireView(),
+                        context = requireContext(),
+                        navController = findNavController(),
+                        addEventViewModel = addEventViewModel
                     ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }

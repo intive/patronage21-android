@@ -11,13 +11,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
@@ -33,7 +29,7 @@ fun OKButton(text: String, onClick: () -> Unit) {
             .padding(top = 12.dp)
     ) {
         Text(
-            text,
+            text = text,
             style = MaterialTheme.typography.subtitle1,
             color = Color.White
         )
@@ -50,7 +46,7 @@ fun CancelButton(text: String, onClick: () -> Unit) {
             .padding(top = 12.dp)
     ) {
         Text(
-            text,
+            text = text,
             style = MaterialTheme.typography.subtitle1,
             color = Color.White
         )
@@ -65,7 +61,7 @@ fun ClearButton(onClick: () -> Unit) {
     ) {
         IconButton(onClick = onClick) {
             Icon(
-                Icons.Default.Clear,
+                imageVector = Icons.Default.Clear,
                 contentDescription = stringResource(R.string.exit_dialog_btn_desc),
                 tint = Color.Black
             )
@@ -75,7 +71,12 @@ fun ClearButton(onClick: () -> Unit) {
 
 
 @Composable
-fun ResponseButton(text: String, onSelectedColor: Color, selected: MutableState<Boolean>, onClick: () -> Unit){
+fun ResponseButton(
+    text: String,
+    onSelectedColor: Color,
+    selected: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
 
     Button(
         onClick = onClick,
@@ -88,7 +89,7 @@ fun ResponseButton(text: String, onSelectedColor: Color, selected: MutableState<
 
         ) {
         Text(
-            text,
+            text = text,
             style = MaterialTheme.typography.subtitle1,
             color = if (selected.value) Color.White else Color.Black
         )

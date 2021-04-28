@@ -33,7 +33,7 @@ fun AddEventScreen(
     context: Context,
     navController: NavController,
     addEventViewModel: AddEventViewModel,
-    refreshCalendar:() -> Unit
+    refreshCalendar: () -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()

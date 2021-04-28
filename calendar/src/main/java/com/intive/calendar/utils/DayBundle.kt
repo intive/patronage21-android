@@ -11,4 +11,4 @@ data class DayBundle(
     val date: String,
     val events: @RawValue List<Event>,
     val active: Boolean
-): Parcelable
+) : Parcelable

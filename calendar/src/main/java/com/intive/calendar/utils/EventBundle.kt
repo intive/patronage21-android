@@ -15,4 +15,4 @@ data class EventBundle(
     val inviteResponse: String,
     val users: @RawValue List<User>,
     val active: Boolean
-): Parcelable
+) : Parcelable

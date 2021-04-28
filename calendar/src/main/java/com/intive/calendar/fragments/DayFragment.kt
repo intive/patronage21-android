@@ -24,6 +24,7 @@ class DayFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         context?.theme?.applyStyle(R.style.ThemeDialogFullScreen, true)
 
         lateinit var day: DayBundle
@@ -36,7 +37,8 @@ class DayFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     DayLayout(
-                        findNavController(), day
+                        navController = findNavController(),
+                        day = day
                     ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }

@@ -60,6 +60,7 @@ fun DaysList(
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
+
     LazyColumn(state = scrollState) {
         items(7) {
             if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
@@ -140,7 +141,6 @@ fun DaysListItem(
             )
             val bundle = Bundle()
             bundle.putParcelable("event", event)
-
 
             WeekDayWithEvents(
                 bkgColor = bkgColor, headerColor = headerColor,
@@ -272,6 +272,7 @@ fun EventsItem(
         users = event.users,
         active = isDayActive
     )
+
     val bundle = Bundle()
     bundle.putParcelable("event", eventBundle)
 

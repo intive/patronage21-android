@@ -41,10 +41,14 @@ fun MonthView(
 
     if (showWeekView == false) {
         CalendarHeader(
-            headerMonth!!,
-            { goToPreviousMonth() },
-            { goToNextMonth() })
-        CalendarGrid(navController, currentMonth!!, monthEvents)
+            period = headerMonth!!,
+            onClickPrev = { goToPreviousMonth() },
+            onClickNext = { goToNextMonth() })
+        CalendarGrid(
+            navController = navController,
+            currentMonth = currentMonth!!,
+            monthEvents = monthEvents
+        )
     }
 }
 
@@ -71,7 +75,6 @@ fun CalendarGrid(
                 var onClick = {}
 
                 if (monthEvents!!.find { event -> event.date == getDateString(items[it] as Calendar) } != null) {
-
 
                     val index =
                         monthEvents.indexOfFirst { event -> event.date!! == getDateString(items[it] as Calendar) }
@@ -133,14 +136,12 @@ fun CalendarGrid(
                                 )
                             }
                     }
-
                 }
 
                 if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
                     bgColor = MaterialTheme.colors.secondary
                     txtColor = Color.White
                 }
-
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

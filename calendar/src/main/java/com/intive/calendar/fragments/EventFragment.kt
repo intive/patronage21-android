@@ -15,7 +15,6 @@ import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class EventFragment : Fragment() {
 
@@ -36,13 +35,13 @@ class EventFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                        EventScreenLayout(
-                            requireView(),
-                            requireContext(),
-                            eventViewModel::updateInviteResponse,
-                            findNavController(),
-                            event
-                        ) { calendarHomeViewModel.refreshCalendar() }
+                    EventScreenLayout(
+                        view = requireView(),
+                        context = requireContext(),
+                        updateInviteResponse = eventViewModel::updateInviteResponse,
+                        navController = findNavController(),
+                        event = event
+                    ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }
         }
