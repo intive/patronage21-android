@@ -14,7 +14,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 
-
 private const val BASE_URL = "https://64z31.mocklab.io/"
 
 val repositoryModule = module {
