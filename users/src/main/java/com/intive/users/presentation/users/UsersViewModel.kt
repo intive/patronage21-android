@@ -4,23 +4,34 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.intive.users.domain.User
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.intive.repository.Repository
+import com.intive.repository.domain.model.User
+import com.intive.repository.network.ROLE_CANDIDATE
+import com.intive.repository.network.ROLE_LEADER
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
-class UsersViewModel : ViewModel() {
-    val users = List(5) {
-        User(
-            firstName = "Jan",
-            lastName = "Kowalski",
-            gender = "Mężczyzna",
-            email = "jankowalski@gmal.com",
-            phoneNumber = "123456789",
-            github = "github.com/KowalskiJan",
-            bio = "Jestem programista"
-        )
-    }
+class UsersViewModel(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
+
+    var leaders: Flow<PagingData<User>> = flowOf()
+    var candidates: Flow<PagingData<User>> = flowOf()
+
+    init {
+         viewModelScope.launch {
+           leaders = repository.getUsersByRole(ROLE_LEADER).cachedIn(viewModelScope)
+           candidates = repository.getUsersByRole(ROLE_CANDIDATE).cachedIn(viewModelScope)
+        }
+    }
 
     fun onQueryChanged(value: String) {
         _query.value = value

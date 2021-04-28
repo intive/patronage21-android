@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Icons-->
+    <string name="search_icon_desc">Ikona wyszukiwania</string>
+    <string name="profile_icon_desc">Ikona profilu użytkownika</string>
+    <string name="settings_icon_desc">Ikona ustawień</string>
+    <string name="filter_icon_desc">Ikona filtrowania</string>
+    <string name="arrow_upward_icon_desc">Ikona strzałka do góry</string>
+    <string name="done_icon_desc">Ikona zrobione</string>
+
+    <!--Modules Names-->
+    <string name="tech_groups_module">Grupy technologiczne</string>
+    <string name="users_module">Użytkownicy</string>
+    <string name="diary_module">Dzienniczek</string>
+    <string name="calendar_module">Kalendarz</string>
+    <string name="logs_module">Audyt zdarzeń</string>
+    <string name="registration_module">Rejestracja</string>
+</resources>

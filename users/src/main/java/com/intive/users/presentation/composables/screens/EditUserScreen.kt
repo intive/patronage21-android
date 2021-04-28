@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import com.intive.ui.components.Spinner
 import com.intive.users.presentation.edit_user.EditUserViewModel
 

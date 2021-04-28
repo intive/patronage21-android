@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">Audit</string>
     <!--AuditScreen text content-->
-    <string name="audit_screen">Audyt zdarzeń</string>
-
-    <string name="search_icon_desc">Ikona wyszukiwania</string>
-    <string name="filter_icon_desc">Ikona filtrowania</string>
-    <string name="arrow_upward_icon_desc">Ikona strzałka do góry</string>
+    <string name="search">Wyszukaj</string>
 </resources>

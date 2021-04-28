@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.patronative.R
-import com.intive.patronative.home_screen.HomeScreenFragment
 import com.intive.ui.PatronageTypography
 
 @Composable
@@ -112,7 +111,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
                 BoxButton(
                     text = stringResource(R.string.diary_module),
                     onClick = { navController?.navigate(Uri.parse("intive://gradebookFragment")) }
-                ) {
+                ){
                     Icon(
                         Icons.Outlined.Book,
                         contentDescription = stringResource(R.string.diary_module_miniature_desc),
@@ -124,7 +123,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.calendar_module),
-                    onClick = { /*TODO: Place calendar module navDestination here*/ }
+                    onClick = { navController?.navigate(Uri.parse("intive://calendarFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.CalendarToday,

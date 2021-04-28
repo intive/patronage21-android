@@ -1,6 +1,9 @@
 include ':app'
 rootProject.name = "Patron-a-tive"
 include ':users'
+
 include ':ui'
+include ':calendar'
 include ':audit'
+include ':repository'
 include ':gradebook'
