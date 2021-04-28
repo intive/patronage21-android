@@ -8,7 +8,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,8 +20,8 @@ fun Spinner(
     label: String? = null,
     onTitleSelected: (String) -> Unit
 ) {
-    val text = remember { mutableStateOf(items[0]) }
-    val isOpen = remember { mutableStateOf(false) }
+    val text = rememberSaveable { mutableStateOf(items[0]) }
+    val isOpen = rememberSaveable { mutableStateOf(false) }
     val openCloseOfDropDownList: (Boolean) -> Unit = {
         isOpen.value = it
     }

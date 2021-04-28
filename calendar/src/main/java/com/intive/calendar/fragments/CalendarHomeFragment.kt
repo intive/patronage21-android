@@ -9,18 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHomeLayout
 import com.intive.calendar.screens.ChoosePeriodDialog
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class CalendarHomeFragment : Fragment() {
 
-    private val viewModel: CalendarHomeViewModel by viewModels()
+    private val viewModel by sharedViewModel<CalendarHomeViewModel>()
 
     @ExperimentalFoundationApi
     override fun onCreateView(
