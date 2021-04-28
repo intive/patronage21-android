@@ -1,18 +1,20 @@
 package com.intive.registration.viewmodels
 
-import android.icu.text.DateTimePatternGenerator.PatternInfo.OK
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.intive.registration.R
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.UserRegistration
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.util.Collections.emptyList
 
 class RegistrationViewModel(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _registrationFormState = MutableLiveData<RegistrationFormState>(RegistrationFormState.Ok)
+    private val _registrationFormState =
+        MutableLiveData<RegistrationFormState>(RegistrationFormState.Ok)
     val registrationFormState: LiveData<RegistrationFormState> = _registrationFormState
 
     var availableTechnologies: List<String> = emptyList()
@@ -22,14 +24,14 @@ class RegistrationViewModel(
             _registrationFormState.value = RegistrationFormState.Downloading
             try {
                 availableTechnologies = repository.getTechnologyGroups()
+            } catch (ex: Exception) {
+                _registrationFormState.value =
+                    RegistrationFormState.Error(R.string.downloading_data_error)
             }
-            catch (ex: Exception) {
-                _registrationFormState.value = RegistrationFormState.Error(R.string.downloading_data_error)
-            }
-            if(availableTechnologies.isEmpty()) {
-                _registrationFormState.value = RegistrationFormState.Error(R.string.downloading_data_error)
-            }
-            else {
+            if (availableTechnologies.isEmpty()) {
+                _registrationFormState.value =
+                    RegistrationFormState.Error(R.string.downloading_data_error)
+            } else {
                 _registrationFormState.value = RegistrationFormState.Ok
             }
         }
@@ -139,11 +141,63 @@ class RegistrationViewModel(
         }
     }
 
+    private val _responseState = MutableLiveData<ResponseState>(ResponseState.Waiting)
+    val responseState: LiveData<ResponseState> = _responseState
+
+    fun sendDataToServer() {
+        viewModelScope.launch {
+            _registrationFormState.value = RegistrationFormState.Sending
+            _responseState.value = ResponseState.Waiting
+            val user = UserRegistration(
+                gender = _title.value!!,
+                firstName = firstName.value!!,
+                lastName = lastName.value!!,
+                email = email.value!!,
+                phoneNumber = phoneNumber.value!!,
+                technologies = _technologiesList.toString(),
+                login = login.value!!,
+                password = password.value!!, //hash??
+                githubUrl = githubUrl.value!!
+            )
+            val receivedResponse : Response<String>
+            try {
+                receivedResponse = repository.sendDataFromRegistrationForm(user)
+                if(receivedResponse.isSuccessful) {
+                    _responseState.value = ResponseState.Ok
+                }
+                else {
+                    println(receivedResponse.code())
+                    println(receivedResponse.message())
+                    println(receivedResponse.body())
+
+                    _responseState.value = ResponseState.Error(receivedResponse.message())
+                }
+            } catch (ex: Exception) {
+                _responseState.value = ResponseState.Error(ex.message!!)
+            }
+        }
+    }
+
+    fun resetResponseState() {
+        _responseState.value = ResponseState.Waiting
+        resetFormState()
+    }
+
+    fun resetFormState() {
+        _registrationFormState.value = RegistrationFormState.Ok
+    }
+
 }
 
 sealed class RegistrationFormState {
-    object Downloading: RegistrationFormState()
-    object Sending: RegistrationFormState()
-    object Ok: RegistrationFormState()
-    data class Error(val messageResourceId: Int): RegistrationFormState()
+    object Downloading : RegistrationFormState()
+    object Sending : RegistrationFormState()
+    object Ok : RegistrationFormState()
+    data class Error(val messageResourceId: Int) : RegistrationFormState()
+}
+
+sealed class ResponseState {
+    object Waiting: ResponseState()
+    object Ok : ResponseState()
+    data class Error(val message: String) : ResponseState()
 }

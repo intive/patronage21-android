@@ -1,20 +1,21 @@
 package com.intive.registration.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -25,13 +26,16 @@ import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
 import com.intive.registration.viewmodels.RegistrationFormState
+import com.intive.registration.viewmodels.ResponseState
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
     val formState by viewmodel.registrationFormState.observeAsState()
+    val response by viewmodel.responseState.observeAsState()
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
@@ -52,6 +56,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
     val formChecker: () -> Unit = {
         formValidChanged(viewmodel.isFormValid())
     }
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -61,6 +66,23 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         if(formState is RegistrationFormState.Error) {
             val action = RegistrationFragmentDirections.actionError((formState as RegistrationFormState.Error).messageResourceId)
             navController.navigate(action)
+        }
+        if(response is ResponseState.Ok) {
+            viewmodel.resetResponseState()
+            val action = RegistrationFragmentDirections.actionVerifyEmail(email)
+            navController.navigate(action)
+        }
+        else if(response is ResponseState.Error) {
+            viewmodel.resetFormState()
+            Text(
+                text = (response as ResponseState.Error).message,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+            coroutineScope.launch {
+                scrollState.scrollTo(0)
+            }
         }
         Logo()
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
@@ -116,10 +138,10 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = stringResource(R.string.create_account_button),
+            text = if(formState !is RegistrationFormState.Sending) stringResource(R.string.create_account_button) else "Przetwarzanie...",
             onClick = {
-                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
-                navController.navigate(action)
+                viewmodel.resetResponseState()
+                viewmodel.sendDataToServer()
             },
             enabled = formValid.value
         )

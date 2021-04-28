@@ -10,6 +10,12 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import com.google.gson.GsonBuilder
+
+import com.google.gson.Gson
+
+
+
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 
@@ -30,7 +36,7 @@ private fun createRetrofit(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))//.create())
         .build()
 }
 

@@ -39,6 +39,8 @@
     <string name="downloading_available_tech_groups">Pobieranie dostępnych grup technologicznych...</string>
     <string name="wrong_code">Niepoprawny kod</string>
     <string name="downloading_data_error">Błąd pobierania danych</string>
+    <string name="login_not_available">Login zajęty</string>
+    <string name="server_error">Błąd serwera</string>
 
 
     <string-array name="titles_array">

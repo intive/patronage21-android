@@ -2,9 +2,11 @@ package com.intive.repository
 
 import com.intive.repository.domain.model.Audit
 import com.intive.repository.domain.model.User
+import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
+import retrofit2.Response
 
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
@@ -25,5 +27,9 @@ class RepositoryImpl(
 
     override suspend fun getTechnologyGroups(): List<String> {
         return networkRepository.getTechnologyGroups()
+    }
+
+    override suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String> {
+        return networkRepository.sendDataFromRegistrationForm(user)
     }
 }
