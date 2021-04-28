@@ -24,6 +24,7 @@ import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
 import com.intive.calendar.components.*
 import com.intive.calendar.utils.getDateString
+import com.intive.calendar.utils.timeToString
 import com.intive.ui.components.TitleText
 
 @ExperimentalComposeUiApi
@@ -33,7 +34,7 @@ fun AddEventScreen(
     context: Context,
     navController: NavController,
     addEventViewModel: AddEventViewModel,
-    refreshCalendar:() -> Unit
+    refreshCalendar: () -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()
@@ -166,9 +167,16 @@ fun AddEventScreen(
                         ).show()
                     }
                 } else {
-                    // TODO: Add new event
-                    refreshCalendar()
-                    navController.popBackStack()
+                    addEventViewModel.addNewEvent(
+                        date = getDateString(date!!),
+                        timeStart = timeToString(hourStart!!, minutesStart!!),
+                        timeEnd = timeToString(hourEnd!!, minutesEnd!!),
+                        name = inputValue!!,
+                        view = view,
+                        context = context,
+                        refreshCalendar = { refreshCalendar() },
+                        navController = navController,
+                    )
                 }
             }
 

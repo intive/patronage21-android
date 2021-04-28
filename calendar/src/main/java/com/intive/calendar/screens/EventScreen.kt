@@ -32,7 +32,7 @@ fun EventScreenLayout(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(16.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
