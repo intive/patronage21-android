@@ -1,10 +1,12 @@
 package com.intive.audit.presentation.composables
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,21 +19,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.audit.R
-import com.intive.audit.domain.Audit
+import com.intive.audit.presentation.audit.AuditListEvent
+import com.intive.audit.presentation.audit.PAGE_SIZE
+import com.intive.repository.domain.model.Audit
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun AuditsList(
-    modifier: Modifier = Modifier,
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    showSearchField: Boolean,
-    showFilterField: Boolean,
-    onSearchIconClick: (Boolean) -> Unit,
-    onFilterIconClick: (Boolean) -> Unit,
-    audits: List<Audit>
+        modifier: Modifier = Modifier,
+        audits: List<Audit>,
+        onChangeAuditScrollPosition: (Int) -> Unit,
+        query: String,
+        onQueryChanged: (String) -> Unit,
+        showSearchField: Boolean,
+        showFilterField: Boolean,
+        onSearchIconClick: (Boolean) -> Unit,
+        onFilterIconClick: (Boolean) -> Unit,
+        onExecuteSearch: () -> Unit,
+        page: Int,
+        onNextPage: (AuditListEvent) -> Unit,
 ) {
     Column(modifier = modifier) {
         AuditListHeader(
@@ -40,7 +49,8 @@ fun AuditsList(
             showSearchField = showSearchField,
             showFilterField = showFilterField,
             onSearchIconClick = onSearchIconClick,
-            onFilterIconClick = onFilterIconClick
+            onFilterIconClick = onFilterIconClick,
+            onExecuteSearch = onExecuteSearch
         )
 
         val listState = rememberLazyListState()
@@ -55,12 +65,16 @@ fun AuditsList(
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
+            contentAlignment = Alignment.TopCenter
         ) {
             LazyColumn(
                 state = listState,
             ) {
-                items(items = audits) { audit ->
+                itemsIndexed(items = audits) { index, audit ->
+                    onChangeAuditScrollPosition(index)
+                    if((index + 1) >= (page * PAGE_SIZE)){
+                        onNextPage(AuditListEvent.NextPageEvent)
+                    }
                     Row (
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                     ){
@@ -77,7 +91,8 @@ fun AuditsList(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp),
+                    .padding(bottom = 10.dp)
+                    .align(Alignment.BottomEnd),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
