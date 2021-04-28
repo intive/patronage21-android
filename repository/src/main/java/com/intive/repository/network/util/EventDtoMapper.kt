@@ -8,12 +8,12 @@ import com.intive.repository.network.model.EventDto
 class EventDtoMapper : DomainMapper<EventDto, Event> {
     override fun mapToDomainModel(model: EventDto): Event {
         return Event(
-            id = model.id.toInt(),
+            id = model.id.toLong(),
             date = model.date,
             timeStart = model.timeStart,
             timeEnd = model.timeEnd,
             name = model.name,
-            invite = model.invite,
+            inviteResponse = model.inviteResponse,
             users = model.users
         )
     }
@@ -25,7 +25,7 @@ class EventDtoMapper : DomainMapper<EventDto, Event> {
             timeStart = domainModel.timeStart,
             timeEnd = domainModel.timeEnd,
             name = domainModel.name,
-            invite = domainModel.invite,
+            inviteResponse = domainModel.inviteResponse,
             users = domainModel.users
         )
     }

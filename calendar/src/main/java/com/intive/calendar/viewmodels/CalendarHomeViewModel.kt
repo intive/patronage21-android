@@ -1,6 +1,5 @@
 package com.intive.calendar.viewmodels
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,8 +12,6 @@ import kotlinx.coroutines.*
 import java.util.*
 
 class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
-
-    private val userId: Long = 1
 
     private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 

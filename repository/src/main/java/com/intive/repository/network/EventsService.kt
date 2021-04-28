@@ -1,8 +1,8 @@
 package com.intive.repository.network
 
 import com.intive.repository.network.model.EventDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import com.intive.repository.network.model.EventInviteResponseDto
+import retrofit2.http.*
 
 interface EventsService {
 
@@ -12,5 +12,9 @@ interface EventsService {
         @Query("dateEnd") dateEnd: String,
         @Query("userId") userId: Long
     ): List<EventDto>
+
+    @PUT("api/events/update")
+    @Headers( "Content-Type: application/json" )
+    suspend fun updateInviteResponse(@Body event: EventInviteResponseDto)
 
 }

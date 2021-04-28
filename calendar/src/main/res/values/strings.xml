@@ -46,6 +46,7 @@
     <string name="unknown_invite_btn_label">Może</string>
     <string name="decline_invite_btn_label">Nie</string>
 
+    <string name="event_invite_response_error_msg">Nie udało się wysłać odpowiedzi</string>
 
 
 </resources>

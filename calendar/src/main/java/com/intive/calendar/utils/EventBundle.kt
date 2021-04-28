@@ -8,9 +8,11 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class EventBundle(
+    val id: Long,
     val date: String,
     val time: String,
     val name: String,
-    val invite: String,
-    val users: @RawValue List<User>
+    val inviteResponse: String,
+    val users: @RawValue List<User>,
+    val active: Boolean
 ): Parcelable

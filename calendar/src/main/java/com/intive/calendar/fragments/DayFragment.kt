@@ -36,7 +36,7 @@ class DayFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     DayLayout(
-                        findNavController(), day.date, day.events
+                        findNavController(), day
                     ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }

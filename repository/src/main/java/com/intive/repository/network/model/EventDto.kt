@@ -8,6 +8,6 @@ data class EventDto(
     val timeStart: String,
     val timeEnd: String,
     val name: String,
-    val invite: String,
+    val inviteResponse: String,
     val users: List<User>
 )

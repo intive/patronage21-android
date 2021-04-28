@@ -4,6 +4,7 @@ package com.intive.repository.network
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.UserDto
 import com.intive.repository.network.model.AuditDto
+import com.intive.repository.network.model.EventInviteResponseDto
 
 
 class NetworkRepository(
@@ -26,5 +27,9 @@ class NetworkRepository(
 
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<EventDto> {
         return eventsService.getEvents(dateStart, dateEnd, userId)
+    }
+
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto){
+        return eventsService.updateInviteResponse(inviteResponse)
     }
 }

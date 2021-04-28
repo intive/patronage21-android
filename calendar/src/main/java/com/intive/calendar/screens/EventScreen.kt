@@ -1,5 +1,7 @@
 package com.intive.calendar.screens
 
+import android.content.Context
+import android.view.View
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,10 +25,14 @@ import androidx.compose.ui.res.colorResource
 import com.intive.calendar.utils.EventBundle
 import com.intive.calendar.utils.InviteResponse
 import com.intive.ui.components.PersonListItem
+import com.intive.calendar.utils.*
 
 
 @Composable
 fun EventScreenLayout(
+    view: View,
+    context: Context,
+    updateInviteResponse: (Long, Long, String, () -> Unit, View, Context) -> Unit,
     navController: NavController,
     event: EventBundle,
     refreshCalendar: () -> Unit
@@ -38,12 +44,12 @@ fun EventScreenLayout(
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(event.date, Modifier.padding(bottom = 24.dp))
+            TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
             TitleText(
-                event.name,
-                Modifier.padding(bottom = 4.dp),
-                MaterialTheme.typography.h6,
-                Color.Black
+                text = event.name,
+                modifier = Modifier.padding(bottom = 4.dp),
+                style = MaterialTheme.typography.h6,
+                color = Color.Black
             )
 
             Text(
@@ -58,11 +64,20 @@ fun EventScreenLayout(
                 showCount = true,
             )
 
-            UsersList(event.users)
+            UsersList(users = event.users)
         }
 
         Column {
-            InviteResponseButtons(event)
+            if(event.active){
+                InviteResponseButtons(
+                    view = view,
+                    context = context,
+                    event = event,
+                    updateInviteResponse = updateInviteResponse,
+                    refreshCalendar = refreshCalendar
+                )
+            }
+
             CancelButton(stringResource(R.string.go_back)) {
                 refreshCalendar()
                 navController.popBackStack()
@@ -72,13 +87,19 @@ fun EventScreenLayout(
 }
 
 @Composable
-fun InviteResponseButtons(event: EventBundle) {
+fun InviteResponseButtons(
+    view: View,
+    context: Context,
+    event: EventBundle,
+    updateInviteResponse: (Long, Long, String, () -> Unit, View, Context) -> Unit,
+    refreshCalendar: () -> Unit
+) {
 
     val acceptBtnSelected = remember { mutableStateOf(false) }
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
 
-    when (event.invite) {
+    when (event.inviteResponse) {
         InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
         InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
         InviteResponse.DECLINED.name -> declineBtnSelected.value = true
@@ -92,7 +113,16 @@ fun InviteResponseButtons(event: EventBundle) {
                 selected = acceptBtnSelected
             )
             {
-                // TODO: send decision to API
+                if (event.inviteResponse != InviteResponse.ACCEPTED.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.ACCEPTED.name,
+                        refreshCalendar,
+                        view,
+                        context
+                    )
+                }
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = false
@@ -105,7 +135,17 @@ fun InviteResponseButtons(event: EventBundle) {
                 selected = unknownBtnSelected
             )
             {
-                // TODO: send decision to API
+                if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.UNKNOWN.name,
+                        refreshCalendar,
+                        view,
+                        context
+                    )
+                }
+
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = true
                 declineBtnSelected.value = false
@@ -118,7 +158,17 @@ fun InviteResponseButtons(event: EventBundle) {
                 selected = declineBtnSelected
             )
             {
-                // TODO: send decision to API
+                if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.DECLINED.name,
+                        refreshCalendar,
+                        view,
+                        context
+                    )
+                }
+
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = true
