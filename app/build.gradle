@@ -42,10 +42,11 @@ android {
         jvmTarget = '11'
     }
     composeOptions {
-        kotlinCompilerVersion "1.3.61-dev-withExperimentalGoogleExtensions-20200129"
         kotlinCompilerExtensionVersion '1.0.0-beta01'
     }
-    
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
