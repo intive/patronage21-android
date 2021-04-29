@@ -12,7 +12,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,9 +23,8 @@ import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
-import com.intive.registration.viewmodels.EmailVerificationViewModel
-import com.intive.registration.viewmodels.RegistrationSuccessDialogState
-import com.intive.registration.viewmodels.SharedViewModel
+import com.intive.registration.util.RegistrationFormState
+import com.intive.registration.viewmodels.*
 import com.intive.ui.components.TitleText
 
 @Composable
@@ -43,29 +44,42 @@ fun EmailVerificationScreen(
     val formChecker: () -> Unit = {
         formValidChanged(viewmodel.isCodeValid())
     }
+
+    val codeState by viewmodel.isCodeCorrect.observeAsState()
+    val formState by viewmodel.formState.observeAsState()
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
+        if(formState is RegistrationFormState.Error) {
+            val action = EmailVerificationFragmentDirections.actionError(R.string.internet_connection_error)
+            navController.navigate(action)
+        }
         TitleText(text = stringResource(R.string.email_verification_title), modifier = Modifier)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+        if (codeState is CodeState.InCorrect) {
+            Text(
+                text = stringResource(R.string.wrong_code),
+                color = Color.Red,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+        } else if (codeState is CodeState.Correct) {
+            sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
+            val action = EmailVerificationFragmentDirections.actionSuccess()
+            navController.navigate(action)
+        }
         Text(text = stringResource(R.string.email_verification_subtitle, viewmodel.email))
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(code, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = stringResource(R.string.confirm_code_button),
+            text = if (formState !is RegistrationFormState.Sending) stringResource(R.string.confirm_code_button)
+            else stringResource(R.string.processing),
             onClick = {
-                val action =
-                    if (viewmodel.isCodeCorrect()) {
-                        sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
-                        EmailVerificationFragmentDirections.actionSuccess()
-                    } else {
-                        EmailVerificationFragmentDirections.actionError(R.string.wrong_code)//stringResource(R.string.wrong_code)) onClick nie przyjmuje composable??
-                    }
-                navController.navigate(action)
+                viewmodel.sendCodeToServer()
             },
             enabled = formValid.value
         )

@@ -1,7 +1,6 @@
 package com.intive.registration.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,7 +23,7 @@ import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
-import com.intive.registration.viewmodels.RegistrationFormState
+import com.intive.registration.util.RegistrationFormState
 import com.intive.registration.viewmodels.ResponseState
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
@@ -138,7 +136,8 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = if(formState !is RegistrationFormState.Sending) stringResource(R.string.create_account_button) else "Przetwarzanie...",
+            text = if(formState !is RegistrationFormState.Sending) stringResource(R.string.create_account_button)
+            else stringResource(R.string.processing),
             onClick = {
                 viewmodel.resetResponseState()
                 viewmodel.sendDataToServer()

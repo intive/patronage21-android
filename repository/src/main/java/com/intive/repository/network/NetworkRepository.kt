@@ -1,6 +1,7 @@
 package com.intive.repository.network
 
 
+import com.google.gson.JsonObject
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.UserDto
 import com.intive.repository.domain.model.UserRegistration
@@ -35,5 +36,9 @@ class NetworkRepository(
 
     suspend fun getEvents(dateStart: String, dateEnd: String): List<EventDto> {
         return eventsService.getEvents(dateStart, dateEnd)
+    }
+
+    suspend fun sendCodeToServer(body: JsonObject): Response<String> {
+        return technologyGroupsService.sendCodeToServer(body)
     }
 }

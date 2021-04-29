@@ -4,6 +4,7 @@ package com.intive.repository
 import com.intive.repository.domain.model.Event
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.gson.JsonObject
 import com.intive.repository.domain.model.User
 import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.NetworkRepository
@@ -39,6 +40,13 @@ class RepositoryImpl(
 
     override suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String> {
         return networkRepository.sendDataFromRegistrationForm(user)
+    }
+
+    override suspend fun sendCodeToServer(code: String, email: String) : Response<String> {
+        val body = JsonObject()
+        body.addProperty("code", code)
+        body.addProperty("email", email)
+        return networkRepository.sendCodeToServer(body)
     }
 
     override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {

@@ -3,6 +3,7 @@ package com.intive.registration.viewmodels
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.intive.registration.R
+import com.intive.registration.util.RegistrationFormState
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.UserRegistration
 import kotlinx.coroutines.launch
@@ -26,11 +27,11 @@ class RegistrationViewModel(
                 availableTechnologies = repository.getTechnologyGroups()
             } catch (ex: Exception) {
                 _registrationFormState.value =
-                    RegistrationFormState.Error(R.string.downloading_data_error)
+                    RegistrationFormState.Error(R.string.internet_connection_error)
             }
             if (availableTechnologies.isEmpty()) {
                 _registrationFormState.value =
-                    RegistrationFormState.Error(R.string.downloading_data_error)
+                    RegistrationFormState.Error(R.string.internet_connection_error)
             } else {
                 _registrationFormState.value = RegistrationFormState.Ok
             }
@@ -166,10 +167,6 @@ class RegistrationViewModel(
                     _responseState.value = ResponseState.Ok
                 }
                 else {
-                    println(receivedResponse.code())
-                    println(receivedResponse.message())
-                    println(receivedResponse.body())
-
                     _responseState.value = ResponseState.Error(receivedResponse.message())
                 }
             } catch (ex: Exception) {
@@ -187,13 +184,6 @@ class RegistrationViewModel(
         _registrationFormState.value = RegistrationFormState.Ok
     }
 
-}
-
-sealed class RegistrationFormState {
-    object Downloading : RegistrationFormState()
-    object Sending : RegistrationFormState()
-    object Ok : RegistrationFormState()
-    data class Error(val messageResourceId: Int) : RegistrationFormState()
 }
 
 sealed class ResponseState {
