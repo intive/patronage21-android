@@ -4,6 +4,7 @@ package com.intive.repository.network
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.UserDto
 import com.intive.repository.network.model.AuditDto
+import com.intive.repository.network.response.UsersResponse
 
 
 class NetworkRepository(
@@ -12,8 +13,11 @@ class NetworkRepository(
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService
 ) {
-    suspend fun getUsers(): List<UserDto> {
-        return usersService.getUsers()
+    suspend fun getUsersByRole(
+        role: String,
+        page: Int
+    ): UsersResponse {
+        return usersService.getUsersByRole(role = role, page = page)
     }
 
     suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
