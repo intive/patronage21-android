@@ -34,7 +34,7 @@ fun ImageEdit(
     ) {
         Image(
                 bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.profile_picture),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                         .fillMaxSize()
