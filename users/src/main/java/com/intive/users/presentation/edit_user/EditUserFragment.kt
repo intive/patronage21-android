@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import com.intive.users.presentation.composables.screens.EditUserScreen
 
 class EditUserFragment : Fragment() {
@@ -28,13 +28,14 @@ class EditUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val mock = User(
-            "Mężczyzna",
             "Jan",
             "Kowalski",
+            "Mężczyzna",
             "jankowalski@gmal.com",
             "123456789",
             "github.com/KowalskiJan",
-            "Jestem programista"
+            "Jestem programista",
+            "Candidate"
         )
 
         val navController = findNavController()

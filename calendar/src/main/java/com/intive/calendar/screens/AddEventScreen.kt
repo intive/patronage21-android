@@ -23,6 +23,7 @@ import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
 import com.intive.calendar.components.*
+import com.intive.calendar.utils.getDateString
 import com.intive.ui.components.TitleText
 
 @ExperimentalComposeUiApi
@@ -31,7 +32,8 @@ fun AddEventScreen(
     view: View,
     context: Context,
     navController: NavController,
-    addEventViewModel: AddEventViewModel
+    addEventViewModel: AddEventViewModel,
+    refreshCalendar:() -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()
@@ -89,7 +91,7 @@ fun AddEventScreen(
             Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                 PickerRow(
                     stringResource(R.string.date_label),
-                    "${date!![Calendar.DAY_OF_MONTH]}.${date!![Calendar.MONTH] + 1}.${date!![Calendar.YEAR]}",
+                    getDateString(date!!, "."),
                     datePickerDialog
                 )
                 PickerRow(
@@ -164,11 +166,14 @@ fun AddEventScreen(
                         ).show()
                     }
                 } else {
+                    // TODO: Add new event
+                    refreshCalendar()
                     navController.popBackStack()
                 }
             }
 
             CancelButton(stringResource(R.string.reject_new_event)) {
+                refreshCalendar()
                 navController.popBackStack()
             }
         }

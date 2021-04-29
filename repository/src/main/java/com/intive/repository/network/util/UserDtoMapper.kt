@@ -4,7 +4,7 @@ import com.intive.repository.domain.model.User
 import com.intive.repository.domain.util.DomainMapper
 import com.intive.repository.network.model.UserDto
 
-class UserDtoMapper : DomainMapper<UserDto, User> {
+class   UserDtoMapper : DomainMapper<UserDto, User> {
     override fun mapToDomainModel(model: UserDto): User {
         return User(
             firstName = model.firstName,
@@ -29,5 +29,17 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             status = "ACTIVE",
             role = domainModel.role
         )
+    }
+
+    fun mapToDomainList(model: List<UserDto>): List<User> {
+        return model.map { user ->
+            mapToDomainModel(user)
+        }
+    }
+
+    fun mapFromDomainList(model: List<User>): List<UserDto> {
+        return model.map { user ->
+            mapFromDomainModel(user)
+        }
     }
 }
