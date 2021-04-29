@@ -15,7 +15,7 @@ import com.intive.repository.network.util.UserDtoMapper
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
-    private val auditMapped: AuditDtoMapper
+    private val auditMapped: AuditDtoMapper,
     private val eventMapper: EventDtoMapper
 ) : Repository {
     
@@ -26,6 +26,11 @@ class RepositoryImpl(
         page: Int
     ): UsersResponse {
         return networkRepository.getUsersByRole(role, page)
+    }
+
+    override suspend fun getTotalUsersByRole(role: String): Int {
+        val response = getUsersByRole(role, 1)
+        return response.totalSize
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

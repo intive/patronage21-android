@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     val usersMapper: UserDtoMapper
     suspend fun getTechnologyGroups(): List<String>
-    suspend fun getAudits(): List<Audit>
     suspend fun getUsersByRole(
         role: String,
         page: Int
     ): UsersResponse
+    suspend fun getTotalUsersByRole(role: String): Int
     suspend fun getEvents(dateStart: String, dateEnd: String): List<Event>
     suspend fun searchAudits(page: Int, query: String): List<Audit>
 }

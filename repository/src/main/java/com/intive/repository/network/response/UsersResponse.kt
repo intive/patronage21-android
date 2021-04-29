@@ -9,5 +9,7 @@ data class UsersResponse(
     @SerializedName("previous_page")
     val previousPage: Int?,
     val size: Int,
+    @SerializedName("total_size")
+    val totalSize: Int,
     val users: List<UserDto>
 )

@@ -86,7 +86,7 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.leaders),
-                    count = leaders.itemCount,
+                    count = viewModel.totalLeaders.value,
                     showCount = true,
                 )
             }
@@ -147,7 +147,7 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.participants),
-                    count = candidates.itemCount,
+                    count = viewModel.totalCandidates.value,
                     showCount = true,
                 )
             }
