@@ -11,12 +11,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.calendar.screens.AddEventScreen
 import com.intive.calendar.viewmodels.AddEventViewModel
+import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class AddEventFragment : Fragment() {
 
-    private val viewModel: AddEventViewModel by viewModels()
+    private val addEventViewModel: AddEventViewModel by viewModels()
+    private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
     @ExperimentalComposeUiApi
     override fun onCreateView(
@@ -27,14 +30,12 @@ class AddEventFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    view?.let {
-                        AddEventScreen(
-                            it,
-                            requireContext(),
-                            findNavController(),
-                            viewModel
-                        )
-                    }
+                    AddEventScreen(
+                        requireView(),
+                        requireContext(),
+                        findNavController(),
+                        addEventViewModel
+                    ) { calendarHomeViewModel.refreshCalendar() }
                 }
             }
         }
