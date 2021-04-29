@@ -12,13 +12,14 @@ const val AUDITS_STARTING_PAGE_INDEX = 1
 
 class AuditsSource(
     private val repository: Repository,
+    private val query: String = ""
 ) : PagingSource<Int, Audit>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Audit> {
         return try {
             val page = params.key ?: AUDITS_STARTING_PAGE_INDEX
-            val auditResponse = repository.searchAudits(page = page, query = "")
+            val auditResponse = repository.searchAudits(page = page, query = query)
             val audits = auditResponse.audits
 
             LoadResult.Page(

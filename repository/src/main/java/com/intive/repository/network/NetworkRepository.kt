@@ -1,6 +1,5 @@
 package com.intive.repository.network
 
-import com.intive.repository.network.model.AuditDto
 import com.intive.repository.network.model.UserDto
 import com.intive.repository.network.response.AuditResponse
 

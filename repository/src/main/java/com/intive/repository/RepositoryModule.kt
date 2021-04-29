@@ -9,7 +9,6 @@ import com.intive.repository.network.util.UserDtoMapper
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 

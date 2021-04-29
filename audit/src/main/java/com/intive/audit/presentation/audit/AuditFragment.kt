@@ -11,16 +11,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asFlow
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.intive.audit.presentation.composables.AuditsList
 import com.intive.ui.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.intive.audit.presentation.audit.AuditListEvent.*
 
 class AuditFragment : Fragment() {
 
@@ -36,18 +37,13 @@ class AuditFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
 
-                //temporary
-                //val audits: List<Audit> = List(1000) { Audit(1, "14-04-2021", "Logowanie", "Adam Kowalski") }
+                val audits = viewModel.audits.asFlow().collectAsLazyPagingItems()
 
-                val audits = viewModel.audits.collectAsLazyPagingItems()
-
-                val query = viewModel.query.value
+                val query = viewModel.query.observeAsState().value!!
 
                 val showSearchField = viewModel.showSearchField.value
 
                 val showFilterField = viewModel.showFilterField.value
-
-                val page = viewModel.page.value
 
                 PatronativeTheme {
                     Column(
@@ -59,17 +55,12 @@ class AuditFragment : Fragment() {
                                 .padding(top = 25.dp),
                             audits = audits,
                             query = query,
-                            onChangeAuditScrollPosition = viewModel::onChangeAuditScrollPosition,
                             onQueryChanged = viewModel::onQueryChanged,
                             showSearchField = showSearchField,
                             showFilterField = showFilterField,
                             onSearchIconClick = viewModel::onSearchIconClick,
                             onFilterIconClick = viewModel::onFilterIconClick,
-                            onExecuteSearch = { viewModel.onTriggerEvent(NewSearchEvent) },
-                            page = page
-                        ) {
-                            viewModel.onTriggerEvent(NextPageEvent)
-                        }
+                        )
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.intive.audit.presentation.composables
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
@@ -38,7 +40,8 @@ fun AuditListHeader(
     showFilterField: Boolean,
     onSearchIconClick: (Boolean) -> Unit,
     onFilterIconClick: (Boolean) -> Unit,
-    onExecuteSearch: () -> Unit
+    showUpButton: Boolean,
+    onUpButtonClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -63,7 +66,6 @@ fun AuditListHeader(
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
-                            onExecuteSearch()
                             keyboardController?.hideSoftwareKeyboard()
                         }
                     ),
@@ -98,6 +100,18 @@ fun AuditListHeader(
                         onFilterIconClick(!showFilterField)
                     }
                 )
+            }
+            AnimatedVisibility(
+                visible = showUpButton
+            ) {
+                IconButton(onClick = {
+                    onUpButtonClick()
+                }) {
+                    Icon(
+                        Icons.Outlined.ArrowUpward,
+                        contentDescription = stringResource(R.string.search_icon_desc)
+                    )
+                }
             }
         }
     )
