@@ -7,6 +7,7 @@ import com.intive.repository.network.model.UserDto
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.network.model.AuditDto
+import com.intive.repository.network.response.UsersResponse
 
 class NetworkRepository(
     private val usersService: UsersService,
@@ -14,8 +15,11 @@ class NetworkRepository(
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService
 ) {
-    suspend fun getUsers(): List<UserDto> {
-        return usersService.getUsers()
+    suspend fun getUsersByRole(
+        role: String,
+        page: Int
+    ): UsersResponse {
+        return usersService.getUsersByRole(role = role, page = page)
     }
 
 //    suspend fun getAudits(): List<AuditDto> {

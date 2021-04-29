@@ -1,39 +1,37 @@
 package com.intive.users.presentation.composables.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.users.R
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import com.intive.ui.components.Spinner
-import com.intive.users.presentation.edit_user.EditUserViewModel
+import com.intive.users.presentation.composables.ImageEdit
 
+const val MAX_TEXT_FIELD_LENGTH = 35
+
+@ExperimentalComposeUiApi
 @Composable
 fun EditUserScreen(
     navController: NavController,
     user: User,
-    viewModel: EditUserViewModel,
 ) {
     val firstName = mutableStateOf(user.firstName)
     val lastName = mutableStateOf(user.lastName)
@@ -43,143 +41,210 @@ fun EditUserScreen(
     val bio = mutableStateOf(user.bio)
 
     val scrollState = rememberScrollState()
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(
         modifier = Modifier
-            .verticalScroll(scrollState)
             .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(start = 20.dp, end = 20.dp),
-        // verticalArrangement = Arrangement.SpaceEvenly,
+            .height(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            contentAlignment = Alignment.BottomEnd,
+        Column(
             modifier = Modifier
-                .padding(top = 15.dp)
-                .size(150.dp)
-
+                .verticalScroll(scrollState)
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(start = 20.dp, end = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Image(
-                bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-                    .clickable { /*TODO: place photo chosing here*/ }
+            ImageEdit(
+                onClick = { /*TODO: goto Image Chooser*/ }
             )
-            Icon(
-                imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.edit_icon)
-            )
-        }
-        Spacer(modifier = Modifier.size(10.dp))
-        Row {
+            Spacer(modifier = Modifier.size(10.dp))
             Spinner(
                 label = stringResource(R.string.gender),
                 items = listOf(
                     stringResource(R.string.male),
                     stringResource(R.string.female),
                     stringResource(R.string.different)
+                ),
+                onTitleSelected = { /*TODO: onTitleSelect*/ }
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 1,
+                value = firstName.value,
+                onValueChange = {
+                    if (willTextFit(it)) {
+                        firstName.value = it
+                        user.firstName = it
+                    }
+                },
+                label = { Text(text = stringResource(R.string.first_name)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
                 )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                maxLines = 1,
+                value = lastName.value,
+                onValueChange = {
+                    if (willTextFit(it)) {
+                        lastName.value = it
+                        user.lastName = it
+                    }
+                },
+                label = { Text(text = stringResource(R.string.last_name)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                maxLines = 1,
+                value = email.value,
+                onValueChange = {
+                    if (willTextFit(it)) {
+                        email.value = it
+                        user.email = it
+                    }
+                },
+                label = { Text(text = stringResource(R.string.email_address)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                maxLines = 1,
+                value = phoneNumber.value,
+                onValueChange = {
+                    if (willTextFit(it)) {
+                        phoneNumber.value = it
+                        user.phoneNumber = it
+                    }
+                },
+                label = { Text(text = stringResource(R.string.phone_number)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                maxLines = 1,
+                value = github.value,
+                onValueChange = {
+                    if (willTextFit(it)) {
+                        github.value = it
+                        user.github = it
+                    }
+                },
+                label = { Text(text = stringResource(R.string.github)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = bio.value,
+                onValueChange = {
+                    bio.value = it
+                    user.bio = it
+                },
+                label = { Text(text = stringResource(R.string.bio)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        keyboardController?.hideSoftwareKeyboard()
+                    }
+                )
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            Button(
+                onClick = {
+                    //TODO: save changes here
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
             ) {
-
+                Text(
+                    text = stringResource(R.string.save),
+                    color = Color.White,
+                    fontSize = 18.sp
+                )
             }
+            Spacer(modifier = Modifier.size(10.dp))
+            Button(
+                onClick = {
+                    //TODO: cancel changes here
+                    navController.popBackStack()
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.cancel),
+                    color = Color.White,
+                    fontSize = 18.sp
+                )
+            }
+            Spacer(modifier = Modifier.size(10.dp))
         }
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = firstName.value,
-            onValueChange = {
-                firstName.value = it
-                user.firstName = it
-            },
-            label = { Text(text = stringResource(R.string.first_name)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = lastName.value,
-            onValueChange = {
-                lastName.value = it
-                user.lastName = it
-            },
-            label = { Text(text = stringResource(R.string.last_name)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = email.value,
-            onValueChange = {
-                email.value = it
-                user.email = it
-            },
-            label = { Text(text = stringResource(R.string.email_address)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = phoneNumber.value,
-            onValueChange = {
-                phoneNumber.value = it
-                user.phoneNumber = it
-            },
-            label = { Text(text = stringResource(R.string.phone_number)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = github.value,
-            onValueChange = {
-                github.value = it
-                user.github = it
-            },
-            label = { Text(text = stringResource(R.string.github)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = bio.value,
-            onValueChange = {
-                bio.value = it
-                user.bio = it
-            },
-            label = { Text(text = stringResource(R.string.bio)) }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        Button(
-            onClick = {
-                //TODO: save changes here
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(24.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.save),
-                color = Color.White,
-                fontSize = 18.sp
-            )
-        }
-        Spacer(modifier = Modifier.size(10.dp))
-        Button(
-            onClick = {
-                //TODO: cancel changes here
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
-            shape = RoundedCornerShape(24.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.cancel),
-                color = Color.White,
-                fontSize = 18.sp
-            )
-        }
-        Spacer(modifier = Modifier.size(10.dp))
     }
+}
+
+fun willTextFit(text: String): Boolean{
+    return text.length <= MAX_TEXT_FIELD_LENGTH
 }

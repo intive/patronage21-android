@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import com.intive.ui.components.UsersHeader
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable

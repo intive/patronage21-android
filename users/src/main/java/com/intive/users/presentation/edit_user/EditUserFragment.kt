@@ -4,35 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
-import com.intive.users.domain.User
+import com.intive.repository.domain.model.User
 import com.intive.users.presentation.composables.screens.EditUserScreen
 
 class EditUserFragment : Fragment() {
 
     private val viewModel: EditUserViewModel by viewModels()
 
+    @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val mock = User(
-            "Mężczyzna",
             "Jan",
             "Kowalski",
+            "Mężczyzna",
             "jankowalski@gmal.com",
             "123456789",
             "github.com/KowalskiJan",
-            "Jestem programista"
+            "Jestem programista",
+            "Candidate"
         )
 
         val navController = findNavController()
@@ -40,18 +39,10 @@ class EditUserFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(10.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        EditUserScreen(
-                            navController = navController,
-                            user = mock,
-                            viewModel = viewModel
-                        )
-                    }
+                    EditUserScreen(
+                        navController = navController,
+                        user = mock,
+                    )
                 }
             }
         }
