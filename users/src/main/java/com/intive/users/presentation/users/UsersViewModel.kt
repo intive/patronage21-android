@@ -16,11 +16,13 @@ import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.ROLE_LEADER
 import com.intive.repository.network.USERS_PAGE_SIZE
 import com.intive.repository.network.UsersSource
+import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class UsersViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _query: MutableState<String> = mutableStateOf("")
@@ -43,7 +45,7 @@ class UsersViewModel(
         .cachedIn(viewModelScope)
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             _totalCandidates.value = repository.getTotalUsersByRole(ROLE_CANDIDATE)
             _totalLeaders.value = repository.getTotalUsersByRole(ROLE_LEADER)
         }
