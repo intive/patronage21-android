@@ -1,5 +1,6 @@
 package com.intive.calendar.components
 
+import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,8 +10,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,46 +21,66 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.screens.CalendarHeader
-import com.intive.calendar.utils.isDateSame
-import com.intive.calendar.utils.weekDays
-import com.intive.calendar.utils.weekDaysCalendarClass
-import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.calendar.utils.*
 import java.util.*
-import com.intive.repository.domain.model.DayWeek
 import com.intive.repository.domain.model.Event
 
 
 @Composable
 fun WeekView(
-    currentWeek: Array<DayWeek>,
+    currentWeek: Array<Calendar>?,
+    weekEventsList: List<Day>?,
     navController: NavController,
-    calendarViewModel: CalendarHomeViewModel
+    showWeekView: Boolean?,
+    header: String?,
+    goToPreviousWeek: () -> Unit,
+    goToNextWeek: () -> Unit,
 ) {
-    val showWeekView by calendarViewModel.showWeekView.observeAsState()
-    val header by calendarViewModel.weekHeader.observeAsState()
 
     if (showWeekView == true) {
         CalendarHeader(
-            header!!,
-            { calendarViewModel.goToPreviousWeek() },
-            { calendarViewModel.goToNextWeek() })
-        DaysList(currentWeek, navController)
+            period = header!!,
+            onClickPrev = { goToPreviousWeek() },
+            onClickNext = { goToNextWeek() })
+        DaysList(
+            currentWeek = currentWeek!!,
+            weekEventsList = weekEventsList!!,
+            navController = navController
+        )
     }
 }
 
 @Composable
 fun DaysList(
-    currentWeek: Array<DayWeek>,
+    currentWeek: Array<Calendar>,
+    weekEventsList: List<Day>,
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(7) {
-            DaysListItem(it, navController, currentWeek[it])
+            if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
+                DaysListItem(
+                    index = it,
+                    navController = navController,
+                    day = currentWeek[it],
+                    events = emptyList()
+                )
+            } else {
+                val index =
+                    weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
+                weekEventsList[index].events?.let { event ->
+                    DaysListItem(
+                        index = it,
+                        navController = navController,
+                        day = currentWeek[it],
+                        events = event
+                    )
+                }
+            }
         }
     }
 }
@@ -71,59 +90,65 @@ fun DaysList(
 fun DaysListItem(
     index: Int,
     navController: NavController,
-    day: DayWeek
+    day: Calendar,
+    events: List<Event>
 ) {
 
     var bkgColor: Color = Color.White
     var txtColor: Color = Color.Black
 
 
-    if (isDateSame(day.date, Calendar.getInstance())) {
+    if (isDateSame(day, Calendar.getInstance())) {
         bkgColor = MaterialTheme.colors.secondary
         txtColor = Color.White
-    } else if (day.date.before(Calendar.getInstance())) {
+    } else if (day.before(Calendar.getInstance())) {
         txtColor = Color.Gray
     }
 
     val headerColor: Color = txtColor
 
     when {
-        day.events.isEmpty() -> {
-            if (!isDateSame(day.date, Calendar.getInstance())) {
+        events.isEmpty() -> {
+            if (!isDateSame(day, Calendar.getInstance())) {
                 txtColor = Color.Gray
             }
             WeekDayWithEvents(
-                bkgColor,
-                headerColor,
-                txtColor,
-                stringResource(R.string.no_events),
-                {},
-                index,
-                day.date
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                txtColor = txtColor,
+                text = stringResource(R.string.no_events),
+                onClickDayItem = {},
+                index = index,
+                date = day
             )
         }
-        day.events.size == 1 -> {
+        events.size == 1 -> {
 
             val header =
-                "${weekDaysCalendarClass[day.date[Calendar.DAY_OF_WEEK]]}, ${day.date[Calendar.DAY_OF_MONTH]}.${day.date[Calendar.MONTH] + 1}.${day.date[Calendar.YEAR]}"
-            val bundle = bundleOf(
-                "date" to header,
-                "time" to day.events[0].time,
-                "name" to day.events[0].name
+                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
+
+            val event = EventBundle(
+                date = header,
+                time = "${events[0].timeStart} - ${events[0].timeEnd}",
+                name = events[0].name,
+                users = events[0].users
             )
+            val bundle = Bundle()
+            bundle.putParcelable("event", event)
+
 
             WeekDayWithEvents(
-                bkgColor, headerColor,
-                txtColor,
-                "${day.events[0].name}, ${day.events[0].time}",
-                {
+                bkgColor = bkgColor, headerColor = headerColor,
+                txtColor = txtColor,
+                text = "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
+                onClickDayItem = {
                     navController.navigate(
                         R.id.action_calendarFragment_to_eventFragment,
                         bundle
                     )
                 },
-                index,
-                day.date
+                index = index,
+                date = day
             )
         }
         else -> {
@@ -131,22 +156,22 @@ fun DaysListItem(
             val eventsShow = remember { mutableStateOf(false) }
 
             WeekDayWithEvents(
-                bkgColor,
-                headerColor,
-                txtColor,
-                "${stringResource(R.string.events_number)}: ${day.events.size}",
-                {
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                txtColor = txtColor,
+                text = "${stringResource(R.string.events_number)}: ${events.size}",
+                onClickDayItem = {
                     eventsShow.value = eventsShow.value != true
                 },
-                index,
-                day.date,
+                index = index,
+                date = day,
             )
 
             if (eventsShow.value) {
                 EventsList(
-                    bkgColor,
-                    headerColor,
-                    day.events, day.date, navController
+                    bkgColor = bkgColor,
+                    headerColor = headerColor,
+                    events = events, date = day, navController = navController
                 )
             }
         }
@@ -177,7 +202,7 @@ fun WeekDayWithEvents(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    "${weekDays[index]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}",
+                    "${weekDays[index]}, ${getDateString(date, ".")}",
                     style = TextStyle(
                         color = headerColor,
                         fontWeight = FontWeight.Bold,
@@ -188,7 +213,7 @@ fun WeekDayWithEvents(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text,
+                    text = text,
                     style = TextStyle(color = txtColor),
                     fontSize = 18.sp
                 )
@@ -208,9 +233,11 @@ fun EventsList(
     Column {
         for (event in events) {
             EventsItem(
-                bkgColor,
-                headerColor,
-                event, date, navController
+                bkgColor = bkgColor,
+                headerColor = headerColor,
+                event = event,
+                date = date,
+                navController = navController
             )
         }
     }
@@ -226,13 +253,16 @@ fun EventsItem(
 ) {
 
     val header =
-        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${date[Calendar.DAY_OF_MONTH]}.${date[Calendar.MONTH] + 1}.${date[Calendar.YEAR]}"
+        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
 
-    val bundle = bundleOf(
-        "date" to header,
-        "time" to event.time,
-        "name" to event.name
+    val eventBundle = EventBundle(
+        date = header,
+        time = "${event.timeStart} - ${event.timeEnd}",
+        name = event.name,
+        users = event.users
     )
+    val bundle = Bundle()
+    bundle.putParcelable("event", eventBundle)
 
     Row(
         modifier = Modifier
@@ -248,15 +278,7 @@ fun EventsItem(
     ) {
 
         Text(
-            "${event.name}, ",
-            style = TextStyle(
-                color = headerColor,
-                fontStyle = FontStyle.Italic,
-                fontSize = 18.sp
-            )
-        )
-        Text(
-            event.time,
+            text = "${event.name}, ${event.timeStart} - ${event.timeEnd}",
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,
