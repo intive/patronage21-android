@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
 import com.intive.users.presentation.composables.screens.UsersScreen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UsersFragment : Fragment() {
 
-    private val viewModel: UsersViewModel by viewModels()
+    private val viewModel by viewModel<UsersViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

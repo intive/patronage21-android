@@ -8,6 +8,7 @@
     <include app:graph="@navigation/calendar_nav_graph" />
     <include app:graph="@navigation/users_nav_graph" />
     <include app:graph="@navigation/audit_nav_graph"/>
+    <include app:graph="@navigation/tech_groups_nav_graph"/>
 
 
     <fragment

@@ -1,6 +1,5 @@
 package com.intive.registration.viewmodels
 
-import android.icu.text.DateTimePatternGenerator.PatternInfo.OK
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.intive.registration.R
@@ -21,7 +20,7 @@ class RegistrationViewModel(
         viewModelScope.launch {
             _registrationFormState.value = RegistrationFormState.Downloading
             try {
-                availableTechnologies = repository.getTechnologyGroups()
+                availableTechnologies = repository.getTechnologies()
             }
             catch (ex: Exception) {
                 _registrationFormState.value = RegistrationFormState.Error(R.string.downloading_data_error)
