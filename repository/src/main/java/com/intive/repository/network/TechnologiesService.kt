@@ -2,7 +2,7 @@ package com.intive.repository.network
 
 import retrofit2.http.GET
 
-interface TechnologyGroupsService {
+interface TechnologiesService {
     @GET("api/tech_groups.json")
-    suspend fun getTechGroups(): List<String>
+    suspend fun getTechnologies(): List<String>
 }

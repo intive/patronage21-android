@@ -4,7 +4,6 @@ package com.intive.repository
 import com.intive.repository.domain.model.Event
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.intive.repository.domain.model.User
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.domain.model.Audit
@@ -40,8 +39,8 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getTechnologyGroups(): List<String> {
-        return networkRepository.getTechnologyGroups()
+    override suspend fun getTechnologies(): List<String> {
+        return networkRepository.getTechnologies()
     }
 
     override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {

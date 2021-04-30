@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repository {
     val usersMapper: UserDtoMapper
-    suspend fun getTechnologyGroups(): List<String>
+    suspend fun getTechnologies(): List<String>
     suspend fun getUsersByRole(
         role: String,
         page: Int
