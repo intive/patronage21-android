@@ -3,6 +3,8 @@ package com.intive.tech_groups.presentation.screens
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.ui.PatronageTypography
@@ -27,6 +30,8 @@ import com.intive.ui.components.TitleText
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
     val filteredList by viewModel.filteredList.observeAsState()
+    val filters = viewModel.filters.value
+    val groups = viewModel.groups.value
 
     Column() {
         val scrollState = rememberScrollState()
@@ -46,14 +51,25 @@ fun MainScreen(viewModel: MainViewModel) {
                 modifier = Modifier
                     .padding(top = 15.dp, bottom = 15.dp)
             )
-            Text(
-                text = "tutaj będzie ekran główny :)",
-                style = PatronageTypography.body2,
-                modifier = Modifier
-                    .padding(top = 15.dp, bottom = 15.dp)
-            )
-            Spinner(items = viewModel.filters) {
-                viewModel.filterList(it)
+            when (filters) {
+                is Resource.Success -> {
+                    Spinner(
+                        items = filters.data!!
+                    ) {
+                        viewModel.filterList(it)
+                    }
+                }
+                is Resource.Error -> ErrorItem(
+                    message = stringResource(id = R.string.an_error_occurred)
+                ) {
+                    viewModel.getFilters()
+                }
+                is Resource.Loading -> {
+                    Box {
+                        Spinner(listOf("")) {}
+                        LoadingItem()
+                    }
+                }
             }
             Column(
                 modifier = Modifier
@@ -61,37 +77,51 @@ fun MainScreen(viewModel: MainViewModel) {
                     .padding(top = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var index = 0
-                while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
-                    Row {
-                        Column(Modifier.weight(1f)) {
-                            BoxButton(
-                                text = filteredList!![index].name,
-                                onClick = { },
-                            ) {
-                                Text("Technologie: ")
-                                for (technology in filteredList!![index].techList) {
-                                    Text(technology)
+                when (groups) {
+                    is Resource.Success -> {
+                        var index = 0
+                        while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
+                            Row {
+                                Column(Modifier.weight(1f)) {
+                                    BoxButton(
+                                        text = filteredList!![index].name,
+                                        onClick = { },
+                                    ) {
+                                        Text(stringResource(R.string.technologies))
+                                        for (technology in filteredList!![index].technologies) {
+                                            Text(technology)
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        Spacer(modifier = Modifier.size(20.dp))
-                        Column(Modifier.weight(1f)) {
-                            if (index + 1 < filteredList!!.size) {
-                                BoxButton(
-                                    text = filteredList!![index + 1].name,
-                                    onClick = { }
-                                ) {
-                                    Text("Technologie: ")
-                                    for (technology in filteredList!![index + 1].techList) {
-                                        Text(technology)
+                                Spacer(modifier = Modifier.size(20.dp))
+                                Column(Modifier.weight(1f)) {
+                                    if (index + 1 < filteredList!!.size) {
+                                        BoxButton(
+                                            text = filteredList!![index + 1].name,
+                                            onClick = { }
+                                        ) {
+                                            Text(stringResource(R.string.technologies))
+                                            for (technology in filteredList!![index + 1].technologies) {
+                                                Text(technology)
+                                            }
+                                        }
                                     }
                                 }
                             }
+                            Spacer(modifier = Modifier.size(20.dp))
+                            index += 2
                         }
                     }
-                    Spacer(modifier = Modifier.size(20.dp))
-                    index += 2
+                    is Resource.Error -> ErrorItem(
+                        message = stringResource(id = R.string.an_error_occurred)
+                    ) {
+                        viewModel.getGroups()
+                    }
+                    is Resource.Loading -> {
+                        Box {
+                            LoadingItem()
+                        }
+                    }
                 }
             }
         }
@@ -132,6 +162,39 @@ fun BoxButton(
             )
             Spacer(modifier = Modifier.height(8.dp))
             content()
+        }
+    }
+}
+
+@Composable
+fun LoadingItem() {
+    CircularProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+}
+
+@Composable
+fun ErrorItem(
+    message: String,
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit
+) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = message,
+            maxLines = 1,
+            modifier = Modifier.weight(1f),
+            color = Color.Red
+        )
+        Button(onClick = onClickRetry) {
+            Text(text = stringResource(R.string.try_again))
         }
     }
 }

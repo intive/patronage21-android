@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tech_groups_title">Grupy technologiczne</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="an_error_occurred">Wystąpił błąd</string>
+    <string name="technologies">Technologie:</string>
 </resources>
