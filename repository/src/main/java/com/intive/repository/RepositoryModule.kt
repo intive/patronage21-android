@@ -4,7 +4,7 @@ package com.intive.repository
 import com.intive.repository.network.EventsService
 import com.intive.repository.network.AuditService
 import com.intive.repository.network.NetworkRepository
-import com.intive.repository.network.TechnologyGroupsService
+import com.intive.repository.network.TechnologiesService
 import com.intive.repository.network.UsersService
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.network.util.AuditDtoMapper
@@ -26,7 +26,7 @@ val repositoryModule = module {
     single { createRetrofit() }
     single { createUsersService(get()) }
     single { createUserMapper() }
-    single { createTechnologyGroupsService(get()) }
+    single { createTechnologiesService(get()) }
     single { createAuditService(get()) }
     single { createAuditMapper() }
     single { createEventsService(get()) }
@@ -54,8 +54,8 @@ private fun createAuditService(retrofit: Retrofit): AuditService {
 
 private fun createAuditMapper(): AuditDtoMapper = AuditDtoMapper()
 
-private fun createTechnologyGroupsService(retrofit: Retrofit): TechnologyGroupsService {
-    return retrofit.create(TechnologyGroupsService::class.java)
+private fun createTechnologiesService(retrofit: Retrofit): TechnologiesService {
+    return retrofit.create(TechnologiesService::class.java)
 }
 
 private fun createUserMapper(): UserDtoMapper = UserDtoMapper()

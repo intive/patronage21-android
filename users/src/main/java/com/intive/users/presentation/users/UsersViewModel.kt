@@ -66,7 +66,7 @@ class UsersViewModel(
             }
 
             _techGroups.value = try {
-                val response = repository.getTechnologyGroups()
+                val response = repository.getTechnologies()
                 Resource.Success(response)
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
@@ -77,7 +77,7 @@ class UsersViewModel(
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
         _techGroups.value = Resource.Loading()
         _techGroups.value = try {
-            val response = repository.getTechnologyGroups()
+            val response = repository.getTechnologies()
             Resource.Success(response)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage)
