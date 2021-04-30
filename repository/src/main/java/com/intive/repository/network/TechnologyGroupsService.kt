@@ -1,0 +1,13 @@
+package com.intive.repository.network
+
+import com.intive.repository.domain.model.Group
+import retrofit2.http.GET
+
+interface TechnologyGroupsService {
+
+    @GET("api/groups/technologies")
+    suspend fun getTechnologies(): List<String>
+
+    @GET("api/groups")
+    suspend fun getTechnologyGroups(): List<Group>
+}
