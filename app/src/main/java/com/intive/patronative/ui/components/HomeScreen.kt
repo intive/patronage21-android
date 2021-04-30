@@ -82,7 +82,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.tech_groups_module),
-                    onClick = { /*TODO: Place technology groups module navDestination here*/ },
+                    onClick = { navController?.navigate(Uri.parse("intive://techGroupsMainFragment")) },
                 ) {
                     Icon(
                         Icons.Outlined.Keyboard,
