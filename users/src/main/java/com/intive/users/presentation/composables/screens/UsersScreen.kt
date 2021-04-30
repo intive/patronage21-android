@@ -77,7 +77,12 @@ fun UsersScreen(
                     ) {
                         viewModel.onTechGroupsRetryClicked()
                     }
-                    is Resource.Loading -> LoadingItem()
+                    is Resource.Loading -> {
+                        Box {
+                            Spinner(listOf("")) {}
+                            LoadingItem()
+                        }
+                    }
                 }
             }
         }
