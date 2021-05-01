@@ -10,6 +10,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.domain.model.Group
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.UserDtoMapper
@@ -43,7 +44,11 @@ class RepositoryImpl(
         }
     }
 
-    override suspend fun getTechnologyGroups(): List<String> {
+    override suspend fun getTechnologies(): List<String> {
+        return networkRepository.getTechnologies()
+    }
+
+    override suspend fun getTechnologyGroups(): List<Group> {
         return networkRepository.getTechnologyGroups()
     }
 

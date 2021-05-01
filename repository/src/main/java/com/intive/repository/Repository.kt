@@ -3,6 +3,7 @@ package com.intive.repository
 
 import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.domain.model.Group
 import com.intive.repository.domain.model.User
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
@@ -12,8 +13,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repository {
     val usersMapper: UserDtoMapper
-    suspend fun getTechnologyGroups(): List<String>
+
     //suspend fun getAudits(): List<Audit>
+
+    suspend fun getTechnologies(): List<String>
+    suspend fun getTechnologyGroups(): List<Group>
 
     suspend fun getUsersByRole(
         role: String,

@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.intive.repository.domain.model.User
+import com.intive.repository.util.Resource
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
@@ -35,6 +37,7 @@ fun UsersScreen(
 
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
+    val techGroups = viewModel.techGroups.value
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -61,15 +64,25 @@ fun UsersScreen(
                     onExecuteSearch = {}
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
-                Spinner(
-                    items = listOf(
-                        "Wszystkie grupy",
-                        "Java",
-                        "QA",
-                        "Android",
-                        "JavaScript",
-                    )
-                ) {
+
+                when (techGroups) {
+                    is Resource.Success -> {
+                        Spinner(
+                            items = techGroups.data!!
+                        ) {
+                        }
+                    }
+                    is Resource.Error -> ErrorItem(
+                        message = stringResource(id = R.string.an_error_occurred)
+                    ) {
+                        viewModel.onTechGroupsRetryClicked()
+                    }
+                    is Resource.Loading -> {
+                        Box {
+                            Spinner(listOf("")) {}
+                            LoadingItem()
+                        }
+                    }
                 }
             }
         }
@@ -86,7 +99,11 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.leaders),
-                    count = viewModel.totalLeaders.value,
+                    count = when (viewModel.totalLeaders.value) {
+                        is Resource.Loading -> 0
+                        is Resource.Error -> 0
+                        is Resource.Success -> viewModel.totalLeaders.value.data
+                    },
                     showCount = true,
                 )
             }
@@ -118,7 +135,7 @@ fun UsersScreen(
                     val e = leaders.loadState.refresh as LoadState.Error
                     item {
                         ErrorItem(
-                            message = e.error.localizedMessage!!,
+                            message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
                             onClickRetry = { retry() }
                         )
@@ -128,7 +145,7 @@ fun UsersScreen(
                     val e = leaders.loadState.append as LoadState.Error
                     item {
                         ErrorItem(
-                            message = e.error.localizedMessage!!,
+                            message = stringResource(id = R.string.an_error_occurred),
                             onClickRetry = { retry() }
                         )
                     }
@@ -147,7 +164,12 @@ fun UsersScreen(
             ) {
                 UsersHeader(
                     text = stringResource(id = R.string.participants),
-                    count = viewModel.totalCandidates.value,
+                    count = when (viewModel.totalCandidates.value) {
+                        is Resource.Loading -> 0
+                        is Resource.Error -> 0
+                        is Resource.Success -> viewModel.totalCandidates.value.data
+                    },
+
                     showCount = true,
                 )
             }
@@ -180,7 +202,7 @@ fun UsersScreen(
                     val e = candidates.loadState.refresh as LoadState.Error
                     item {
                         ErrorItem(
-                            message = e.error.localizedMessage!!,
+                            message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
                             onClickRetry = { retry() }
                         )
@@ -190,7 +212,7 @@ fun UsersScreen(
                     val e = candidates.loadState.append as LoadState.Error
                     item {
                         ErrorItem(
-                            message = e.error.localizedMessage!!,
+                            message = stringResource(id = R.string.an_error_occurred),
                             onClickRetry = { retry() }
                         )
                     }
@@ -202,7 +224,8 @@ fun UsersScreen(
 
 @Composable
 fun LoadingView(modifier: Modifier) {
-    Box(modifier = modifier
+    Box(
+        modifier = modifier
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
