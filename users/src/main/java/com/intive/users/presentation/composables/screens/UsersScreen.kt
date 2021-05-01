@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -104,19 +105,7 @@ fun UsersScreen(
             }
         }
 
-        items(leaders) { user ->
-            UserListItem(user = user!!, onItemClick = {
-                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-            })
-            Divider(
-                color = Color(0xFFF1F1F1),
-                thickness = 2.dp,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp
-                )
-            )
-        }
+
 
         leaders.apply {
             when {
@@ -142,6 +131,21 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             onClickRetry = { retry() }
+                        )
+                    }
+                }
+                loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                    items(leaders) { user ->
+                        UserListItem(user = user!!, onItemClick = {
+                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                        })
+                        Divider(
+                            color = Color(0xFFF1F1F1),
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp
+                            )
                         )
                     }
                 }
@@ -171,22 +175,11 @@ fun UsersScreen(
 
         }
 
-        items(candidates) { user ->
-            UserListItem(user = user!!, onItemClick = {
-                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-            })
-            Divider(
-                color = Color(0xFFF1F1F1),
-                thickness = 2.dp,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp
-                )
-            )
-        }
-
         candidates.apply {
             when {
+                loadState.source.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
+                }
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
                 }
@@ -209,6 +202,21 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             onClickRetry = { retry() }
+                        )
+                    }
+                }
+                loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                    items(candidates) { user ->
+                        UserListItem(user = user!!, onItemClick = {
+                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                        })
+                        Divider(
+                            color = Color(0xFFF1F1F1),
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp
+                            )
                         )
                     }
                 }
