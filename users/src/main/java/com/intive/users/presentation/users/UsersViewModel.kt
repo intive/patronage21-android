@@ -103,6 +103,18 @@ class UsersViewModel(
 
     }
 
+    fun onQueryChanged(value: String) {
+        _query.value = value
+    }
+
+    fun onCandidatesRetryClicked() {
+        getTotalCandidatesCount(selectedGroup.value)
+    }
+
+    fun onLeadersRetryClicked() {
+        getTotalLeadersCount(selectedGroup.value)
+    }
+
     private fun getTotalCandidatesCount(group: String?) = viewModelScope.launch(dispatchers.io) {
         _totalCandidates.value = try {
             val response = repository.getTotalUsersByRole(ROLE_CANDIDATE, group)
@@ -119,9 +131,5 @@ class UsersViewModel(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage)
         }
-    }
-
-    fun onQueryChanged(value: String) {
-        _query.value = value
     }
 }

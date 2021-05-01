@@ -124,7 +124,10 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onLeadersRetryClicked()
+                            }
                         )
                     }
                 }
@@ -133,7 +136,10 @@ fun UsersScreen(
                     item {
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onLeadersRetryClicked()
+                            }
                         )
                     }
                 }
@@ -195,7 +201,10 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onCandidatesRetryClicked()
+                            }
                         )
                     }
                 }
@@ -204,7 +213,10 @@ fun UsersScreen(
                     item {
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onCandidatesRetryClicked()
+                            }
                         )
                     }
                 }
