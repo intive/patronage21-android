@@ -68,4 +68,10 @@ class RepositoryImpl(
             eventMapper.mapToDomainModel(event)
         }
     }
+
+    override suspend fun sendRequestForCode(email: String) {
+        val body = JsonObject()
+        body.addProperty("email", email)
+        networkRepository.sendRequestForCode(body)
+    }
 }

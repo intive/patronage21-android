@@ -16,4 +16,7 @@ interface RegistrationService {
     suspend fun sendCodeToServer(
         @Body body: JsonObject
     ): Response<String>
+
+    @POST("api/registration/code")
+    suspend fun sendRequestForCode(@Body body: JsonObject)
 }

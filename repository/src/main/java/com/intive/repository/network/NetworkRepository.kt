@@ -27,7 +27,7 @@ class NetworkRepository(
 //        return auditService.getAudits()
 //    }
 
-    suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
+    suspend fun searchAudits(page: Int, query: String): List<AuditDto> {
         return auditService.searchAudits(page, query).audits
     }
 
@@ -49,5 +49,9 @@ class NetworkRepository(
 
     suspend fun sendCodeToServer(body: JsonObject): Response<String> {
         return registrationService.sendCodeToServer(body)
+    }
+
+    suspend fun sendRequestForCode(body: JsonObject) {
+        return registrationService.sendRequestForCode(body)
     }
 }
