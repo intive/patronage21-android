@@ -6,12 +6,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
+import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class NoCodeViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     lateinit var firstEmail: String //email entered in first screen
@@ -26,7 +28,7 @@ class NoCodeViewModel(
     fun isEmailValid(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
 
     fun sendRequestForCode() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             try {
                 repository.sendRequestForCode(email.value!!)
             } catch (ex: Exception) { }

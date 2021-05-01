@@ -5,12 +5,14 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
+import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class EmailVerificationViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _code = MutableLiveData("")
@@ -26,7 +28,7 @@ class EmailVerificationViewModel(
     private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
     val responseState: State<Resource<String>?> = _responseState
     fun sendCodeToServer() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             _responseState.value = Resource.Loading()
             val response : Response<String>
             try {

@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 
 val registrationModule = module {
-    viewModel { RegistrationViewModel(get()) }
-    viewModel { EmailVerificationViewModel(get()) }
-    viewModel { NoCodeViewModel(get()) }
+    viewModel { RegistrationViewModel(get(), get()) }
+    viewModel { EmailVerificationViewModel(get(), get()) }
+    viewModel { NoCodeViewModel(get(), get()) }
 }

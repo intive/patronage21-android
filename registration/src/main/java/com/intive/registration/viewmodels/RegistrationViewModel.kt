@@ -7,19 +7,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.UserRegistration
+import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class RegistrationViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _availableTechnologies: MutableState<Resource<List<String>>> = mutableStateOf(Resource.Loading())
     val availableTechnologies: State<Resource<List<String>>> = _availableTechnologies
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             _availableTechnologies.value = try {
                 val response = repository.getTechnologies()
                 Resource.Success(response)
@@ -132,7 +134,7 @@ class RegistrationViewModel(
     val responseState: State<Resource<String>?> = _responseState
 
     fun sendDataToServer() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatchers.io) {
             _responseState.value = Resource.Loading()
             val user = UserRegistration(
                 gender = _title.value!!,
