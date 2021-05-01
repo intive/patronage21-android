@@ -4,16 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -23,12 +23,15 @@ import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
+import com.intive.repository.util.Resource
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
+    val response = viewmodel.responseState.value
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
@@ -41,6 +44,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
     val githubUrl: String by viewmodel.githubUrl.observeAsState("")
     val rodoAgree: Boolean by viewmodel.rodoAgree.observeAsState(false)
     val regulationsAgree: Boolean by viewmodel.regulationsAgree.observeAsState(false)
+    val availableTechnologies = viewmodel.availableTechnologies.value
 
     val formValid = remember { mutableStateOf(true) }
     val formValidChanged: (Boolean) -> Unit = {
@@ -49,12 +53,31 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
     val formChecker: () -> Unit = {
         formValidChanged(viewmodel.isFormValid())
     }
+    val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
+        when (response) {
+            is Resource.Success -> {
+                viewmodel.resetResponseState()
+                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
+                navController.navigate(action)
+            }
+            is Resource.Error -> {
+                Text(
+                    text = response.message?: "Wystąpił błąd",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+                coroutineScope.launch {
+                    scrollState.scrollTo(0)
+                }
+            }
+        }
         Logo()
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         TitleText(text = stringResource(R.string.registration_title), modifier = Modifier)
@@ -71,12 +94,25 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        TechnologiesList(
-            availableTechnologies = viewmodel.availableTechnologies,
-            onItemSelected = viewmodel::updateTechnologies,
-            isValid = viewmodel::isTechnologiesListValid,
-            formChecker = formChecker
-        )
+        when (availableTechnologies) {
+            is Resource.Loading -> {
+                Text(stringResource(R.string.downloading_available_tech_groups))
+                CircularProgressIndicator()
+            }
+            is Resource.Success -> {
+                TechnologiesList(
+                    availableTechnologies = availableTechnologies.data!!,
+                    onItemSelected = viewmodel::updateTechnologies,
+                    isValid = viewmodel::isTechnologiesListValid,
+                    formChecker = formChecker
+                )
+            }
+            is Resource.Error -> {
+                val action =
+                    RegistrationFragmentDirections.actionError(R.string.internet_connection_error)
+                navController.navigate(action)
+            }
+        }
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(login, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
@@ -101,10 +137,10 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = stringResource(R.string.create_account_button),
+            text = if(response !is Resource.Loading) stringResource(R.string.create_account_button)
+            else stringResource(R.string.processing),
             onClick = {
-                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
-                navController.navigate(action)
+                viewmodel.sendDataToServer()
             },
             enabled = formValid.value
         )

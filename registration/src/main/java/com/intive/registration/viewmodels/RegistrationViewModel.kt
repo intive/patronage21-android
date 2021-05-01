@@ -1,11 +1,35 @@
 package com.intive.registration.viewmodels
 
 import android.util.Patterns
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import com.intive.repository.Repository
+import com.intive.repository.domain.model.UserRegistration
+import com.intive.repository.util.DispatcherProvider
+import com.intive.repository.util.Resource
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel(
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
+) : ViewModel() {
 
-    val availableTechnologies = listOf("Java", "JavaScript", "QA", "Mobile (Android)")
+    private val _availableTechnologies: MutableState<Resource<List<String>>> = mutableStateOf(Resource.Loading())
+    val availableTechnologies: State<Resource<List<String>>> = _availableTechnologies
+
+    init {
+        viewModelScope.launch(dispatchers.io) {
+            _availableTechnologies.value = try {
+                val response = repository.getTechnologies()
+                Resource.Success(response)
+            } catch (ex: Exception) {
+                Resource.Error(ex.localizedMessage)
+            }
+        }
+    }
 
     private val _title = MutableLiveData("")
     private val _firstName = MutableLiveData("")
@@ -15,7 +39,7 @@ class RegistrationViewModel : ViewModel() {
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email
     private val _phoneNumber = MutableLiveData("")
-    val phoneNumber:LiveData<String> = _phoneNumber
+    val phoneNumber: LiveData<String> = _phoneNumber
     private val _login = MutableLiveData("")
     val login: LiveData<String> = _login
     private val _password = MutableLiveData("")
@@ -33,33 +57,43 @@ class RegistrationViewModel : ViewModel() {
     fun onTitleChange(newValue: String) {
         _title.value = newValue
     }
+
     fun onFirstNameChange(newValue: String) {
         _firstName.value = newValue
     }
+
     fun onLastNameChange(newValue: String) {
         _lastName.value = newValue
     }
+
     fun onEmailChange(newValue: String) {
         _email.value = newValue
     }
+
     fun onPhoneNumberChange(newValue: String) {
         _phoneNumber.value = newValue
     }
+
     fun onLoginChange(newValue: String) {
         _login.value = newValue
     }
+
     fun onPasswordChange(newValue: String) {
         _password.value = newValue
     }
+
     fun onConfirmPasswordChange(newValue: String) {
         _confirmPassword.value = newValue
     }
+
     fun onGithubUrlChange(newValue: String) {
         _githubUrl.value = newValue
     }
+
     fun onRodoAgreeChange(newValue: Boolean) {
         _rodoAgree.value = newValue
     }
+
     fun onRegulationsAgreeChange(newValue: Boolean) {
         _regulationsAgree.value = newValue
     }
@@ -73,13 +107,9 @@ class RegistrationViewModel : ViewModel() {
     fun isTechnologiesListValid(): Boolean =
         !_technologiesList.isNullOrEmpty() && _technologiesList.size < 4
 
-    fun isLoginValid(): Boolean = login.value?.length ?: 0 >= 4 && isLoginAvailable()
+    fun isLoginValid(): Boolean = login.value?.length ?: 0 >= 4
     fun isGithubUrlValid(): Boolean =
         githubUrl.value.isNullOrEmpty() || githubUrl.value!!.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[-a-zA-Z0-9]{1,39}"))
-
-    private fun isLoginAvailable(): Boolean {
-        return true
-    }
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
             isLastNameValid() &&
@@ -99,6 +129,46 @@ class RegistrationViewModel : ViewModel() {
         } else {
             _technologiesList.add(technology)
         }
+    }
+    private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
+    val responseState: State<Resource<String>?> = _responseState
+
+    fun sendDataToServer() {
+        viewModelScope.launch(dispatchers.io) {
+            _responseState.value = Resource.Loading()
+            val user = UserRegistration(
+                gender = _title.value!!,
+                firstName = firstName.value!!,
+                lastName = lastName.value!!,
+                email = email.value!!,
+                phoneNumber = phoneNumber.value!!,
+                technologies = _technologiesList.toString(),
+                login = login.value!!,
+                password = password.value!!, //hash??
+                githubUrl = githubUrl.value!!
+            )
+            for(item in _technologiesList) {
+                println(item)
+            }
+            println(rodoAgree.value)
+            println(_regulationsAgree.value)
+            val receivedResponse : Response<String>
+            try {
+                receivedResponse = repository.sendDataFromRegistrationForm(user)
+                if(receivedResponse.isSuccessful) {
+                    _responseState.value = Resource.Success("")
+                }
+                else {
+                    _responseState.value = Resource.Error(receivedResponse.message())
+                }
+            } catch (ex: Exception) {
+                _responseState.value = Resource.Error(ex.localizedMessage)
+            }
+        }
+    }
+
+    fun resetResponseState() {
+        _responseState.value = null
     }
 
 }

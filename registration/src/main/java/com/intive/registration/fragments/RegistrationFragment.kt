@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.registration.screens.RegistrationScreen
 import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegistrationFragment : Fragment() {
 
-    private val viewModel: RegistrationViewModel by viewModels()
+    private val viewModel: RegistrationViewModel by viewModel<RegistrationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

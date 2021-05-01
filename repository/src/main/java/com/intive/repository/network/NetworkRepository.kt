@@ -1,17 +1,20 @@
 package com.intive.repository.network
 
 
+import com.google.gson.JsonObject
+import com.intive.repository.domain.model.UserRegistration
+import retrofit2.Response
 import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.AuditDto
 import com.intive.repository.network.response.UsersResponse
 
-
 class NetworkRepository(
     private val usersService: UsersService,
     private val auditService: AuditService,
     private val technologyGroupsService: TechnologyGroupsService,
-    private val eventsService: EventsService
+    private val eventsService: EventsService,
+    private val registrationService: RegistrationService
 ) {
     suspend fun getUsersByRole(
         role: String,
@@ -20,7 +23,11 @@ class NetworkRepository(
         return usersService.getUsersByRole(role = role, page = page)
     }
 
-    suspend fun searchAudits(page: Int, query: String): List<AuditDto>{
+//    suspend fun getAudits(): List<AuditDto> {
+//        return auditService.getAudits()
+//    }
+
+    suspend fun searchAudits(page: Int, query: String): List<AuditDto> {
         return auditService.searchAudits(page, query).audits
     }
 
@@ -32,7 +39,19 @@ class NetworkRepository(
         return technologyGroupsService.getTechnologyGroups()
     }
 
+    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String> {
+        return registrationService.sendDataFromRegistrationForm(user)
+    }
+
     suspend fun getEvents(dateStart: String, dateEnd: String): List<EventDto> {
         return eventsService.getEvents(dateStart, dateEnd)
+    }
+
+    suspend fun sendCodeToServer(body: JsonObject): Response<String> {
+        return registrationService.sendCodeToServer(body)
+    }
+
+    suspend fun sendRequestForCode(body: JsonObject) {
+        return registrationService.sendRequestForCode(body)
     }
 }
