@@ -40,31 +40,21 @@ class UsersViewModel(
         mutableStateOf(Resource.Loading())
     val techGroups: State<Resource<List<String>>> = _techGroups
 
+    private val _selectedGroup: MutableState<String?> = mutableStateOf(null)
+    val selectedGroup: State<String?> = _selectedGroup
+
     var leaders: Flow<PagingData<User>> = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-        UsersSource(repository, ROLE_LEADER)
+        UsersSource(repository, ROLE_LEADER, group = null)
     }.flow
         .cachedIn(viewModelScope)
 
     var candidates: Flow<PagingData<User>> = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-        UsersSource(repository, ROLE_CANDIDATE)
+        UsersSource(repository, ROLE_CANDIDATE, group = null)
     }.flow
         .cachedIn(viewModelScope)
 
     init {
         viewModelScope.launch(dispatchers.io) {
-            _totalCandidates.value = try {
-                val response = repository.getTotalUsersByRole(ROLE_CANDIDATE)
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-            _totalLeaders.value = try {
-                val response = repository.getTotalUsersByRole(ROLE_LEADER)
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-
             _techGroups.value = try {
                 val response = repository.getTechnologies()
                 Resource.Success(response)
@@ -72,6 +62,9 @@ class UsersViewModel(
                 Resource.Error(e.localizedMessage)
             }
         }
+        getTotalCandidates(selectedGroup.value)
+
+        getTotalLeaders(selectedGroup.value)
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
@@ -82,6 +75,58 @@ class UsersViewModel(
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage)
         }
+    }
+
+    fun onTechGroupsChanged(group: String) {
+
+        _selectedGroup.value = group.toLowerCase()
+
+        if (selectedGroup.value == "wszystkie grupy") {
+            leaders = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_LEADER, group = null)
+            }.flow
+                .cachedIn(viewModelScope)
+
+            candidates = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_CANDIDATE, group = null)
+            }.flow
+                .cachedIn(viewModelScope)
+
+            getTotalCandidates(selectedGroup.value)
+            getTotalLeaders(selectedGroup.value)
+        } else {
+            leaders = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_LEADER, group = selectedGroup.value)
+            }.flow
+                .cachedIn(viewModelScope)
+
+            candidates = Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_CANDIDATE, group = selectedGroup.value)
+            }.flow
+
+            getTotalCandidates(selectedGroup.value)
+            getTotalLeaders(selectedGroup.value)
+        }
+
+    }
+
+    private fun getTotalCandidates(group: String?) = viewModelScope.launch(dispatchers.io) {
+        _totalCandidates.value = try {
+            val response = repository.getTotalUsersByRole(ROLE_CANDIDATE, group)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage)
+        }
+    }
+
+    private fun getTotalLeaders(group: String?) = viewModelScope.launch(dispatchers.io) {
+        _totalLeaders.value = try {
+            val response = repository.getTotalUsersByRole(ROLE_LEADER, group)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage)
+        }
+
     }
 
     fun onQueryChanged(value: String) {

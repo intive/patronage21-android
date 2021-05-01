@@ -1,11 +1,7 @@
 package com.intive.users.presentation.composables.screens
 
-import android.util.Log
-import android.widget.ProgressBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -14,12 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.intive.repository.domain.model.User
 import com.intive.repository.util.Resource
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
@@ -69,7 +63,8 @@ fun UsersScreen(
                     is Resource.Success -> {
                         Spinner(
                             items = techGroups.data!!
-                        ) {
+                        ) { group ->
+                            viewModel.onTechGroupsChanged(group)
                         }
                     }
                     is Resource.Error -> ErrorItem(
