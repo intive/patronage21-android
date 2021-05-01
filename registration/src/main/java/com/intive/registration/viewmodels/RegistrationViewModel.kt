@@ -1,39 +1,30 @@
 package com.intive.registration.viewmodels
 
 import android.util.Patterns
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import com.intive.registration.R
-import com.intive.registration.util.RegistrationFormState
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.UserRegistration
+import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.util.Collections.emptyList
 
 class RegistrationViewModel(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _registrationFormState =
-        MutableLiveData<RegistrationFormState>(RegistrationFormState.Ok)
-    val registrationFormState: LiveData<RegistrationFormState> = _registrationFormState
-
-    var availableTechnologies: List<String> = emptyList()
+    private val _availableTechnologies: MutableState<Resource<List<String>>> = mutableStateOf(Resource.Loading())
+    val availableTechnologies: State<Resource<List<String>>> = _availableTechnologies
 
     init {
         viewModelScope.launch {
-            _registrationFormState.value = RegistrationFormState.Downloading
-            try {
-                availableTechnologies = repository.getTechnologyGroups()
+            _availableTechnologies.value = try {
+                val response = repository.getTechnologies()
+                Resource.Success(response)
             } catch (ex: Exception) {
-                _registrationFormState.value =
-                    RegistrationFormState.Error(R.string.internet_connection_error)
-            }
-            if (availableTechnologies.isEmpty()) {
-                _registrationFormState.value =
-                    RegistrationFormState.Error(R.string.internet_connection_error)
-            } else {
-                _registrationFormState.value = RegistrationFormState.Ok
+                Resource.Error(ex.localizedMessage)
             }
         }
     }
@@ -114,13 +105,9 @@ class RegistrationViewModel(
     fun isTechnologiesListValid(): Boolean =
         !_technologiesList.isNullOrEmpty() && _technologiesList.size < 4
 
-    fun isLoginValid(): Boolean = login.value?.length ?: 0 >= 4 && isLoginAvailable()
+    fun isLoginValid(): Boolean = login.value?.length ?: 0 >= 4
     fun isGithubUrlValid(): Boolean =
         githubUrl.value.isNullOrEmpty() || githubUrl.value!!.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[-a-zA-Z0-9]{1,39}"))
-
-    private fun isLoginAvailable(): Boolean {
-        return true
-    }
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
             isLastNameValid() &&
@@ -141,14 +128,12 @@ class RegistrationViewModel(
             _technologiesList.add(technology)
         }
     }
-
-    private val _responseState = MutableLiveData<ResponseState>(ResponseState.Waiting)
-    val responseState: LiveData<ResponseState> = _responseState
+    private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
+    val responseState: State<Resource<String>?> = _responseState
 
     fun sendDataToServer() {
         viewModelScope.launch {
-            _registrationFormState.value = RegistrationFormState.Sending
-            _responseState.value = ResponseState.Waiting
+            _responseState.value = Resource.Loading()
             val user = UserRegistration(
                 gender = _title.value!!,
                 firstName = firstName.value!!,
@@ -160,34 +145,28 @@ class RegistrationViewModel(
                 password = password.value!!, //hash??
                 githubUrl = githubUrl.value!!
             )
+            for(item in _technologiesList) {
+                println(item)
+            }
+            println(rodoAgree.value)
+            println(_regulationsAgree.value)
             val receivedResponse : Response<String>
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if(receivedResponse.isSuccessful) {
-                    _responseState.value = ResponseState.Ok
+                    _responseState.value = Resource.Success("")
                 }
                 else {
-                    _responseState.value = ResponseState.Error(receivedResponse.message())
+                    _responseState.value = Resource.Error(receivedResponse.message())
                 }
             } catch (ex: Exception) {
-                _responseState.value = ResponseState.Error(ex.message!!)
+                _responseState.value = Resource.Error(ex.localizedMessage)
             }
         }
     }
 
     fun resetResponseState() {
-        _responseState.value = ResponseState.Waiting
-        resetFormState()
+        _responseState.value = null
     }
 
-    fun resetFormState() {
-        _registrationFormState.value = RegistrationFormState.Ok
-    }
-
-}
-
-sealed class ResponseState {
-    object Waiting: ResponseState()
-    object Ok : ResponseState()
-    data class Error(val message: String) : ResponseState()
 }

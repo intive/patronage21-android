@@ -23,8 +23,7 @@ import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
-import com.intive.registration.util.RegistrationFormState
-import com.intive.registration.viewmodels.ResponseState
+import com.intive.repository.util.Resource
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 import kotlinx.coroutines.launch
@@ -32,8 +31,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
-    val formState by viewmodel.registrationFormState.observeAsState()
-    val response by viewmodel.responseState.observeAsState()
+    val response = viewmodel.responseState.value
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
@@ -46,6 +44,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
     val githubUrl: String by viewmodel.githubUrl.observeAsState("")
     val rodoAgree: Boolean by viewmodel.rodoAgree.observeAsState(false)
     val regulationsAgree: Boolean by viewmodel.regulationsAgree.observeAsState(false)
+    val availableTechnologies = viewmodel.availableTechnologies.value
 
     val formValid = remember { mutableStateOf(true) }
     val formValidChanged: (Boolean) -> Unit = {
@@ -61,25 +60,22 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        if(formState is RegistrationFormState.Error) {
-            val action = RegistrationFragmentDirections.actionError((formState as RegistrationFormState.Error).messageResourceId)
-            navController.navigate(action)
-        }
-        if(response is ResponseState.Ok) {
-            viewmodel.resetResponseState()
-            val action = RegistrationFragmentDirections.actionVerifyEmail(email)
-            navController.navigate(action)
-        }
-        else if(response is ResponseState.Error) {
-            viewmodel.resetFormState()
-            Text(
-                text = (response as ResponseState.Error).message,
-                color = Color.Red,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-            coroutineScope.launch {
-                scrollState.scrollTo(0)
+        when (response) {
+            is Resource.Success -> {
+                viewmodel.resetResponseState()
+                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
+                navController.navigate(action)
+            }
+            is Resource.Error -> {
+                Text(
+                    text = response.message?: "Wystąpił błąd",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+                coroutineScope.launch {
+                    scrollState.scrollTo(0)
+                }
             }
         }
         Logo()
@@ -98,18 +94,23 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PhoneNumberInput(phoneNumber, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        when (formState) {
-            is RegistrationFormState.Downloading -> {
+        when (availableTechnologies) {
+            is Resource.Loading -> {
                 Text(stringResource(R.string.downloading_available_tech_groups))
                 CircularProgressIndicator()
             }
-            is RegistrationFormState.Ok -> {
+            is Resource.Success -> {
                 TechnologiesList(
-                    availableTechnologies = viewmodel.availableTechnologies,
+                    availableTechnologies = availableTechnologies.data!!,
                     onItemSelected = viewmodel::updateTechnologies,
                     isValid = viewmodel::isTechnologiesListValid,
                     formChecker = formChecker
                 )
+            }
+            is Resource.Error -> {
+                val action =
+                    RegistrationFragmentDirections.actionError(R.string.internet_connection_error)
+                navController.navigate(action)
             }
         }
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
@@ -136,10 +137,9 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = if(formState !is RegistrationFormState.Sending) stringResource(R.string.create_account_button)
+            text = if(response !is Resource.Loading) stringResource(R.string.create_account_button)
             else stringResource(R.string.processing),
             onClick = {
-                viewmodel.resetResponseState()
                 viewmodel.sendDataToServer()
             },
             enabled = formValid.value

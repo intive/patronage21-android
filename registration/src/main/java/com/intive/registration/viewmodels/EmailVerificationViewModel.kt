@@ -1,9 +1,11 @@
 package com.intive.registration.viewmodels
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
-import com.intive.registration.R
-import com.intive.registration.util.RegistrationFormState
 import com.intive.repository.Repository
+import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -21,37 +23,27 @@ class EmailVerificationViewModel(
 
     fun isCodeValid(): Boolean = code.value?.matches(Regex("\\d{8,8}")) ?: false
 
-    private val _formState = MutableLiveData<RegistrationFormState>(RegistrationFormState.Ok)
-    val formState: LiveData<RegistrationFormState> = _formState
-
-    private val _isCodeCorrect = MutableLiveData<CodeState>(CodeState.NotSent)
-    val isCodeCorrect: LiveData<CodeState> = _isCodeCorrect
+    private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
+    val responseState: State<Resource<String>?> = _responseState
     fun sendCodeToServer() {
         viewModelScope.launch {
-            _formState.value = RegistrationFormState.Sending
-            val response: Response<String>
+            _responseState.value = Resource.Loading()
+            val response : Response<String>
             try {
                 response = repository.sendCodeToServer(code.value!!, email)
-                _formState.value = RegistrationFormState.Ok
-                if (response.isSuccessful) {
-                    _isCodeCorrect.value = CodeState.Correct
+                if(response.isSuccessful) {
+                    _responseState.value = Resource.Success("")
                 }
                 else {
-                    _isCodeCorrect.value = CodeState.InCorrect
-                    println(response.code())
-                    println(response.message())
-                    println(response.body())
+                    _responseState.value = Resource.Error(response.message())
                 }
             } catch (ex: Exception) {
-                println("exception ${ex.message}")
-                _formState.value = RegistrationFormState.Error(R.string.internet_connection_error)
+                _responseState.value = Resource.Error(ex.localizedMessage)
             }
         }
     }
-}
 
-sealed class CodeState {
-    object Correct : CodeState()
-    object InCorrect : CodeState()
-    object NotSent : CodeState()
+    fun resetResponseState() {
+        _responseState.value = null
+    }
 }

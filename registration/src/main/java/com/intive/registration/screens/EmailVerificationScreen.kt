@@ -23,8 +23,8 @@ import com.intive.registration.R
 import com.intive.registration.components.CustomButton
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
-import com.intive.registration.util.RegistrationFormState
 import com.intive.registration.viewmodels.*
+import com.intive.repository.util.Resource
 import com.intive.ui.components.TitleText
 
 @Composable
@@ -37,6 +37,7 @@ fun EmailVerificationScreen(
 
     val code: String by viewmodel.code.observeAsState("")
 
+    val response = viewmodel.responseState.value
     val formValid = remember { mutableStateOf(true) }
     val formValidChanged: (Boolean) -> Unit = {
         formValid.value = it
@@ -45,38 +46,35 @@ fun EmailVerificationScreen(
         formValidChanged(viewmodel.isCodeValid())
     }
 
-    val codeState by viewmodel.isCodeCorrect.observeAsState()
-    val formState by viewmodel.formState.observeAsState()
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        if(formState is RegistrationFormState.Error) {
-            val action = EmailVerificationFragmentDirections.actionError(R.string.internet_connection_error)
-            navController.navigate(action)
-        }
         TitleText(text = stringResource(R.string.email_verification_title), modifier = Modifier)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        if (codeState is CodeState.InCorrect) {
-            Text(
-                text = stringResource(R.string.wrong_code),
-                color = Color.Red,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        } else if (codeState is CodeState.Correct) {
-            sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
-            val action = EmailVerificationFragmentDirections.actionSuccess()
-            navController.navigate(action)
+        when(response) {
+            is Resource.Error -> {
+                Text(
+                    text = response.message?: stringResource(R.string.internet_connection_error),
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+            }
+            is Resource.Success -> {
+                sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
+                val action = EmailVerificationFragmentDirections.actionSuccess()
+                navController.navigate(action)
+            }
         }
         Text(text = stringResource(R.string.email_verification_subtitle, viewmodel.email))
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CodeVerificationInput(code, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         CustomButton(
-            text = if (formState !is RegistrationFormState.Sending) stringResource(R.string.confirm_code_button)
+            text = if (response !is Resource.Loading) stringResource(R.string.confirm_code_button)
             else stringResource(R.string.processing),
             onClick = {
                 viewmodel.sendCodeToServer()
@@ -87,6 +85,7 @@ fun EmailVerificationScreen(
         CustomButton(
             text = stringResource(R.string.no_code_button),
             onClick = {
+                viewmodel.resetResponseState()
                 val action = EmailVerificationFragmentDirections
                     .actionNoCode(viewmodel.email)
                 navController.navigate(action)
