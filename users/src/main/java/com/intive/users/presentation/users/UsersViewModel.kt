@@ -26,8 +26,8 @@ class UsersViewModel(
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    private val _query: MutableState<String> = mutableStateOf("")
-    val query: State<String> = _query
+    private val _query: MutableStateFlow<String> = MutableStateFlow("")
+    val query: StateFlow<String> = _query
 
     private val _totalLeaders: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalLeaders: State<Resource<Int>> = _totalLeaders

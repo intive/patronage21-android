@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +24,9 @@ import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.UsersHeader
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel,
@@ -33,7 +36,7 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
-    val query = viewModel.query
+    val query = viewModel.query.collectAsState()
 
     val lazyListState = rememberLazyListState()
 
