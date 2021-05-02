@@ -115,5 +115,13 @@ dependencies {
     // Koin for Jetpack Compose (unstable version)
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
 
 }

@@ -7,16 +7,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.google.android.material.snackbar.Snackbar
 import com.intive.calendar.R
+import com.intive.calendar.utils.AddNewEvent
 import com.intive.calendar.utils.formatTime
 import com.intive.calendar.utils.isOnline
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
 import kotlinx.coroutines.*
 import java.util.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 class AddEventViewModel(private val repository: Repository) : ViewModel() {
+
+
+    private val addEventChannel = Channel<AddNewEvent>()
+    val addEventFlow = addEventChannel.receiveAsFlow()
+
+    private fun showSnackbar() = viewModelScope.launch {
+        addEventChannel.send(AddNewEvent.Error)
+    }
 
     private val c: Calendar = Calendar.getInstance()
     private val hour = c[Calendar.HOUR_OF_DAY]
@@ -127,13 +138,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
 
         val newEvent = NewEvent(date, timeStart, timeEnd, name, getGroupsList(context))
         val handler = CoroutineExceptionHandler { _, _ ->
-            view.let {
-                Snackbar.make(
-                    it,
-                    context.getString(R.string.add_event_error_msg),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+            showSnackbar()
         }
 
         if (isOnline(context)) {
@@ -149,13 +154,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
 
             }
         } else {
-            view.let {
-                Snackbar.make(
-                    it,
-                    context.getString(R.string.add_event_no_connection_error_msg),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+            showSnackbar()
         }
     }
 
