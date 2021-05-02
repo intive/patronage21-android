@@ -12,13 +12,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.intive.registration.screens.EmailVerificationScreen
 import com.intive.registration.viewmodels.EmailVerificationViewModel
+import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class EmailVerificationFragment : Fragment() {
 
-    private val viewmodel: EmailVerificationViewModel by viewModels()
+    private val viewModel: EmailVerificationViewModel by viewModel<EmailVerificationViewModel>()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val args: EmailVerificationFragmentArgs by navArgs()
 
@@ -27,11 +29,11 @@ class EmailVerificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val email = args.email
-        viewmodel.email = email
+        viewModel.email = email
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    EmailVerificationScreen(viewmodel, findNavController(), sharedViewModel)
+                    EmailVerificationScreen(viewModel, findNavController(), sharedViewModel)
                 }
             }
         }
