@@ -14,7 +14,6 @@ import com.intive.calendar.screens.AddEventScreen
 import com.intive.calendar.viewmodels.AddEventViewModel
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.ui.PatronativeTheme
-import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.flow.collect
@@ -28,7 +27,7 @@ class AddEventFragment : Fragment() {
     private val addEventViewModel by viewModel<AddEventViewModel>()
     private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
-    @InternalCoroutinesApi
+    
     @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
