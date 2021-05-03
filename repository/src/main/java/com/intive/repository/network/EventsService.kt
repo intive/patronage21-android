@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface EventsService {
 
     @GET("api/events")
-    suspend fun getEvents(@Query("dateStart") dateStart: String, @Query("dateEnd") dateEnd: String): List<EventDto>
+    suspend fun getEvents(@Query("dateStart") dateStart: String, @Query("dateEnd") dateEnd: String, @Query("userId") userId: Long): List<EventDto>
 
     @POST("api/events")
     @Headers( "Content-Type: application/json" )

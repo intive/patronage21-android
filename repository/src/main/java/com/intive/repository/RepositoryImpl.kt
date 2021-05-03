@@ -61,8 +61,8 @@ class RepositoryImpl(
         return networkRepository.sendCodeToServer(body)
     }
 
-    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
-        return networkRepository.getEvents(dateStart, dateEnd).map { event ->
+    override suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event> {
+        return networkRepository.getEvents(dateStart, dateEnd, userId).map { event ->
             eventMapper.mapToDomainModel(event)
         }
     }

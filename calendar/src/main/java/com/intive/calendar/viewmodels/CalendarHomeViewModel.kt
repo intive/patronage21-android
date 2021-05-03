@@ -132,7 +132,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
             _monthEvents.postValue(listOf(Day(null, emptyList())))
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = monthArray.indexOfFirst { it.date!! == events[i].date }
@@ -157,7 +157,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
             _weekEvents.postValue(listOf(Day(null, emptyList())))
 
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = weekArray.indexOfFirst { it.date!! == events[i].date }
