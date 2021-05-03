@@ -19,33 +19,24 @@
     <string name="end_hour_label">Do</string>
     <string name="add_event_checkbox_header">Grupy technologiczne</string>
 
-    <string name="checkbox_js_label">JavaScript</string>
-    <string name="checkbox_java_label">Java</string>
-    <string name="checkbox_qa_label">QA</string>
-    <string name="checkbox_mobile_label">Mobile (Android)</string>
     <string name="event_users_label">Uczestnicy</string>
     <string name="no_events">Brak wydarzeń</string>
 
-    <string name="js_label">JS</string>
-    <string name="java_label">Java</string>
-    <string name="qa_label">QA</string>
-    <string name="mobile_label">Android</string>
-
     <string name="add_event_date_validation_message">Nieprawidłowa data lub godzina</string>
     <string name="add_event_time_validation_message">Nieprawidłowe godziny</string>
-    <string name="add_event_checkbox_validation_message">Należy wybrać co najmniej 1 grupę technologiczną</string>
+    <string name="add_event_checkbox_validation_message">Należy wybrać co najmniej 1 i maksymalnie 3 grupy technologiczne</string>
     <string name="add_event_input_validation_message">Należy podać nazwę wydarzenia</string>
 
     <string name="events_number">Liczba wydarzeń</string>
     <string name="hour">Godzina</string>
     <string name="event_user">Uczestnik"</string>
-    <string name="user_image_desc">User\'s profile pic</string>
-    <string name="exit_dialog_btn_desc">Exit dialog button</string>
-    <string name="edit_btn_desc">Edit button</string>
-    <string name="add_event_btn_desc">New event button</string>
-    <string name="calendar_header_right_btn_desc">Right button</string>
-    <string name="calendar_header_left_btn_desc">Left button</string>
-    <string name="spinner_component_btn_desc">Right button</string>
+    <string name="user_image_desc">Obraz użytkownika</string>
+    <string name="exit_dialog_btn_desc">Opuść ekran</string>
+    <string name="edit_btn_desc">Przycisk edycji</string>
+    <string name="add_event_btn_desc">Przycisk dodania nowego zdarzenia</string>
+    <string name="calendar_header_right_btn_desc">Kolejny zakres czasu</string>
+    <string name="calendar_header_left_btn_desc">Poprzedni zakres czasu</string>
+    <string name="spinner_component_btn_desc">Wybór trybu kalendarza</string>
     <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
     <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
 

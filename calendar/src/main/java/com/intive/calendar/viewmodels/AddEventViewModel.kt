@@ -1,13 +1,11 @@
 package com.intive.calendar.viewmodels
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.intive.calendar.R
 import com.intive.calendar.utils.AddNewEvent
 import com.intive.calendar.utils.formatTime
 import com.intive.calendar.utils.isOnline
@@ -47,20 +45,35 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
     private val _minutesEnd = MutableLiveData("00")
     var minutesEnd: LiveData<String> = _minutesEnd
 
-    private val _checkboxJS = MutableLiveData(false)
-    var checkboxJS: LiveData<Boolean> = _checkboxJS
-
-    private val _checkboxJava = MutableLiveData(false)
-    var checkboxJava: LiveData<Boolean> = _checkboxJava
-
-    private val _checkboxQA = MutableLiveData(false)
-    var checkboxQA: LiveData<Boolean> = _checkboxQA
-
-    private val _checkboxMobile = MutableLiveData(false)
-    var checkboxMobile: LiveData<Boolean> = _checkboxMobile
-
     private val _inputValue = MutableLiveData("")
     var inputValue: LiveData<String> = _inputValue
+
+    private val _technologyGroups: MutableLiveData<List<String>> = MutableLiveData(emptyList())
+    var technologyGroups: LiveData<List<String>> = _technologyGroups
+
+    private val _selectedTechnologyGroups = mutableListOf<String>()
+
+
+    fun updateSelectedTechnologyGroups(technologyGroup: String) {
+        if (technologyGroup in _selectedTechnologyGroups) {
+            _selectedTechnologyGroups.remove(technologyGroup)
+        } else {
+            _selectedTechnologyGroups.add(technologyGroup)
+        }
+    }
+
+    private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
+
+    init {
+
+        var technologyGroupsList: List<String>
+
+        viewModelScope.launch(Dispatchers.IO + handler) {
+            technologyGroupsList = repository.getTechnologies()
+            _technologyGroups.postValue(technologyGroupsList)
+        }
+    }
+
 
     fun setInputValue(value: String) {
         _inputValue.value = value
@@ -86,22 +99,6 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
         _minutesEnd.value = minutesString
     }
 
-    fun setCheckboxJS() {
-        _checkboxJS.value = _checkboxJS.value != true
-    }
-
-    fun setCheckboxJava() {
-        _checkboxJava.value = _checkboxJava.value != true
-    }
-
-    fun setCheckboxQA() {
-        _checkboxQA.value = _checkboxQA.value != true
-    }
-
-    fun setCheckboxMobile() {
-        _checkboxMobile.value = _checkboxMobile.value != true
-    }
-
     fun validateDate(): Boolean {
         val today: Calendar = Calendar.getInstance()
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
@@ -117,7 +114,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun validateCheckboxes(): Boolean {
-        return _checkboxJS.value == true || _checkboxJava.value == true || _checkboxQA.value == true || _checkboxMobile.value == true
+        return _selectedTechnologyGroups.size in 1..3
     }
 
     fun validateInput(): Boolean {
@@ -130,13 +127,12 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
         timeStart: String,
         timeEnd: String,
         name: String,
-        view: View,
         context: Context,
         refreshCalendar: () -> Unit,
         navController: NavController
     ) {
 
-        val newEvent = NewEvent(date, timeStart, timeEnd, name, getGroupsList(context))
+        val newEvent = NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups)
         val handler = CoroutineExceptionHandler { _, _ ->
             showSnackbar()
         }
@@ -157,18 +153,4 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
             showSnackbar()
         }
     }
-
-    private fun getGroupsList(context: Context): List<String> {
-        val groupsList = mutableListOf<String>()
-
-        when {
-            _checkboxJS.value == true -> groupsList += context.getString(R.string.js_label)
-            _checkboxJava.value == true -> groupsList += context.getString(R.string.java_label)
-            _checkboxQA.value == true -> groupsList += context.getString(R.string.qa_label)
-            _checkboxMobile.value == true -> groupsList += context.getString(R.string.mobile_label)
-        }
-
-        return groupsList
-    }
-
 }

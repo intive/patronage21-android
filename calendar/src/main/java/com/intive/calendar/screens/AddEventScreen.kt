@@ -43,10 +43,7 @@ fun AddEventScreen(
     val minutesStart by addEventViewModel.minutesStart.observeAsState()
     val minutesEnd by addEventViewModel.minutesEnd.observeAsState()
     val inputValue by addEventViewModel.inputValue.observeAsState()
-    val checkboxJS by addEventViewModel.checkboxJS.observeAsState()
-    val checkboxJava by addEventViewModel.checkboxJava.observeAsState()
-    val checkboxQA by addEventViewModel.checkboxQA.observeAsState()
-    val checkboxMobile by addEventViewModel.checkboxMobile.observeAsState()
+    val technologyGroups by addEventViewModel.technologyGroups.observeAsState()
 
     val c: Calendar = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
@@ -114,22 +111,16 @@ fun AddEventScreen(
                 Color.Black
             )
 
-            CheckboxComponent(
-                stringResource(R.string.checkbox_js_label),
-                checkboxJS!!
-            ) { addEventViewModel.setCheckboxJS() }
-            CheckboxComponent(
-                stringResource(R.string.checkbox_java_label),
-                checkboxJava!!
-            ) { addEventViewModel.setCheckboxJava() }
-            CheckboxComponent(
-                stringResource(R.string.checkbox_qa_label),
-                checkboxQA!!
-            ) { addEventViewModel.setCheckboxQA() }
-            CheckboxComponent(
-                stringResource(R.string.checkbox_mobile_label),
-                checkboxMobile!!
-            ) { addEventViewModel.setCheckboxMobile() }
+
+
+            if(technologyGroups?.isNotEmpty() == true) {
+                technologyGroups!!.forEach  {
+                    CheckboxComponent(
+                        it,
+                        addEventViewModel::updateSelectedTechnologyGroups
+                    )
+                }
+            }
         }
 
         Column {
@@ -172,7 +163,6 @@ fun AddEventScreen(
                         timeStart = timeToString(hourStart!!, minutesStart!!),
                         timeEnd = timeToString(hourEnd!!, minutesEnd!!),
                         name = inputValue!!,
-                        view = view,
                         context = context,
                         refreshCalendar = { refreshCalendar() },
                         navController = navController,
