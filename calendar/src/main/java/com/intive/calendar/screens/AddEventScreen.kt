@@ -4,9 +4,9 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +22,8 @@ import java.util.*
 import com.intive.calendar.components.*
 import com.intive.calendar.utils.getDateString
 import com.intive.ui.components.TitleText
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 
 @ExperimentalComposeUiApi
 @Composable
@@ -101,18 +103,28 @@ fun AddEventScreen(
 
             TitleText(
                 stringResource(R.string.add_event_checkbox_header),
-                Modifier.padding(bottom = 24.dp),
+                Modifier.padding(bottom = 14.dp),
                 MaterialTheme.typography.h6,
                 Color.Black
             )
 
 
             if (technologyGroups?.isNotEmpty() == true) {
-                technologyGroups!!.forEach {
-                    CheckboxComponent(
-                        it,
-                        addEventViewModel::updateSelectedTechnologyGroups
-                    )
+
+                val listState = rememberLazyListState()
+
+                LazyColumn(state = listState) {
+                    items(technologyGroups!!) {
+                        CheckboxComponent(it, addEventViewModel::updateSelectedTechnologyGroups)
+                    }
+                }
+
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
                 }
             }
         }

@@ -1,7 +1,5 @@
 package com.intive.calendar.viewmodels
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
-import com.intive.repository.util.Resource
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel
@@ -65,7 +62,6 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
     private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 
     init {
-
         var technologyGroupsList: List<String>
 
         viewModelScope.launch(Dispatchers.IO + handler) {
