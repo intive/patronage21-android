@@ -3,7 +3,6 @@ package com.intive.calendar.screens
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.view.View
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,22 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.google.android.material.snackbar.Snackbar
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
 import com.intive.calendar.components.*
 import com.intive.calendar.utils.getDateString
-import com.intive.calendar.utils.timeToString
 import com.intive.ui.components.TitleText
 
 @ExperimentalComposeUiApi
 @Composable
 fun AddEventScreen(
-    view: View,
     context: Context,
-    navController: NavController,
+    popBackStack: () -> Boolean,
     addEventViewModel: AddEventViewModel,
     refreshCalendar: () -> Unit
 ) {
@@ -112,9 +107,8 @@ fun AddEventScreen(
             )
 
 
-
-            if(technologyGroups?.isNotEmpty() == true) {
-                technologyGroups!!.forEach  {
+            if (technologyGroups?.isNotEmpty() == true) {
+                technologyGroups!!.forEach {
                     CheckboxComponent(
                         it,
                         addEventViewModel::updateSelectedTechnologyGroups
@@ -125,54 +119,15 @@ fun AddEventScreen(
 
         Column {
             OKButton(stringResource(R.string.accept_new_event)) {
-                if (!addEventViewModel.validateInput()) {
-                    view.let {
-                        Snackbar.make(
-                            it,
-                            R.string.add_event_input_validation_message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                } else if (!addEventViewModel.validateDate()) {
-                    view.let {
-                        Snackbar.make(
-                            it,
-                            R.string.add_event_date_validation_message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                } else if (!addEventViewModel.validateTime()) {
-                    view.let {
-                        Snackbar.make(
-                            it,
-                            R.string.add_event_time_validation_message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                } else if (!addEventViewModel.validateCheckboxes()) {
-                    view.let {
-                        Snackbar.make(
-                            it,
-                            R.string.add_event_checkbox_validation_message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                } else {
-                    addEventViewModel.addNewEvent(
-                        date = getDateString(date!!),
-                        timeStart = timeToString(hourStart!!, minutesStart!!),
-                        timeEnd = timeToString(hourEnd!!, minutesEnd!!),
-                        name = inputValue!!,
-                        context = context,
-                        refreshCalendar = { refreshCalendar() },
-                        navController = navController,
-                    )
-                }
+                addEventViewModel.validateForm(
+                    context,
+                    popBackStack, refreshCalendar
+                )
             }
 
             CancelButton(stringResource(R.string.reject_new_event)) {
                 refreshCalendar()
-                navController.popBackStack()
+                popBackStack()
             }
         }
     }

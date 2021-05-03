@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import com.intive.calendar.utils.AddNewEvent
-import com.intive.calendar.utils.formatTime
-import com.intive.calendar.utils.isOnline
+import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
 import kotlinx.coroutines.*
@@ -23,8 +20,8 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
     private val addEventChannel = Channel<AddNewEvent>()
     val addEventFlow = addEventChannel.receiveAsFlow()
 
-    private fun showSnackbar() = viewModelScope.launch {
-        addEventChannel.send(AddNewEvent.Error)
+    private fun showSnackbar(errorType: AddNewEvent) = viewModelScope.launch {
+        addEventChannel.send(errorType)
     }
 
     private val c: Calendar = Calendar.getInstance()
@@ -99,42 +96,63 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
         _minutesEnd.value = minutesString
     }
 
-    fun validateDate(): Boolean {
+    private fun validateDate(): Boolean {
         val today: Calendar = Calendar.getInstance()
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
         _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it.toInt()) }
         return today.before(_date.value)
     }
 
-    fun validateTime(): Boolean {
+    private fun validateTime(): Boolean {
         val endDate = _date.value?.clone() as Calendar
         _hourEnd.value?.let { endDate.set(Calendar.HOUR, it.toInt()) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it.toInt()) }
         return !endDate.before(_date.value)
     }
 
-    fun validateCheckboxes(): Boolean {
+    private fun validateCheckboxes(): Boolean {
         return _selectedTechnologyGroups.size in 1..3
     }
 
-    fun validateInput(): Boolean {
+    private fun validateInput(): Boolean {
         return _inputValue.value != ""
     }
 
+    fun validateForm(context: Context, popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
+        if (!validateInput()) {
+            showSnackbar(AddNewEvent.InvalidInput)
+        } else if (!validateDate()) {
+            showSnackbar(AddNewEvent.InvalidDate)
+        } else if (!validateTime()) {
+            showSnackbar(AddNewEvent.InvalidTime)
+        } else if (!validateCheckboxes()) {
+            showSnackbar(AddNewEvent.InvalidCheckboxes)
+        } else {
+            addNewEvent(
+                date = getDateString(_date.value!!),
+                timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!),
+                timeEnd = timeToString(_hourEnd.value!!, _minutesEnd.value!!),
+                name = _inputValue.value!!,
+                context = context,
+                refreshCalendar = { refreshCalendar() },
+                popBackStack = { popBackStack() },
+            )
+        }
+    }
 
-    fun addNewEvent(
+    private fun addNewEvent(
         date: String,
         timeStart: String,
         timeEnd: String,
         name: String,
         context: Context,
         refreshCalendar: () -> Unit,
-        navController: NavController
+        popBackStack: () -> Boolean
     ) {
 
         val newEvent = NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups)
         val handler = CoroutineExceptionHandler { _, _ ->
-            showSnackbar()
+            showSnackbar(AddNewEvent.Error)
         }
 
         if (isOnline(context)) {
@@ -146,11 +164,11 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
                 }
 
                 refreshCalendar()
-                navController.popBackStack()
+                popBackStack()
 
             }
         } else {
-            showSnackbar()
+            showSnackbar(AddNewEvent.Error)
         }
     }
 }

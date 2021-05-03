@@ -21,13 +21,12 @@ import com.intive.calendar.R
 import com.intive.calendar.utils.AddNewEvent
 
 
-
 class AddEventFragment : Fragment() {
 
     private val addEventViewModel by viewModel<AddEventViewModel>()
     private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
-    
+
     @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +36,39 @@ class AddEventFragment : Fragment() {
 
         lifecycleScope.launchWhenStarted {
             addEventViewModel.addEventFlow.collect { event ->
-                when(event) {
+                when (event) {
                     is AddNewEvent.Error -> {
                         Snackbar.make(
                             requireView(),
                             requireContext().getString(R.string.add_event_error_msg),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is AddNewEvent.InvalidInput -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.add_event_input_validation_message),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is AddNewEvent.InvalidDate -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.add_event_date_validation_message),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is AddNewEvent.InvalidTime -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.add_event_time_validation_message),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is AddNewEvent.InvalidCheckboxes -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.add_event_checkbox_validation_message),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
@@ -53,9 +80,8 @@ class AddEventFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     AddEventScreen(
-                        requireView(),
-                        requireContext(),
-                        findNavController(),
+                        requireContext().applicationContext,
+                        { findNavController().popBackStack() },
                         addEventViewModel
                     ) { calendarHomeViewModel.refreshCalendar() }
                 }
@@ -63,4 +89,3 @@ class AddEventFragment : Fragment() {
         }
     }
 }
-
