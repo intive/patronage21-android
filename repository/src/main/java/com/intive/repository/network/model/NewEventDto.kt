@@ -5,5 +5,5 @@ data class NewEventDto(
     val timeStart: String,
     val timeEnd: String,
     val name: String,
-    val groups: List<String>
+    val groups: String
 )

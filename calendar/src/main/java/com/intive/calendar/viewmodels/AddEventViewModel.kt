@@ -1,6 +1,7 @@
 package com.intive.calendar.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
+import com.intive.repository.util.Resource
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class AddEventViewModel(private val repository: Repository) : ViewModel() {
 
@@ -118,7 +121,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
         return _inputValue.value != ""
     }
 
-    fun validateForm(context: Context, popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
+    fun validateForm(popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
         if (!validateInput()) {
             showSnackbar(AddNewEvent.InvalidInput)
         } else if (!validateDate()) {
@@ -133,7 +136,6 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
                 timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!),
                 timeEnd = timeToString(_hourEnd.value!!, _minutesEnd.value!!),
                 name = _inputValue.value!!,
-                context = context,
                 refreshCalendar = { refreshCalendar() },
                 popBackStack = { popBackStack() },
             )
@@ -145,30 +147,32 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
         timeStart: String,
         timeEnd: String,
         name: String,
-        context: Context,
         refreshCalendar: () -> Unit,
         popBackStack: () -> Boolean
     ) {
 
-        val newEvent = NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups)
+        val newEvent =
+            NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
         val handler = CoroutineExceptionHandler { _, _ ->
             showSnackbar(AddNewEvent.Error)
         }
 
-        if (isOnline(context)) {
 
-            viewModelScope.launch(handler) {
+        var response: Response<String>
 
-                withContext(Dispatchers.IO) {
-                    repository.addNewEvent(newEvent)
-                }
+        viewModelScope.launch(handler) {
 
+            withContext(Dispatchers.IO) {
+                response = repository.addNewEvent(newEvent)
+            }
+
+            if (response.isSuccessful) {
                 refreshCalendar()
                 popBackStack()
-
+            } else {
+                showSnackbar(AddNewEvent.Error)
             }
-        } else {
-            showSnackbar(AddNewEvent.Error)
         }
+
     }
 }

@@ -50,7 +50,7 @@ class NetworkRepository(
     }
 
 
-    suspend fun addNewEvent(event: NewEventDto){
+    suspend fun addNewEvent(event: NewEventDto): Response<String> {
         return eventsService.addNewEvent(event)
     }
 

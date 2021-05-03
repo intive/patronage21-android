@@ -27,7 +27,7 @@ interface Repository {
     suspend fun getTotalUsersByRole(role: String): Int
     suspend fun searchAudits(page: Int, query: String): List<Audit>
 
-    suspend fun addNewEvent(event: NewEvent)
+    suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String): List<Event>
 
     suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String>
