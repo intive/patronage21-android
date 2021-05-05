@@ -131,7 +131,7 @@ fun AddEventScreen(
 
         Column {
             OKButton(stringResource(R.string.accept_new_event)) {
-                addEventViewModel.validateForm(
+                addEventViewModel.isFormValid(
                     popBackStack, refreshCalendar
                 )
             }

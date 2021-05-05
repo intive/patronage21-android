@@ -96,36 +96,36 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
         _minutesEnd.value = minutesString
     }
 
-    private fun validateDate(): Boolean {
+    private fun isDateValid(): Boolean {
         val today: Calendar = Calendar.getInstance()
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
         _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it.toInt()) }
         return today.before(_date.value)
     }
 
-    private fun validateTime(): Boolean {
+    private fun isTimeValid(): Boolean {
         val endDate = _date.value?.clone() as Calendar
         _hourEnd.value?.let { endDate.set(Calendar.HOUR, it.toInt()) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it.toInt()) }
         return !endDate.before(_date.value)
     }
 
-    private fun validateCheckboxes(): Boolean {
+    private fun areCheckboxesValid(): Boolean {
         return _selectedTechnologyGroups.size in 1..3
     }
 
-    private fun validateInput(): Boolean {
+    private fun isInputValid(): Boolean {
         return _inputValue.value != ""
     }
 
-    fun validateForm(popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
-        if (!validateInput()) {
+    fun isFormValid(popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
+        if (!isInputValid()) {
             showSnackbar(AddNewEvent.InvalidInput)
-        } else if (!validateDate()) {
+        } else if (!isDateValid()) {
             showSnackbar(AddNewEvent.InvalidDate)
-        } else if (!validateTime()) {
+        } else if (!isTimeValid()) {
             showSnackbar(AddNewEvent.InvalidTime)
-        } else if (!validateCheckboxes()) {
+        } else if (!areCheckboxesValid()) {
             showSnackbar(AddNewEvent.InvalidCheckboxes)
         } else {
             addNewEvent(
