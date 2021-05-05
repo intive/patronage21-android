@@ -100,11 +100,13 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
                 CircularProgressIndicator()
             }
             is Resource.Success -> {
-                TechnologiesList(
-                    availableTechnologies = availableTechnologies.data!!,
+                CheckBoxesList(
+                    title = stringResource(R.string.technologies_text),
+                    onErrorText = stringResource(R.string.select_technologies_error),
+                    items = availableTechnologies.data!!,
                     onItemSelected = viewmodel::updateTechnologies,
                     isValid = viewmodel::isTechnologiesListValid,
-                    formChecker = formChecker
+                    onCheckedChange = formChecker
                 )
             }
             is Resource.Error -> {
