@@ -8,28 +8,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.intive.registration.R
+
+
+//onErrorText - if you need for example min 1 item selected,
+// you can put function, which will check this rule, in isValid parameter
+// and then if user doesn't check any option onErrorText appear
 
 @Composable
-fun TechnologiesList(
-    availableTechnologies: List<String>,
+fun CheckBoxesList(
+    title: String,
+    onErrorText: String,
+    items: List<String>,
     onItemSelected: (String) -> Unit,
-    isValid: () -> Boolean,
-    formChecker: () -> Unit,
+    isValid: () -> Boolean = { true },
+    onCheckedChange: () -> Unit = {},
 ) {
 
-    val valid = remember { mutableStateOf(false) }
-    val selectedListChange: (Boolean) -> Unit = {
-        valid.value = it
+    val isListValid = remember { mutableStateOf(isValid()) }
+    val selectedItemsChange: (Boolean) -> Unit = {
+        isListValid.value = it
     }
-    Text(text = stringResource(R.string.technologies_text))
-    if(!valid.value) {
-        Text(text = stringResource(R.string.select_technologies_error), color = Color.Red)
+    Text(text = title)
+    if (!isListValid.value) {
+        Text(text = onErrorText, color = Color.Red)
     }
     Spacer(modifier = Modifier.height(4.dp))
-    for(item in availableTechnologies) {
+    for (item in items) {
         Column {
             Row {
                 val checkedState = remember { mutableStateOf(false) }
@@ -38,8 +43,8 @@ fun TechnologiesList(
                     onCheckedChange = {
                         checkedState.value = it
                         onItemSelected(item)
-                        selectedListChange(isValid())
-                        formChecker()
+                        selectedItemsChange(isValid())
+                        onCheckedChange()
                     }
                 )
                 Text(text = item)
