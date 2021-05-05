@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
+import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class AddEventViewModel(private val repository: Repository) : ViewModel() {
+class AddEventViewModel(private val repository: Repository, private val dispatchers: DispatcherProvider) : ViewModel() {
 
 
     private val addEventChannel = Channel<AddNewEvent>()
@@ -64,7 +65,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
     init {
         var technologyGroupsList: List<String>
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
+        viewModelScope.launch(dispatchers.io + handler) {
             technologyGroupsList = repository.getTechnologies()
             _technologyGroups.postValue(technologyGroupsList)
         }
@@ -158,7 +159,7 @@ class AddEventViewModel(private val repository: Repository) : ViewModel() {
 
         viewModelScope.launch(handler) {
 
-            withContext(Dispatchers.IO) {
+            withContext(dispatchers.io) {
                 response = repository.addNewEvent(newEvent)
             }
 
