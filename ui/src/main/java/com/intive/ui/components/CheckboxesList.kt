@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -21,15 +22,19 @@ fun CheckBoxesList(
     onErrorText: String,
     items: List<String>,
     onItemSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
     isValid: () -> Boolean = { true },
-    onCheckedChange: () -> Unit = {},
+    onCheckedChange: () -> Unit = {}
 ) {
 
     val isListValid = remember { mutableStateOf(isValid()) }
     val selectedItemsChange: (Boolean) -> Unit = {
         isListValid.value = it
     }
-    Text(text = title)
+    Text(
+        text = title,
+        modifier = modifier
+    )
     if (!isListValid.value) {
         Text(text = onErrorText, color = Color.Red)
     }
@@ -47,7 +52,12 @@ fun CheckBoxesList(
                         onCheckedChange()
                     }
                 )
-                Text(text = item)
+                Text(
+                    text = item,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically)
+                )
             }
         }
     }
