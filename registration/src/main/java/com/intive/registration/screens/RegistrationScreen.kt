@@ -24,6 +24,7 @@ import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
 import com.intive.repository.util.Resource
+import com.intive.ui.components.CheckBoxesList
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 import kotlinx.coroutines.launch

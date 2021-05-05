@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
@@ -22,8 +21,8 @@ import java.util.*
 import com.intive.calendar.components.*
 import com.intive.calendar.utils.getDateString
 import com.intive.ui.components.TitleText
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import com.intive.ui.components.CheckBoxesList
 
 @ExperimentalComposeUiApi
 @Composable
@@ -73,58 +72,61 @@ fun AddEventScreen(
         }, hour, minute, true
     )
 
+    val lazyListState = rememberLazyListState()
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(24.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(stringResource(R.string.add_event), Modifier.padding(bottom = 24.dp))
-            InputText(inputValue!!, addEventViewModel::setInputValue)
+        LazyColumn(state = lazyListState, modifier = Modifier.weight(1f)) {
+            item {
 
-            Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-                PickerRow(
-                    stringResource(R.string.date_label),
-                    getDateString(date!!, "."),
-                    datePickerDialog
-                )
-                PickerRow(
-                    stringResource(R.string.start_hour_label),
-                    "$hourStart:$minutesStart",
-                    startTimePickerDialog
-                )
-                PickerRow(
-                    stringResource(R.string.end_hour_label),
-                    "$hourEnd:$minutesEnd",
-                    endTimePickerDialog
-                )
-            }
+                Column {
 
-            TitleText(
-                stringResource(R.string.add_event_checkbox_header),
-                Modifier.padding(bottom = 14.dp),
-                MaterialTheme.typography.h6,
-                Color.Black
-            )
+                    TitleText(
+                        stringResource(R.string.add_event),
+                        Modifier.padding(bottom = 24.dp)
+                    )
 
+                    InputText(inputValue!!, addEventViewModel::setInputValue)
 
-            if (technologyGroups?.isNotEmpty() == true) {
-
-                val listState = rememberLazyListState()
-
-                LazyColumn(state = listState) {
-                    items(technologyGroups!!) {
-                        CheckboxComponent(it, addEventViewModel::updateSelectedTechnologyGroups)
+                    Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
+                        PickerRow(
+                            stringResource(R.string.date_label),
+                            getDateString(date!!, "."),
+                            datePickerDialog
+                        )
+                        PickerRow(
+                            stringResource(R.string.start_hour_label),
+                            "$hourStart:$minutesStart",
+                            startTimePickerDialog
+                        )
+                        PickerRow(
+                            stringResource(R.string.end_hour_label),
+                            "$hourEnd:$minutesEnd",
+                            endTimePickerDialog
+                        )
                     }
-                }
 
-            } else {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
+                    if (technologyGroups?.isNotEmpty() == true) {
+                        CheckBoxesList(
+                            title = stringResource(R.string.add_event_checkbox_header),
+                            onErrorText = "",
+                            items = technologyGroups!!,
+                            onItemSelected = addEventViewModel::updateSelectedTechnologyGroups,
+                            modifier = Modifier.padding(bottom = 14.dp),
+                            style = MaterialTheme.typography.h6
+                        )
+                    } else {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
             }
         }

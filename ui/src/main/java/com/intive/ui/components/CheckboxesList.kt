@@ -1,7 +1,8 @@
-package com.intive.registration.components
+package com.intive.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 
@@ -23,6 +25,7 @@ fun CheckBoxesList(
     items: List<String>,
     onItemSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.body1,
     isValid: () -> Boolean = { true },
     onCheckedChange: () -> Unit = {}
 ) {
@@ -33,7 +36,8 @@ fun CheckBoxesList(
     }
     Text(
         text = title,
-        modifier = modifier
+        modifier = modifier,
+        style = style,
     )
     if (!isListValid.value) {
         Text(text = onErrorText, color = Color.Red)
@@ -41,7 +45,7 @@ fun CheckBoxesList(
     Spacer(modifier = Modifier.height(4.dp))
     for (item in items) {
         Column {
-            Row {
+            Row(modifier = Modifier.padding(bottom = 4.dp)) {
                 val checkedState = remember { mutableStateOf(false) }
                 Checkbox(
                     checked = checkedState.value,
