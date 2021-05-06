@@ -154,8 +154,6 @@ fun InviteResponseButtons(
                     )
                 }
 
-
-
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = true
                 declineBtnSelected.value = false
@@ -179,8 +177,6 @@ fun InviteResponseButtons(
                         context
                     )
                 }
-
-
 
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = false

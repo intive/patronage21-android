@@ -10,6 +10,6 @@ import org.koin.dsl.module
 val calendarModule = module {
     viewModel { CalendarHomeViewModel(get(), get()) }
     viewModel { AddEventViewModel(get(), get()) }
-    viewModel { EventViewModel(get())}
+    viewModel { EventViewModel(get(), get())}
 }
 
