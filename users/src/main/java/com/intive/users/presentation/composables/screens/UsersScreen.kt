@@ -21,13 +21,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.intive.repository.domain.model.User
 import com.intive.repository.util.Resource
+import com.intive.ui.components.*
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
-import com.intive.ui.components.Spinner
-import com.intive.ui.components.UsersHeader
 
 @Composable
 fun UsersScreen(
@@ -73,7 +72,7 @@ fun UsersScreen(
                         }
                     }
                     is Resource.Error -> ErrorItem(
-                        message = stringResource(id = R.string.an_error_occurred)
+                        message = stringResource(id = R.string.an_error_occurred),
                     ) {
                         viewModel.onTechGroupsRetryClicked()
                     }
@@ -222,46 +221,3 @@ fun UsersScreen(
     }
 }
 
-@Composable
-fun LoadingView(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun LoadingItem() {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-    )
-}
-
-@Composable
-fun ErrorItem(
-    message: String,
-    modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit
-) {
-    Row(
-        modifier = modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = message,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
-            color = Color.Red
-        )
-        Button(onClick = onClickRetry) {
-            Text(text = stringResource(R.string.try_again))
-        }
-    }
-}
