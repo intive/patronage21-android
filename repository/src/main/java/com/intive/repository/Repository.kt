@@ -21,7 +21,6 @@ interface Repository {
     suspend fun getTechnologyGroups(): List<Group>
     suspend fun getUsersByRole(page: Int, role: String, group: String?): UsersResponse
     suspend fun getTotalUsersByRole(role: String,group: String?): Int
-    suspend fun getEvents(dateStart: String, dateEnd: String): List<Event>
     suspend fun searchAudits(page: Int, query: String): List<Audit>
 
     suspend fun addNewEvent(event: NewEvent): Response<String>
