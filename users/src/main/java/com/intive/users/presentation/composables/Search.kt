@@ -1,5 +1,6 @@
 package com.intive.users.presentation.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,15 +41,18 @@ fun Search(
             imeAction = ImeAction.Search,
         ),
         keyboardActions = KeyboardActions(
-            onDone = {
+            onSearch = {
                 onExecuteSearch()
-            },
+            }
         ),
         trailingIcon = {
             Icon(
-                Icons.Filled.Search,
+                imageVector = Icons.Filled.Search,
                 contentDescription = stringResource(R.string.search_icon_content_description),
                 tint = MaterialTheme.colors.secondaryVariant,
+                modifier = Modifier.clickable {
+                    onExecuteSearch()
+                }
             )
         },
         colors = TextFieldDefaults.textFieldColors(

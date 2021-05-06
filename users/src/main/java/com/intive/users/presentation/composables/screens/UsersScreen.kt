@@ -37,7 +37,7 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
-    val query = viewModel.query.collectAsState()
+    val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
 
@@ -60,7 +60,9 @@ fun UsersScreen(
                     onQueryChanged = {
                         viewModel.onQueryChanged(it)
                     },
-                    onExecuteSearch = {}
+                    onExecuteSearch = {
+                        viewModel.onExecuteSearch()
+                    }
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 

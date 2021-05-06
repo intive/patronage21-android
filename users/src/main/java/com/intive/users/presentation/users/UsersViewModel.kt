@@ -26,8 +26,10 @@ class UsersViewModel(
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    private val _query: MutableStateFlow<String> = MutableStateFlow("")
-    val query: StateFlow<String> = _query
+    private val _query: MutableState<String> = mutableStateOf("")
+    val query: State<String> = _query
+
+    private val executeQuery: MutableStateFlow<String> = MutableStateFlow("")
 
     private val _totalLeaders: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalLeaders: State<Resource<Int>> = _totalLeaders
@@ -42,9 +44,14 @@ class UsersViewModel(
     private val selectedGroup: MutableStateFlow<String?> = MutableStateFlow(null)
 
     @ExperimentalCoroutinesApi
-    var leaders: Flow<PagingData<User>> = selectedGroup.flatMapLatest { g ->
+    var leaders: Flow<PagingData<User>> = combine(
+        executeQuery,
+        selectedGroup
+    ) { query, selectedGroup ->
+        Pair(query, selectedGroup)
+    }.flatMapLatest { (query, selectedGroup) ->
 
-        val group = if (g == ALL_GROUPS) null else g
+        val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
             UsersSource(repository, ROLE_LEADER, group = group)
@@ -53,9 +60,16 @@ class UsersViewModel(
     }
 
     @ExperimentalCoroutinesApi
-    var candidates: Flow<PagingData<User>> = selectedGroup.flatMapLatest { g ->
+    var candidates: Flow<PagingData<User>> = combine(
+        executeQuery,
+        selectedGroup
+    ) { query, selectedGroup ->
+        Pair(query, selectedGroup)
+    }.flatMapLatest { (query, selectedGroup) ->
 
-        val group = if (g == ALL_GROUPS) null else g
+        val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
+
+        println("RECEIVED QUERY = $query")
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
             UsersSource(repository, ROLE_CANDIDATE, group = group)
@@ -115,6 +129,13 @@ class UsersViewModel(
         getTotalLeadersCount(selectedGroup.value)
     }
 
+    fun onExecuteSearch() {
+        println("onExecuteSearch called")
+        viewModelScope.launch {
+            executeQuery.emit(query.value)
+        }
+    }
+
     private fun getTotalCandidatesCount(group: String?) = viewModelScope.launch(dispatchers.io) {
         _totalCandidates.value = try {
             val response = repository.getTotalUsersByRole(ROLE_CANDIDATE, group)
@@ -132,4 +153,5 @@ class UsersViewModel(
             Resource.Error(e.localizedMessage)
         }
     }
+
 }
