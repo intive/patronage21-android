@@ -40,7 +40,9 @@ fun CheckBoxesList(
         style = style,
     )
     if (!isListValid.value) {
+        Spacer(modifier = Modifier.height(4.dp))
         Text(text = onErrorText, color = Color.Red)
+        Spacer(modifier = Modifier.height(4.dp))
     }
     Spacer(modifier = Modifier.height(4.dp))
     for (item in items) {
