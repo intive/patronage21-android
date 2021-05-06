@@ -50,6 +50,7 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
         CustomButton(
             text = stringResource(R.string.send_code_button),
             onClick = {
+                viewmodel.sendRequestForCode()
                 val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email)
                 navController.navigate(action)
             },

@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_verify_email"
             app:destination="@id/emailVerificationFragment" />
+        <action
+            android:id="@+id/action_error"
+            app:destination="@id/errorFragment" />
     </fragment>
     <fragment
         android:id="@+id/emailVerificationFragment"
@@ -56,6 +59,9 @@
         <action
             android:id="@+id/action_back_to_login"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="messageResourceId"
+            app:argType="integer"/>
     </fragment>
 
 </navigation>

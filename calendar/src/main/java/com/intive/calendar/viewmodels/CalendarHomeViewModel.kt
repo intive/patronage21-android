@@ -8,10 +8,11 @@ import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
+import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.*
 import java.util.*
 
-class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
+class CalendarHomeViewModel(private val repository: Repository, private val dispatchers: DispatcherProvider) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 
@@ -127,7 +128,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         var events: List<Event>
         val monthArray = mutableListOf<Day>()
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
+        viewModelScope.launch(dispatchers.io + handler) {
 
             _monthEvents.postValue(listOf(Day(null, emptyList())))
 
@@ -152,7 +153,7 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         var events: List<Event>
         val weekArray = mutableListOf<Day>()
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
+        viewModelScope.launch(dispatchers.io + handler) {
             _weekEvents.postValue(listOf(Day(null, emptyList())))
 
 

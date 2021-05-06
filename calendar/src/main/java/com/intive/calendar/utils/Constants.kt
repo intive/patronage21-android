@@ -8,3 +8,4 @@ const val colorWhite = 0xffffffff
 const val colorBlack = 0xff000000
 
 const val userId: Long = 1
+
