@@ -65,7 +65,7 @@ class NetworkRepository(
         return registrationService.sendRequestForCode(body)
     }
 
-    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto) {
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
         return eventsService.updateInviteResponse(inviteResponse)
     }
 }

@@ -19,7 +19,7 @@ interface EventsService {
 
     @PUT("api/events/update")
     @Headers( "Content-Type: application/json" )
-    suspend fun updateInviteResponse(@Body event: EventInviteResponseDto)
+    suspend fun updateInviteResponse(@Body event: EventInviteResponseDto): Response<String>
 
     @POST("api/events")
     @Headers( "Content-Type: application/json" )

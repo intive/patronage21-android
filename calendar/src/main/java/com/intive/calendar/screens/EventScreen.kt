@@ -23,7 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
 import com.intive.calendar.utils.EventBundle
-import com.intive.calendar.utils.InviteResponse
+//import com.intive.calendar.utils.InviteResponse
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
 
@@ -40,7 +40,7 @@ fun EventScreenLayout(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(16.dp)
+            .padding(24.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
@@ -68,6 +68,7 @@ fun EventScreenLayout(
         }
 
         Column {
+
             if(event.active){
                 InviteResponseButtons(
                     view = view,
@@ -99,11 +100,14 @@ fun InviteResponseButtons(
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
 
+
+
     when (event.inviteResponse) {
         InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
         InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
         InviteResponse.DECLINED.name -> declineBtnSelected.value = true
     }
+
 
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
@@ -113,6 +117,7 @@ fun InviteResponseButtons(
                 selected = acceptBtnSelected
             )
             {
+
                 if (event.inviteResponse != InviteResponse.ACCEPTED.name) {
                     updateInviteResponse(
                         userId,
@@ -123,6 +128,8 @@ fun InviteResponseButtons(
                         context
                     )
                 }
+
+
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = false
@@ -135,6 +142,7 @@ fun InviteResponseButtons(
                 selected = unknownBtnSelected
             )
             {
+
                 if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
                     updateInviteResponse(
                         userId,
@@ -145,6 +153,8 @@ fun InviteResponseButtons(
                         context
                     )
                 }
+
+
 
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = true
@@ -158,7 +168,8 @@ fun InviteResponseButtons(
                 selected = declineBtnSelected
             )
             {
-                if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
+
+                if (event.inviteResponse != InviteResponse.DECLINED.name) {
                     updateInviteResponse(
                         userId,
                         event.id,
@@ -168,6 +179,8 @@ fun InviteResponseButtons(
                         context
                     )
                 }
+
+
 
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = false

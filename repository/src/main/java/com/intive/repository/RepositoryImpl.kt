@@ -73,12 +73,8 @@ class RepositoryImpl(
     }
 
 
-    override suspend fun updateInviteResponse(inviteResponse: EventInviteResponse) {
-        return networkRepository.updateInviteResponse(
-            inviteResponseMapper.mapFromDomainModel(
-                inviteResponse
-            )
-        )
+    override suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String> {
+        return networkRepository.updateInviteResponse(inviteResponseMapper.mapFromDomainModel(inviteResponse))
     }
 
     override suspend fun sendRequestForCode(email: String) {

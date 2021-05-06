@@ -8,16 +8,16 @@ import com.intive.repository.network.model.EventInviteResponseDto
 class EventInviteResponseDtoMapper : DomainMapper<EventInviteResponseDto, EventInviteResponse> {
     override fun mapToDomainModel(model: EventInviteResponseDto): EventInviteResponse {
         return EventInviteResponse(
-            userId = model.userId,
-            eventId = model.eventId,
+            userId = model.userId.toLong(),
+            eventId = model.eventId.toLong(),
             inviteResponse = model.inviteResponse
         )
     }
 
     override fun mapFromDomainModel(domainModel: EventInviteResponse): EventInviteResponseDto {
         return EventInviteResponseDto(
-            userId = domainModel.userId,
-            eventId = domainModel.eventId,
+            userId = domainModel.userId.toString(),
+            eventId = domainModel.eventId.toString(),
             inviteResponse = domainModel.inviteResponse
         )
     }

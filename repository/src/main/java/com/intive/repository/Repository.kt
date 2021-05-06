@@ -34,7 +34,7 @@ interface Repository {
     suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
-    suspend fun updateInviteResponse(inviteResponse: EventInviteResponse)
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
 
 }
 
