@@ -1,42 +1,42 @@
 package com.intive.calendar.viewmodels
 
-import android.content.Context
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.snackbar.Snackbar
-import com.intive.calendar.R
+import com.intive.calendar.utils.InviteResponseChannel
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class EventViewModel(private val repository: Repository, private val dispatchers: DispatcherProvider) : ViewModel() {
+class EventViewModel(
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
+) : ViewModel() {
+
+    private val inviteResponseChannel = Channel<InviteResponseChannel>()
+    val inviteResponseFlow = inviteResponseChannel.receiveAsFlow()
+
+    private fun showSnackbar() = viewModelScope.launch {
+        inviteResponseChannel.send(InviteResponseChannel.Error)
+    }
 
     fun updateInviteResponse(
         userId: Long,
         eventId: Long,
         inviteResponse: String,
-        refreshCalendar: () -> Unit,
-        view: View,
-        context: Context
+        refreshCalendar: () -> Unit
     ) {
 
 
         val res = EventInviteResponse(userId, eventId, inviteResponse)
 
         val handler = CoroutineExceptionHandler { _, _ ->
-            view.let {
-                Snackbar.make(
-                    it,
-                    context.getString(R.string.event_invite_response_error_msg),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+            showSnackbar()
         }
 
 
@@ -51,13 +51,7 @@ class EventViewModel(private val repository: Repository, private val dispatchers
             if (response.isSuccessful) {
                 refreshCalendar()
             } else {
-                view.let {
-                    Snackbar.make(
-                        it,
-                        context.getString(R.string.event_invite_response_error_msg),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
+                showSnackbar()
             }
         }
 

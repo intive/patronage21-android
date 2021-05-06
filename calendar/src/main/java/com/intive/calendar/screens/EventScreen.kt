@@ -1,7 +1,5 @@
 package com.intive.calendar.screens
 
-import android.content.Context
-import android.view.View
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,16 +21,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
 import com.intive.calendar.utils.EventBundle
-//import com.intive.calendar.utils.InviteResponse
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
 
 
 @Composable
 fun EventScreenLayout(
-    view: View,
-    context: Context,
-    updateInviteResponse: (Long, Long, String, () -> Unit, View, Context) -> Unit,
+    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     navController: NavController,
     event: EventBundle,
     refreshCalendar: () -> Unit
@@ -69,10 +64,8 @@ fun EventScreenLayout(
 
         Column {
 
-            if(event.active){
+            if (event.active) {
                 InviteResponseButtons(
-                    view = view,
-                    context = context,
                     event = event,
                     updateInviteResponse = updateInviteResponse,
                     refreshCalendar = refreshCalendar
@@ -89,10 +82,8 @@ fun EventScreenLayout(
 
 @Composable
 fun InviteResponseButtons(
-    view: View,
-    context: Context,
     event: EventBundle,
-    updateInviteResponse: (Long, Long, String, () -> Unit, View, Context) -> Unit,
+    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     refreshCalendar: () -> Unit
 ) {
 
@@ -124,8 +115,6 @@ fun InviteResponseButtons(
                         event.id,
                         InviteResponse.ACCEPTED.name,
                         refreshCalendar,
-                        view,
-                        context
                     )
                 }
 
@@ -148,9 +137,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.UNKNOWN.name,
-                        refreshCalendar,
-                        view,
-                        context
+                        refreshCalendar
                     )
                 }
 
@@ -172,9 +159,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.DECLINED.name,
-                        refreshCalendar,
-                        view,
-                        context
+                        refreshCalendar
                     )
                 }
 
