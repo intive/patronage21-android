@@ -7,7 +7,9 @@ import retrofit2.Response
 import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.AuditDto
+import com.intive.repository.network.model.NewEventDto
 import com.intive.repository.network.response.UsersResponse
+
 
 class NetworkRepository(
     private val usersService: UsersService,
@@ -43,8 +45,13 @@ class NetworkRepository(
         return registrationService.sendDataFromRegistrationForm(user)
     }
 
-    suspend fun getEvents(dateStart: String, dateEnd: String): List<EventDto> {
-        return eventsService.getEvents(dateStart, dateEnd)
+    suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<EventDto> {
+        return eventsService.getEvents(dateStart, dateEnd, userId)
+    }
+
+
+    suspend fun addNewEvent(event: NewEventDto): Response<String> {
+        return eventsService.addNewEvent(event)
     }
 
     suspend fun sendCodeToServer(body: JsonObject): Response<String> {
@@ -54,4 +61,5 @@ class NetworkRepository(
     suspend fun sendRequestForCode(body: JsonObject) {
         return registrationService.sendRequestForCode(body)
     }
+
 }

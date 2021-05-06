@@ -3,6 +3,7 @@ package com.intive.repository
 
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.network.util.AuditDtoMapper
+import com.intive.repository.network.util.NewEventDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
 import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,7 +17,7 @@ import com.intive.repository.network.*
 private const val BASE_URL = "https://64z31.mocklab.io/"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get()) }
     single { NetworkRepository(get(), get(), get(), get(), get()) }
     single { createRetrofit() }
     single { createUsersService(get()) }
@@ -26,6 +27,7 @@ val repositoryModule = module {
     single { createAuditMapper() }
     single { createEventsService(get()) }
     single { createEventsMapper() }
+    single { createNewEventsMapper() }
     single { createDispatchers() }
     single { createRegistrationService(get()) }
 }
@@ -60,6 +62,9 @@ private fun createEventsService(retrofit: Retrofit): EventsService {
     return retrofit.create(EventsService::class.java)
 }
 
+
+private fun createNewEventsMapper(): NewEventDtoMapper = NewEventDtoMapper()
+
 fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
     override val main: CoroutineDispatcher
         get() = Dispatchers.Main
@@ -74,3 +79,4 @@ fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
 private fun createRegistrationService(retrofit: Retrofit): RegistrationService {
     return retrofit.create(RegistrationService::class.java)
 }
+
