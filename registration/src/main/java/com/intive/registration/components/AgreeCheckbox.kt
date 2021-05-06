@@ -1,9 +1,6 @@
 package com.intive.registration.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -36,9 +33,9 @@ fun AgreeCheckBox(
             if (!checkedState.value) {
                 Text(
                     text = stringResource(R.string.agree_required),
-                    color = Color.Red
+                    color = Color.Red,
+                    modifier = Modifier.padding(bottom = 4.dp)
                     )
-                Spacer(modifier = Modifier.height(4.dp))
             }
             Text(text = label)
         }
