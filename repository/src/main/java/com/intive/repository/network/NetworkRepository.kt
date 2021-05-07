@@ -7,8 +7,11 @@ import retrofit2.Response
 import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.AuditDto
+
+import com.intive.repository.network.model.EventInviteResponseDto
 import com.intive.repository.network.model.NewEventDto
 import com.intive.repository.network.response.UsersResponse
+
 
 
 class NetworkRepository(
@@ -63,4 +66,9 @@ class NetworkRepository(
         return registrationService.sendRequestForCode(body)
     }
 
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
+        return eventsService.updateInviteResponse(inviteResponse)
+    }
 }
+
+

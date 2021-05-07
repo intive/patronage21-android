@@ -1,6 +1,5 @@
 package com.intive.calendar.viewmodels
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -251,4 +250,3 @@ class CalendarHomeViewModel(private val repository: Repository, private val disp
         } - ${getDateString(_currentWeek.value!![6], ".")}"
     }
 }
-

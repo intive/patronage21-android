@@ -6,5 +6,8 @@ val weekDaysCalendarClass = listOf("", "Niedziela", "Poniedziałek", "Wtorek", "
 const val colorBlue = 0xff52bcff
 const val colorWhite = 0xffffffff
 const val colorBlack = 0xff000000
-
 const val userId: Long = 1
+const val eventBundleKey = "event"
+const val dayBundleKey = "day"
+
+

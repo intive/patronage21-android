@@ -23,15 +23,16 @@ fun PickerRow(label: String, value: String, pickerDialog: AlertDialog) {
         Column(modifier = Modifier.align(Alignment.CenterVertically)) {
             Row {
                 Text(
-                    label, modifier = Modifier
-                        .padding(end = 8.dp), style = TextStyle(fontWeight = FontWeight.Bold)
+                    text = label,
+                    modifier = Modifier.padding(end = 8.dp),
+                    style = TextStyle(fontWeight = FontWeight.Bold)
                 )
-                Text(value)
+                Text(text = value)
             }
         }
         IconButton(onClick = { pickerDialog.show() }) {
             Icon(
-                Icons.Default.Edit,
+                imageVector = Icons.Default.Edit,
                 contentDescription = stringResource(R.string.edit_btn_desc),
                 tint = MaterialTheme.colors.secondary,
                 modifier = Modifier.align(Alignment.CenterVertically)
