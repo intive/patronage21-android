@@ -5,4 +5,7 @@
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="technologies">Technologie:</string>
     <string name="add_group">Dodaj gruppę technologiczną</string>
+    <string name="choose_technologies_for_group_text">Wybierz technologie przypisane do grupy:</string>
+    <string name="downloading_technologies">Pobieranie technologi</string>
+    <string name="error">Wystąpił błąd</string>
 </resources>

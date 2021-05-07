@@ -1,6 +1,7 @@
 package com.intive.patronative
 
 import android.app.Application
+import com.intive.registration.registrationModule
 import com.intive.calendar.calendarModule
 import com.intive.audit.auditModule
 import com.intive.repository.repositoryModule
@@ -16,16 +17,15 @@ class PatronativeApplication : Application() {
 
         startKoin {
             androidContext(this@PatronativeApplication)
-
-        
             modules(
                 repositoryModule,
                 auditModule, 
                 calendarModule,
                 usersModule,
-                technologyGroupsModule
+                technologyGroupsModule,
+                registrationModule,
+                usersModule
             )
-
         }
     }
 }

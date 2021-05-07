@@ -32,6 +32,8 @@ class AddGroupViewModel(
         }
     }
 
+    private val chosenTechnologies = mutableListOf<String>()
+
     private fun getTechnologies() {
         viewModelScope.launch {
             _technologies.value = try {
@@ -40,6 +42,14 @@ class AddGroupViewModel(
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
             }
+        }
+    }
+
+    fun updateTechnologies(technology: String) {
+        if (chosenTechnologies.contains(technology)) {
+            chosenTechnologies.remove(technology)
+        } else {
+            chosenTechnologies.add(technology)
         }
     }
 }
