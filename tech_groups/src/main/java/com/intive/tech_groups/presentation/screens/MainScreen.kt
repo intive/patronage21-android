@@ -3,10 +3,9 @@ package com.intive.tech_groups.presentation.screens
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
@@ -28,7 +28,10 @@ import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen(
+    viewModel: MainViewModel,
+    navController: NavController
+) {
     val filteredList by viewModel.filteredList.observeAsState()
     val filters = viewModel.filters.value
     val groups = viewModel.groups.value
@@ -123,6 +126,15 @@ fun MainScreen(viewModel: MainViewModel) {
                         }
                     }
                 }
+            }
+            FloatingActionButton(
+                onClick = { navController.navigate(R.id.action_add_group) },
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
+                Icon(
+                    Icons.Filled.Add,
+                    contentDescription = stringResource(R.string.add_group)
+                )
             }
         }
     }

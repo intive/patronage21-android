@@ -9,5 +9,12 @@
         android:name="com.intive.tech_groups.presentation.fragments.MainFragment"
         android:label="TechGroupsMainFragment" >
         <deepLink app:uri="intive://techGroupsMainFragment" />
+        <action
+            android:id="@+id/action_add_group"
+            app:destination="@id/addGroupFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addGroupFragment"
+        android:name="com.intive.tech_groups.presentation.fragments.AddGroupFragment"
+        android:label="AddGroupFragment" />
 </navigation>
