@@ -130,7 +130,7 @@ fun DaysListItem(
             val header =
                 "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
 
-            val event = EventBundle(
+            val eventBundle = EventBundle(
                 id = events[0].id,
                 date = header,
                 time = "${events[0].timeStart} - ${events[0].timeEnd}",
@@ -140,7 +140,7 @@ fun DaysListItem(
                 active = isDayActive
             )
             val bundle = Bundle()
-            bundle.putParcelable("event", event)
+            bundle.putParcelable(eventBundleKey, eventBundle)
 
             WeekDayWithEvents(
                 bkgColor = bkgColor, headerColor = headerColor,
@@ -274,7 +274,7 @@ fun EventsItem(
     )
 
     val bundle = Bundle()
-    bundle.putParcelable("event", eventBundle)
+    bundle.putParcelable(eventBundleKey, eventBundle)
 
     Row(
         modifier = Modifier

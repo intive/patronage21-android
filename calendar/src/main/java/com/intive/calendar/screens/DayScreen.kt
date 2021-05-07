@@ -18,6 +18,7 @@ import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.utils.DayBundle
 import com.intive.calendar.utils.EventBundle
+import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
@@ -75,7 +76,7 @@ fun EventsListItem(event: Event, navController: NavController, isDayActive: Bool
         active = isDayActive
     )
     val bundle = Bundle()
-    bundle.putParcelable("event", eventBundle)
+    bundle.putParcelable(eventBundleKey, eventBundle)
 
     Row(
         modifier = Modifier

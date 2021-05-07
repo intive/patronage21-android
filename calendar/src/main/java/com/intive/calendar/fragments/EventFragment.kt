@@ -14,6 +14,7 @@ import com.intive.calendar.R
 import com.intive.calendar.screens.EventScreenLayout
 import com.intive.calendar.utils.EventBundle
 import com.intive.calendar.utils.InviteResponseChannel
+import com.intive.calendar.utils.eventBundleKey
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.ui.PatronativeTheme
@@ -48,7 +49,7 @@ class EventFragment : Fragment() {
         lateinit var event: EventBundle
         val bundle = this.arguments
         if (bundle != null) {
-            event = bundle.getParcelable<Parcelable>("event") as EventBundle
+            event = bundle.getParcelable<Parcelable>(eventBundleKey) as EventBundle
         }
 
         return ComposeView(requireContext()).apply {

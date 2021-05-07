@@ -101,7 +101,7 @@ fun CalendarGrid(
 
                         )
                         val bundle = Bundle()
-                        bundle.putParcelable("event", eventBundle)
+                        bundle.putParcelable(eventBundleKey, eventBundle)
 
                         onClick =
                             {
@@ -125,7 +125,7 @@ fun CalendarGrid(
                             active = isDayActive
                         )
                         val bundle = Bundle()
-                        bundle.putParcelable("day", dayBundle)
+                        bundle.putParcelable(dayBundleKey, dayBundle)
 
 
                         onClick =
