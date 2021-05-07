@@ -22,10 +22,11 @@ class NetworkRepository(
     private val registrationService: RegistrationService
 ) {
     suspend fun getUsersByRole(
+        page: Int,
         role: String,
-        page: Int
+        group: String?
     ): UsersResponse {
-        return usersService.getUsersByRole(role = role, page = page)
+        return usersService.getUsersByRole( page = page, role = role, group = group)
     }
 
 //    suspend fun getAudits(): List<AuditDto> {

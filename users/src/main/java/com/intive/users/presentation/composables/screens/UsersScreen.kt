@@ -1,14 +1,11 @@
 package com.intive.users.presentation.composables.screens
 
-import android.util.Log
-import android.widget.ProgressBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.intive.repository.domain.model.User
 import com.intive.repository.util.Resource
 import com.intive.ui.components.*
 import com.intive.users.R
@@ -27,7 +23,11 @@ import com.intive.users.presentation.composables.UserListItem
 import com.intive.users.presentation.composables.ScreenInfo
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
+import com.intive.ui.components.Spinner
+import com.intive.ui.components.UsersHeader
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel,
@@ -37,7 +37,7 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
-    val query = viewModel.query
+    val query = viewModel.query.collectAsState()
 
     val lazyListState = rememberLazyListState()
 
@@ -68,7 +68,8 @@ fun UsersScreen(
                     is Resource.Success -> {
                         Spinner(
                             items = techGroups.data!!
-                        ) {
+                        ) { group ->
+                            viewModel.onTechGroupsChanged(group)
                         }
                     }
                     is Resource.Error -> ErrorItem(
@@ -108,19 +109,7 @@ fun UsersScreen(
             }
         }
 
-        items(leaders) { user ->
-            UserListItem(user = user!!, onItemClick = {
-                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-            })
-            Divider(
-                color = Color(0xFFF1F1F1),
-                thickness = 2.dp,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp
-                )
-            )
-        }
+
 
         leaders.apply {
             when {
@@ -136,7 +125,10 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onLeadersRetryClicked()
+                            }
                         )
                     }
                 }
@@ -145,7 +137,25 @@ fun UsersScreen(
                     item {
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onLeadersRetryClicked()
+                            }
+                        )
+                    }
+                }
+                loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                    items(leaders) { user ->
+                        UserListItem(user = user!!, onItemClick = {
+                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                        })
+                        Divider(
+                            color = Color(0xFFF1F1F1),
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp
+                            )
                         )
                     }
                 }
@@ -175,22 +185,11 @@ fun UsersScreen(
 
         }
 
-        items(candidates) { user ->
-            UserListItem(user = user!!, onItemClick = {
-                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-            })
-            Divider(
-                color = Color(0xFFF1F1F1),
-                thickness = 2.dp,
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp
-                )
-            )
-        }
-
         candidates.apply {
             when {
+                loadState.source.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
+                }
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
                 }
@@ -203,7 +202,10 @@ fun UsersScreen(
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
                             modifier = Modifier.fillParentMaxWidth(),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onCandidatesRetryClicked()
+                            }
                         )
                     }
                 }
@@ -212,7 +214,25 @@ fun UsersScreen(
                     item {
                         ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
-                            onClickRetry = { retry() }
+                            onClickRetry = {
+                                retry()
+                                viewModel.onCandidatesRetryClicked()
+                            }
+                        )
+                    }
+                }
+                loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                    items(candidates) { user ->
+                        UserListItem(user = user!!, onItemClick = {
+                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                        })
+                        Divider(
+                            color = Color(0xFFF1F1F1),
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(
+                                start = 16.dp,
+                                end = 16.dp
+                            )
                         )
                     }
                 }
