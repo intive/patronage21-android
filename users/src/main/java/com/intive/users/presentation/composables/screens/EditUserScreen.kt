@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.users.R
 import com.intive.repository.domain.model.User
+import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.Spinner
 import com.intive.users.presentation.composables.ImageEdit
 
@@ -206,45 +208,24 @@ fun EditUserScreen(
                 )
             )
             Spacer(modifier = Modifier.size(10.dp))
-            Button(
+            PrimaryButton(
+                text = stringResource(R.string.save),
                 onClick = {
-                    //TODO: save changes here
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.save),
-                    color = Color.White,
-                    fontSize = 18.sp
-                )
-            }
+                }
+            )
             Spacer(modifier = Modifier.size(10.dp))
-            Button(
+            SecondaryButton(
+                text = stringResource(R.string.cancel),
                 onClick = {
                     //TODO: cancel changes here
                     navController.popBackStack()
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.cancel),
-                    color = Color.White,
-                    fontSize = 18.sp
-                )
-            }
+                }
+            )
             Spacer(modifier = Modifier.size(10.dp))
         }
     }
 }
 
-fun willTextFit(text: String): Boolean{
+fun willTextFit(text: String): Boolean {
     return text.length <= MAX_TEXT_FIELD_LENGTH
 }

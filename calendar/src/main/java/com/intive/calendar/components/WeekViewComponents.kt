@@ -60,6 +60,7 @@ fun DaysList(
     navController: NavController
 ) {
     val scrollState = rememberLazyListState()
+
     LazyColumn(state = scrollState) {
         items(7) {
             if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
@@ -96,6 +97,7 @@ fun DaysListItem(
 
     var bkgColor: Color = Color.White
     var txtColor: Color = Color.Black
+    var isDayActive = true
 
 
     if (isDateSame(day, Calendar.getInstance())) {
@@ -103,6 +105,7 @@ fun DaysListItem(
         txtColor = Color.White
     } else if (day.before(Calendar.getInstance())) {
         txtColor = Color.Gray
+        isDayActive = false
     }
 
     val headerColor: Color = txtColor
@@ -127,15 +130,17 @@ fun DaysListItem(
             val header =
                 "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
 
-            val event = EventBundle(
+            val eventBundle = EventBundle(
+                id = events[0].id,
                 date = header,
                 time = "${events[0].timeStart} - ${events[0].timeEnd}",
                 name = events[0].name,
-                users = events[0].users
+                inviteResponse = events[0].inviteResponse,
+                users = events[0].users,
+                active = isDayActive
             )
             val bundle = Bundle()
-            bundle.putParcelable("event", event)
-
+            bundle.putParcelable(eventBundleKey, eventBundle)
 
             WeekDayWithEvents(
                 bkgColor = bkgColor, headerColor = headerColor,
@@ -171,7 +176,7 @@ fun DaysListItem(
                 EventsList(
                     bkgColor = bkgColor,
                     headerColor = headerColor,
-                    events = events, date = day, navController = navController
+                    events = events, date = day, navController = navController, isDayActive
                 )
             }
         }
@@ -228,7 +233,8 @@ fun EventsList(
     headerColor: Color,
     events: List<Event>,
     date: Calendar,
-    navController: NavController
+    navController: NavController,
+    isDayActive: Boolean
 ) {
     Column {
         for (event in events) {
@@ -237,7 +243,8 @@ fun EventsList(
                 headerColor = headerColor,
                 event = event,
                 date = date,
-                navController = navController
+                navController = navController,
+                isDayActive = isDayActive
             )
         }
     }
@@ -249,20 +256,25 @@ fun EventsItem(
     headerColor: Color,
     event: Event,
     date: Calendar,
-    navController: NavController
+    navController: NavController,
+    isDayActive: Boolean
 ) {
 
     val header =
         "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
 
     val eventBundle = EventBundle(
+        id = event.id,
         date = header,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
-        users = event.users
+        inviteResponse = event.inviteResponse,
+        users = event.users,
+        active = isDayActive
     )
+
     val bundle = Bundle()
-    bundle.putParcelable("event", eventBundle)
+    bundle.putParcelable(eventBundleKey, eventBundle)
 
     Row(
         modifier = Modifier

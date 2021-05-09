@@ -53,7 +53,10 @@ fun UsersScreen(
                     top = 16.dp
                 )
             ) {
-                ScreenInfo()
+                IntroSection(
+                    title = stringResource(R.string.users),
+                    text = stringResource(R.string.lorem_placeholder)
+                )
                 Spacer(modifier = Modifier.padding(16.dp))
                 Search(
                     query = query.value,

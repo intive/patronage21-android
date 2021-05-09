@@ -3,16 +3,17 @@ package com.intive.repository
 
 import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.domain.model.Group
-import com.intive.repository.domain.model.User
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.UserDtoMapper
-import kotlinx.coroutines.flow.Flow
+
 
 interface Repository {
+
     val usersMapper: UserDtoMapper
 
     //suspend fun getAudits(): List<Audit>
@@ -33,5 +34,9 @@ interface Repository {
     suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
 
 }
+
+
+
