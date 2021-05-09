@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FABLayout(content: @Composable () -> Unit, onClick: () -> Unit, contentDescription: String) {
+fun FABLayout(onClick: () -> Unit, contentDescription: String, content: @Composable () -> Unit) {
 
     Box(contentAlignment = Alignment.BottomEnd) {
         Column(
