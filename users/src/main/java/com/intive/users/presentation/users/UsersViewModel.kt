@@ -15,11 +15,12 @@ import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const  val ALL_GROUPS = "wszystkie grupy"
+private const val ALL_GROUPS = "wszystkie grupy"
 
 class UsersViewModel(
     private val repository: Repository,
@@ -29,7 +30,7 @@ class UsersViewModel(
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
 
-    private val executeQuery: MutableStateFlow<String> = MutableStateFlow("")
+    private val executeQueue: MutableStateFlow<String> = MutableStateFlow("")
 
     private val _totalLeaders: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalLeaders: State<Resource<Int>> = _totalLeaders
@@ -45,7 +46,7 @@ class UsersViewModel(
 
     @ExperimentalCoroutinesApi
     var leaders: Flow<PagingData<User>> = combine(
-        executeQuery,
+        executeQueue,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
@@ -54,14 +55,14 @@ class UsersViewModel(
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-            UsersSource(repository, ROLE_LEADER, group = group)
+            UsersSource(repository, ROLE_LEADER, group = group, query = query)
         }.flow
             .cachedIn(viewModelScope)
     }
 
     @ExperimentalCoroutinesApi
     var candidates: Flow<PagingData<User>> = combine(
-        executeQuery,
+        executeQueue,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
@@ -69,10 +70,8 @@ class UsersViewModel(
 
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
-        println("RECEIVED QUERY = $query")
-
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-            UsersSource(repository, ROLE_CANDIDATE, group = group)
+            UsersSource(repository, ROLE_CANDIDATE, group = group, query = query)
         }.flow
             .cachedIn(viewModelScope)
     }
@@ -87,8 +86,8 @@ class UsersViewModel(
             }
         }
 
-        getTotalCandidatesCount(null)
-        getTotalLeadersCount(null)
+        getTotalCandidatesCount(group = null, query = executeQueue.value)
+        getTotalLeadersCount(group = null, query = executeQueue.value)
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
@@ -108,46 +107,119 @@ class UsersViewModel(
         }
 
         if (selectedGroup.value == ALL_GROUPS) {
-            getTotalCandidatesCount(null)
-            getTotalLeadersCount(null)
+            getTotalCandidatesCount(group = null, query = executeQueue.value)
+            getTotalLeadersCount(group = null, query = executeQueue.value)
         } else {
-            getTotalCandidatesCount(selectedGroup.value)
-            getTotalLeadersCount(selectedGroup.value)
+            getTotalCandidatesCount(group = selectedGroup.value, query = executeQueue.value)
+            getTotalLeadersCount(group = selectedGroup.value, query = executeQueue.value)
         }
 
     }
 
     fun onQueryChanged(value: String) {
         _query.value = value
-    }
-
-    fun onCandidatesRetryClicked() {
-        getTotalCandidatesCount(selectedGroup.value)
-    }
-
-    fun onLeadersRetryClicked() {
-        getTotalLeadersCount(selectedGroup.value)
-    }
-
-    fun onExecuteSearch() {
-        println("onExecuteSearch called")
-        viewModelScope.launch {
-            executeQuery.emit(query.value)
+        viewModelScope.launch(dispatchers.io) {
+//            delay(500)
+            executeQueue.emit(value)
+            getTotalCandidatesCount(group = null, query = value)
+            getTotalLeadersCount(group = null, query = value)
         }
     }
 
-    private fun getTotalCandidatesCount(group: String?) = viewModelScope.launch(dispatchers.io) {
+    fun onCandidatesRetryClicked() {
+        getTotalCandidatesCount(group = selectedGroup.value, query = executeQueue.value)
+    }
+
+    fun onLeadersRetryClicked() {
+        getTotalLeadersCount(group = selectedGroup.value, query = executeQueue.value)
+    }
+
+    private fun getTotalCandidatesCount(group: String?, query: String) = viewModelScope.launch(dispatchers.io) {
         _totalCandidates.value = try {
-            val response = repository.getTotalUsersByRole(ROLE_CANDIDATE, group)
+
+            val response: Int = when {
+                query.isBlank() -> {
+                    repository.getUsers(page = 1, role = ROLE_CANDIDATE, group = group).totalSize
+                }
+                query.split(" ").size == 1 -> {
+                    repository.getUsers(
+                        page = 1,
+                        role = ROLE_CANDIDATE,
+                        group = group,
+                        firstName = query,
+                        lastName = query,
+                        login = query
+                    ).totalSize
+                }
+                else -> {
+                    val q = query.split(" ")
+                    if (q.size >= 2) {
+                        repository.getUsers(
+                            page = 1,
+                            role = ROLE_CANDIDATE,
+                            group = group,
+                            firstName = q[0],
+                            lastName = q[1]
+                        ).totalSize
+                    } else {
+                        repository.getUsers(
+                            page = 1,
+                            role = ROLE_CANDIDATE,
+                            group = group,
+                            firstName = q[0],
+                            lastName = q[0],
+                            login = q[0]
+                        ).totalSize
+                    }
+                }
+            }
+
             Resource.Success(response)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage)
         }
     }
 
-    private fun getTotalLeadersCount(group: String?) = viewModelScope.launch(dispatchers.io) {
+    private fun getTotalLeadersCount(group: String?, query: String) = viewModelScope.launch(dispatchers.io) {
+        println("getTotalLeadersCount: Executing query $query")
         _totalLeaders.value = try {
-            val response = repository.getTotalUsersByRole(ROLE_LEADER, group)
+            val response: Int = when {
+                query.isBlank() -> {
+                    repository.getUsers(page = 1, role = ROLE_LEADER, group = group).totalSize
+                }
+                query.split(" ").size == 1 -> {
+                    repository.getUsers(
+                        page = 1,
+                        role = ROLE_LEADER,
+                        group = group,
+                        firstName = query,
+                        lastName = query,
+                        login = query
+                    ).totalSize
+                }
+                else -> {
+                    val q = query.split(" ")
+                    if (q.size >= 2) {
+                        repository.getUsers(
+                            page = 1,
+                            role = ROLE_LEADER,
+                            group = group,
+                            firstName = q[0],
+                            lastName = q[1]
+                        ).totalSize
+                    } else {
+                        repository.getUsers(
+                            page = 1,
+                            role = ROLE_LEADER,
+                            group = group,
+                            firstName = q[0],
+                            lastName = q[0],
+                            login = q[0]
+                        ).totalSize
+                    }
+                }
+            }
+            println("getTotalLeadersCount: Response is $response")
             Resource.Success(response)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage)

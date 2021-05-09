@@ -60,9 +60,7 @@ fun UsersScreen(
                     onQueryChanged = {
                         viewModel.onQueryChanged(it)
                     },
-                    onExecuteSearch = {
-                        viewModel.onExecuteSearch()
-                    }
+                    onExecuteSearch = {}
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 

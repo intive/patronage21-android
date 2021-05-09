@@ -14,7 +14,10 @@ interface UsersService {
     suspend fun getUsersByRole(
         @Query("page") page: Int,
         @Query("role") role: String,
-        @Query("group") group: String?
+        @Query("group") group: String?,
+        @Query("firstName") firstName: String?,
+        @Query("lastName") lastName: String?,
+        @Query("login") login: String?,
     ): UsersResponse
 
 }

@@ -23,17 +23,54 @@ class RepositoryImpl(
 
     override val usersMapper: UserDtoMapper = userMapper
 
-    override suspend fun getUsersByRole(
+    override suspend fun getUsers(
         page: Int,
         role: String,
         group: String?
     ): UsersResponse {
-        return networkRepository.getUsersByRole(role = role, page = page, group = group)
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = login
+        )
     }
 
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
-        val response = getUsersByRole(role = role, group = group, page = 1)
-        println(response)
+        val response = getUsers(role = role, group = group, page = 1)
         return response.totalSize
     }
 
