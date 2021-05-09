@@ -35,24 +35,13 @@ class UsersSource(
                 }
                 else -> {
                     val q = query.split(" ")
-                    if (q.size >= 2) {
-                        repository.getUsers(
-                            page = page,
-                            role = role,
-                            group = group,
-                            firstName = q[0],
-                            lastName = q[1]
-                        )
-                    } else {
-                        repository.getUsers(
-                            page = page,
-                            role = role,
-                            group = group,
-                            firstName = q[0],
-                            lastName = q[0],
-                            login = q[0]
-                        )
-                    }
+                    repository.getUsers(
+                        page = page,
+                        role = role,
+                        group = group,
+                        firstName = q[0],
+                        lastName = q[1]
+                    )
                 }
             }
 
