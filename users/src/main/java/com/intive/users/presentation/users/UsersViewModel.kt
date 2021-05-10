@@ -15,11 +15,13 @@ import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 private const val ALL_GROUPS = "wszystkie grupy"
+private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
 
 class UsersViewModel(
     private val repository: Repository,
@@ -43,13 +45,16 @@ class UsersViewModel(
 
     private val selectedGroup: MutableStateFlow<String?> = MutableStateFlow(null)
 
+    @FlowPreview
     @ExperimentalCoroutinesApi
     var leaders: Flow<PagingData<User>> = combine(
         executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
-    }.flatMapLatest { (query, selectedGroup) ->
+    }
+        .debounce(SEARCH_DEBOUNCE_TIMEOUT)
+        .flatMapLatest { (query, selectedGroup) ->
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
@@ -58,13 +63,16 @@ class UsersViewModel(
             .cachedIn(viewModelScope)
     }
 
+    @FlowPreview
     @ExperimentalCoroutinesApi
     var candidates: Flow<PagingData<User>> = combine(
         executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
-    }.flatMapLatest { (query, selectedGroup) ->
+    }
+        .debounce(SEARCH_DEBOUNCE_TIMEOUT)
+        .flatMapLatest { (query, selectedGroup) ->
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
