@@ -24,8 +24,7 @@ import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.ui.PatronageTypography
-import com.intive.ui.components.Spinner
-import com.intive.ui.components.TitleText
+import com.intive.ui.components.*
 
 @Composable
 fun MainScreen(
@@ -36,7 +35,10 @@ fun MainScreen(
     val filters = viewModel.filters.value
     val groups = viewModel.groups.value
 
-    Column() {
+    FABLayout(
+        onClick = { navController.navigate(R.id.action_add_group) },
+        contentDescription = stringResource(R.string.add_new_technology_group)
+            ) {
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
@@ -127,15 +129,6 @@ fun MainScreen(
                     }
                 }
             }
-            FloatingActionButton(
-                onClick = { navController.navigate(R.id.action_add_group) },
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                Icon(
-                    Icons.Filled.Add,
-                    contentDescription = stringResource(R.string.add_group)
-                )
-            }
         }
     }
 }
@@ -174,39 +167,6 @@ fun BoxButton(
             )
             Spacer(modifier = Modifier.height(8.dp))
             content()
-        }
-    }
-}
-
-@Composable
-fun LoadingItem() {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-    )
-}
-
-@Composable
-fun ErrorItem(
-    message: String,
-    modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit
-) {
-    Row(
-        modifier = modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = message,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
-            color = Color.Red
-        )
-        Button(onClick = onClickRetry) {
-            Text(text = stringResource(R.string.try_again))
         }
     }
 }

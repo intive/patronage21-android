@@ -8,4 +8,5 @@
     <string name="choose_technologies_for_group_text">Wybierz technologie przypisane do grupy:</string>
     <string name="downloading_technologies">Pobieranie technologi</string>
     <string name="error">Wystąpił błąd</string>
+    <string name="add_new_technology_group">Dodaj nową grupę technologiczną</string>
 </resources>
