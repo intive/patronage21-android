@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -27,7 +28,9 @@ import com.intive.ui.components.Spinner
 import com.intive.ui.components.UsersHeader
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
+
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel,
@@ -63,7 +66,9 @@ fun UsersScreen(
                     onQueryChanged = {
                         viewModel.onQueryChanged(it)
                     },
-                    onExecuteSearch = {}
+                    onExecuteSearch = {
+
+                    }
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 

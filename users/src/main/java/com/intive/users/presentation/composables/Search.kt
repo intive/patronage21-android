@@ -8,7 +8,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,12 +19,14 @@ import com.intive.users.R
 const val MAX_QUERY_SIZE = 35
 const val MAX_LINES = 1
 
+@ExperimentalComposeUiApi
 @Composable
 fun Search(
     query: String,
     onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
         modifier = Modifier
@@ -43,6 +47,7 @@ fun Search(
         keyboardActions = KeyboardActions(
             onSearch = {
                 onExecuteSearch()
+                keyboardController?.hideSoftwareKeyboard()
             }
         ),
         trailingIcon = {
