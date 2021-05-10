@@ -138,35 +138,7 @@ class UsersViewModel(
         viewModelScope.launch(dispatchers.io) {
             _totalCandidates.value = try {
 
-                val response: Int = when {
-                    query.isBlank() -> {
-                        repository.getUsers(
-                            page = 1,
-                            role = ROLE_CANDIDATE,
-                            group = group
-                        ).totalSize
-                    }
-                    query.split(" ").size == 1 -> {
-                        repository.getUsers(
-                            page = 1,
-                            role = ROLE_CANDIDATE,
-                            group = group,
-                            firstName = query,
-                            lastName = query,
-                            login = query
-                        ).totalSize
-                    }
-                    else -> {
-                        val q = query.split(" ")
-                        repository.getUsers(
-                            page = 1,
-                            role = ROLE_CANDIDATE,
-                            group = group,
-                            firstName = q[0],
-                            lastName = q[1]
-                        ).totalSize
-                    }
-                }
+                val response: Int = repository.getUsers(1, ROLE_CANDIDATE, group, query).totalSize
 
                 Resource.Success(response)
             } catch (e: Exception) {
@@ -178,31 +150,7 @@ class UsersViewModel(
         viewModelScope.launch(dispatchers.io) {
             println("getTotalLeadersCount: Executing query $query")
             _totalLeaders.value = try {
-                val response: Int = when {
-                    query.isBlank() -> {
-                        repository.getUsers(page = 1, role = ROLE_LEADER, group = group).totalSize
-                    }
-                    query.split(" ").size == 1 -> {
-                        repository.getUsers(
-                            page = 1,
-                            role = ROLE_LEADER,
-                            group = group,
-                            firstName = query,
-                            lastName = query,
-                            login = query
-                        ).totalSize
-                    }
-                    else -> {
-                        val q = query.split(" ")
-                        repository.getUsers(
-                            page = 1,
-                            role = ROLE_LEADER,
-                            group = group,
-                            firstName = q[0],
-                            lastName = q[1]
-                        ).totalSize
-                    }
-                }
+                val response: Int = repository.getUsers(1, ROLE_LEADER, group, query).totalSize
                 println("getTotalLeadersCount: Response is $response")
                 Resource.Success(response)
             } catch (e: Exception) {

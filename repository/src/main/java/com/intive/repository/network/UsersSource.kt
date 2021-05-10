@@ -19,31 +19,7 @@ class UsersSource(
         return try {
             val page = params.key ?: USERS_STARTING_PAGE_INDEX
 
-            val usersResponse = when {
-                query.isBlank() -> {
-                    repository.getUsers(page = page, role = role, group = group)
-                }
-                query.split(" ").size == 1 -> {
-                    repository.getUsers(
-                        page = page,
-                        role = role,
-                        group = group,
-                        firstName = query,
-                        lastName = query,
-                        login = query
-                    )
-                }
-                else -> {
-                    val q = query.split(" ")
-                    repository.getUsers(
-                        page = page,
-                        role = role,
-                        group = group,
-                        firstName = q[0],
-                        lastName = q[1]
-                    )
-                }
-            }
+            val usersResponse = repository.getUsers(page, role, group, query)
 
             val users = usersResponse.users
 
