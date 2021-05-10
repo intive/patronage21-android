@@ -54,6 +54,7 @@ class UsersViewModel(
         Pair(query, selectedGroup)
     }
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
+        .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
@@ -72,6 +73,7 @@ class UsersViewModel(
         Pair(query, selectedGroup)
     }
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
+        .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
