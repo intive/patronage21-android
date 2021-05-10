@@ -148,18 +148,24 @@ fun UsersScreen(
                     }
                 }
                 loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
-                    items(leaders) { user ->
-                        UserListItem(user = user!!, onItemClick = {
-                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                        })
-                        Divider(
-                            color = Color(0xFFF1F1F1),
-                            thickness = 2.dp,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp
+                    if(leaders.itemCount == 0) {
+                        item{
+                            EmptyItem()
+                        }
+                    } else {
+                        items(leaders) { user ->
+                            UserListItem(user = user!!, onItemClick = {
+                                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                            })
+                            Divider(
+                                color = Color(0xFFF1F1F1),
+                                thickness = 2.dp,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -225,18 +231,24 @@ fun UsersScreen(
                     }
                 }
                 loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
-                    items(candidates) { user ->
-                        UserListItem(user = user!!, onItemClick = {
-                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                        })
-                        Divider(
-                            color = Color(0xFFF1F1F1),
-                            thickness = 2.dp,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp
+                    if(candidates.itemCount == 0) {
+                        item{
+                            EmptyItem()
+                        }
+                    } else {
+                        items(candidates) { user ->
+                            UserListItem(user = user!!, onItemClick = {
+                                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                            })
+                            Divider(
+                                color = Color(0xFFF1F1F1),
+                                thickness = 2.dp,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }

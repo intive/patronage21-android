@@ -15,7 +15,6 @@ import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -30,7 +29,7 @@ class UsersViewModel(
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
 
-    private val executeQueue: MutableStateFlow<String> = MutableStateFlow("")
+    private val executeQuery: MutableStateFlow<String> = MutableStateFlow("")
 
     private val _totalLeaders: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalLeaders: State<Resource<Int>> = _totalLeaders
@@ -46,12 +45,11 @@ class UsersViewModel(
 
     @ExperimentalCoroutinesApi
     var leaders: Flow<PagingData<User>> = combine(
-        executeQueue,
+        executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
     }.flatMapLatest { (query, selectedGroup) ->
-
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
@@ -62,12 +60,11 @@ class UsersViewModel(
 
     @ExperimentalCoroutinesApi
     var candidates: Flow<PagingData<User>> = combine(
-        executeQueue,
+        executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
         Pair(query, selectedGroup)
     }.flatMapLatest { (query, selectedGroup) ->
-
         val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
 
         Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
@@ -86,8 +83,8 @@ class UsersViewModel(
             }
         }
 
-        getTotalCandidatesCount(group = null, query = executeQueue.value)
-        getTotalLeadersCount(group = null, query = executeQueue.value)
+        getTotalCandidatesCount(group = null, query = executeQuery.value)
+        getTotalLeadersCount(group = null, query = executeQuery.value)
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
@@ -101,17 +98,16 @@ class UsersViewModel(
     }
 
     fun onTechGroupsChanged(group: String) {
-
         viewModelScope.launch {
             selectedGroup.emit(group.toLowerCase(Locale.ROOT))
         }
 
         if (selectedGroup.value == ALL_GROUPS) {
-            getTotalCandidatesCount(group = null, query = executeQueue.value)
-            getTotalLeadersCount(group = null, query = executeQueue.value)
+            getTotalCandidatesCount(group = null, query = executeQuery.value)
+            getTotalLeadersCount(group = null, query = executeQuery.value)
         } else {
-            getTotalCandidatesCount(group = selectedGroup.value, query = executeQueue.value)
-            getTotalLeadersCount(group = selectedGroup.value, query = executeQueue.value)
+            getTotalCandidatesCount(group = selectedGroup.value, query = executeQuery.value)
+            getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
         }
 
     }
@@ -120,26 +116,24 @@ class UsersViewModel(
         val valueTrimmed = value.trim()
         _query.value = value
         viewModelScope.launch(dispatchers.io) {
-            executeQueue.emit(valueTrimmed)
+            executeQuery.emit(valueTrimmed)
             getTotalCandidatesCount(group = null, query = valueTrimmed)
             getTotalLeadersCount(group = null, query = valueTrimmed)
         }
     }
 
     fun onCandidatesRetryClicked() {
-        getTotalCandidatesCount(group = selectedGroup.value, query = executeQueue.value)
+        getTotalCandidatesCount(group = selectedGroup.value, query = executeQuery.value)
     }
 
     fun onLeadersRetryClicked() {
-        getTotalLeadersCount(group = selectedGroup.value, query = executeQueue.value)
+        getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
     }
 
     private fun getTotalCandidatesCount(group: String?, query: String) =
         viewModelScope.launch(dispatchers.io) {
             _totalCandidates.value = try {
-
                 val response: Int = repository.getUsers(1, ROLE_CANDIDATE, group, query).totalSize
-
                 Resource.Success(response)
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
@@ -148,10 +142,8 @@ class UsersViewModel(
 
     private fun getTotalLeadersCount(group: String?, query: String) =
         viewModelScope.launch(dispatchers.io) {
-            println("getTotalLeadersCount: Executing query $query")
             _totalLeaders.value = try {
                 val response: Int = repository.getUsers(1, ROLE_LEADER, group, query).totalSize
-                println("getTotalLeadersCount: Response is $response")
                 Resource.Success(response)
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
