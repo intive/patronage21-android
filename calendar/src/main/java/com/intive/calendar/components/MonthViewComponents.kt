@@ -41,10 +41,14 @@ fun MonthView(
 
     if (showWeekView == false) {
         CalendarHeader(
-            headerMonth!!,
-            { goToPreviousMonth() },
-            { goToNextMonth() })
-        CalendarGrid(navController, currentMonth!!, monthEvents)
+            period = headerMonth!!,
+            onClickPrev = { goToPreviousMonth() },
+            onClickNext = { goToNextMonth() })
+        CalendarGrid(
+            navController = navController,
+            currentMonth = currentMonth!!,
+            monthEvents = monthEvents
+        )
     }
 }
 
@@ -79,7 +83,10 @@ fun CalendarGrid(
 
                     if (monthEvents[index].events!!.size == 1) {
 
+                        val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
+
                         val eventBundle = EventBundle(
+                            id = monthEvents[index].events!![0].id,
                             date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
                                 getDateString(
                                     (items[it] as Calendar),
@@ -88,10 +95,13 @@ fun CalendarGrid(
                             }",
                             time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
                             name = monthEvents[index].events!![0].name,
-                            users = monthEvents[index].events!![0].users
+                            inviteResponse = monthEvents[index].events!![0].inviteResponse,
+                            users = monthEvents[index].events!![0].users,
+                            active = isDayActive
+
                         )
                         val bundle = Bundle()
-                        bundle.putParcelable("event", eventBundle)
+                        bundle.putParcelable(eventBundleKey, eventBundle)
 
                         onClick =
                             {
@@ -102,6 +112,8 @@ fun CalendarGrid(
                             }
                     } else if (monthEvents[index].events!!.size > 1) {
 
+                        val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
+
                         val dayBundle = DayBundle(
                             date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
                                 getDateString(
@@ -109,10 +121,11 @@ fun CalendarGrid(
                                     "."
                                 )
                             }",
-                            events = monthEvents[index].events!!
+                            events = monthEvents[index].events!!,
+                            active = isDayActive
                         )
                         val bundle = Bundle()
-                        bundle.putParcelable("day", dayBundle)
+                        bundle.putParcelable(dayBundleKey, dayBundle)
 
 
                         onClick =
@@ -123,14 +136,12 @@ fun CalendarGrid(
                                 )
                             }
                     }
-
                 }
 
                 if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
                     bgColor = MaterialTheme.colors.secondary
                     txtColor = Color.White
                 }
-
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

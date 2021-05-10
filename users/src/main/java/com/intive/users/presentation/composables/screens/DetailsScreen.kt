@@ -22,6 +22,8 @@ import com.intive.ui.components.UsersHeader
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.repository.domain.model.User
+import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.SecondaryButton
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
@@ -52,7 +54,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .padding(start = 8.dp),
                 fontSize = 22.sp,
-                color = MaterialTheme.colors.secondaryVariant,
+                color = MaterialTheme.colors.secondary,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -82,9 +84,11 @@ fun DetailsScreen(
         UsersHeader(text = stringResource(R.string.contact))
 
         Text(user.email, modifier = Modifier.padding(16.dp))
+
         ContactActionButton(stringResource(R.string.send_message)) {
 
         }
+
         Divider(
             color = Color(0xFFF1F1F1),
             thickness = 2.dp,
@@ -114,50 +118,20 @@ fun DetailsScreen(
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 30.dp)
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 30.dp, bottom = 16.dp)
     ) {
-        Button(
+        PrimaryButton(stringResource(R.string.edit_profile),
             onClick = {
                 navController.navigate(R.id.action_detailsFragment_to_editUserFragment)
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            shape = RoundedCornerShape(24.dp),
-            modifier = Modifier
-                .padding(
-                    start = 32.dp,
-                    end = 32.dp,
-                    bottom = 16.dp
-                )
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(
-                stringResource(R.string.edit_profile),
-                color = Color.White,
-                fontSize = 18.sp
-            )
-        }
-        Button(
+            }
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        SecondaryButton(
+            stringResource(R.string.deactivate_profile),
             onClick = {
                 navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
-            shape = RoundedCornerShape(24.dp),
-            modifier = Modifier
-                .padding(
-                    start = 32.dp,
-                    end = 32.dp,
-                    bottom = 16.dp
-                )
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(
-                stringResource(R.string.deactivate_profile),
-                color = Color.White,
-                fontSize = 18.sp
-            )
-        }
+            }
+        )
     }
 }
 
@@ -169,7 +143,6 @@ fun ContactActionButton(
     Button(
         onClick = { onClick() },
         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .padding(start = 16.dp, bottom = 16.dp)
             .width(200.dp)

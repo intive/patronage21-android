@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
+import com.intive.calendar.utils.DayBundle
 import com.intive.calendar.utils.EventBundle
+import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
 import com.intive.ui.components.TitleText
 
@@ -24,8 +26,7 @@ import com.intive.ui.components.TitleText
 @Composable
 fun DayLayout(
     navController: NavController,
-    date: String,
-    eventsList: List<Event>,
+    day: DayBundle,
     refreshCalendar: () -> Unit,
 ) {
     Column(
@@ -34,8 +35,8 @@ fun DayLayout(
             .padding(24.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            TitleText(date, Modifier.padding(bottom = 24.dp))
-            EventsList(eventsList, date, navController)
+            TitleText(day.date, Modifier.padding(bottom = 24.dp))
+            EventsList(day.events, navController, day.active)
         }
 
         Column {
@@ -50,29 +51,32 @@ fun DayLayout(
 @Composable
 fun EventsList(
     eventsList: List<Event>,
-    date: String,
-    navController: NavController
+    navController: NavController,
+    isDayActive: Boolean
 ) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState) {
         items(eventsList.size) {
-            EventsListItem(eventsList[it], date, navController)
+            EventsListItem(eventsList[it], navController, isDayActive)
         }
     }
 }
 
 @Composable
-fun EventsListItem(event: Event, date: String, navController: NavController) {
+fun EventsListItem(event: Event, navController: NavController, isDayActive: Boolean) {
 
     val eventBundle = EventBundle(
-        date = date,
+        id = event.id,
+        date = event.date,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
-        users = event.users
+        inviteResponse = event.inviteResponse,
+        users = event.users,
+        active = isDayActive
     )
     val bundle = Bundle()
-    bundle.putParcelable("event", eventBundle)
+    bundle.putParcelable(eventBundleKey, eventBundle)
 
     Row(
         modifier = Modifier

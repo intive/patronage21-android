@@ -30,6 +30,13 @@
     <string name="events_number">Liczba wydarzeń</string>
     <string name="hour">Godzina</string>
     <string name="event_user">Uczestnik"</string>
+
+
+    <string name="accept_invite_btn_label">Tak</string>
+    <string name="unknown_invite_btn_label">Może</string>
+    <string name="decline_invite_btn_label">Nie</string>
+
+    <string name="event_invite_response_error_msg">Nie udało się wysłać odpowiedzi</string>
     <string name="user_image_desc">Obraz użytkownika</string>
     <string name="exit_dialog_btn_desc">Opuść ekran</string>
     <string name="edit_btn_desc">Przycisk edycji</string>
@@ -39,6 +46,7 @@
     <string name="spinner_component_btn_desc">Wybór trybu kalendarza</string>
     <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
     <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
+>>>>>>> origin/develop
 
 
 </resources>

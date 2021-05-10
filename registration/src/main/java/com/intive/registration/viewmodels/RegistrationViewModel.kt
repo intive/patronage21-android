@@ -103,7 +103,7 @@ class RegistrationViewModel(
     fun isEmailValid(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
     fun isPhoneNumberValid(): Boolean = phoneNumber.value?.matches(Regex("\\d{9,9}")) ?: false
     fun isPasswordValid(): Boolean = password.value?.length ?: 0 >= 8
-    fun isConfirmPasswordValid(): Boolean = password.value == confirmPassword.value
+    fun isConfirmPasswordValid(): Boolean = isPasswordValid() && password.value == confirmPassword.value
     fun isTechnologiesListValid(): Boolean =
         !_technologiesList.isNullOrEmpty() && _technologiesList.size < 4
 
