@@ -42,7 +42,6 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
-    val techGroups2 = viewModel.techGroups2.value
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -75,12 +74,10 @@ fun UsersScreen(
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                when (techGroups2) {
+                when (techGroups) {
                     is Resource.Success -> {
                         GroupSpinner(
-                            items =
-                            listOf(GroupEntity(stringResource(id = R.string.all_groups), null))
-                                    + techGroups2.data!!
+                            items = techGroups.data!!
                         ) { group ->
                             viewModel.onTechGroupsChanged(group.queryValue)
                         }

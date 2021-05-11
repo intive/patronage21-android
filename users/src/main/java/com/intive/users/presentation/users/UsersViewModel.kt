@@ -1,9 +1,10 @@
 package com.intive.users.presentation.users
 
+import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.intive.repository.Repository
@@ -15,19 +16,20 @@ import com.intive.repository.network.USERS_PAGE_SIZE
 import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
+import com.intive.users.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-//private const val ALL_GROUPS = "wszystkie grupy"
 private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
 
 class UsersViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
-) : ViewModel() {
+    private val dispatchers: DispatcherProvider,
+    private val app: Application
+) : AndroidViewModel(app) {
 
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
@@ -40,13 +42,9 @@ class UsersViewModel(
     private val _totalCandidates: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalCandidates: State<Resource<Int>> = _totalCandidates
 
-    private val _techGroups: MutableState<Resource<List<String>>> =
+    private val _techGroups: MutableState<Resource<List<GroupEntity>>> =
         mutableStateOf(Resource.Loading())
-    val techGroups: State<Resource<List<String>>> = _techGroups
-
-    private val _techGroups2: MutableState<Resource<List<GroupEntity>>> =
-        mutableStateOf(Resource.Loading())
-    val techGroups2: State<Resource<List<GroupEntity>>> = _techGroups2
+    val techGroups: State<Resource<List<GroupEntity>>> = _techGroups
 
     private val selectedGroup: MutableStateFlow<String?> = MutableStateFlow(null)
 
@@ -89,33 +87,11 @@ class UsersViewModel(
         }
 
     init {
-        viewModelScope.launch(dispatchers.io) {
-            _techGroups.value = try {
-                val response = repository.getTechnologies()
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-
-            _techGroups2.value = try {
-                val response = repository.getTechnologies().map { group ->
-                    GroupEntity(group, group.toLowerCase(Locale.ROOT))
-                }
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-        }
+        getTechGroups()
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
-        _techGroups.value = Resource.Loading()
-        _techGroups.value = try {
-            val response = repository.getTechnologies()
-            Resource.Success(response)
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage)
-        }
+        getTechGroups()
     }
 
     fun onTechGroupsChanged(group: String?) {
@@ -138,6 +114,25 @@ class UsersViewModel(
 
     fun onLeadersRetryClicked() {
         getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
+    }
+
+    private fun getTechGroups() {
+        _techGroups.value = Resource.Loading()
+
+        viewModelScope.launch(dispatchers.io) {
+            _techGroups.value = try {
+                val response = repository.getTechnologies().map { group ->
+                    GroupEntity(group, group.toLowerCase(Locale.ROOT))
+                }
+                val result =
+                    listOf(
+                        GroupEntity(app.applicationContext.getString(R.string.all_groups), null)
+                    ) + response
+                Resource.Success(result)
+            } catch (e: Exception) {
+                Resource.Error(e.localizedMessage)
+            }
+        }
     }
 
     private fun getTotalCandidatesCount(group: String?, query: String) =
