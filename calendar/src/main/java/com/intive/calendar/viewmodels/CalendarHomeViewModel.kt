@@ -212,6 +212,11 @@ class CalendarHomeViewModel(
         _currentMonth.value = getCurrentMonth()
     }
 
+    fun refreshEventsList(){
+        getMonthEvents(getDateString(_currentMonth.value!!.days.first()), getDateString(_currentMonth.value!!.days.last()))
+        getWeekEvents(getDateString(_currentWeek.value!![0]), getDateString(_currentWeek.value!![6]))
+    }
+
     private fun setWeekHeader(): String {
         return "${
             getDateString(
