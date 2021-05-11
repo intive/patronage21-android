@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.util.Resource
 import com.intive.ui.components.*
 import com.intive.users.R
@@ -26,6 +27,7 @@ import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.UsersHeader
+import com.intive.users.presentation.composables.GroupSpinner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalComposeUiApi
@@ -40,6 +42,7 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
+    val techGroups2 = viewModel.techGroups2.value
     val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
@@ -72,12 +75,14 @@ fun UsersScreen(
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 
-                when (techGroups) {
+                when (techGroups2) {
                     is Resource.Success -> {
-                        Spinner(
-                            items = techGroups.data!!
+                        GroupSpinner(
+                            items =
+                            listOf(GroupEntity(stringResource(id = R.string.all_groups), null))
+                                    + techGroups2.data!!
                         ) { group ->
-                            viewModel.onTechGroupsChanged(group)
+                            viewModel.onTechGroupsChanged(group.queryValue)
                         }
                     }
                     is Resource.Error -> ErrorItem(

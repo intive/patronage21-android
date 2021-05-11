@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.ROLE_LEADER
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val ALL_GROUPS = "wszystkie grupy"
+//private const val ALL_GROUPS = "wszystkie grupy"
 private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
 
 class UsersViewModel(
@@ -43,6 +44,10 @@ class UsersViewModel(
         mutableStateOf(Resource.Loading())
     val techGroups: State<Resource<List<String>>> = _techGroups
 
+    private val _techGroups2: MutableState<Resource<List<GroupEntity>>> =
+        mutableStateOf(Resource.Loading())
+    val techGroups2: State<Resource<List<GroupEntity>>> = _techGroups2
+
     private val selectedGroup: MutableStateFlow<String?> = MutableStateFlow(null)
 
     @FlowPreview
@@ -56,11 +61,10 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
-            getTotalLeadersCount(group = group, query = query)
+            getTotalLeadersCount(group = selectedGroup, query = query)
 
             Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_LEADER, group = group, query = query)
+                UsersSource(repository, ROLE_LEADER, group = selectedGroup, query = query)
             }.flow
                 .cachedIn(viewModelScope)
         }
@@ -76,11 +80,10 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
-            getTotalCandidatesCount(group = group, query = query)
+            getTotalCandidatesCount(group = selectedGroup, query = query)
 
             Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_CANDIDATE, group = group, query = query)
+                UsersSource(repository, ROLE_CANDIDATE, group = selectedGroup, query = query)
             }.flow
                 .cachedIn(viewModelScope)
         }
@@ -89,6 +92,15 @@ class UsersViewModel(
         viewModelScope.launch(dispatchers.io) {
             _techGroups.value = try {
                 val response = repository.getTechnologies()
+                Resource.Success(response)
+            } catch (e: Exception) {
+                Resource.Error(e.localizedMessage)
+            }
+
+            _techGroups2.value = try {
+                val response = repository.getTechnologies().map { group ->
+                    GroupEntity(group, group.toLowerCase(Locale.ROOT))
+                }
                 Resource.Success(response)
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
@@ -106,9 +118,9 @@ class UsersViewModel(
         }
     }
 
-    fun onTechGroupsChanged(group: String) {
+    fun onTechGroupsChanged(group: String?) {
         viewModelScope.launch {
-            selectedGroup.emit(group.toLowerCase(Locale.ROOT))
+            selectedGroup.emit(group?.toLowerCase(Locale.ROOT))
         }
     }
 
