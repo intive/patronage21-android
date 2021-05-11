@@ -127,8 +127,10 @@ class UsersViewModel(
         _query.value = value
         viewModelScope.launch(dispatchers.io) {
             executeQuery.emit(valueTrimmed)
-            getTotalCandidatesCount(group = null, query = valueTrimmed)
-            getTotalLeadersCount(group = null, query = valueTrimmed)
+
+            val group = if (selectedGroup.value == ALL_GROUPS) null else selectedGroup.value
+            getTotalCandidatesCount(group = group, query = valueTrimmed)
+            getTotalLeadersCount(group = group, query = valueTrimmed)
         }
     }
 
