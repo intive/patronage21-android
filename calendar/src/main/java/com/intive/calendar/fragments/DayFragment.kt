@@ -40,7 +40,7 @@ class DayFragment : Fragment() {
                     DayLayout(
                         navController = findNavController(),
                         day = day
-                    ) { calendarHomeViewModel.refreshCalendar() }
+                    )
                 }
             }
         }

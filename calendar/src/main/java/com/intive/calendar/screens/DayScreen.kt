@@ -26,25 +26,15 @@ import com.intive.ui.components.TitleText
 @Composable
 fun DayLayout(
     navController: NavController,
-    day: DayBundle,
-    refreshCalendar: () -> Unit,
+    day: DayBundle
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(24.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            TitleText(day.date, Modifier.padding(bottom = 24.dp))
-            EventsList(day.events, navController, day.active)
-        }
-
-        Column {
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
-            }
-        }
+        TitleText(day.date, Modifier.padding(bottom = 24.dp))
+        EventsList(day.events, navController, day.active)
     }
 }
 

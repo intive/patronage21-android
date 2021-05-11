@@ -28,7 +28,6 @@ import com.intive.calendar.utils.*
 @Composable
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    navController: NavController,
     event: EventBundle,
     refreshCalendar: () -> Unit
 ) {
@@ -70,11 +69,6 @@ fun EventScreenLayout(
                     updateInviteResponse = updateInviteResponse,
                     refreshCalendar = refreshCalendar
                 )
-            }
-
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
             }
         }
     }
