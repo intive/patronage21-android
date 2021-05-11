@@ -56,13 +56,14 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-        val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
+            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
+            getTotalLeadersCount(group = group, query = query)
 
-        Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-            UsersSource(repository, ROLE_LEADER, group = group, query = query)
-        }.flow
-            .cachedIn(viewModelScope)
-    }
+            Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_LEADER, group = group, query = query)
+            }.flow
+                .cachedIn(viewModelScope)
+        }
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -75,13 +76,14 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-        val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
+            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
+            getTotalCandidatesCount(group = group, query = query)
 
-        Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-            UsersSource(repository, ROLE_CANDIDATE, group = group, query = query)
-        }.flow
-            .cachedIn(viewModelScope)
-    }
+            Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
+                UsersSource(repository, ROLE_CANDIDATE, group = group, query = query)
+            }.flow
+                .cachedIn(viewModelScope)
+        }
 
     init {
         viewModelScope.launch(dispatchers.io) {
@@ -92,9 +94,6 @@ class UsersViewModel(
                 Resource.Error(e.localizedMessage)
             }
         }
-
-        getTotalCandidatesCount(group = null, query = executeQuery.value)
-        getTotalLeadersCount(group = null, query = executeQuery.value)
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
@@ -111,15 +110,6 @@ class UsersViewModel(
         viewModelScope.launch {
             selectedGroup.emit(group.toLowerCase(Locale.ROOT))
         }
-
-        if (selectedGroup.value == ALL_GROUPS) {
-            getTotalCandidatesCount(group = null, query = executeQuery.value)
-            getTotalLeadersCount(group = null, query = executeQuery.value)
-        } else {
-            getTotalCandidatesCount(group = selectedGroup.value, query = executeQuery.value)
-            getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
-        }
-
     }
 
     fun onQueryChanged(value: String) {
@@ -127,10 +117,6 @@ class UsersViewModel(
         _query.value = value
         viewModelScope.launch(dispatchers.io) {
             executeQuery.emit(valueTrimmed)
-
-            val group = if (selectedGroup.value == ALL_GROUPS) null else selectedGroup.value
-            getTotalCandidatesCount(group = group, query = valueTrimmed)
-            getTotalLeadersCount(group = group, query = valueTrimmed)
         }
     }
 
