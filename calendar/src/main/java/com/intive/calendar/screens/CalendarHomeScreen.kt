@@ -14,16 +14,17 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 
 
@@ -41,9 +42,8 @@ fun CalendarHomeLayout(
     val monthHeader by calendarViewModel.monthHeader.observeAsState()
     val currentMonth by calendarViewModel.currentMonth.observeAsState()
     val monthEvents by calendarViewModel.monthEvents.observeAsState()
+    val calendarViewsList = stringArrayResource(R.array.calendar_views_list).asList()
 
-    val calendarViewStr: String =
-        if (showWeekView == true) stringResource(R.string.week) else stringResource(R.string.month)
 
     Box(contentAlignment = Alignment.BottomEnd) {
         Column(
@@ -57,7 +57,8 @@ fun CalendarHomeLayout(
                 Modifier.padding(bottom = 24.dp)
             )
 
-            ViewOptionsComponent({ calendarViewModel.showDialog() }, calendarViewStr)
+            Spinner(items = calendarViewsList, onTitleSelected = calendarViewModel::onCalendarViewChange)
+            Spacer(modifier = Modifier.height(16.dp))
 
             WeekView(
                 currentWeek = currentWeek,
@@ -97,124 +98,6 @@ fun CalendarHomeLayout(
     }
 }
 
-
-@Composable
-fun ChoosePeriodDialog(calendarViewModel: CalendarHomeViewModel) {
-    val showPeriodDialog by calendarViewModel.showPeriodDialog.observeAsState()
-    val weekClicked by calendarViewModel.weekClicked.observeAsState()
-    val bColorWeekBtn by calendarViewModel.bColorWeekBtn.observeAsState()
-    val bColorMonthBtn by calendarViewModel.bColorMonthBtn.observeAsState()
-    val txtColorWeekBtn by calendarViewModel.txtColorWeekBtn.observeAsState()
-    val txtColorMonthBtn by calendarViewModel.txtColorMonthBtn.observeAsState()
-
-    if (showPeriodDialog == true) {
-        Dialog(onDismissRequest = { calendarViewModel.hideDialog() }) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.White
-            ) {
-                ClearButton { calendarViewModel.hideDialog() }
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(24.dp)
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-
-                        TitleText(
-                            text = stringResource(R.string.choose_period),
-                            modifier = Modifier.padding(bottom = 24.dp),
-                            style = MaterialTheme.typography.h6,
-                            color = Color.Black
-                        )
-
-                        CalendarViewOption(
-                            text = stringResource(R.string.week),
-                            bgColor = Color(bColorWeekBtn!!),
-                            txtColor = Color(txtColorWeekBtn!!)
-                        ) {
-                            calendarViewModel.weekClicked()
-                        }
-
-                        CalendarViewOption(
-                            text = stringResource(R.string.month),
-                            bgColor = Color(bColorMonthBtn!!),
-                            txtColor = Color(txtColorMonthBtn!!)
-                        ) {
-                            calendarViewModel.monthClicked()
-                        }
-                    }
-
-                    Column {
-                        OKButton(text = stringResource(R.string.accept)) {
-                            if (weekClicked == true) {
-                                calendarViewModel.showWeekView()
-                                calendarViewModel.refreshCalendar()
-                            } else {
-                                calendarViewModel.showMonthView()
-                                calendarViewModel.refreshCalendar()
-                            }
-                            calendarViewModel.hideDialog()
-                        }
-
-                        CancelButton(text = stringResource(R.string.go_back)) {
-                            calendarViewModel.hideDialog()
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun CalendarViewOption(text: String, bgColor: Color, txtColor: Color, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bgColor)
-            .clickable(onClick = onClick)
-    ) {
-        Text(
-            text = text,
-            modifier = Modifier.padding(8.dp),
-            style = TextStyle(
-                color = txtColor,
-                fontSize = 18.sp,
-            )
-        )
-    }
-}
-
-
-@Composable
-fun ViewOptionsComponent(showDialog: () -> Unit, calendarViewString: String) {
-
-    Card(
-        border = BorderStroke(0.5.dp,Color.Black), modifier = Modifier.padding(top = 12.dp, bottom = 12.dp)){
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-
-            Text(
-                text = calendarViewString,
-                style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.align(Alignment.CenterVertically).padding(start = 12.dp)
-            )
-
-            IconButton(onClick = showDialog) {
-                Icon(
-                    Icons.Default.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.spinner_component_btn_desc),
-                    tint = Color.Black
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> Unit) {
