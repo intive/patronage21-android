@@ -1,0 +1,52 @@
+<resources>
+    <string name="calendar">Kalendarz</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="add_event">Dodaj nowe wydarzenie</string>
+    <string name="accept">Zatwierdź</string>
+    <string name="go_back">Powrót</string>
+    <string name="add_event_hint">Nazwa wydarzenia</string>
+    <string name="choose_period">Wybierz zakres czasu</string>
+    <string name="week">Tydzień</string>
+    <string name="month">Miesiąc</string>
+    <string name="accept_event">Potwierdź udział</string>
+    <string name="reject_event">Odrzuć</string>
+
+    <string name="accept_new_event">Zatwierdź</string>
+    <string name="reject_new_event">Powrót</string>
+
+    <string name="date_label">Data</string>
+    <string name="start_hour_label">Od</string>
+    <string name="end_hour_label">Do</string>
+    <string name="add_event_checkbox_header">Grupy technologiczne</string>
+
+    <string name="event_users_label">Uczestnicy</string>
+    <string name="no_events">Brak wydarzeń</string>
+
+    <string name="add_event_date_validation_message">Nieprawidłowa data lub godzina</string>
+    <string name="add_event_time_validation_message">Nieprawidłowe godziny</string>
+    <string name="add_event_checkbox_validation_message">Należy wybrać co najmniej 1 i maksymalnie 3 grupy technologiczne</string>
+    <string name="add_event_input_validation_message">Należy podać nazwę wydarzenia</string>
+
+    <string name="events_number">Liczba wydarzeń</string>
+    <string name="hour">Godzina</string>
+    <string name="event_user">Uczestnik"</string>
+
+
+    <string name="accept_invite_btn_label">Tak</string>
+    <string name="unknown_invite_btn_label">Może</string>
+    <string name="decline_invite_btn_label">Nie</string>
+
+    <string name="event_invite_response_error_msg">Nie udało się wysłać odpowiedzi</string>
+    <string name="user_image_desc">Obraz użytkownika</string>
+    <string name="exit_dialog_btn_desc">Opuść ekran</string>
+    <string name="edit_btn_desc">Przycisk edycji</string>
+    <string name="add_event_btn_desc">Przycisk dodania nowego zdarzenia</string>
+    <string name="calendar_header_right_btn_desc">Kolejny zakres czasu</string>
+    <string name="calendar_header_left_btn_desc">Poprzedni zakres czasu</string>
+    <string name="spinner_component_btn_desc">Wybór trybu kalendarza</string>
+    <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
+    <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
+>>>>>>> origin/develop
+
+
+</resources>

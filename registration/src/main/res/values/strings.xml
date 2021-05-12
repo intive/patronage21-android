@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="field_required">Pole wymagane</string>
+    <string name="login_label_text">Login</string>
+    <string name="login_button">Zaloguj</string>
+    <string name="registration_button">Rejestracja</string>
+    <string name="password_label_text">Hasło</string>
+    <string name="login_title">Logowanie</string>
+    <string name="registration_title">Zgłoś się do programu Patron-a-tive już dziś!</string>
+    <string name="registration_subtitle">Wystarczy, że wypełnisz poniższy formularz zgłoszeniowy.</string>
+    <string name="create_account_button">Załóż konto</string>
+    <string name="phone_number_hint">Numer telefonu *</string>
+    <string name="github_url_hint">Github URL</string>
+    <string name="confirm_password_hint">Potwierdź hasło *</string>
+    <string name="password_hint">Hasło *</string>
+    <string name="login_hint">Login *</string>
+    <string name="email_hint">Email *</string>
+    <string name="last_name_hint">Nazwisko *</string>
+    <string name="first_name_hint">Imię *</string>
+    <string name="technologies_text">Jestem zainteresowany/-na udziałem w grupie (wybierz maksymalnie 3 technologie) *</string>
+    <string name="select_technologies_error">Musisz wybrać minimum jedną, a maksymalnie trzy technologie</string>
+    <string name="regulations_agree_text">Zapoznałem/-am się z Zasadami udziału w programie intive Patronage i akceptuję je w całości. Dostępne pod linkiem https://intive.com</string>
+    <string name="rodo_agree_text">Administratorem Twoich danych osobowych zawartych w formularzu jest intive GmbH Spółka z ograniczoną odpowiedzialnością Oddział w Polsce z siedzibą w Warszawie. Wypełnienie powyższego formularza traktujemy jako zgodę na przetwarzanie Twoich danych osobowych dla potrzeb niezbędnych do przeprowadzenia postępowania kwalifikacyjnego do udziału w programie intive Patronage. Pamiętaj, że zgodę możesz wycofać w dowolnym czasie, przy czym wycofanie zgody nie wpłynie na zgodność z prawem przetwarzania dokonanego przed jej wycofaniem. Więcej informacji na temat tego, jak przetwarzamy Twoje dane osobowe i jakie prawa przysługują Ci na gruncie RODO znajdziesz tu: https://intive.com</string>
+    <string name="agree_required">Zgoda wymagana</string>
+    <string name="email_verification_title">Weryfikacja adresu email</string>
+    <string name="email_verification_subtitle">Wpisz 8-cyfrowy kod, który został wysłany na adres: %s</string>
+    <string name="confirm_code_button">Zatwierdź kod</string>
+    <string name="no_code_button">Nie otrzymałem/am kodu</string>
+    <string name="code_verification">Kod *</string>
+    <string name="no_code_title">Weryfikacja adresu e-mail</string>
+    <string name="send_code_button">Wyślij kod</string>
+    <string name="error_title">Wystąpił błąd</string>
+    <string name="error_home_button">Strona główna</string>
+    <string name="registration_succes_title">Twoja rejestracja przebiegła pomyślnie!</string>
+    <string name="registration_success_subtitle">Konto zostało utworzone, możesz korzystać z aplikacji</string>
+    <string name="close_dialog">Zamknij</string>
+    <string name="no_code_subtitle">Wpisz ponownie swój adres e-mail</string>
+    <string name="logo_image_content_description">Logo</string>
+    <string name="downloading_available_tech_groups">Pobieranie dostępnych grup technologicznych...</string>
+    <string name="wrong_code">Niepoprawny kod</string>
+    <string name="internet_connection_error">Problem z połączeniem internetowym, spróbuj ponownie później</string>
+    <string name="login_not_available">Login zajęty</string>
+    <string name="server_error">Błąd serwera</string>
+    <string name="processing">Przetwarzanie...</string>
+
+
+    <string-array name="titles_array">
+        <item>Pan</item>
+        <item>Pani</item>
+    </string-array>
+</resources>
