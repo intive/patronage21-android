@@ -196,7 +196,7 @@ class CalendarHomeViewModel(
         _currentMonth.value = getCurrentMonth()
     }
 
-    private fun showWeekView() {
+    fun showWeekView() {
         _showWeekView.value = true
     }
 

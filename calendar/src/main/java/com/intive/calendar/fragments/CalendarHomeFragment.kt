@@ -34,4 +34,10 @@ class CalendarHomeFragment : Fragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshCalendar()
+        viewModel.showWeekView()
+    }
 }
