@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
@@ -24,8 +23,7 @@ import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
-import com.intive.ui.components.Spinner
-import com.intive.ui.components.TitleText
+import com.intive.ui.components.*
 
 
 @ExperimentalFoundationApi
@@ -45,19 +43,20 @@ fun CalendarHomeLayout(
     val calendarViewsList = stringArrayResource(R.array.calendar_views_list).asList()
 
 
-    Box(contentAlignment = Alignment.BottomEnd) {
-        Column(
-            Modifier
-                .fillMaxHeight()
-                .padding(24.dp)
+    LayoutContainer {
+        FABLayout(
+            onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
+            contentDescription = stringResource(R.string.add_event_btn_desc)
         ) {
-            TitleText(stringResource(R.string.calendar), Modifier.padding(bottom = 24.dp))
-            Paragraph(
-                stringResource(R.string.lorem_ipsum),
-                Modifier.padding(bottom = 24.dp)
+            IntroSection(
+                title = stringResource(R.string.calendar),
+                text = stringResource(R.string.lorem_ipsum)
             )
 
-            Spinner(items = calendarViewsList, onTitleSelected = calendarViewModel::onCalendarViewChange)
+            Spinner(
+                items = calendarViewsList,
+                onTitleSelected = calendarViewModel::onCalendarViewChange
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             WeekView(
@@ -77,25 +76,9 @@ fun CalendarHomeLayout(
                 goToPreviousMonth = { calendarViewModel.goToPreviousMonth() }
             ) { calendarViewModel.goToNextMonth() }
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(bottom = 24.dp, end = 24.dp),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            FloatingActionButton(
-                onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
-                backgroundColor = colors.primary
-            ) {
-                Icon(
-                    Icons.Filled.Add,
-                    contentDescription = stringResource(R.string.add_event_btn_desc)
-                )
-            }
-        }
     }
+
+
 }
 
 
