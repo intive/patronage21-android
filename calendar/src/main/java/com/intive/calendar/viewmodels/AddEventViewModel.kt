@@ -1,5 +1,6 @@
 package com.intive.calendar.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -98,12 +99,14 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
 
     private fun isDateValid(): Boolean {
         val today: Calendar = Calendar.getInstance()
+        val startDate = _date.value?.clone() as Calendar
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
         _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it.toInt()) }
-        return today.before(_date.value)
+        return today.before(_date.value) && !startDate.before(Calendar.getInstance())
     }
 
     private fun isTimeValid(): Boolean {
+
         val endDate = _date.value?.clone() as Calendar
         _hourEnd.value?.let { endDate.set(Calendar.HOUR, it.toInt()) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it.toInt()) }
