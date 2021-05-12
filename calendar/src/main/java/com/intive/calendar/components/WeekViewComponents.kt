@@ -116,13 +116,14 @@ fun DaysListItem(
                 txtColor = Color.Gray
             }
             WeekDayWithEvents(
-                bkgColor = bkgColor,
                 headerColor = headerColor,
                 txtColor = txtColor,
                 text = stringResource(R.string.no_events),
-                onClickDayItem = {},
                 index = index,
-                date = day
+                date = day,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(bkgColor)
             )
         }
         events.size == 1 -> {
@@ -143,17 +144,20 @@ fun DaysListItem(
             bundle.putParcelable(eventBundleKey, eventBundle)
 
             WeekDayWithEvents(
-                bkgColor = bkgColor, headerColor = headerColor,
+                headerColor = headerColor,
                 txtColor = txtColor,
                 text = "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
-                onClickDayItem = {
-                    navController.navigate(
-                        R.id.action_calendarFragment_to_eventFragment,
-                        bundle
-                    )
-                },
                 index = index,
-                date = day
+                date = day,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(bkgColor)
+                    .clickable(onClick = {
+                        navController.navigate(
+                            R.id.action_calendarFragment_to_eventFragment,
+                            bundle
+                        )
+                    })
             )
         }
         else -> {
@@ -161,15 +165,15 @@ fun DaysListItem(
             val eventsShow = remember { mutableStateOf(false) }
 
             WeekDayWithEvents(
-                bkgColor = bkgColor,
                 headerColor = headerColor,
                 txtColor = txtColor,
                 text = "${stringResource(R.string.events_number)}: ${events.size}",
-                onClickDayItem = {
-                    eventsShow.value = eventsShow.value != true
-                },
                 index = index,
                 date = day,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(bkgColor)
+                    .clickable(onClick = { eventsShow.value = eventsShow.value != true })
             )
 
             if (eventsShow.value) {
@@ -186,21 +190,17 @@ fun DaysListItem(
 
 @Composable
 fun WeekDayWithEvents(
-    bkgColor: Color,
     headerColor: Color,
     txtColor: Color,
     text: String,
-    onClickDayItem: () -> Unit,
     index: Int,
-    date: Calendar
+    date: Calendar,
+    modifier: Modifier
 ) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bkgColor)
-            .clickable(onClick = onClickDayItem)
+        modifier = modifier
     ) {
         Spacer(Modifier.width(10.dp))
         Column {

@@ -47,4 +47,9 @@
     <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
     <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
 
+    <string-array name="calendar_views_list">
+        <item>Tydzień</item>
+        <item>Miesiąc</item>
+    </string-array>
+
 </resources>

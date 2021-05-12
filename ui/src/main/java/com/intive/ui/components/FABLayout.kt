@@ -24,8 +24,7 @@ fun FABLayout(onClick: () -> Unit, contentDescription: String, content: @Composa
 
         Column(
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(bottom = 24.dp, end = 24.dp),
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Bottom
         ) {
