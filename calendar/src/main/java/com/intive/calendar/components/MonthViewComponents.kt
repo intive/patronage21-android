@@ -72,82 +72,101 @@ fun CalendarGrid(
 
                 var bgColor = Color.White
                 var txtColor = Color.Black
-                var onClick = {}
+                val onClick: () -> Unit
+                var dayColumnModifier = Modifier.background(bgColor)
+
+                if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
+                    bgColor = MaterialTheme.colors.secondary
+                    txtColor = Color.White
+                } else if ((items[it] as Calendar).before(Calendar.getInstance())) {
+                    txtColor = Color.Gray
+                }
 
                 if (monthEvents!!.find { event -> event.date == getDateString(items[it] as Calendar) } != null) {
 
                     val index =
                         monthEvents.indexOfFirst { event -> event.date!! == getDateString(items[it] as Calendar) }
 
-                    bgColor = colorResource(R.color.pale_blue)
-
-                    if (monthEvents[index].events!!.size == 1) {
-
-                        val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
-
-                        val eventBundle = EventBundle(
-                            id = monthEvents[index].events!![0].id,
-                            date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
-                                getDateString(
-                                    (items[it] as Calendar),
-                                    "."
-                                )
-                            }",
-                            time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
-                            name = monthEvents[index].events!![0].name,
-                            inviteResponse = monthEvents[index].events!![0].inviteResponse,
-                            users = monthEvents[index].events!![0].users,
-                            active = isDayActive
-
-                        )
-                        val bundle = Bundle()
-                        bundle.putParcelable(eventBundleKey, eventBundle)
-
-                        onClick =
-                            {
-                                navController.navigate(
-                                    R.id.action_calendarFragment_to_eventFragment,
-                                    bundle
-                                )
-                            }
-                    } else if (monthEvents[index].events!!.size > 1) {
-
-                        val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
-
-                        val dayBundle = DayBundle(
-                            date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
-                                getDateString(
-                                    (items[it] as Calendar),
-                                    "."
-                                )
-                            }",
-                            events = monthEvents[index].events!!,
-                            active = isDayActive
-                        )
-                        val bundle = Bundle()
-                        bundle.putParcelable(dayBundleKey, dayBundle)
-
-
-                        onClick =
-                            {
-                                navController.navigate(
-                                    R.id.action_calendarFragment_to_dayFragment,
-                                    bundle
-                                )
-                            }
+                    if(!(isDateSame((items[it] as Calendar), Calendar.getInstance()))){
+                        bgColor = colorResource(R.color.pale_blue)
                     }
+
+
+                    when {
+                        monthEvents[index].events!!.size == 1 -> {
+                            val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
+
+                            val eventBundle = EventBundle(
+                                id = monthEvents[index].events!![0].id,
+                                date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+                                    getDateString(
+                                        (items[it] as Calendar),
+                                        "."
+                                    )
+                                }",
+                                time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
+                                name = monthEvents[index].events!![0].name,
+                                inviteResponse = monthEvents[index].events!![0].inviteResponse,
+                                users = monthEvents[index].events!![0].users,
+                                active = isDayActive
+
+                            )
+                            val bundle = Bundle()
+                            bundle.putParcelable(eventBundleKey, eventBundle)
+
+                            onClick =
+                                {
+                                    navController.navigate(
+                                        R.id.action_calendarFragment_to_eventFragment,
+                                        bundle
+                                    )
+                                }
+
+                            dayColumnModifier = Modifier
+                                .background(bgColor)
+                                .clickable(onClick = onClick)
+                        }
+                        monthEvents[index].events!!.size > 1 -> {
+                            val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
+
+                            val dayBundle = DayBundle(
+                                date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
+                                    getDateString(
+                                        (items[it] as Calendar),
+                                        "."
+                                    )
+                                }",
+                                events = monthEvents[index].events!!,
+                                active = isDayActive
+                            )
+                            val bundle = Bundle()
+                            bundle.putParcelable(dayBundleKey, dayBundle)
+
+
+                            onClick =
+                                {
+                                    navController.navigate(
+                                        R.id.action_calendarFragment_to_dayFragment,
+                                        bundle
+                                    )
+                                }
+
+                            dayColumnModifier = Modifier
+                                .background(bgColor)
+                                .clickable(onClick = onClick)
+                        }
+                        else -> {
+                            dayColumnModifier = Modifier
+                                .background(bgColor)
+                        }
+                    }
+
                 }
 
-                if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
-                    bgColor = MaterialTheme.colors.secondary
-                    txtColor = Color.White
-                }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .background(bgColor)
-                        .clickable(onClick = onClick)
+                    modifier = dayColumnModifier
                 ) {
                     Text(
                         text = (items[it] as Calendar)[Calendar.DAY_OF_MONTH].toString(),
