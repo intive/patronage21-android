@@ -15,7 +15,7 @@ import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
-import com.intive.ui.components.UsersHeader
+import com.intive.ui.components.HeaderWithCount
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +53,7 @@ fun EventScreenLayout(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            UsersHeader(
+            HeaderWithCount(
                 text = stringResource(R.string.event_users_label),
                 count = event.users.size,
                 showCount = true,

@@ -6,12 +6,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.asFlow
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -20,11 +18,10 @@ import com.intive.repository.util.Resource
 import com.intive.ui.components.*
 import com.intive.users.R
 import com.intive.users.presentation.composables.UserListItem
-import com.intive.users.presentation.composables.ScreenInfo
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
-import com.intive.ui.components.UsersHeader
+import com.intive.ui.components.HeaderWithCount
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -100,7 +97,7 @@ fun UsersScreen(
                         end = 16.dp
                     )
             ) {
-                UsersHeader(
+                HeaderWithCount(
                     text = stringResource(id = R.string.leaders),
                     count = when (viewModel.totalLeaders.value) {
                         is Resource.Loading -> 0
@@ -174,7 +171,7 @@ fun UsersScreen(
                         end = 16.dp
                     )
             ) {
-                UsersHeader(
+                HeaderWithCount(
                     text = stringResource(id = R.string.participants),
                     count = when (viewModel.totalCandidates.value) {
                         is Resource.Loading -> 0
