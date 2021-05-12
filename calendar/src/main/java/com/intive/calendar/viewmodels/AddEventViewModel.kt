@@ -31,10 +31,10 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
     private val _date = MutableLiveData(Calendar.getInstance())
     val date: LiveData<Calendar> = _date
 
-    private val _hourStart = MutableLiveData("${hour + 1}")
+    private val _hourStart = MutableLiveData("$hour")
     var hourStart: LiveData<String> = _hourStart
 
-    private val _hourEnd = MutableLiveData("${hour + 2}")
+    private val _hourEnd = MutableLiveData("$hour")
     var hourEnd: LiveData<String> = _hourEnd
 
     private val _minutesStart = MutableLiveData("00")
@@ -111,7 +111,7 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
     }
 
     private fun areCheckboxesValid(): Boolean {
-        return _selectedTechnologyGroups.size in 1..3
+        return _selectedTechnologyGroups.size >= 1
     }
 
     private fun isInputValid(): Boolean {

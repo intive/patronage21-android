@@ -22,7 +22,9 @@ import com.intive.calendar.components.*
 import com.intive.calendar.utils.getDateString
 import com.intive.ui.components.TitleText
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.ui.platform.LocalFocusManager
 import com.intive.ui.components.CheckBoxesList
+import com.intive.ui.components.PrimaryButton
 
 @ExperimentalComposeUiApi
 @Composable
@@ -90,7 +92,7 @@ fun AddEventScreen(
                         Modifier.padding(bottom = 24.dp)
                     )
 
-                    InputText(inputValue!!, addEventViewModel::setInputValue)
+                    InputText(inputValue!!, addEventViewModel::setInputValue, LocalFocusManager.current)
 
                     Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
                         PickerRow(
@@ -132,15 +134,10 @@ fun AddEventScreen(
         }
 
         Column {
-            OKButton(stringResource(R.string.accept_new_event)) {
+            PrimaryButton(stringResource(R.string.accept_new_event)) {
                 addEventViewModel.isFormValid(
                     popBackStack, refreshCalendar
                 )
-            }
-
-            CancelButton(stringResource(R.string.reject_new_event)) {
-                refreshCalendar()
-                popBackStack()
             }
         }
     }
