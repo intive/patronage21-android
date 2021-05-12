@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">Audit</string>
-    <!--AuditScreen text content-->
-    <string name="search">Wyszukaj</string>
-</resources>
