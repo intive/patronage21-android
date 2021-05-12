@@ -82,7 +82,7 @@ class AddEventFragment : Fragment() {
                         requireContext(),
                         { findNavController().popBackStack() },
                         addEventViewModel
-                    ) { calendarHomeViewModel.refreshCalendar() }
+                    ) { calendarHomeViewModel.refreshEventsList() }
                 }
             }
         }

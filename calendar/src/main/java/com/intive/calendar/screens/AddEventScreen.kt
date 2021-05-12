@@ -32,7 +32,7 @@ fun AddEventScreen(
     context: Context,
     popBackStack: () -> Boolean,
     addEventViewModel: AddEventViewModel,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()
@@ -136,7 +136,7 @@ fun AddEventScreen(
         Column {
             PrimaryButton(stringResource(R.string.accept_new_event)) {
                 addEventViewModel.isFormValid(
-                    popBackStack, refreshCalendar
+                    popBackStack, refreshEventsList
                 )
             }
         }
