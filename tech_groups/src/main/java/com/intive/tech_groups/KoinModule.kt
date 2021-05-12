@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val technologyGroupsModule = module {
     viewModel { MainViewModel(get()) }
-    viewModel { AddGroupViewModel(get()) }
+    viewModel { AddGroupViewModel(get(), get()) }
 }

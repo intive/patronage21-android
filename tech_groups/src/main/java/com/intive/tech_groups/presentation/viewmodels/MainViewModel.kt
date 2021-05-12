@@ -8,10 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.domain.model.Group
+import com.intive.repository.network.model.Group
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
-import java.util.logging.Filter
 
 class MainViewModel(
     private val repository: Repository

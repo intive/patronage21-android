@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AddGroupFragment : Fragment() {
 
     private val viewModel: AddGroupViewModel by viewModel<AddGroupViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

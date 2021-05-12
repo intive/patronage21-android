@@ -4,9 +4,13 @@
     <string name="try_again">Spróbuj ponownie</string>
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="technologies">Technologie:</string>
-    <string name="add_group">Dodaj gruppę technologiczną</string>
+    <string name="add_group">Utwórz grupę technologiczną</string>
     <string name="choose_technologies_for_group_text">Wybierz technologie przypisane do grupy:</string>
     <string name="downloading_technologies">Pobieranie technologi</string>
     <string name="error">Wystąpił błąd</string>
     <string name="add_new_technology_group">Dodaj nową grupę technologiczną</string>
+    <string name="group_created">Utworzono nową grupę</string>
+    <string name="group_name">Nazwa</string>
+    <string name="create_group">Utwórz grupę</string>
+    <string name="error_occured">Wystąpił błąd</string>
 </resources>

@@ -5,7 +5,7 @@ import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.Audit
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.domain.model.NewEvent
-import com.intive.repository.domain.model.Group
+import com.intive.repository.network.model.Group
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
@@ -31,6 +31,8 @@ interface Repository {
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
+
+    suspend fun addGroup(group: Group) : Response<String>
 
 }
 
