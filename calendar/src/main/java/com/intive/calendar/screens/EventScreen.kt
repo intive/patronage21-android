@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
@@ -29,7 +28,7 @@ import com.intive.calendar.utils.*
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     event: EventBundle,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -67,7 +66,7 @@ fun EventScreenLayout(
                 InviteResponseButtons(
                     event = event,
                     updateInviteResponse = updateInviteResponse,
-                    refreshCalendar = refreshCalendar
+                    refreshEventsList = refreshEventsList
                 )
             }
         }
@@ -78,7 +77,7 @@ fun EventScreenLayout(
 fun InviteResponseButtons(
     event: EventBundle,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
 
     val acceptBtnSelected = remember { mutableStateOf(false) }
@@ -108,7 +107,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.ACCEPTED.name,
-                        refreshCalendar,
+                        refreshEventsList,
                     )
                 }
 
@@ -131,7 +130,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.UNKNOWN.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 
@@ -153,7 +152,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.DECLINED.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 

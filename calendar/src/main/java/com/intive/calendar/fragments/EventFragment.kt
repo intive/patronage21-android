@@ -58,7 +58,7 @@ class EventFragment : Fragment() {
                     EventScreenLayout(
                         updateInviteResponse = eventViewModel::updateInviteResponse,
                         event = event
-                    ) { calendarHomeViewModel.refreshCalendar() }
+                    ) { calendarHomeViewModel.refreshEventsList() }
                 }
             }
         }
