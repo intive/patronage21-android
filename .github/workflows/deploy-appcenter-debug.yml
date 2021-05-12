@@ -1,0 +1,29 @@
+name: Deploy appcenter dev debug
+on:
+  push:
+    branches:
+      - fix/IP2-560
+      - develop
+  workflow_dispatch:
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '1.11'
+          java-package: jdk
+          architecture: x64
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.2'
+          bundler-cache: true
+      - run: bundle install
+      - run: fastlane env
+      - run: fastlane install_plugins --verbose
+      - uses: maierj/fastlane-action@v2.0.1
+        env:
+          APP_CENTER_TOKEN: ${{ secrets.APP_CENTER }}
+        with:
+          lane: 'deployAppCenterDebug'
