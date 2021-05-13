@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.intive.tech_groups.R
@@ -61,7 +62,7 @@ fun GroupDetailsScreen(
                         start = dimensionResource(id = R.dimen.small_screen_padding),
                         end = dimensionResource(id = R.dimen.small_screen_padding)),
                     title = {
-                        SectionHeaderText(text = "Opis")
+                        SectionHeaderText(text = stringResource(id = R.string.description))
                     }
                 )
 
@@ -112,7 +113,7 @@ fun GroupDetailsScreen(
                             top = 16.dp,
                             start = dimensionResource(id = R.dimen.small_screen_padding),
                             end = dimensionResource(id = R.dimen.small_screen_padding)),
-                    text = "Liderzy",
+                    text = stringResource(id = R.string.leaders),
                     count = 0,
                     showCount = true,
                 )
@@ -125,7 +126,7 @@ fun GroupDetailsScreen(
                             top = 16.dp,
                             start = dimensionResource(id = R.dimen.small_screen_padding),
                             end = dimensionResource(id = R.dimen.small_screen_padding)),
-                    text = "Kandydaci",
+                    text = stringResource(id = R.string.candidates),
                     count = 0,
                     showCount = true,
                 )
@@ -134,7 +135,7 @@ fun GroupDetailsScreen(
             item {
                 PrimaryButton(
                     paddingTop = dimensionResource(id = R.dimen.small_screen_padding),
-                    text = "Zrezygnuj z kandydatury",
+                    text = stringResource(id = R.string.resign_from_candidacy),
                     onClick = {}
                 )
             }

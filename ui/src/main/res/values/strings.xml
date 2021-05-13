@@ -16,4 +16,7 @@
     <string name="logs_module">Audyt zdarzeń</string>
     <string name="registration_module">Rejestracja</string>
     <string name="try_again">Spróbuj ponownie</string>
+
+    <string name="leaders">Liderzy</string>
+    <string name="candidates">Kandydaci</string>
 </resources>
