@@ -21,12 +21,54 @@ class NetworkRepository(
     private val eventsService: EventsService,
     private val registrationService: RegistrationService
 ) {
-    suspend fun getUsersByRole(
+    suspend fun getUsers(
         page: Int,
         role: String,
         group: String?
     ): UsersResponse {
-        return usersService.getUsersByRole( page = page, role = role, group = group)
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null
+        )
+    }
+
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse {
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = login
+        )
+    }
+
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse {
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = null
+        )
     }
 
 //    suspend fun getAudits(): List<AuditDto> {

@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -24,7 +26,9 @@ import com.intive.ui.components.Spinner
 import com.intive.ui.components.HeaderWithCount
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
+
 @Composable
 fun UsersScreen(
     viewModel: UsersViewModel,
@@ -34,7 +38,7 @@ fun UsersScreen(
     val candidates = viewModel.candidates.collectAsLazyPagingItems()
     val leaders = viewModel.leaders.collectAsLazyPagingItems()
     val techGroups = viewModel.techGroups.value
-    val query = viewModel.query.collectAsState()
+    val query = viewModel.query
 
     val lazyListState = rememberLazyListState()
 
@@ -60,7 +64,9 @@ fun UsersScreen(
                     onQueryChanged = {
                         viewModel.onQueryChanged(it)
                     },
-                    onExecuteSearch = {}
+                    onExecuteSearch = {
+
+                    }
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
 
@@ -145,18 +151,24 @@ fun UsersScreen(
                     }
                 }
                 loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
-                    items(leaders) { user ->
-                        UserListItem(user = user!!, onItemClick = {
-                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                        })
-                        Divider(
-                            color = Color(0xFFF1F1F1),
-                            thickness = 2.dp,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp
+                    if(leaders.itemCount == 0) {
+                        item{
+                            EmptyItem()
+                        }
+                    } else {
+                        items(leaders) { user ->
+                            UserListItem(user = user!!, onItemClick = {
+                                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                            })
+                            Divider(
+                                color = Color(0xFFF1F1F1),
+                                thickness = 2.dp,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -222,18 +234,24 @@ fun UsersScreen(
                     }
                 }
                 loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
-                    items(candidates) { user ->
-                        UserListItem(user = user!!, onItemClick = {
-                            navController.navigate(R.id.action_usersFragment_to_detailsFragment)
-                        })
-                        Divider(
-                            color = Color(0xFFF1F1F1),
-                            thickness = 2.dp,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                end = 16.dp
+                    if(candidates.itemCount == 0) {
+                        item{
+                            EmptyItem()
+                        }
+                    } else {
+                        items(candidates) { user ->
+                            UserListItem(user = user!!, onItemClick = {
+                                navController.navigate(R.id.action_usersFragment_to_detailsFragment)
+                            })
+                            Divider(
+                                color = Color(0xFFF1F1F1),
+                                thickness = 2.dp,
+                                modifier = Modifier.padding(
+                                    start = 16.dp,
+                                    end = 16.dp
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
