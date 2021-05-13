@@ -11,7 +11,7 @@ import com.intive.users.presentation.details.DetailsViewModel
 
 @Composable
 fun ProjectListItem(project: DetailsViewModel.Project) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 16.dp)) {
         Text(
             text = project.name,
             fontWeight = FontWeight.Bold
