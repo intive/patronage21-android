@@ -32,8 +32,7 @@ class AddEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-
-
+        
         lifecycleScope.launchWhenStarted {
             addEventViewModel.addEventFlow.collect { event ->
                 when (event) {
@@ -80,10 +79,10 @@ class AddEventFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     AddEventScreen(
-                        requireContext().applicationContext,
+                        requireContext(),
                         { findNavController().popBackStack() },
                         addEventViewModel
-                    ) { calendarHomeViewModel.refreshCalendar() }
+                    ) { calendarHomeViewModel.refreshEventsList() }
                 }
             }
         }

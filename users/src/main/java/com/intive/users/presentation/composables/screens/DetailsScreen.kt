@@ -3,7 +3,6 @@ package com.intive.users.presentation.composables.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.ui.components.UsersHeader
+import com.intive.ui.components.HeaderWithCount
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.repository.domain.model.User
@@ -61,7 +60,7 @@ fun DetailsScreen(
     }
 
     Column {
-        UsersHeader(text = stringResource(R.string.bio))
+        HeaderWithCount(text = stringResource(R.string.bio))
         Text(
             text = user.bio,
             modifier = Modifier
@@ -70,7 +69,7 @@ fun DetailsScreen(
     }
 
     Column {
-        UsersHeader(text = stringResource(R.string.projects), count = projects.size, showCount = true)
+        HeaderWithCount(text = stringResource(R.string.projects), count = projects.size, showCount = true)
         projects.forEach { project ->
             ProjectListItem(project)
             Divider(
@@ -81,7 +80,7 @@ fun DetailsScreen(
     }
 
     Column {
-        UsersHeader(text = stringResource(R.string.contact))
+        HeaderWithCount(text = stringResource(R.string.contact))
 
         Text(user.email, modifier = Modifier.padding(16.dp))
 

@@ -10,6 +10,7 @@ import com.intive.repository.network.util.EventDtoMapper
 
 import com.intive.repository.domain.model.Audit
 import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.UsersResponse
@@ -28,17 +29,92 @@ class RepositoryImpl(
 
     override val usersMapper: UserDtoMapper = userMapper
 
-    override suspend fun getUsersByRole(
+    override suspend fun getUsers(
         page: Int,
         role: String,
         group: String?
     ): UsersResponse {
-        return networkRepository.getUsersByRole(role = role, page = page, group = group)
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = login
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        query: String,
+    ): UsersResponse {
+
+        return when {
+            query.isBlank() -> {
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group
+                )
+            }
+            query.split(" ").size == 1 -> {
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group,
+                    firstName = query,
+                    lastName = query,
+                    login = query
+                )
+            }
+            else -> {
+                val q = query.split(" ")
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group,
+                    firstName = q[0],
+                    lastName = q[1]
+                )
+            }
+        }
     }
 
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
-        val response = getUsersByRole(role = role, group = group, page = 1)
-        println(response)
+        val response = getUsers(role = role, group = group, page = 1)
         return response.totalSize
     }
 

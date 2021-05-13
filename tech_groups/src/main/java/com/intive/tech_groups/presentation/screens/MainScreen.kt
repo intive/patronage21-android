@@ -2,29 +2,23 @@ package com.intive.tech_groups.presentation.screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
-import com.intive.ui.PatronageTypography
 import com.intive.ui.components.*
+import com.intive.ui.components.BoxButton
+import com.intive.ui.components.Spinner
+import com.intive.ui.components.TitleText
 
 @Composable
 fun MainScreen(
@@ -51,8 +45,6 @@ fun MainScreen(
         ) {
             TitleText(
                 text = stringResource(R.string.tech_groups_title),
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .padding(top = 15.dp, bottom = 15.dp)
             )
@@ -91,6 +83,7 @@ fun MainScreen(
                                     BoxButton(
                                         text = filteredList!![index].name,
                                         onClick = { },
+                                        contentOnTop = false
                                     ) {
                                         Text(stringResource(R.string.technologies))
                                         for (technology in filteredList!![index].technologies) {
@@ -103,7 +96,8 @@ fun MainScreen(
                                     if (index + 1 < filteredList!!.size) {
                                         BoxButton(
                                             text = filteredList!![index + 1].name,
-                                            onClick = { }
+                                            onClick = { },
+                                            contentOnTop = false
                                         ) {
                                             Text(stringResource(R.string.technologies))
                                             for (technology in filteredList!![index + 1].technologies) {
@@ -111,10 +105,10 @@ fun MainScreen(
                                             }
                                         }
                                     }
+                                    Spacer(modifier = Modifier.size(20.dp))
+                                    index += 2
                                 }
                             }
-                            Spacer(modifier = Modifier.size(20.dp))
-                            index += 2
                         }
                     }
                     is Resource.Error -> ErrorItem(
@@ -129,44 +123,6 @@ fun MainScreen(
                     }
                 }
             }
-        }
-    }
-}
-
-
-@Composable
-fun BoxButton(
-    text: String,
-    borderColor: Color = MaterialTheme.colors.primary,
-    onClick: (() -> Unit) = {},
-    content: @Composable () -> Unit
-) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(1f)
-        .border(
-            border = BorderStroke(1.dp, color = borderColor),
-            shape = RoundedCornerShape(20.dp)
-        )
-        .clip(shape = RoundedCornerShape(20.dp))
-        .clickable { onClick() }) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .aspectRatio(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                style = PatronageTypography.body2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            content()
         }
     }
 }

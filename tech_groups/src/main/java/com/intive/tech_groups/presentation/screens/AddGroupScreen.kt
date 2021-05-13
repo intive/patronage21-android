@@ -19,6 +19,7 @@ import com.intive.tech_groups.presentation.viewmodels.AddGroupViewModel
 import com.intive.ui.components.TitleText
 import com.intive.tech_groups.R
 import com.intive.ui.components.CheckBoxesList
+import com.intive.ui.components.ErrorItem
 
 @Composable
 fun AddGroupScreen(
