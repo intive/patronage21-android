@@ -170,7 +170,13 @@ fun UsersList(users: List<User>) {
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
-            PersonListItem(user, {}, 0.dp, true)
+            PersonListItem(
+                user = user,
+                onItemClick =  {},
+                rowPadding =  0.dp,
+                showAdditionalText = true,
+                additionalText = user.role
+            )
         }
     }
 }
