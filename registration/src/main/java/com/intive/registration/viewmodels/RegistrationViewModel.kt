@@ -120,7 +120,13 @@ class RegistrationViewModel(
 
     fun isLoginValid(): Boolean = login.value?.matches(Regex("[A-Za-z0-9]{2,15}")) ?: false
     fun isGithubUrlValid(): Boolean =
-        githubUrl.value.isNullOrEmpty() || githubUrl.value!!.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[-a-zA-Z0-9]{1,39}"))
+        githubUrl.value?.let{
+            it.isEmpty() ||
+            it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
+            !it.startsWith("-") &&
+            !it.endsWith("-") &&
+            !it.contains("--")
+        } ?: true
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
             isLastNameValid() &&
