@@ -28,7 +28,6 @@ fun ImageEdit(
     Box(
             contentAlignment = Alignment.BottomEnd,
             modifier = Modifier
-                    .padding(top = 15.dp)
                     .size(150.dp)
 
     ) {

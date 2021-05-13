@@ -2,7 +2,6 @@ package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -12,16 +11,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.users.R
 import com.intive.repository.domain.model.User
+import com.intive.ui.components.LayoutContainer
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.Spinner
@@ -46,18 +44,12 @@ fun EditUserScreen(
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    LayoutContainer(
     ) {
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(start = 20.dp, end = 20.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ImageEdit(
@@ -207,7 +199,7 @@ fun EditUserScreen(
                     }
                 )
             )
-            Spacer(modifier = Modifier.size(10.dp))
+            Spacer(modifier = Modifier.size(30.dp))
             PrimaryButton(
                 text = stringResource(R.string.save),
                 onClick = {
