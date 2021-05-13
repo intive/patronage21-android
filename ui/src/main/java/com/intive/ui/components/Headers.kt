@@ -34,12 +34,15 @@ fun TitleText(
 
 @Composable
 fun SectionHeader(
+    modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.light_blue0),
     title: @Composable RowScope.() -> Unit,
     action: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    Column(modifier = Modifier.background(backgroundColor)) {
+    Column(
+        modifier = modifier.background(backgroundColor)
+    ) {
         Row(
             Modifier
                 .fillMaxWidth()
