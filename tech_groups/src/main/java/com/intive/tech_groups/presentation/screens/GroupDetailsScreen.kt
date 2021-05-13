@@ -16,17 +16,10 @@ import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.Stage
 import com.intive.ui.components.*
 
-@Preview
 @Composable
 fun GroupDetailsScreen(
-
+    stageList: List<Stage>
 ) {
-    val stageList = listOf(
-        Stage("Etap I", "01.01-28.02.2021", "zakończony"),
-        Stage("Etap II", "01.03-31.04.2021", "w trakcie"),
-        Stage("Etap III", "01.05-31.06.2021", "nieaktywny"),
-        Stage("Etap IV", "01.07-31.08.2021", "nieaktywny")
-    )
     Column(
         modifier = Modifier
             .fillMaxSize()

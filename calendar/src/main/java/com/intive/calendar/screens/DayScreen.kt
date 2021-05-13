@@ -5,46 +5,34 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
-import com.intive.calendar.components.*
 import com.intive.calendar.utils.DayBundle
 import com.intive.calendar.utils.EventBundle
 import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
+import com.intive.ui.components.Divider
 import com.intive.ui.components.TitleText
 
 
 @Composable
 fun DayLayout(
     navController: NavController,
-    day: DayBundle,
-    refreshCalendar: () -> Unit,
+    day: DayBundle
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(24.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            TitleText(day.date, Modifier.padding(bottom = 24.dp))
-            EventsList(day.events, navController, day.active)
-        }
-
-        Column {
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
-            }
-        }
+        TitleText(day.date, Modifier.padding(bottom = 24.dp))
+        EventsList(day.events, navController, day.active)
     }
 }
 
@@ -106,5 +94,5 @@ fun EventsListItem(event: Event, navController: NavController, isDayActive: Bool
         }
     }
 
-    Divider(color = Color.LightGray)
+    Divider()
 }

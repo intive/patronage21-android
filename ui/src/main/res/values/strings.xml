@@ -19,4 +19,6 @@
 
     <string name="leaders">Liderzy</string>
     <string name="candidates">Kandydaci</string>
+    <string name="no_results">Brak wyników</string>
+
 </resources>

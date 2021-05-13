@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
@@ -28,9 +27,8 @@ import com.intive.calendar.utils.*
 @Composable
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    navController: NavController,
     event: EventBundle,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -68,13 +66,8 @@ fun EventScreenLayout(
                 InviteResponseButtons(
                     event = event,
                     updateInviteResponse = updateInviteResponse,
-                    refreshCalendar = refreshCalendar
+                    refreshEventsList = refreshEventsList
                 )
-            }
-
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
             }
         }
     }
@@ -84,7 +77,7 @@ fun EventScreenLayout(
 fun InviteResponseButtons(
     event: EventBundle,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
 
     val acceptBtnSelected = remember { mutableStateOf(false) }
@@ -114,7 +107,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.ACCEPTED.name,
-                        refreshCalendar,
+                        refreshEventsList,
                     )
                 }
 
@@ -137,7 +130,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.UNKNOWN.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 
@@ -159,7 +152,7 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.DECLINED.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 
@@ -177,7 +170,13 @@ fun UsersList(users: List<User>) {
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
-            PersonListItem(user, {}, 0.dp, true)
+            PersonListItem(
+                user = user,
+                onItemClick =  {},
+                rowPadding =  0.dp,
+                showAdditionalText = true,
+                additionalText = user.role
+            )
         }
     }
 }

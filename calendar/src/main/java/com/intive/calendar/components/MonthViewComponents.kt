@@ -73,7 +73,6 @@ fun CalendarGrid(
                 var bgColor = Color.White
                 var txtColor = Color.Black
                 val onClick: () -> Unit
-                var dayColumnModifier = Modifier.background(bgColor)
 
                 if (isDateSame((items[it] as Calendar), Calendar.getInstance())) {
                     bgColor = MaterialTheme.colors.secondary
@@ -81,6 +80,8 @@ fun CalendarGrid(
                 } else if ((items[it] as Calendar).before(Calendar.getInstance())) {
                     txtColor = Color.Gray
                 }
+
+                var dayColumnModifier = Modifier.background(bgColor)
 
                 if (monthEvents!!.find { event -> event.date == getDateString(items[it] as Calendar) } != null) {
 
