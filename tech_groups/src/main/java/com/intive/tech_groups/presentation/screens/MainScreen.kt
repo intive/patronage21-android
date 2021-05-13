@@ -18,7 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.intive.tech_groups.R
+import com.intive.tech_groups.presentation.fragments.MainFragmentDirections
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.ui.PatronageTypography
 import com.intive.ui.components.BoxButton
@@ -26,7 +28,9 @@ import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 
 @Composable
-fun MainScreen(viewModel: MainViewModel) {
+fun MainScreen(
+    viewModel: MainViewModel,
+    navController: NavController) {
     val filteredList by viewModel.filteredList.observeAsState()
 
     Column() {
@@ -68,7 +72,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         Column(Modifier.weight(1f)) {
                             BoxButton(
                                 text = filteredList!![index].name,
-                                onClick = { },
+                                onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()) },
                             ) {
                                 Text("Technologie: ")
                                 for (technology in filteredList!![index].techList) {
@@ -81,7 +85,7 @@ fun MainScreen(viewModel: MainViewModel) {
                             if (index + 1 < filteredList!!.size) {
                                 BoxButton(
                                     text = filteredList!![index + 1].name,
-                                    onClick = { },
+                                    onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()) },
                                     contentOnTop = false
                                 ) {
                                     Text("Technologie: ")
