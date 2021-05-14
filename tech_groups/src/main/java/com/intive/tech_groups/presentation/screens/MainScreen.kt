@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.ui.PatronageTypography
+import com.intive.ui.components.BoxButton
 import com.intive.ui.components.Spinner
 import com.intive.ui.components.TitleText
 
@@ -80,7 +81,8 @@ fun MainScreen(viewModel: MainViewModel) {
                             if (index + 1 < filteredList!!.size) {
                                 BoxButton(
                                     text = filteredList!![index + 1].name,
-                                    onClick = { }
+                                    onClick = { },
+                                    contentOnTop = false
                                 ) {
                                     Text("Technologie: ")
                                     for (technology in filteredList!![index + 1].techList) {
@@ -94,44 +96,6 @@ fun MainScreen(viewModel: MainViewModel) {
                     index += 2
                 }
             }
-        }
-    }
-}
-
-
-@Composable
-fun BoxButton(
-    text: String,
-    borderColor: Color = MaterialTheme.colors.primary,
-    onClick: (() -> Unit) = {},
-    content: @Composable () -> Unit
-) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(1f)
-        .border(
-            border = BorderStroke(1.dp, color = borderColor),
-            shape = RoundedCornerShape(20.dp)
-        )
-        .clip(shape = RoundedCornerShape(20.dp))
-        .clickable { onClick() }) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .aspectRatio(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                style = PatronageTypography.body2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            content()
         }
     }
 }

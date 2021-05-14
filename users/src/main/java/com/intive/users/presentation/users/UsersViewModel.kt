@@ -133,7 +133,6 @@ class UsersViewModel(
                 Resource.Error(e.localizedMessage)
             }
         }
-    }
 
     private fun getTotalCandidatesCount(group: String?, query: String) =
         viewModelScope.launch(dispatchers.io) {
