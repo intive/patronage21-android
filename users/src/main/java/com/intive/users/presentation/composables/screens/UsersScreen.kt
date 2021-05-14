@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,14 +12,13 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.util.Resource
 import com.intive.ui.components.*
 import com.intive.users.R
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
-import com.intive.users.presentation.composables.GroupSpinner
+import com.intive.ui.components.GroupSpinner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 

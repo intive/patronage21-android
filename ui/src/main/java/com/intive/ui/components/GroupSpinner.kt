@@ -1,4 +1,4 @@
-package com.intive.users.presentation.composables
+package com.intive.ui.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
