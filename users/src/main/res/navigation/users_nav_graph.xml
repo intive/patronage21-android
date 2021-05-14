@@ -16,13 +16,21 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.intive.users.presentation.details.DetailsFragment"
-        android:label="DetailsFragment" >
+        android:label="DetailsFragment">
         <action
             android:id="@+id/action_detailsFragment_to_deactivateUserFragment"
             app:destination="@id/deactivateUserFragment" />
         <action
             android:id="@+id/action_detailsFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
+
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="intive://userDetails/{login}" />
+        <argument
+            android:name="login"
+            app:argType="string"
+            android:defaultValue="defaultLogin" />
     </fragment>
     <fragment
         android:id="@+id/deactivateUserFragment"
