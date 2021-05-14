@@ -10,6 +10,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class RegistrationViewModel(
@@ -25,9 +26,13 @@ class RegistrationViewModel(
         viewModelScope.launch(dispatchers.io) {
             _availableTechnologies.value = try {
                 val response = repository.getTechnologies()
-                Resource.Success(response)
+                withContext(dispatchers.main) {
+                    Resource.Success(response)
+                }
             } catch (ex: Exception) {
-                Resource.Error(ex.localizedMessage)
+                withContext(dispatchers.main) {
+                    Resource.Error(ex.localizedMessage)
+                }
             }
         }
     }
