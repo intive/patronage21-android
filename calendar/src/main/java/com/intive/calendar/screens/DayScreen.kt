@@ -31,13 +31,19 @@ fun DayLayout(
             .fillMaxHeight()
             .padding(24.dp)
     ) {
-        TitleText(day.date, Modifier.padding(bottom = 24.dp))
-        EventsList(day.events, navController, day.active)
+        TitleText(text = day.date, modifier = Modifier.padding(bottom = 24.dp))
+        EventsList(
+            date = day.date,
+            eventsList = day.events,
+            navController = navController,
+            isDayActive = day.active
+        )
     }
 }
 
 @Composable
 fun EventsList(
+    date: String,
     eventsList: List<Event>,
     navController: NavController,
     isDayActive: Boolean
@@ -46,17 +52,22 @@ fun EventsList(
 
     LazyColumn(state = scrollState) {
         items(eventsList.size) {
-            EventsListItem(eventsList[it], navController, isDayActive)
+            EventsListItem(
+                date = date,
+                event = eventsList[it],
+                navController = navController,
+                isDayActive = isDayActive
+            )
         }
     }
 }
 
 @Composable
-fun EventsListItem(event: Event, navController: NavController, isDayActive: Boolean) {
+fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
     val eventBundle = EventBundle(
         id = event.id,
-        date = event.date,
+        date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
         inviteResponse = event.inviteResponse,
