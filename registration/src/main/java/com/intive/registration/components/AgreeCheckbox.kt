@@ -34,10 +34,10 @@ fun AgreeCheckBox(
                 Text(
                     text = stringResource(R.string.agree_required),
                     color = Color.Red,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp,bottom = 8.dp)
                     )
             }
-            Text(text = label)
+            Text(text = label, modifier = Modifier.padding(start = 8.dp))
         }
     }
 }

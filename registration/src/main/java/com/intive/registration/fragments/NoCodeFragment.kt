@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.intive.registration.screens.NoCodeScreen
 import com.intive.registration.viewmodels.NoCodeViewModel
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class NoCodeFragment : Fragment() {
 
-    private val viewmodel: NoCodeViewModel by viewModels()
+    private val viewmodel: NoCodeViewModel by viewModel<NoCodeViewModel>()
     private val args: NoCodeFragmentArgs by navArgs()
 
 

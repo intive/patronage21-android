@@ -110,7 +110,7 @@ class RegistrationViewModel(
     fun isPhoneNumberValid(): Boolean = phoneNumber.value?.matches(Regex("\\d{9,9}")) ?: false
 
     fun isPasswordValid(): Boolean = password.value?.let {
-        it.length >= 8 &&
+        it.length in 8..20 &&
                 it.contains(Regex("[A-Z]+")) &&
                 it.contains(Regex("[a-z]+")) &&
                 it.contains(Regex("[0-9]+")) &&
@@ -125,12 +125,12 @@ class RegistrationViewModel(
 
     fun isLoginValid(): Boolean = login.value?.matches(Regex("[A-Za-z0-9]{2,15}")) ?: false
     fun isGithubUrlValid(): Boolean =
-        githubUrl.value?.let{
+        githubUrl.value?.let {
             it.isEmpty() ||
-            it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
-            !it.startsWith("-") &&
-            !it.endsWith("-") &&
-            !it.contains("--")
+                    it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
+                    !it.startsWith("-") &&
+                    !it.endsWith("-") &&
+                    !it.contains("--")
         } ?: true
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
