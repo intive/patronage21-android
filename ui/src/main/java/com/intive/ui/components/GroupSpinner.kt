@@ -12,8 +12,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.repository.domain.model.GroupEntity
+import com.intive.ui.R
 
 @Composable
 fun GroupSpinner(
@@ -26,11 +28,15 @@ fun GroupSpinner(
     val openCloseOfDropDownList: (Boolean) -> Unit = {
         isOpen.value = it
     }
+    val allItems = listOf(
+        GroupEntity(stringResource(R.string.all_groups), null)
+    ) + items
+
     Box {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 OutlinedTextField(
                     value = text.value,
                     onValueChange = { text.value = it },
@@ -42,9 +48,11 @@ fun GroupSpinner(
                     }
                 )
             }
+
+
             DropDownList(
                 requestToOpen = isOpen.value,
-                list = items,
+                list = allItems,
                 openCloseOfDropDownList,
                 selectedString = {
                     onTitleSelected(it)

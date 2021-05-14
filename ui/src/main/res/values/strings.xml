@@ -17,4 +17,6 @@
     <string name="registration_module">Rejestracja</string>
     <string name="try_again">Spróbuj ponownie</string>
     <string name="no_results">Brak wyników</string>
+
+    <string name="all_groups">Wszystkie grupy</string>
 </resources>

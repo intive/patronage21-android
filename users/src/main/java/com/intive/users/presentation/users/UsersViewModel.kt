@@ -1,10 +1,9 @@
 package com.intive.users.presentation.users
 
-import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.intive.repository.Repository
@@ -16,7 +15,6 @@ import com.intive.repository.network.USERS_PAGE_SIZE
 import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
-import com.intive.users.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -28,8 +26,7 @@ private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
 class UsersViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
-    private val app: Application
-) : AndroidViewModel(app) {
+) : ViewModel() {
 
     private val _query: MutableState<String> = mutableStateOf("")
     val query: State<String> = _query
@@ -125,11 +122,7 @@ class UsersViewModel(
                 val response = repository.getTechnologies().map { group ->
                     GroupEntity(group, group)
                 }
-                val result =
-                    listOf(
-                        GroupEntity(app.applicationContext.getString(R.string.all_groups), null)
-                    ) + response
-                Resource.Success(result)
+                Resource.Success(response)
             } catch (e: Exception) {
                 Resource.Error(e.localizedMessage)
             }
