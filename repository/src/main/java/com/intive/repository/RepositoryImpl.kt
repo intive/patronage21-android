@@ -126,7 +126,7 @@ class RepositoryImpl(
     }
 
     override suspend fun getTechnologies(): List<String> {
-        return networkRepository.getTechnologies()
+        return networkRepository.getTechnologies().groups
     }
 
     override suspend fun getTechnologyGroups(): List<Group> {

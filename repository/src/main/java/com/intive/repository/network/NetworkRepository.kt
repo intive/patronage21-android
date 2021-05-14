@@ -5,11 +5,8 @@ import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.domain.model.Group
-import com.intive.repository.network.model.EventDto
-import com.intive.repository.network.model.AuditDto
+import com.intive.repository.network.model.*
 
-import com.intive.repository.network.model.EventInviteResponseDto
-import com.intive.repository.network.model.NewEventDto
 import com.intive.repository.network.response.UsersResponse
 import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent.inject
@@ -81,7 +78,7 @@ class NetworkRepository(
         return auditService.searchAudits(page, query).audits
     }
 
-    suspend fun getTechnologies(): List<String> {
+    suspend fun getTechnologies(): TechnologiesList {
         return technologyGroupsServiceJava.getTechnologies()
     }
 
