@@ -67,6 +67,7 @@ class UsersViewModel(
                 .cachedIn(viewModelScope)
         }
 
+
     @FlowPreview
     @ExperimentalCoroutinesApi
     var candidates: Flow<PagingData<User>> = combine(
@@ -122,7 +123,7 @@ class UsersViewModel(
         viewModelScope.launch(dispatchers.io) {
             _techGroups.value = try {
                 val response = repository.getTechnologies().map { group ->
-                    GroupEntity(group, group.toLowerCase(Locale.ROOT))
+                    GroupEntity(group, group)
                 }
                 val result =
                     listOf(
@@ -133,6 +134,7 @@ class UsersViewModel(
                 Resource.Error(e.localizedMessage)
             }
         }
+    }
 
     private fun getTotalCandidatesCount(group: String?, query: String) =
         viewModelScope.launch(dispatchers.io) {

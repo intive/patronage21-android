@@ -21,11 +21,11 @@ import com.intive.users.R
 import com.intive.users.presentation.composables.Search
 import com.intive.users.presentation.users.UsersViewModel
 import com.intive.ui.components.Spinner
-import com.intive.ui.components.UsersHeader
 import com.intive.users.presentation.composables.GroupSpinner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
 
@@ -65,12 +65,13 @@ fun UsersScreen(
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
-                when (techGroups) {
-                    is Resource.Success -> {
-                        GroupSpinner(
-                            items = techGroups.data!!
-                        ) { group ->
-                            viewModel.onTechGroupsChanged(group.queryValue)
+                    when (techGroups) {
+                        is Resource.Success -> {
+                            GroupSpinner(
+                                items = techGroups.data!!
+                            ) { group ->
+                                viewModel.onTechGroupsChanged(group.queryValue)
+                            }
                         }
                         is Resource.Error -> ErrorItem(
                             message = stringResource(id = R.string.an_error_occurred),
