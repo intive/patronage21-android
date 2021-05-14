@@ -11,7 +11,8 @@ import com.intive.repository.network.model.AuditDto
 import com.intive.repository.network.model.EventInviteResponseDto
 import com.intive.repository.network.model.NewEventDto
 import com.intive.repository.network.response.UsersResponse
-
+import org.koin.core.qualifier.named
+import org.koin.java.KoinJavaComponent.inject
 
 
 class NetworkRepository(
@@ -19,7 +20,8 @@ class NetworkRepository(
     private val auditService: AuditService,
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService,
-    private val registrationService: RegistrationService
+    private val registrationService: RegistrationService,
+    private val technologyGroupsServiceJava: TechnologyGroupsServiceJava
 ) {
     suspend fun getUsers(
         page: Int,
@@ -80,7 +82,7 @@ class NetworkRepository(
     }
 
     suspend fun getTechnologies(): List<String> {
-        return technologyGroupsService.getTechnologies()
+        return technologyGroupsServiceJava.getTechnologies()
     }
 
     suspend fun getTechnologyGroups(): List<Group> {
