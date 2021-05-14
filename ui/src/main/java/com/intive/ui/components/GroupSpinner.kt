@@ -23,14 +23,14 @@ fun GroupSpinner(
     label: String? = null,
     onTitleSelected: (GroupEntity) -> Unit
 ) {
-    val text = rememberSaveable { mutableStateOf(items[0].printableName) }
+    val allItems = listOf(
+        GroupEntity(stringResource(R.string.all_groups), null)
+    ) + items
+    val text = rememberSaveable { mutableStateOf(allItems[0].printableName) }
     val isOpen = rememberSaveable { mutableStateOf(false) }
     val openCloseOfDropDownList: (Boolean) -> Unit = {
         isOpen.value = it
     }
-    val allItems = listOf(
-        GroupEntity(stringResource(R.string.all_groups), null)
-    ) + items
 
     Box {
         Column {
