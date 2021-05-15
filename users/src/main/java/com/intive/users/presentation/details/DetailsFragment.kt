@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.intive.ui.PatronativeTheme
 import com.intive.users.presentation.composables.screens.DetailsScreen
 import kotlinx.coroutines.flow.collect
@@ -19,12 +21,14 @@ import android.net.Uri
 class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModel<DetailsViewModel>()
+    private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val mock = viewModel.user
+        mock.firstName = args.login
         val projects = viewModel.projects
 
         val navController = findNavController()

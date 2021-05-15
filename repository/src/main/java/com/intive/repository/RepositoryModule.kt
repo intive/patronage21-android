@@ -14,30 +14,42 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.network.*
+import org.koin.core.qualifier.named
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
+private const val BASE_URL_JAVA = "http://intive-patronage.pl:9101/"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get()) }
-    single { createRetrofit() }
-    single { createUsersService(get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get()) }
+    single(named("mocklab")) { createRetrofit() }
+    single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
-    single { createTechnologiesService(get()) }
-    single { createAuditService(get()) }
+    single { createTechnologiesService(get(named("mocklab"))) }
+    single { createAuditService(get((named("mocklab")))) }
     single { createAuditMapper() }
-    single { createEventsService(get()) }
+    single { createEventsService(get((named("mocklab")))) }
     single { createEventsMapper() }
     single { createEventInviteResponseMapper() }
     single { createNewEventsMapper() }
     single { createDispatchers() }
-    single { createRegistrationService(get()) }
+    single { createRegistrationService(get((named("mocklab")))) }
+    single(named("java")){ createRetrofit2() }
+    single { createTechnologiesJavaService(get(named("java"))) }
 }
 
 private fun createRetrofit(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .build()
+}
+
+private fun createRetrofit2(): Retrofit {
+
+    return Retrofit.Builder()
+        .baseUrl(BASE_URL_JAVA)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }
@@ -82,5 +94,9 @@ fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
 
 private fun createRegistrationService(retrofit: Retrofit): RegistrationService {
     return retrofit.create(RegistrationService::class.java)
+}
+
+private fun createTechnologiesJavaService(retrofit: Retrofit): TechnologyGroupsServiceJava {
+    return retrofit.create(TechnologyGroupsServiceJava::class.java)
 }
 
