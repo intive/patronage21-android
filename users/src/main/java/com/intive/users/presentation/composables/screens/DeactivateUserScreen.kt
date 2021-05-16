@@ -73,8 +73,11 @@ fun DeactivateUserScreen(
             modifier = Modifier.padding(top = 30.dp)
         ) {
             PrimaryButton(
-                stringResource(R.string.deactivate_profile),
-                onClick = { /*TODO*/ }
+                text = stringResource(R.string.deactivate_profile),
+                enabled = viewModel.isLastNameCorrect(),
+                onClick = {
+                    viewModel.onConfirmClick()
+                }
             )
             Spacer(modifier = Modifier.size(10.dp))
             SecondaryButton(

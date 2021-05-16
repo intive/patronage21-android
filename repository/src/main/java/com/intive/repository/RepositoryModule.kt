@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.network.*
 import org.koin.core.qualifier.named
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl:9101/"
@@ -42,6 +43,7 @@ private fun createRetrofit(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }

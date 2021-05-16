@@ -27,7 +27,7 @@ interface UsersService {
         @Query("login") login: String
     ): UserDto
 
-    @POST("api/users/{login}/deactivate")
+    @PATCH("api/users/{login}/deactivate")
     suspend fun deactivateUser(
         @Path("login") login: String
     ): Response<String>
