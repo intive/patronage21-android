@@ -33,7 +33,7 @@ class GroupDetailsFragment : Fragment(){
                 PatronativeTheme {
                     GroupDetailsScreen(
                         stageList,
-                        stageViewModel,
+                        stageViewModel::getStageDetails,
                         findNavController()
                     )
                 }

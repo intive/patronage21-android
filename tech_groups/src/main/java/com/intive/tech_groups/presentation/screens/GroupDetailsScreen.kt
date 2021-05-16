@@ -20,7 +20,7 @@ import com.intive.ui.components.*
 @Composable
 fun GroupDetailsScreen(
     stageList: List<Stage>,
-    stageViewModel: StageViewModel,
+    getStageDetails: (Long) -> Unit,
     navController: NavController? = null
 ) {
     Column(
@@ -89,7 +89,7 @@ fun GroupDetailsScreen(
                                     timeInterval = stageList[index].timeInterval,
                                     state = stageList[index].state
                                 ) {
-                                    stageViewModel.getStageDetails(stageList[indexCloned].id.toLong())
+                                    getStageDetails(stageList[indexCloned].id.toLong())
                                     navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
                                 }
                                 Spacer(modifier = Modifier.size(20.dp))
@@ -99,7 +99,7 @@ fun GroupDetailsScreen(
                                     timeInterval = stageList[index + 1].timeInterval,
                                     state = stageList[index + 1].state
                                 ) {
-                                    stageViewModel.getStageDetails(stageList[indexCloned + 1].id.toLong())
+                                    getStageDetails(stageList[indexCloned + 1].id.toLong())
                                     navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
                                 }
                             }
