@@ -17,6 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.intive.repository.domain.model.Audit
+import com.intive.ui.components.ErrorItem
+import com.intive.ui.components.LoadingItem
+import com.intive.ui.components.LoadingView
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -112,50 +115,6 @@ fun AuditsList(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun LoadingView(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun LoadingItem() {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-    )
-}
-
-@Composable
-fun ErrorItem(
-    message: String,
-    modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit
-) {
-    Row(
-        modifier = modifier.padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = message,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
-            color = Color.Red
-        )
-        Button(onClick = onClickRetry) {
-            Text(text = "Sprobuj ponownie")
         }
     }
 }
