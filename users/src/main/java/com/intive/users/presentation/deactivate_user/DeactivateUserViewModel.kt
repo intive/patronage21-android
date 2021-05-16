@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 class DeactivateUserViewModel : ViewModel() {
 
     val lastName = mutableStateOf("")
+    val login = mutableStateOf("")
 
     fun onConfirmClick() {}
 
