@@ -6,13 +6,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.intive.ui.R
 
-
 @Composable
 fun LayoutContainer(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.screen_padding))
+            .padding(
+                start = dimensionResource(id = R.dimen.screen_padding),
+                end = dimensionResource(id = R.dimen.screen_padding),
+                bottom = dimensionResource(id = R.dimen.screen_padding),
+                top = dimensionResource(id = R.dimen.screen_padding_small)
+            )
     ) {
         content()
     }
