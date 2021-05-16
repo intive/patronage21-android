@@ -34,12 +34,15 @@ fun TitleText(
 
 @Composable
 fun SectionHeader(
+    modifier: Modifier = Modifier,
     backgroundColor: Color = colorResource(R.color.light_blue0),
     title: @Composable RowScope.() -> Unit,
     action: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
-    Column(modifier = Modifier.background(backgroundColor)) {
+    Column(
+        modifier = modifier.background(backgroundColor)
+    ) {
         Row(
             Modifier
                 .fillMaxWidth()
@@ -70,7 +73,8 @@ fun SectionHeader(
 }
 
 @Composable
-fun HeaderWithCount( 
+fun HeaderWithCount(
+    modifier: Modifier = Modifier,
     text: String,
     count: Int? = null,
     showCount: Boolean = false,
@@ -78,32 +82,33 @@ fun HeaderWithCount(
     textColor: Color = Color(0xFF52BCFF),
     backgroundColor: Color = Color(0xFFEFF9FF),
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .background(backgroundColor),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-
-        Text(
-            text = text,
-            color = textColor,
-            fontSize = 18.sp,
-            style = TextStyle(fontWeight = FontWeight.Bold),
+    Column(modifier = modifier) {
+        Row(
             modifier = Modifier
-                .padding(start = 16.dp)
-        )
-        if (count != null && showCount) {
-            Text(
-                text = count.toString(),
-                color = textColor,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-        }
+                .fillMaxWidth()
+                .height(height)
+                .background(backgroundColor),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
 
+            Text(
+                text = text,
+                color = textColor,
+                fontSize = 18.sp,
+                style = TextStyle(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+            )
+            if (count != null && showCount) {
+                Text(
+                    text = count.toString(),
+                    color = textColor,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
+        }
     }
 }
 

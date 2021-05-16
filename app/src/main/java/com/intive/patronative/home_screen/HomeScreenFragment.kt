@@ -35,7 +35,7 @@ import com.intive.ui.components.*
 class HomeScreenFragment : Fragment() {
 
     private val viewModel: HomeScreenViewModel by viewModels()
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,9 +45,10 @@ class HomeScreenFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     HomeScreen(navController = findNavController())
-                    if(sharedViewModel.successDialogState==RegistrationSuccessDialogState.SHOW_DIALOG) {
+                    if (sharedViewModel.successDialogState == RegistrationSuccessDialogState.SHOW_DIALOG) {
                         SuccessScreen()
-                        sharedViewModel.successDialogState=RegistrationSuccessDialogState.HIDE_DIALOG
+                        sharedViewModel.successDialogState =
+                            RegistrationSuccessDialogState.HIDE_DIALOG
                     }
                 }
             }
