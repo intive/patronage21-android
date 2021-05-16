@@ -35,7 +35,7 @@ import com.intive.ui.components.*
 class HomeScreenFragment : Fragment() {
 
     private val viewModel: HomeScreenViewModel by viewModels()
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +44,11 @@ class HomeScreenFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    LayoutContainer {
-                        HomeScreen(navController = findNavController())
-                        if(sharedViewModel.successDialogState==RegistrationSuccessDialogState.SHOW_DIALOG) {
-                            SuccessScreen()
-                            sharedViewModel.successDialogState=RegistrationSuccessDialogState.HIDE_DIALOG
-                        }
+                    HomeScreen(navController = findNavController())
+                    if (sharedViewModel.successDialogState == RegistrationSuccessDialogState.SHOW_DIALOG) {
+                        SuccessScreen()
+                        sharedViewModel.successDialogState =
+                            RegistrationSuccessDialogState.HIDE_DIALOG
                     }
                 }
             }
@@ -69,10 +68,10 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-//                .padding(
-//                    start = dimensionResource(id = R.dimen.screen_padding),
-//                    end = dimensionResource(id = R.dimen.screen_padding),
-//                )
+                .padding(
+                    start = dimensionResource(id = R.dimen.screen_padding),
+                    end = dimensionResource(id = R.dimen.screen_padding),
+                )
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
