@@ -5,74 +5,77 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
-import com.intive.calendar.components.*
+import com.intive.calendar.utils.DayBundle
 import com.intive.calendar.utils.EventBundle
+import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
+import com.intive.ui.components.Divider
 import com.intive.ui.components.TitleText
 
 
 @Composable
 fun DayLayout(
     navController: NavController,
-    date: String,
-    eventsList: List<Event>,
-    refreshCalendar: () -> Unit,
+    day: DayBundle
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .padding(24.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            TitleText(date, Modifier.padding(bottom = 24.dp))
-            EventsList(eventsList, date, navController)
-        }
-
-        Column {
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
-            }
-        }
+        TitleText(text = day.date, modifier = Modifier.padding(bottom = 24.dp))
+        EventsList(
+            date = day.date,
+            eventsList = day.events,
+            navController = navController,
+            isDayActive = day.active
+        )
     }
 }
 
 @Composable
 fun EventsList(
-    eventsList: List<Event>,
     date: String,
-    navController: NavController
+    eventsList: List<Event>,
+    navController: NavController,
+    isDayActive: Boolean
 ) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState) {
         items(eventsList.size) {
-            EventsListItem(eventsList[it], date, navController)
+            EventsListItem(
+                date = date,
+                event = eventsList[it],
+                navController = navController,
+                isDayActive = isDayActive
+            )
         }
     }
 }
 
 @Composable
-fun EventsListItem(event: Event, date: String, navController: NavController) {
+fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
     val eventBundle = EventBundle(
+        id = event.id,
         date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
-        users = event.users
+        inviteResponse = event.inviteResponse,
+        users = event.users,
+        active = isDayActive
     )
     val bundle = Bundle()
-    bundle.putParcelable("event", eventBundle)
+    bundle.putParcelable(eventBundleKey, eventBundle)
 
     Row(
         modifier = Modifier
@@ -87,7 +90,7 @@ fun EventsListItem(event: Event, date: String, navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(8.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
         ) {
 
             Text(
@@ -102,5 +105,5 @@ fun EventsListItem(event: Event, date: String, navController: NavController) {
         }
     }
 
-    Divider(color = Color.LightGray)
+    Divider()
 }

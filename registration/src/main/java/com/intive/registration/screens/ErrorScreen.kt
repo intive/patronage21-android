@@ -8,14 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.intive.registration.Constants
 import com.intive.registration.R
-import com.intive.registration.components.CustomButton
 import com.intive.registration.fragments.ErrorFragmentDirections
-import com.intive.ui.components.TitleText
+import com.intive.ui.components.IntroSection
+import com.intive.ui.components.PrimaryButton
 
 @Composable
-fun ErrorScreen(navController: NavController) {
+fun ErrorScreen(navController: NavController, messageResourceId: Int) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -23,14 +22,15 @@ fun ErrorScreen(navController: NavController) {
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        TitleText(text = stringResource(R.string.error_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(Constants.SPACER_HEIGHT))
-        CustomButton(
-            text = stringResource(R.string.error_home_button),
-            onClick = {
-                val action = ErrorFragmentDirections.actionBackToLogin()
-                navController.navigate(action)
-            }
+        IntroSection(
+            title = stringResource(R.string.error_occured),
+            text = stringResource(id = messageResourceId)
         )
+        PrimaryButton(
+            text = stringResource(R.string.error_home_button)
+        ) {
+            val action = ErrorFragmentDirections.actionBackToLogin()
+            navController.navigate(action)
+        }
     }
 }

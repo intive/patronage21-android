@@ -1,6 +1,5 @@
 package com.intive.calendar.viewmodels
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,14 @@ import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
+import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.*
 import java.util.*
 
-class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
+class CalendarHomeViewModel(
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
+) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 
@@ -27,9 +30,6 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
     private val _currentWeek = MutableLiveData(getCurrentWeek(Calendar.getInstance()))
     val currentWeek: LiveData<Array<Calendar>> = _currentWeek
 
-    private val _weekClicked = MutableLiveData(true)
-    val weekClicked: LiveData<Boolean> = _weekClicked
-
     private val _monthHeader = MutableLiveData("")
     val monthHeader: LiveData<String> = _monthHeader
 
@@ -41,23 +41,8 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
     private val _currentMonth = MutableLiveData(getCurrentMonth())
     var currentMonth: LiveData<CurrentMonth> = _currentMonth
 
-    private val _showPeriodDialog = MutableLiveData(false)
-    val showPeriodDialog: LiveData<Boolean> = _showPeriodDialog
-
     private val _showWeekView = MutableLiveData(true)
     val showWeekView: LiveData<Boolean> = _showWeekView
-
-    private val _bColorWeekBtn = MutableLiveData(colorBlue)
-    val bColorWeekBtn: LiveData<Long> = _bColorWeekBtn
-
-    private val _bColorMonthBtn = MutableLiveData(colorWhite)
-    val bColorMonthBtn: LiveData<Long> = _bColorMonthBtn
-
-    private val _txtColorWeekBtn = MutableLiveData(colorWhite)
-    val txtColorWeekBtn: LiveData<Long> = _txtColorWeekBtn
-
-    private val _txtColorMonthBtn = MutableLiveData(colorBlack)
-    val txtColorMonthBtn: LiveData<Long> = _txtColorMonthBtn
 
 
     private fun getCurrentWeek(date: Calendar): Array<Calendar> {
@@ -128,11 +113,11 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         var events: List<Event>
         val monthArray = mutableListOf<Day>()
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
+        viewModelScope.launch(dispatchers.io + handler) {
 
             _monthEvents.postValue(listOf(Day(null, emptyList())))
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = monthArray.indexOfFirst { it.date!! == events[i].date }
@@ -153,11 +138,11 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         var events: List<Event>
         val weekArray = mutableListOf<Day>()
 
-        viewModelScope.launch(Dispatchers.IO + handler) {
+        viewModelScope.launch(dispatchers.io + handler) {
             _weekEvents.postValue(listOf(Day(null, emptyList())))
 
 
-            events = repository.getEvents(dateStart, dateEnd)
+            events = repository.getEvents(dateStart, dateEnd, userId)
 
             for (i in events.indices) {
                 val index = weekArray.indexOfFirst { it.date!! == events[i].date }
@@ -170,6 +155,17 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
 
             _weekEvents.postValue(weekArray)
 
+        }
+    }
+
+
+    fun onCalendarViewChange(value: String) {
+        if (value == calendarWeekViewLabel) {
+            refreshCalendar()
+            showWeekView()
+        } else {
+            refreshCalendar()
+            showMonthView()
         }
     }
 
@@ -200,45 +196,25 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         _currentMonth.value = getCurrentMonth()
     }
 
-    fun showDialog() {
-        _showPeriodDialog.value = true
-    }
-
-    fun hideDialog() {
-        _showPeriodDialog.value = false
-    }
-
-    fun showWeekView() {
+    private fun showWeekView() {
         _showWeekView.value = true
     }
 
-    fun showMonthView() {
+    private fun showMonthView() {
         _showWeekView.value = false
     }
 
-    fun weekClicked() {
-        _bColorWeekBtn.value = colorBlue
-        _bColorMonthBtn.value = colorWhite
-        _txtColorWeekBtn.value = colorWhite
-        _txtColorMonthBtn.value = colorBlack
-        _weekClicked.value = true
-        refreshCalendar()
-    }
-
-    fun monthClicked() {
-        _bColorMonthBtn.value = colorBlue
-        _bColorWeekBtn.value = colorWhite
-        _txtColorMonthBtn.value = colorWhite
-        _txtColorWeekBtn.value = colorBlack
-        _weekClicked.value = false
-        refreshCalendar()
-    }
 
     fun refreshCalendar() {
         _currentWeek.value = getCurrentWeek(Calendar.getInstance())
         _weekHeader.value = setWeekHeader()
         currentDate = Calendar.getInstance()
         _currentMonth.value = getCurrentMonth()
+    }
+
+    fun refreshEventsList(){
+        getMonthEvents(getDateString(_currentMonth.value!!.days.first()), getDateString(_currentMonth.value!!.days.last()))
+        getWeekEvents(getDateString(_currentWeek.value!![0]), getDateString(_currentWeek.value!![6]))
     }
 
     private fun setWeekHeader(): String {
@@ -250,4 +226,3 @@ class CalendarHomeViewModel(private val repository: Repository) : ViewModel() {
         } - ${getDateString(_currentWeek.value!![6], ".")}"
     }
 }
-

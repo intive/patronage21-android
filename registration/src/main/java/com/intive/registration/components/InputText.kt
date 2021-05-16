@@ -34,25 +34,35 @@ fun InputText(
         inputState.value = it
     }
     val hasFirstFocus = remember { mutableStateOf(false) }
-    val hasFirstFocusChanged: (Boolean) -> Unit = {
+    val onFirstFocusChanged: (Boolean) -> Unit = {
         hasFirstFocus.value = it
+    }
+    val hasFocus = remember { mutableStateOf(false) }
+    val onFocusChanged: (Boolean) -> Unit = {
+        hasFocus.value = it
     }
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
         label = {
             Text(
-                when (inputState.value) {
-                    INVALID -> stringResource(R.string.field_required)
-                    else -> label
+                if (hasFocus.value) {
+                    when (inputState.value) {
+                        INVALID -> stringResource(R.string.field_required)
+                        else -> label
+                    }
+                } else {
+                    label
                 }
+
             )
         },
         placeholder = { Text(label) },
         modifier = Modifier
             .onFocusChanged {
+                onFocusChanged(it.isFocused)
                 if (it.isFocused) {
-                    hasFirstFocusChanged(true)
+                    onFirstFocusChanged(true)
                 }
                 formChecker()
                 inputStateChanged(
@@ -66,6 +76,14 @@ fun InputText(
                 INVALID -> Color.Red
                 VALID -> Color.Green
                 else -> Color.Gray
+            },
+            focusedIndicatorColor = when (inputState.value) {
+                VALID -> Color.Green
+                else -> Color.Red
+            },
+            focusedLabelColor = when (inputState.value) {
+                VALID -> Color.Green
+                else -> Color.Red
             }
         ),
         visualTransformation = visualTransformation,

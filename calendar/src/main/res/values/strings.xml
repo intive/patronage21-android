@@ -19,10 +19,6 @@
     <string name="end_hour_label">Do</string>
     <string name="add_event_checkbox_header">Grupy technologiczne</string>
 
-    <string name="checkbox_js_label">JavaScript</string>
-    <string name="checkbox_java_label">Java</string>
-    <string name="checkbox_qa_label">QA</string>
-    <string name="checkbox_mobile_label">Mobile (Android)</string>
     <string name="event_users_label">Uczestnicy</string>
     <string name="no_events">Brak wydarzeń</string>
 
@@ -34,14 +30,26 @@
     <string name="events_number">Liczba wydarzeń</string>
     <string name="hour">Godzina</string>
     <string name="event_user">Uczestnik"</string>
-    <string name="user_image_desc">User\'s profile pic</string>
-    <string name="exit_dialog_btn_desc">Exit dialog button</string>
-    <string name="edit_btn_desc">Edit button</string>
-    <string name="add_event_btn_desc">New event button</string>
-    <string name="calendar_header_right_btn_desc">Right button</string>
-    <string name="calendar_header_left_btn_desc">Left button</string>
-    <string name="spinner_component_btn_desc">Right button</string>
-    <string name="mock_date">.04.2021</string>
 
+
+    <string name="accept_invite_btn_label">Tak</string>
+    <string name="unknown_invite_btn_label">Może</string>
+    <string name="decline_invite_btn_label">Nie</string>
+
+    <string name="event_invite_response_error_msg">Nie udało się wysłać odpowiedzi</string>
+    <string name="user_image_desc">Obraz użytkownika</string>
+    <string name="exit_dialog_btn_desc">Opuść ekran</string>
+    <string name="edit_btn_desc">Przycisk edycji</string>
+    <string name="add_event_btn_desc">Przycisk dodania nowego zdarzenia</string>
+    <string name="calendar_header_right_btn_desc">Kolejny zakres czasu</string>
+    <string name="calendar_header_left_btn_desc">Poprzedni zakres czasu</string>
+    <string name="spinner_component_btn_desc">Wybór trybu kalendarza</string>
+    <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
+    <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
+
+    <string-array name="calendar_views_list">
+        <item>Tydzień</item>
+        <item>Miesiąc</item>
+    </string-array>
 
 </resources>

@@ -70,7 +70,7 @@ fun SectionHeader(
 }
 
 @Composable
-fun UsersHeader( //TODO: Refactor to be more flexible for other screens
+fun HeaderWithCount( 
     text: String,
     count: Int? = null,
     showCount: Boolean = false,

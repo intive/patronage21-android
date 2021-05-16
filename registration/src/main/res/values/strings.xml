@@ -29,13 +29,19 @@
     <string name="code_verification">Kod *</string>
     <string name="no_code_title">Weryfikacja adresu e-mail</string>
     <string name="send_code_button">Wyślij kod</string>
-    <string name="error_title">Wystąpił błąd</string>
+    <string name="error_occured">Wystąpił błąd</string>
     <string name="error_home_button">Strona główna</string>
     <string name="registration_succes_title">Twoja rejestracja przebiegła pomyślnie!</string>
     <string name="registration_success_subtitle">Konto zostało utworzone, możesz korzystać z aplikacji</string>
     <string name="close_dialog">Zamknij</string>
     <string name="no_code_subtitle">Wpisz ponownie swój adres e-mail</string>
     <string name="logo_image_content_description">Logo</string>
+    <string name="downloading_available_tech_groups">Pobieranie dostępnych grup technologicznych...</string>
+    <string name="wrong_code">Niepoprawny kod</string>
+    <string name="internet_connection_error">Problem z połączeniem internetowym, spróbuj ponownie później</string>
+    <string name="login_not_available">Login zajęty</string>
+    <string name="server_error">Błąd serwera</string>
+    <string name="processing">Przetwarzanie...</string>
 
 
     <string-array name="titles_array">

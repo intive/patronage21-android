@@ -1,23 +1,20 @@
 package com.intive.users.presentation.composables.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.intive.ui.components.LayoutContainer
+import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.SecondaryButton
 import com.intive.users.R
 import com.intive.users.presentation.deactivate_user.DeactivateUserViewModel
 
@@ -27,11 +24,7 @@ fun DeactivateUserScreen(
     navController: NavController
 ) {
     val lastName = viewModel.lastName
-    Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-
-    ) {
+    LayoutContainer {
         Text(
             stringResource(R.string.deactivate_user_question),
             style = MaterialTheme.typography.h5
@@ -45,8 +38,7 @@ fun DeactivateUserScreen(
         Spacer(modifier = Modifier.padding(16.dp))
 
         Text(
-            stringResource(R.string.deactivate_user_condition),
-            style = MaterialTheme.typography.caption
+            stringResource(R.string.deactivate_user_condition)
         )
         Spacer(modifier = Modifier.padding(8.dp))
 
@@ -76,52 +68,21 @@ fun DeactivateUserScreen(
             ),
         )
 
-        Spacer(modifier = Modifier.padding(16.dp))
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(top = 30.dp)
         ) {
-            Button(
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .padding(
-                        start = 32.dp,
-                        end = 32.dp,
-                        bottom = 16.dp
-                    )
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    stringResource(R.string.deactivate_profile),
-                    color = Color.White,
-                    fontSize = 18.sp
-                )
-            }
-            Button(
+            PrimaryButton(
+                stringResource(R.string.deactivate_profile),
+                onClick = { /*TODO*/ }
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            SecondaryButton(
+                text = stringResource(R.string.cancel),
                 onClick = {
-                          navController.popBackStack()
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .padding(
-                        start = 32.dp,
-                        end = 32.dp,
-                        bottom = 16.dp
-                    )
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.cancel),
-                    color = Color.White,
-                    fontSize = 18.sp
-                )
-            }
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

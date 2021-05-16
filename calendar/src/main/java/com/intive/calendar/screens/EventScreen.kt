@@ -10,63 +10,155 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
-import com.intive.ui.components.UsersHeader
+import com.intive.ui.components.HeaderWithCount
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.colorResource
+import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
+import com.intive.calendar.utils.*
 
 
 @Composable
 fun EventScreenLayout(
-    navController: NavController,
-    date: String,
-    time: String,
-    name: String,
-    users: List<User>,
-    refreshCalendar: () -> Unit
+    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
+    event: EventBundle,
+    refreshEventsList: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(24.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(date, Modifier.padding(bottom = 24.dp))
+            TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
             TitleText(
-                name,
-                Modifier.padding(bottom = 4.dp),
-                MaterialTheme.typography.h6,
-                Color.Black
+                text = event.name,
+                modifier = Modifier.padding(bottom = 4.dp),
+                style = MaterialTheme.typography.h6,
+                color = Color.Black
             )
 
             Text(
-                "${stringResource(R.string.hour)}: $time",
+                "${stringResource(R.string.hour)}: ${event.time}",
                 style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            UsersHeader(
+            HeaderWithCount(
                 text = stringResource(R.string.event_users_label),
-                count = users.size,
+                count = event.users.size,
                 showCount = true,
             )
 
-            UsersList(users)
+            UsersList(users = event.users)
         }
 
         Column {
-            OKButton(stringResource(R.string.accept_event)) {
-                refreshCalendar()
-                navController.popBackStack()
+
+            if (event.active) {
+                InviteResponseButtons(
+                    event = event,
+                    updateInviteResponse = updateInviteResponse,
+                    refreshEventsList = refreshEventsList
+                )
             }
-            CancelButton(stringResource(R.string.reject_event)) {
-                refreshCalendar()
-                navController.popBackStack()
+        }
+    }
+}
+
+@Composable
+fun InviteResponseButtons(
+    event: EventBundle,
+    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
+    refreshEventsList: () -> Unit
+) {
+
+    val acceptBtnSelected = remember { mutableStateOf(false) }
+    val unknownBtnSelected = remember { mutableStateOf(false) }
+    val declineBtnSelected = remember { mutableStateOf(false) }
+
+
+
+    when (event.inviteResponse) {
+        InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
+        InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
+        InviteResponse.DECLINED.name -> declineBtnSelected.value = true
+    }
+
+
+    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.accept_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_green),
+                selected = acceptBtnSelected
+            )
+            {
+
+                if (event.inviteResponse != InviteResponse.ACCEPTED.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.ACCEPTED.name,
+                        refreshEventsList,
+                    )
+                }
+
+
+                acceptBtnSelected.value = true
+                unknownBtnSelected.value = false
+                declineBtnSelected.value = false
+            }
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.unknown_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_gray),
+                selected = unknownBtnSelected
+            )
+            {
+
+                if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.UNKNOWN.name,
+                        refreshEventsList
+                    )
+                }
+
+                acceptBtnSelected.value = false
+                unknownBtnSelected.value = true
+                declineBtnSelected.value = false
+            }
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            ResponseButton(
+                text = stringResource(id = R.string.decline_invite_btn_label),
+                onSelectedColor = colorResource(id = R.color.dark_red),
+                selected = declineBtnSelected
+            )
+            {
+
+                if (event.inviteResponse != InviteResponse.DECLINED.name) {
+                    updateInviteResponse(
+                        userId,
+                        event.id,
+                        InviteResponse.DECLINED.name,
+                        refreshEventsList
+                    )
+                }
+
+                acceptBtnSelected.value = false
+                unknownBtnSelected.value = false
+                declineBtnSelected.value = true
             }
         }
     }
@@ -76,9 +168,15 @@ fun EventScreenLayout(
 fun UsersList(users: List<User>) {
     val scrollState = rememberLazyListState()
 
-    LazyColumn(state = scrollState) {
+    LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
-            PersonListItem(user, {}, 0.dp, true)
+            PersonListItem(
+                user = user,
+                onItemClick =  {},
+                rowPadding =  0.dp,
+                showAdditionalText = true,
+                additionalText = user.role
+            )
         }
     }
 }
