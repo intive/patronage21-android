@@ -1,16 +1,13 @@
 package com.intive.repository
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
+import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.util.EventDtoMapper
-
-import com.intive.repository.domain.model.Audit
 import com.intive.repository.domain.model.EventInviteResponse
-import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.UsersResponse
@@ -21,7 +18,7 @@ import retrofit2.Response
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
-    private val auditMapped: AuditDtoMapper,
+    auditMapper: AuditDtoMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper
@@ -118,11 +115,11 @@ class RepositoryImpl(
         return response.totalSize
     }
 
+    override val auditsMapper: AuditDtoMapper = auditMapper
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun searchAudits(page: Int, query: String): List<Audit> {
-        return networkRepository.searchAudits(page, query).map { audit ->
-            auditMapped.mapToDomainModel(audit)
-        }
+    override suspend fun searchAudits(page: Int, query: String): AuditResponse {
+        return networkRepository.searchAudits(page, query)
     }
 
     override suspend fun getTechnologies(): List<String> {
