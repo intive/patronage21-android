@@ -14,6 +14,7 @@ fun LayoutContainer(content: @Composable () -> Unit) {
             .padding(
                 start = dimensionResource(id = R.dimen.screen_padding),
                 end = dimensionResource(id = R.dimen.screen_padding),
+                bottom = dimensionResource(id = R.dimen.screen_padding),
                 top = dimensionResource(id = R.dimen.screen_padding_small)
             )
     ) {
