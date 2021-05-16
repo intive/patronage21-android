@@ -71,6 +71,10 @@ class NetworkRepository(
         )
     }
 
+    suspend fun deactivateUser(login: String): Response<String> {
+        return usersService.deactivateUser(login)
+    }
+
     suspend fun getTechnologies(): TechnologiesList {
         return technologyGroupsServiceJava.getTechnologies()
     }

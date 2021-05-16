@@ -24,6 +24,7 @@ interface Repository {
     suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?, login: String?): UsersResponse
     suspend fun getUsers(page: Int, role: String, group: String?, query: String): UsersResponse
     suspend fun getTotalUsersByRole(role: String, group: String?): Int
+    suspend fun deactivateUser(login: String): Response<String>
 
     suspend fun searchAudits(page: Int, query: String): AuditResponse
 

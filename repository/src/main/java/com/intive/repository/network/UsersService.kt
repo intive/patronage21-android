@@ -1,8 +1,9 @@
 package com.intive.repository.network
 
+import com.google.gson.JsonObject
 import com.intive.repository.network.response.UsersResponse
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.Response
+import retrofit2.http.*
 
 const val ROLE_CANDIDATE = "candidate"
 const val ROLE_LEADER = "leader"
@@ -20,4 +21,8 @@ interface UsersService {
         @Query("login") login: String?,
     ): UsersResponse
 
+    @POST("api/users/{login}/deactivate")
+    suspend fun deactivateUser(
+        @Path("login") login: String
+    ): Response<String>
 }

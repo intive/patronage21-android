@@ -115,6 +115,10 @@ class RepositoryImpl(
         return response.totalSize
     }
 
+    override suspend fun deactivateUser(login: String): Response<String> {
+        return networkRepository.deactivateUser(login)
+    }
+
     override val auditsMapper: AuditDtoMapper = auditMapper
 
     @RequiresApi(Build.VERSION_CODES.O)
