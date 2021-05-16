@@ -9,6 +9,7 @@ class   UserDtoMapper : DomainMapper<UserDto, User> {
         return User(
             firstName = model.firstName,
             lastName = model.lastName,
+            login = model.userName,
             gender = "Mężczyzna",
             email = model.email,
             phoneNumber = model.phoneNumber,
@@ -22,10 +23,10 @@ class   UserDtoMapper : DomainMapper<UserDto, User> {
         return UserDto(
             firstName = domainModel.firstName,
             lastName = domainModel.lastName,
+            userName = domainModel.login,
             email = domainModel.email,
             phoneNumber = domainModel.phoneNumber,
             gitHubUrl = domainModel.github,
-            userName = "User has not set a bio",
             status = "ACTIVE",
             role = domainModel.role
         )
