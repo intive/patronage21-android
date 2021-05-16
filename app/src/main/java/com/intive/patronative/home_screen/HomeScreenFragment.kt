@@ -67,36 +67,34 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-                .padding(
-                    start = dimensionResource(id = R.dimen.screen_padding),
-                    end = dimensionResource(id = R.dimen.screen_padding),
-                )
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            TitleText(
-                text = stringResource(R.string.home_screen_greeting),
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.secondary,
-                modifier = Modifier
-                    .padding(top = 15.dp, bottom = 15.dp)
-            )
-            Text(
-                text = stringResource(R.string.home_screen_text),
-                style = PatronageTypography.body2,
-                modifier = Modifier
-                    .padding(top = 15.dp, bottom = 15.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                HomeScreenBoxButtonsGrid(
-                    modifier = Modifier.size(20.dp),
-                    navController = navController
+            LayoutContainer {
+                TitleText(
+                    text = stringResource(R.string.home_screen_greeting),
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.secondary,
+                    modifier = Modifier
+                        .padding(bottom = 15.dp)
                 )
+                Text(
+                    text = stringResource(R.string.home_screen_text),
+                    style = PatronageTypography.body2,
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 15.dp)
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    HomeScreenBoxButtonsGrid(
+                        modifier = Modifier.size(20.dp),
+                        navController = navController
+                    )
+                }
             }
         }
     }
