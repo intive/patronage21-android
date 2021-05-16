@@ -52,8 +52,8 @@ fun GroupDetailsScreen(
                     modifier = Modifier.padding(
                         top = 15.dp,
                         bottom = 15.dp,
-                        start = dimensionResource(id = R.dimen.small_screen_padding),
-                        end = dimensionResource(id = R.dimen.small_screen_padding)),
+                        start = dimensionResource(id = R.dimen.screen_padding_small),
+                        end = dimensionResource(id = R.dimen.screen_padding_small)),
                     title = {
                         SectionHeaderText(text = stringResource(id = R.string.description))
                     }
@@ -104,8 +104,8 @@ fun GroupDetailsScreen(
                     modifier = Modifier
                         .padding(
                             top = 16.dp,
-                            start = dimensionResource(id = R.dimen.small_screen_padding),
-                            end = dimensionResource(id = R.dimen.small_screen_padding)),
+                            start = dimensionResource(id = R.dimen.screen_padding_small),
+                            end = dimensionResource(id = R.dimen.screen_padding_small)),
                     text = stringResource(id = R.string.leaders),
                     count = 0,
                     showCount = true,
@@ -117,8 +117,8 @@ fun GroupDetailsScreen(
                     modifier = Modifier
                         .padding(
                             top = 16.dp,
-                            start = dimensionResource(id = R.dimen.small_screen_padding),
-                            end = dimensionResource(id = R.dimen.small_screen_padding)),
+                            start = dimensionResource(id = R.dimen.screen_padding_small),
+                            end = dimensionResource(id = R.dimen.screen_padding_small)),
                     text = stringResource(id = R.string.candidates),
                     count = 0,
                     showCount = true,
@@ -127,7 +127,7 @@ fun GroupDetailsScreen(
 
             item {
                 PrimaryButton(
-                    paddingTop = dimensionResource(id = R.dimen.small_screen_padding),
+                    paddingTop = dimensionResource(id = R.dimen.screen_padding_small),
                     text = stringResource(id = R.string.resign_from_candidacy),
                     onClick = {}
                 )
