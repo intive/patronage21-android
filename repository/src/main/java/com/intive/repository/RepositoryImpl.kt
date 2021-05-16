@@ -110,6 +110,12 @@ class RepositoryImpl(
         }
     }
 
+    override suspend fun getUser(login: String): User {
+        return usersMapper.mapToDomainModel(
+            networkRepository.getUser(login)
+        )
+    }
+
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
         val response = getUsers(role = role, group = group, page = 1)
         return response.totalSize
@@ -153,7 +159,11 @@ class RepositoryImpl(
 
 
     override suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String> {
-        return networkRepository.updateInviteResponse(inviteResponseMapper.mapFromDomainModel(inviteResponse))
+        return networkRepository.updateInviteResponse(
+            inviteResponseMapper.mapFromDomainModel(
+                inviteResponse
+            )
+        )
     }
 
     override suspend fun sendRequestForCode(email: String) {

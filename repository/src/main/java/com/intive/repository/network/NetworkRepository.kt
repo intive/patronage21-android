@@ -71,6 +71,12 @@ class NetworkRepository(
         )
     }
 
+    suspend fun getUser(
+        login: String
+    ): UserDto {
+        return usersService.getUser(login)
+    }
+
     suspend fun deactivateUser(login: String): Response<String> {
         return usersService.deactivateUser(login)
     }
