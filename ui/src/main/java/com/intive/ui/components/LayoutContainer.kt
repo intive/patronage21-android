@@ -11,7 +11,11 @@ fun LayoutContainer(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.screen_padding))
+            .padding(
+                start = dimensionResource(id = R.dimen.screen_padding),
+                end = dimensionResource(id = R.dimen.screen_padding),
+                top = dimensionResource(id = R.dimen.screen_padding_small)
+            )
     ) {
         content()
     }

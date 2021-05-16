@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="screen_padding">24dp</dimen>
+    <dimen name="screen_padding_small">16dp</dimen>
     <dimen name="appbar_elevation">50dp</dimen>
     <dimen name="appbar_icons_spacer_size">5dp</dimen>
 </resources>
