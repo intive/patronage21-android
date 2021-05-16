@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.intive.tech_groups.presentation.Stage
 import com.intive.tech_groups.presentation.screens.GroupDetailsScreen
-import com.intive.tech_groups.presentation.screens.MainScreen
 import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel

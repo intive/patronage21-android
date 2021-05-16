@@ -26,7 +26,7 @@ class StageViewModel(
         viewModelScope.launch(dispatchers.io + handler) {
 
             stage = repository.getStageDetails(id)
-            _stageDetails!!.postValue(stage)
+            _stageDetails.postValue(stage)
         }
     }
 
