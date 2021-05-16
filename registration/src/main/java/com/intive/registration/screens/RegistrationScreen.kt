@@ -24,9 +24,7 @@ import com.intive.registration.R
 import com.intive.registration.components.*
 import com.intive.registration.fragments.RegistrationFragmentDirections
 import com.intive.repository.util.Resource
-import com.intive.ui.components.CheckBoxesList
-import com.intive.ui.components.Spinner
-import com.intive.ui.components.TitleText
+import com.intive.ui.components.*
 import kotlinx.coroutines.launch
 
 
@@ -69,7 +67,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             }
             is Resource.Error -> {
                 Text(
-                    text = response.message?: "Wystąpił błąd",
+                    text = response.message?: stringResource(R.string.error_occured),
                     color = Color.Red,
                     fontWeight = FontWeight.Bold
                 )
@@ -81,10 +79,11 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         }
         Logo()
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        TitleText(text = stringResource(R.string.registration_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        Text(text = stringResource(R.string.registration_subtitle))
-        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+        IntroSection(
+            title = stringResource(R.string.registration_title),
+            text = stringResource(R.string.registration_subtitle)
+        )
+        //Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         Spinner(items = titles, onTitleSelected = viewmodel::onTitleChange)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         FirstNameInput(firstName, viewmodel, formChecker)
@@ -139,14 +138,13 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             formChecker = formChecker
         )
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        CustomButton(
-            text = if(response !is Resource.Loading) stringResource(R.string.create_account_button)
+        PrimaryButton(
+            text = if (response !is Resource.Loading) stringResource(R.string.create_account_button)
             else stringResource(R.string.processing),
-            onClick = {
-                viewmodel.sendDataToServer()
-            },
             enabled = formValid.value
-        )
+        ) {
+            viewmodel.sendDataToServer()
+        }
     }
 }
 

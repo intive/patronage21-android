@@ -16,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.R
-import com.intive.registration.components.CustomButton
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.NoCodeFragmentDirections
 import com.intive.registration.viewmodels.NoCodeViewModel
+import com.intive.ui.components.IntroSection
+import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.TitleText
 
 @Composable
@@ -41,21 +42,20 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        TitleText(text = stringResource(R.string.no_code_title), modifier = Modifier)
-        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        Text(stringResource(R.string.no_code_subtitle))
+        IntroSection(
+            title = stringResource(R.string.no_code_title),
+            text = stringResource(R.string.no_code_subtitle)
+        )
         Spacer(modifier = Modifier.height(12.dp))
         EmailInput(email, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        CustomButton(
-            text = stringResource(R.string.send_code_button),
-            onClick = {
-                viewmodel.sendRequestForCode()
-                val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email)
-                navController.navigate(action)
-            },
-            enabled = formValid.value
-        )
+        PrimaryButton(
+            text = stringResource(R.string.send_code_button)
+        ) {
+            viewmodel.sendRequestForCode()
+            val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email)
+            navController.navigate(action)
+        }
     }
 }
 
