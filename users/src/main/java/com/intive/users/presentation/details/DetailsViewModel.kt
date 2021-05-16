@@ -16,6 +16,7 @@ class DetailsViewModel : ViewModel() {
     val user = User(
         firstName = "Jan",
         lastName = "Kowalski",
+        login = "jkowalski",
         gender = "Mężczyzna",
         email = "jankowalski@gmal.com",
         phoneNumber = "123456789",
