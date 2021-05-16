@@ -17,8 +17,9 @@ import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.components.InputText
 import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.R
-import com.intive.registration.components.CustomButton
 import com.intive.registration.fragments.LoginFragmentDirections
+import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.TitleText
 
 
@@ -41,21 +42,18 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PasswordInput(password, viewmodel)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        CustomButton(
-            text = stringResource(R.string.login_button),
-            {
-                //check login & password if correct navigate to HomeScreen
-            }
-        )
+        PrimaryButton(
+            text = stringResource(R.string.login_button)
+        ) {
+            //check login & password if correct navigate to HomeScreen
+        }
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        CustomButton(
-            text = stringResource(R.string.registration_button),
-            onClick = {
-                val action = LoginFragmentDirections.actionRegister()
-                navController.navigate(action)
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary)
-        )
+        SecondaryButton(
+            text = stringResource(R.string.registration_button)
+        ) {
+            val action = LoginFragmentDirections.actionRegister()
+            navController.navigate(action)
+        }
     }
 }
 

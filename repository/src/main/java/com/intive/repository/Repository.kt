@@ -16,8 +16,6 @@ interface Repository {
 
     val usersMapper: UserDtoMapper
 
-    //suspend fun getAudits(): List<Audit>
-
     suspend fun getTechnologies(): List<String>
     suspend fun getTechnologyGroups(): List<Group>
 

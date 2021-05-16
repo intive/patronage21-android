@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.domain.model.User
 import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.ROLE_LEADER
@@ -20,12 +21,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val ALL_GROUPS = "wszystkie grupy"
 private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
 
 class UsersViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
 ) : ViewModel() {
 
     private val _query: MutableState<String> = mutableStateOf("")
@@ -39,9 +39,9 @@ class UsersViewModel(
     private val _totalCandidates: MutableState<Resource<Int>> = mutableStateOf(Resource.Loading())
     val totalCandidates: State<Resource<Int>> = _totalCandidates
 
-    private val _techGroups: MutableState<Resource<List<String>>> =
+    private val _techGroups: MutableState<Resource<List<GroupEntity>>> =
         mutableStateOf(Resource.Loading())
-    val techGroups: State<Resource<List<String>>> = _techGroups
+    val techGroups: State<Resource<List<GroupEntity>>> = _techGroups
 
     private val selectedGroup: MutableStateFlow<String?> = MutableStateFlow(null)
 
@@ -56,14 +56,14 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
-            getTotalLeadersCount(group = group, query = query)
+            getTotalLeadersCount(group = selectedGroup, query = query)
 
             Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_LEADER, group = group, query = query)
+                UsersSource(repository, ROLE_LEADER, group = selectedGroup, query = query)
             }.flow
                 .cachedIn(viewModelScope)
         }
+
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -76,39 +76,25 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            val group = if (selectedGroup == ALL_GROUPS) null else selectedGroup
-            getTotalCandidatesCount(group = group, query = query)
+            getTotalCandidatesCount(group = selectedGroup, query = query)
 
             Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_CANDIDATE, group = group, query = query)
+                UsersSource(repository, ROLE_CANDIDATE, group = selectedGroup, query = query)
             }.flow
                 .cachedIn(viewModelScope)
         }
 
     init {
-        viewModelScope.launch(dispatchers.io) {
-            _techGroups.value = try {
-                val response = repository.getTechnologies()
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-        }
+        getTechGroups()
     }
 
     fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
-        _techGroups.value = Resource.Loading()
-        _techGroups.value = try {
-            val response = repository.getTechnologies()
-            Resource.Success(response)
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage)
-        }
+        getTechGroups()
     }
 
-    fun onTechGroupsChanged(group: String) {
+    fun onTechGroupsChanged(group: String?) {
         viewModelScope.launch {
-            selectedGroup.emit(group.toLowerCase(Locale.ROOT))
+            selectedGroup.emit(group?.toLowerCase(Locale.ROOT))
         }
     }
 
@@ -126,6 +112,21 @@ class UsersViewModel(
 
     fun onLeadersRetryClicked() {
         getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
+    }
+
+    private fun getTechGroups() {
+        _techGroups.value = Resource.Loading()
+
+        viewModelScope.launch(dispatchers.io) {
+            _techGroups.value = try {
+                val response = repository.getTechnologies().map { group ->
+                    GroupEntity(group, group)
+                }
+                Resource.Success(response)
+            } catch (e: Exception) {
+                Resource.Error(e.localizedMessage)
+            }
+        }
     }
 
     private fun getTotalCandidatesCount(group: String?, query: String) =

@@ -10,6 +10,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class RegistrationViewModel(
@@ -25,9 +26,13 @@ class RegistrationViewModel(
         viewModelScope.launch(dispatchers.io) {
             _availableTechnologies.value = try {
                 val response = repository.getTechnologies()
-                Resource.Success(response)
+                withContext(dispatchers.main) {
+                    Resource.Success(response)
+                }
             } catch (ex: Exception) {
-                Resource.Error(ex.localizedMessage)
+                withContext(dispatchers.main) {
+                    Resource.Error(ex.localizedMessage)
+                }
             }
         }
     }
@@ -105,7 +110,7 @@ class RegistrationViewModel(
     fun isPhoneNumberValid(): Boolean = phoneNumber.value?.matches(Regex("\\d{9,9}")) ?: false
 
     fun isPasswordValid(): Boolean = password.value?.let {
-        it.length >= 8 &&
+        it.length in 8..20 &&
                 it.contains(Regex("[A-Z]+")) &&
                 it.contains(Regex("[a-z]+")) &&
                 it.contains(Regex("[0-9]+")) &&
@@ -120,12 +125,12 @@ class RegistrationViewModel(
 
     fun isLoginValid(): Boolean = login.value?.matches(Regex("[A-Za-z0-9]{2,15}")) ?: false
     fun isGithubUrlValid(): Boolean =
-        githubUrl.value?.let{
+        githubUrl.value?.let {
             it.isEmpty() ||
-            it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
-            !it.startsWith("-") &&
-            !it.endsWith("-") &&
-            !it.contains("--")
+                    it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
+                    !it.startsWith("-") &&
+                    !it.endsWith("-") &&
+                    !it.contains("--")
         } ?: true
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
