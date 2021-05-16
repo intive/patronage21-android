@@ -6,13 +6,9 @@ import com.google.gson.JsonObject
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
-import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.domain.model.EventInviteResponse
-import com.intive.repository.network.util.AuditDtoMapper
-import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.UsersResponse
-import com.intive.repository.network.util.NewEventDtoMapper
-import com.intive.repository.network.util.UserDtoMapper
+import com.intive.repository.network.util.*
 import retrofit2.Response
 
 class RepositoryImpl(
@@ -21,7 +17,8 @@ class RepositoryImpl(
     auditMapper: AuditDtoMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
-    private val newEventMapper: NewEventDtoMapper
+    private val newEventMapper: NewEventDtoMapper,
+    private val stageDetailsMapper: StageDetailsDtoMapper
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -161,5 +158,9 @@ class RepositoryImpl(
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
 
+    }
+
+    override suspend fun getStageDetails(id: Long): StageDetails {
+        return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
     }
 }
