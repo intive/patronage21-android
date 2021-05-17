@@ -33,9 +33,7 @@ interface Repository {
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
-
+  
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 }
-
-
 
