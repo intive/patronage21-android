@@ -23,6 +23,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
 import com.intive.shared.getFullDateString
+import com.intive.shared.stringToCalendar
+import java.util.*
 
 
 @Composable
@@ -71,7 +73,7 @@ fun StageScreen(stageViewModel: StageViewModel) {
 
                 stageDetails!!.events.forEach { event ->
                     EventListItem(
-                        date = getFullDateString(event.date),
+                        date = event.date,
                         name = event.name,
                         timeStart = event.timeStart,
                         timeEnd = event.timeEnd
@@ -133,6 +135,8 @@ fun EventListItem(
     /*TODO: onClick */
 ) {
 
+    var fontColor: Color = Color.Black
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -140,14 +144,20 @@ fun EventListItem(
             .clickable(onClick = {})
     ) {
         Spacer(Modifier.width(10.dp))
+
+        if(stringToCalendar(date).before(Calendar.getInstance())) {
+            fontColor = Color.Gray
+        }
+
         Column {
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text = date,
+                    text = getFullDateString(date),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        color = fontColor
                     )
                 )
             }
@@ -155,7 +165,8 @@ fun EventListItem(
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
                     text = "$name, $timeStart-$timeEnd",
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = fontColor
                 )
             }
         }

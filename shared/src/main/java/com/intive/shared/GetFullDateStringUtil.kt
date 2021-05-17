@@ -2,14 +2,9 @@ package com.intive.shared
 
 import java.util.*
 
-fun getFullDateString(dateString: String, separator: String = "-"): String {
-    val dateElements = dateString.split(separator)
+fun getFullDateString(dateString: String): String {
 
-    val calendar: Calendar = Calendar.getInstance()
-
-    calendar[Calendar.YEAR] = dateElements[2].toInt()
-    calendar[Calendar.MONTH] = dateElements[1].toInt() - 1
-    calendar[Calendar.DAY_OF_MONTH] = dateElements[0].toInt()
+    val calendar = stringToCalendar(dateString)
 
     return "${weekDaysCalendarClass[calendar[Calendar.DAY_OF_WEEK]]}, ${
         getDateString(
@@ -28,4 +23,17 @@ fun getFullDateString(date: Calendar): String {
         )
     }"
 
+}
+
+
+fun stringToCalendar(dateString: String, separator: String = "-"): Calendar {
+    val dateElements = dateString.split(separator)
+
+    val calendar: Calendar = Calendar.getInstance()
+
+    calendar[Calendar.YEAR] = dateElements[2].toInt()
+    calendar[Calendar.MONTH] = dateElements[1].toInt() - 1
+    calendar[Calendar.DAY_OF_MONTH] = dateElements[0].toInt()
+
+    return calendar
 }
