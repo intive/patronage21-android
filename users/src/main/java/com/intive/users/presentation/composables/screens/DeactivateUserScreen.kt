@@ -23,7 +23,7 @@ fun DeactivateUserScreen(
     viewModel: DeactivateUserViewModel,
     navController: NavController
 ) {
-    val lastName = viewModel.lastName
+    val lastName = viewModel.typedLastName
     LayoutContainer {
         Text(
             stringResource(R.string.deactivate_user_question),

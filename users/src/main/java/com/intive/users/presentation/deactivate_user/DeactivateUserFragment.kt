@@ -16,10 +16,11 @@ import com.intive.users.R
 import com.intive.users.presentation.composables.screens.DeactivateUserScreen
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DeactivateUserFragment : Fragment() {
-    private val viewModel by viewModel<DeactivateUserViewModel>()
     private val args: DeactivateUserFragmentArgs by navArgs()
+    private val viewModel by viewModel<DeactivateUserViewModel>{parametersOf(args.login)}
 
 
     override fun onCreateView(
@@ -27,8 +28,6 @@ class DeactivateUserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.getUser(args.login)
-
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
