@@ -104,8 +104,8 @@ class RegistrationViewModel(
         _regulationsAgree.value = newValue
     }
 
-    fun isFirstNameValid(): Boolean = firstName.value?.matches(Regex("[A-Za-z]{3,20}")) ?: false
-    fun isLastNameValid(): Boolean = lastName.value?.matches(Regex("[A-Za-z]{2,20}")) ?: false
+    fun isFirstNameValid(): Boolean = firstName.value?.matches(Regex("[A-Za-z]{2,30}")) ?: false
+    fun isLastNameValid(): Boolean = lastName.value?.matches(Regex("[A-Za-z]{2,30}")) ?: false
     fun isEmailValid(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
     fun isPhoneNumberValid(): Boolean = phoneNumber.value?.matches(Regex("\\d{9,9}")) ?: false
 

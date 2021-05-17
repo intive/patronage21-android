@@ -4,6 +4,7 @@ import android.app.Application
 import com.intive.registration.registrationModule
 import com.intive.calendar.calendarModule
 import com.intive.audit.auditModule
+import com.intive.gradebook.gradebookModule
 import com.intive.repository.repositoryModule
 import com.intive.tech_groups.techGroupsModule
 import com.intive.users.usersModule
@@ -23,7 +24,8 @@ class PatronativeApplication : Application() {
                 calendarModule,
                 registrationModule,
                 usersModule,
-                techGroupsModule
+                techGroupsModule,
+                gradebookModule
             )
         }
     }

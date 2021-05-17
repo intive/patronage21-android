@@ -7,6 +7,7 @@ import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
 import retrofit2.Response
@@ -18,7 +19,8 @@ class RepositoryImpl(
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
-    private val stageDetailsMapper: StageDetailsDtoMapper
+    private val stageDetailsMapper: StageDetailsDtoMapper,
+    gbMapper: GradebookDtoMapper
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -160,7 +162,18 @@ class RepositoryImpl(
 
     }
 
+
     override suspend fun getStageDetails(id: Long): StageDetails {
         return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
+    }
+      
+    override val gradebookMapper: GradebookDtoMapper = gbMapper
+
+    override suspend fun getGradebook(
+        group: String,
+        sortby: String,
+        page: Int
+    ): GradebookResponse {
+        return networkRepository.getGradebook(group = group, sortby = sortby, page = page)
     }
 }

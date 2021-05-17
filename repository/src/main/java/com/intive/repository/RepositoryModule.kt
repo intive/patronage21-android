@@ -11,13 +11,14 @@ import com.google.gson.GsonBuilder
 import com.intive.repository.network.*
 import com.intive.repository.network.util.*
 import org.koin.core.qualifier.named
+import com.intive.repository.network.util.*
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl:9101/"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
@@ -34,6 +35,8 @@ val repositoryModule = module {
     single { createTechnologiesJavaService(get(named("java"))) }
     single { createStageDetailsService(get((named("mocklab")))) }
     single { createStageDetailsMapper() }
+    single { createGradebookService(get((named("mocklab")))) }
+    single { createGradebookMapper() }
 }
 
 private fun createRetrofit(): Retrofit {
@@ -98,9 +101,16 @@ private fun createTechnologiesJavaService(retrofit: Retrofit): TechnologyGroupsS
     return retrofit.create(TechnologyGroupsServiceJava::class.java)
 }
 
+
 private fun createStageDetailsMapper(): StageDetailsDtoMapper = StageDetailsDtoMapper()
 
 private fun createStageDetailsService(retrofit: Retrofit): StageDetailsService {
     return retrofit.create(StageDetailsService::class.java)
 }
+
+private fun createGradebookService(retrofit: Retrofit): GradebookService {
+    return retrofit.create(GradebookService::class.java)
+}
+
+private fun createGradebookMapper(): GradebookDtoMapper = GradebookDtoMapper()
 

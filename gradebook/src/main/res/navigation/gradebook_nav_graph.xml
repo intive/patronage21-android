@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gradebook_nav_graph"
+    app:startDestination="@id/gradebookFragment">
+
+    <fragment
+        android:id="@+id/gradebookFragment"
+        android:name="com.intive.gradebook.composables.gradebook.GradebookFragment"
+        android:label="GradebookFragment" >
+        <deepLink app:uri="intive://gradebookFragment" />
+        <action
+            android:id="@+id/action_gradebookFragment_to_gradesFragment"
+            app:destination="@id/gradesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gradesFragment"
+        android:name="com.intive.gradebook.composables.grades.GradesFragment"
+        android:label="GradesFragment">
+            <argument
+            android:name="firstName"
+            app:argType="string"/>
+        <argument
+            android:name="lastName"
+            app:argType="string"/>
+        <argument
+            android:name="gradeNames"
+            app:argType="string[]" />
+        <argument
+            android:name="grades"
+            app:argType="float[]" />
+        <argument
+            android:name="gradeReviews"
+            app:argType="string[]" />
+        <argument
+            android:name="averageGrade"
+            app:argType="float" />
+    </fragment>
+</navigation>
