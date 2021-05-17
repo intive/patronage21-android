@@ -36,4 +36,6 @@ interface Repository {
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
+   
+}
 
