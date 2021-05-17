@@ -22,7 +22,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
-import com.intive.tech_groups.getFullDateString
+import com.intive.shared.getFullDateString
 
 
 @Composable
