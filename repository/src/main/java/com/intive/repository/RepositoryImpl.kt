@@ -189,4 +189,8 @@ class RepositoryImpl(
     override suspend fun loginUser(login: String) {
         localRepository.loginUser(login)
     }
+
+    override suspend fun logoutUser() {
+        localRepository.logoutUser()
+    }
 }

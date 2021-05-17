@@ -13,6 +13,9 @@ class SharedPreferenceSource(private val prefs: SharedPreferences) {
         prefs.edit().putString(LOGIN_KEY, login).apply()
     }
 
+    fun logoutUser() {
+        prefs.edit().clear().apply()
+    }
 }
 
 object SharedPreferencesKeys {

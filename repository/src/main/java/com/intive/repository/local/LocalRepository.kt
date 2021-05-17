@@ -12,4 +12,7 @@ class LocalRepository(
         sharedPreferenceSource.loginUser(login)
     }
 
+    fun logoutUser() {
+        sharedPreferenceSource.logoutUser()
+    }
 }

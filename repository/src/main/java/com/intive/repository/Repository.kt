@@ -40,5 +40,6 @@ interface Repository {
 
     suspend fun isUserLogged() : Boolean
     suspend fun loginUser(login: String)
+    suspend fun logoutUser()
 }
 
