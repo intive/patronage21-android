@@ -17,6 +17,7 @@ class NetworkRepository(
     private val eventsService: EventsService,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService
 ) {
     suspend fun getUsers(
@@ -104,6 +105,11 @@ class NetworkRepository(
 
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
         return eventsService.updateInviteResponse(inviteResponse)
+    }
+
+
+    suspend fun getStageDetails(id: Long): StageDetailsDto {
+        return stageDetailsService.getStageDetails(id)
     }
 
     suspend fun getGradebook(

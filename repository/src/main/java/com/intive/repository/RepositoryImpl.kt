@@ -19,6 +19,7 @@ class RepositoryImpl(
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
+    private val stageDetailsMapper: StageDetailsDtoMapper,
     gbMapper: GradebookDtoMapper
 ) : Repository {
 
@@ -161,6 +162,11 @@ class RepositoryImpl(
 
     }
 
+
+    override suspend fun getStageDetails(id: Long): StageDetails {
+        return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
+    }
+      
     override val gradebookMapper: GradebookDtoMapper = gbMapper
 
     override suspend fun getGradebook(

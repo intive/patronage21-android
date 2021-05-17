@@ -1,5 +1,6 @@
 package com.intive.repository
 
+
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.domain.model.*
@@ -33,7 +34,8 @@ interface Repository {
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
-  
+    suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
+   
 }
 
