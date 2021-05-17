@@ -65,6 +65,8 @@ class GradebookViewModel(
         println(group)
         if(group=="Wszystkie grupy")
             groupStorage="all"
+        else if(group=="Mobile (Android)")
+            groupStorage="android"
         else
             groupStorage = group.toLowerCase(Locale.ROOT)
         viewModelScope.launch {

@@ -9,15 +9,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.network.*
+import org.koin.core.qualifier.named
 import com.intive.repository.network.util.*
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get()) }
-    single { createRetrofit() }
-    single { createUsersService(get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get()) }
+    single(named("mocklab")) { createRetrofit() }
+    single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
     single { createTechnologiesService(get()) }
     single { createAuditService(get()) }
@@ -27,8 +28,10 @@ val repositoryModule = module {
     single { createEventInviteResponseMapper() }
     single { createNewEventsMapper() }
     single { createDispatchers() }
-    single { createRegistrationService(get()) }
-    single { createGradebookService(get()) }
+    single { createRegistrationService(get((named("mocklab")))) }
+    single(named("java")){ createRetrofit2() }
+    single { createTechnologiesJavaService(get(named("java"))) }
+    single { createGradebookService(get((named("mocklab")))) }
     single { createGradebookMapper() }
 }
 
@@ -80,6 +83,10 @@ fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
 
 private fun createRegistrationService(retrofit: Retrofit): RegistrationService {
     return retrofit.create(RegistrationService::class.java)
+}
+
+private fun createGradebookService(retrofit: Retrofit): GradebookService {
+    return retrofit.create(GradebookService::class.java)
 }
 
 private fun createGradebookService(retrofit: Retrofit): GradebookService {

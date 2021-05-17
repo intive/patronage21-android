@@ -43,7 +43,6 @@ fun GradebookScreen(
     val participants = viewModel.participants.collectAsLazyPagingItems()
     val groups = viewModel.techGroups.value
     val lazyListState = rememberLazyListState()
-
     Column {
         val modifier = Modifier.padding(
             start = 30.dp,
@@ -51,8 +50,8 @@ fun GradebookScreen(
             bottom = 8.dp,
             top = 16.dp
         )
-        LazyColumn (
-            state=lazyListState
+        LazyColumn(
+            state = lazyListState
         ) {
             item {
                 Column(
@@ -63,8 +62,11 @@ fun GradebookScreen(
 
                     when (groups) {
                         is Resource.Success -> {
+                            var items = groups.data!!
+                                .toMutableList()
+                            items.add(0, "Wszystkie grupy")
                             Spinner(
-                                items = groups.data!!
+                                items = items
                             ) { group ->
                                 viewModel.onTechGroupsChanged(group)
                             }
@@ -142,8 +144,11 @@ fun GradebookScreen(
                     loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
                         items(participants) { person ->
                             GradebookListItem(gradebook = person!!, onItemClick = {
-                                val bundle=CreateGradebookUser(person)
-                                navController.navigate(R.id.action_gradebookFragment_to_gradesFragment, bundle)
+                                val bundle = CreateGradebookUser(person)
+                                navController.navigate(
+                                    R.id.action_gradebookFragment_to_gradesFragment,
+                                    bundle
+                                )
                             }, addedColumn = setting.value)
                             Divider(
                                 color = Color.LightGray,
@@ -159,7 +164,7 @@ fun GradebookScreen(
             }
         }
     }
-    FABLayout({ setShowDialog(true) },stringResource(id = R.string.select_data),{ })
+    FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data), { })
     var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
     if (showDialog) {
         AlertDialog(
@@ -238,13 +243,12 @@ fun CreateGradebookUser(person: Gradebook): Bundle {
     val gradeNames = arrayOfNulls<String>(person.entries.size)
     val grades = FloatArray(person.entries.size)
     val gradeReviews = arrayOfNulls<String>(person.entries.size)
-    for(i in 0..person.entries.size-1)
-    {
-        gradeNames[i]=person.entries[i].name
-        grades[i]=person.entries[i].grade
-        gradeReviews[i]=person.entries[i].review
+    for (i in 0..person.entries.size - 1) {
+        gradeNames[i] = person.entries[i].name
+        grades[i] = person.entries[i].grade
+        gradeReviews[i] = person.entries[i].review
     }
-    val bundle=bundleOf(
+    val bundle = bundleOf(
         "firstName" to person.firstName,
         "lastName" to person.lastName,
         "userName" to person.userName,
@@ -252,6 +256,7 @@ fun CreateGradebookUser(person: Gradebook): Bundle {
         "gradeNames" to gradeNames,
         "grades" to grades,
         "gradeReviews" to gradeReviews,
-        "averageGrade" to person.averageGrade)
+        "averageGrade" to person.averageGrade
+    )
     return bundle
 }

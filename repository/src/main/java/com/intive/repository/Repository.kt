@@ -1,7 +1,7 @@
 package com.intive.repository
 
-
-import androidx.paging.PagingData
+import com.intive.repository.network.response.AuditResponse
+import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.response.GradebookResponse
 import retrofit2.Response
@@ -14,15 +14,19 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
 
     val usersMapper: UserDtoMapper
+    val auditsMapper: AuditDtoMapper
     val gradebookMapper: GradebookDtoMapper
-
-    //suspend fun getAudits(): List<Audit>
 
     suspend fun getTechnologies(): List<String>
     suspend fun getTechnologyGroups(): List<Group>
-    suspend fun getUsersByRole(page: Int, role: String, group: String?): UsersResponse
+
+    suspend fun getUsers(page: Int, role: String, group: String?): UsersResponse
+    suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?): UsersResponse
+    suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?, login: String?): UsersResponse
+    suspend fun getUsers(page: Int, role: String, group: String?, query: String): UsersResponse
     suspend fun getTotalUsersByRole(role: String,group: String?): Int
-    suspend fun searchAudits(page: Int, query: String): List<Audit>
+
+    suspend fun searchAudits(page: Int, query: String): AuditResponse
 
     suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
