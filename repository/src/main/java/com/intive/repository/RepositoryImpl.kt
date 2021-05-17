@@ -1,11 +1,7 @@
 package com.intive.repository
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
@@ -19,7 +15,7 @@ import retrofit2.Response
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
-    private val auditMapped: AuditDtoMapper,
+    auditMapper: AuditDtoMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
@@ -28,29 +24,104 @@ class RepositoryImpl(
 
     override val usersMapper: UserDtoMapper = userMapper
 
-    override suspend fun getUsersByRole(
+    override suspend fun getUsers(
         page: Int,
         role: String,
         group: String?
     ): UsersResponse {
-        return networkRepository.getUsersByRole(role = role, page = page, group = group)
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group
+        )
     }
 
-    override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
-        val response = getUsersByRole(role = role, group = group, page = 1)
-        println(response)
-        return response.totalSize
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName
+        )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun searchAudits(page: Int, query: String): List<Audit> {
-        return networkRepository.searchAudits(page, query).map { audit ->
-            auditMapped.mapToDomainModel(audit)
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse {
+        return networkRepository.getUsers(
+            role = role,
+            page = page,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = login
+        )
+    }
+
+    override suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        query: String,
+    ): UsersResponse {
+
+        return when {
+            query.isBlank() -> {
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group
+                )
+            }
+            query.split(" ").size == 1 -> {
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group,
+                    firstName = query,
+                    lastName = query,
+                    login = query
+                )
+            }
+            else -> {
+                val q = query.split(" ")
+                networkRepository.getUsers(
+                    page = page,
+                    role = role,
+                    group = group,
+                    firstName = q[0],
+                    lastName = q[1]
+                )
+            }
         }
     }
 
+    override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
+        val response = getUsers(role = role, group = group, page = 1)
+        return response.totalSize
+    }
+
+    override val auditsMapper: AuditDtoMapper = auditMapper
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun searchAudits(page: Int, query: String): AuditResponse {
+        return networkRepository.searchAudits(page, query)
+    }
+
     override suspend fun getTechnologies(): List<String> {
-        return networkRepository.getTechnologies()
+        return networkRepository.getTechnologies().groups
     }
 
     override suspend fun getTechnologyGroups(): List<Group> {

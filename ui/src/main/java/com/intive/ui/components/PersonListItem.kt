@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +21,12 @@ import com.intive.repository.domain.model.User
 
 @Composable
 fun PersonListItem(
+    modifier: Modifier = Modifier,
     user: User,
     onItemClick: (User) -> Unit,
     rowPadding: Dp = 16.dp,
-    showUsersRole: Boolean = false
+    additionalText: String = "",
+    showAdditionalText: Boolean = false,
 ) {
     Row(
         modifier = Modifier
@@ -64,12 +65,9 @@ fun PersonListItem(
             }
         }
 
-        if (showUsersRole) {
+        if (showAdditionalText) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    user.role,
-                    style = MaterialTheme.typography.body1
-                )
+                Text(text = additionalText, modifier = modifier)
             }
         }
     }

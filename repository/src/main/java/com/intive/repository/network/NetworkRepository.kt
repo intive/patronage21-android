@@ -1,6 +1,7 @@
 package com.intive.repository.network
 
-
+import com.intive.repository.network.response.AuditResponse
+import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
@@ -8,8 +9,6 @@ import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.*
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
-
-
 
 class NetworkRepository(
     private val usersService: UsersService,
@@ -20,24 +19,62 @@ class NetworkRepository(
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
     private val gradebookService: GradebookService
 ) {
-    suspend fun getUsersByRole(
+    suspend fun getUsers(
         page: Int,
         role: String,
         group: String?
     ): UsersResponse {
-        return usersService.getUsersByRole( page = page, role = role, group = group)
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null
+        )
     }
 
-//    suspend fun getAudits(): List<AuditDto> {
-//        return auditService.getAudits()
-//    }
-
-    suspend fun searchAudits(page: Int, query: String): List<AuditDto> {
-        return auditService.searchAudits(page, query).audits
+    suspend fun searchAudits(page: Int, query: String): AuditResponse {
+        return auditService.searchAudits(page, query)
     }
 
-    suspend fun getTechnologies(): List<String> {
-        return technologyGroupsService.getTechnologies()
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse {
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = login
+        )
+    }
+
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse {
+        return usersService.getUsersByRole(
+            page = page,
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = null
+        )
+    }
+
+    suspend fun getTechnologies(): TechnologiesList {
+        return technologyGroupsServiceJava.getTechnologies()
     }
 
     suspend fun getTechnologyGroups(): List<Group> {

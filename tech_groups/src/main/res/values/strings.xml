@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tech_groups_title">Grupy technologiczne</string>
+
+    <string name="description">Opis</string>
+    <string name="resign_from_candidacy">Zrezygnuj z kandydatury</string>
+
 </resources>

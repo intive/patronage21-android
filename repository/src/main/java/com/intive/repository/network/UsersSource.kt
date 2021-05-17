@@ -5,20 +5,22 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.User
-import kotlin.math.log
 
 const val USERS_STARTING_PAGE_INDEX = 1
 
 class UsersSource(
     private val repository: Repository,
     private val role: String,
-    private val group: String?
-    ) : PagingSource<Int, User>() {
+    private val group: String?,
+    private val query: String
+) : PagingSource<Int, User>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         return try {
             val page = params.key ?: USERS_STARTING_PAGE_INDEX
-            val usersResponse = repository.getUsersByRole(page = page, role = role, group = group)
+
+            val usersResponse = repository.getUsers(page, role, group, query)
+
             val users = usersResponse.users
 
             LoadResult.Page(

@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.intive.registration.R
-import com.intive.registration.components.CustomButton
+import com.intive.ui.components.PrimaryButton
 
 @Composable
 fun SuccessScreen() {
@@ -36,11 +36,11 @@ fun AlertDialogSample() {
                     Text(stringResource(R.string.registration_success_subtitle))
                 },
                 confirmButton = {
-                    CustomButton(
-                        onClick = {
-                            openDialog.value = false
-                        }, text = stringResource(R.string.close_dialog), enabled = true
-                    )
+                    PrimaryButton(
+                        text = stringResource(R.string.close_dialog)
+                    ) {
+                        openDialog.value = false
+                    }
                 },
             )
         }

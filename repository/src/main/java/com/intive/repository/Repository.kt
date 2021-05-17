@@ -8,8 +8,6 @@ import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.GradebookDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
-import kotlinx.coroutines.flow.Flow
-
 
 interface Repository {
 
