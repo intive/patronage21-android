@@ -10,6 +10,8 @@ import com.intive.repository.network.util.EventDtoMapper
 
 import com.intive.repository.domain.model.Audit
 import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.local.LocalRepository
+import com.intive.repository.local.SharedPreferenceSource
 import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
@@ -24,7 +26,8 @@ class RepositoryImpl(
     private val auditMapped: AuditDtoMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
-    private val newEventMapper: NewEventDtoMapper
+    private val newEventMapper: NewEventDtoMapper,
+    private val localRepository: LocalRepository
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -164,5 +167,13 @@ class RepositoryImpl(
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
 
+    }
+
+    override suspend fun isUserLogged(): Boolean {
+        return localRepository.isUserLogged()
+    }
+
+    override suspend fun loginUser(login: String) {
+        localRepository.loginUser(login)
     }
 }

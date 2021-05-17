@@ -37,6 +37,8 @@ interface Repository {
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
 
+    suspend fun isUserLogged() : Boolean
+    suspend fun loginUser(login: String)
 }
 
 

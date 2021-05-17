@@ -29,6 +29,9 @@ class RegistrationViewModel(
             } catch (ex: Exception) {
                 Resource.Error(ex.localizedMessage)
             }
+
+            println("---------------" + repository.isUserLogged())
+
         }
     }
 
