@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.ui.components.HeaderWithCount
@@ -139,13 +138,7 @@ fun DetailsScreen(
                 SecondaryButton(
                     stringResource(R.string.deactivate_profile),
                     onClick = {
-                        val bundle = bundleOf(
-                            "login" to user.login
-                        )
-                        navController.navigate(
-                            R.id.action_detailsFragment_to_deactivateUserFragment,
-                            bundle
-                        )
+                        navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
                     }
                 )
             }
