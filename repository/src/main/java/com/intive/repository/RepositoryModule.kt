@@ -1,6 +1,13 @@
 package com.intive.repository
 
 
+import android.app.Application
+import android.content.SharedPreferences
+import com.intive.repository.network.util.EventDtoMapper
+import com.intive.repository.network.util.AuditDtoMapper
+import com.intive.repository.network.util.EventInviteResponseDtoMapper
+import com.intive.repository.network.util.NewEventDtoMapper
+import com.intive.repository.network.util.UserDtoMapper
 import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +15,10 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
+import com.intive.repository.local.LocalRepository
+import com.intive.repository.local.SharedPreferenceSource
 import com.intive.repository.network.*
+import org.koin.android.ext.koin.androidApplication
 import com.intive.repository.network.util.*
 import org.koin.core.qualifier.named
 import com.intive.repository.network.util.*
@@ -17,7 +27,7 @@ private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl:9101/"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
@@ -37,6 +47,9 @@ val repositoryModule = module {
     single { createStageDetailsMapper() }
     single { createGradebookService(get((named("mocklab")))) }
     single { createGradebookMapper() }
+    single { provideSharedPref(androidApplication()) }
+    single { LocalRepository(get())}
+    single { SharedPreferenceSource(get()) }
 }
 
 private fun createRetrofit(): Retrofit {
@@ -101,7 +114,6 @@ private fun createTechnologiesJavaService(retrofit: Retrofit): TechnologyGroupsS
     return retrofit.create(TechnologyGroupsServiceJava::class.java)
 }
 
-
 private fun createStageDetailsMapper(): StageDetailsDtoMapper = StageDetailsDtoMapper()
 
 private fun createStageDetailsService(retrofit: Retrofit): StageDetailsService {
@@ -114,3 +126,6 @@ private fun createGradebookService(retrofit: Retrofit): GradebookService {
 
 private fun createGradebookMapper(): GradebookDtoMapper = GradebookDtoMapper()
 
+fun provideSharedPref(app: Application): SharedPreferences {
+    return androidx.preference.PreferenceManager.getDefaultSharedPreferences(app)
+}

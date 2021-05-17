@@ -34,8 +34,12 @@ interface Repository {
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
+
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
-   
+
+    suspend fun isUserLogged() : Boolean
+    suspend fun loginUser(login: String)
+    suspend fun logoutUser()
 }
 
