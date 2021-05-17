@@ -35,7 +35,6 @@ class EmailVerificationViewModel(
                 response = repository.sendCodeToServer(code.value!!, email)
                 if(response.isSuccessful) {
                     _responseState.value = Resource.Success("")
-                    repository.loginUser("admin")
                 }
                 else {
                     _responseState.value = Resource.Error(response.message())

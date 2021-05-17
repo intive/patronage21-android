@@ -9,5 +9,22 @@
         android:name="com.intive.tech_groups.presentation.fragments.MainFragment"
         android:label="TechGroupsMainFragment" >
         <deepLink app:uri="intive://techGroupsMainFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_groupDetailsFragment"
+            app:destination="@id/groupDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupDetailsFragment"
+        android:name="com.intive.tech_groups.presentation.fragments.GroupDetailsFragment"
+        android:label="GroupDetailsFragment">
+        <action
+            android:id="@+id/action_groupDetailsFragment_to_stageFragment"
+            app:destination="@id/stageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/stageFragment"
+        android:name="com.intive.tech_groups.presentation.fragments.StageFragment"
+        android:label="StageFragment">
     </fragment>
 </navigation>

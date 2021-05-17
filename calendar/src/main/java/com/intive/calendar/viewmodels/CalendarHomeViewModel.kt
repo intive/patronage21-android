@@ -9,6 +9,7 @@ import com.intive.repository.Repository
 import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.getDateString
 import kotlinx.coroutines.*
 import java.util.*
 

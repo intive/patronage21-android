@@ -8,6 +8,7 @@ import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.getDateString
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel

@@ -27,6 +27,8 @@ import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
 import java.util.*
 import com.intive.repository.domain.model.Event
+import com.intive.shared.getDateString
+import com.intive.shared.getFullDateString
 
 
 @Composable
@@ -128,8 +130,7 @@ fun DaysListItem(
         }
         events.size == 1 -> {
 
-            val header =
-                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
+            val header = getFullDateString(day)
 
             val eventBundle = EventBundle(
                 id = events[0].id,
@@ -260,8 +261,7 @@ fun EventsItem(
     isDayActive: Boolean
 ) {
 
-    val header =
-        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
+    val header = getFullDateString(date)
 
     val eventBundle = EventBundle(
         id = event.id,

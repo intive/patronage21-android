@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tech_groups_title">Grupy technologiczne</string>
+
+    <string name="lorem_ipsum_string">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="task_description">Opis zadania</string>
+    <string name="download_resources_btn">Pobierz materiały</string>
+    <string name="meetings_schedule">Harmonogram spotkań</string>
+    <string name="stage_completion">Realizacja etapu</string>
+    <string name="completion_level_percentage">Poziom realizacji: \u0020</string>
+    <string name="check_gradebook_btn">Sprawdź dzienniczek</string>
+    <string name="stage_completed">Etap zaliczony</string>
+    <string name="stage_not_completed">Etap niezaliczony</string>
+    <string name="stage_label">Etap</string>
+    <string name="description">Opis</string>
+    <string name="resign_from_candidacy">Zrezygnuj z kandydatury</string>
+
+
 </resources>

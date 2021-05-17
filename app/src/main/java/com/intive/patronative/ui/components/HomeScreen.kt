@@ -83,7 +83,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)){
                 BoxButton(
                     text = stringResource(R.string.diary_module),
-                    onClick = { /*TODO: Place diary module navDestination here*/ }
+                    onClick = { navController?.navigate(Uri.parse("intive://gradebookFragment")) }
                 ){
                     Icon(
                         Icons.Outlined.Book,
