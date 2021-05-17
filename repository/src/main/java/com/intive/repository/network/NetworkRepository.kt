@@ -7,6 +7,7 @@ import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.*
+import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
 
 class NetworkRepository(
@@ -15,7 +16,8 @@ class NetworkRepository(
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService,
     private val registrationService: RegistrationService,
-    private val technologyGroupsServiceJava: TechnologyGroupsServiceJava
+    private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val gradebookService: GradebookService
 ) {
     suspend fun getUsers(
         page: Int,
@@ -100,10 +102,16 @@ class NetworkRepository(
         return registrationService.sendRequestForCode(body)
     }
 
-    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String> {
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
         return eventsService.updateInviteResponse(inviteResponse)
     }
+
+    suspend fun getGradebook(
+        group: String,
+        sortby: String,
+        page: Int
+    ): GradebookResponse {
+        return gradebookService.getGradebook(group = group, sortby=sortby, page = page)
+    }
 }
-
-
 
