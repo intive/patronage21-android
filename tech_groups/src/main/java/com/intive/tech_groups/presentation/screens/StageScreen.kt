@@ -43,7 +43,7 @@ fun StageScreen(stageViewModel: StageViewModel) {
             if (stageDetails != null) {
 
                 TitleText(
-                    text = "${stringResource(R.string.stage_label)} ${stageDetails!!.number}",
+                    text = "${stageDetails!!.name}",
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
                 HeaderWithCount(text = stringResource(R.string.task_description))

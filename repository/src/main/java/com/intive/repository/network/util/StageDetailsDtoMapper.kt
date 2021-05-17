@@ -8,7 +8,7 @@ class StageDetailsDtoMapper : DomainMapper<StageDetailsDto, StageDetails> {
     override fun mapToDomainModel(model: StageDetailsDto): StageDetails {
         return StageDetails(
             id = model.id,
-            number = model.number,
+            name = model.name,
             description = model.description,
             events = model.events,
             isStageCompleted = model.isStageCompleted,
@@ -20,7 +20,7 @@ class StageDetailsDtoMapper : DomainMapper<StageDetailsDto, StageDetails> {
     override fun mapFromDomainModel(domainModel: StageDetails): StageDetailsDto {
         return StageDetailsDto(
             id = domainModel.id!!,
-            number = domainModel.number!!,
+            name = domainModel.name!!,
             description = domainModel.description!!,
             events = domainModel.events,
             isStageCompleted = domainModel.isStageCompleted!!,
