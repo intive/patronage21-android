@@ -135,7 +135,11 @@ fun EventListItem(
     /*TODO: onClick */
 ) {
 
-    var fontColor: Color = Color.Black
+    val fontColor = if (stringToCalendar(date).before(Calendar.getInstance())) {
+        Color.Gray
+    } else {
+        Color.Black
+    }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -144,10 +148,6 @@ fun EventListItem(
             .clickable(onClick = {})
     ) {
         Spacer(Modifier.width(10.dp))
-
-        if(stringToCalendar(date).before(Calendar.getInstance())) {
-            fontColor = Color.Gray
-        }
 
         Column {
 
