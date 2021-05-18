@@ -35,8 +35,8 @@ class DeactivateUserViewModel(
     fun onConfirmClick() {
         viewModelScope.launch(dispatchers.io) {
             try {
-                val response = repository.deactivateUser(login!!).code()
-                if(response == RESPONSE_OK) {
+                val response = repository.deactivateUser(login!!)
+                if(response.isSuccessful) {
                     deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
                     repository.logoutUser()
                 } else {
