@@ -139,13 +139,7 @@ fun DetailsScreen(
                 SecondaryButton(
                     stringResource(R.string.deactivate_profile),
                     onClick = {
-                        val bundle = bundleOf(
-                            "login" to user.login
-                        )
-                        navController.navigate(
-                            R.id.action_detailsFragment_to_deactivateUserFragment,
-                            bundle
-                        )
+                        navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
                     }
                 )
             }

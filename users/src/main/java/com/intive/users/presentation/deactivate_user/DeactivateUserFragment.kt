@@ -10,17 +10,14 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.intive.ui.PatronativeTheme
 import com.intive.users.R
 import com.intive.users.presentation.composables.screens.DeactivateUserScreen
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 class DeactivateUserFragment : Fragment() {
-    private val args: DeactivateUserFragmentArgs by navArgs()
-    private val viewModel by viewModel<DeactivateUserViewModel>{parametersOf(args.login)}
+    private val viewModel by viewModel<DeactivateUserViewModel>()
 
 
     override fun onCreateView(
