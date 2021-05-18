@@ -29,4 +29,7 @@ dependencies {
     //Paging
     implementation "androidx.paging:paging-runtime-ktx:3.0.0-beta03"
     implementation "androidx.paging:paging-compose:1.0.0-alpha08"
+
+    //shared preferences
+    implementation "androidx.preference:preference-ktx:1.1.1"
 }

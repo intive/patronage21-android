@@ -71,7 +71,9 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            LayoutContainer {
+            LayoutContainer(
+                bottomPadding = 0.dp
+            ) {
                 TitleText(
                     text = stringResource(R.string.home_screen_greeting),
                     style = MaterialTheme.typography.h5,
