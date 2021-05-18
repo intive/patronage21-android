@@ -38,6 +38,7 @@ class DeactivateUserViewModel(
                 val response = repository.deactivateUser(login!!).code()
                 if(response == RESPONSE_OK) {
                     deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
+                    repository.logoutUser()
                 } else {
                     deactivateUserChannel.send(DeactivateUserEvent.ShowErrorMessage)
                 }
