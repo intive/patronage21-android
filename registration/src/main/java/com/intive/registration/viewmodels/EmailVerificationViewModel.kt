@@ -18,6 +18,7 @@ class EmailVerificationViewModel(
     private val _code = MutableLiveData("")
     val code: LiveData<String> = _code
     lateinit var email: String
+    lateinit var login: String
 
     fun onCodeChange(newValue: String) {
         _code.value = newValue
@@ -35,6 +36,7 @@ class EmailVerificationViewModel(
                 response = repository.sendCodeToServer(code.value!!, email)
                 if(response.isSuccessful) {
                     _responseState.value = Resource.Success("")
+                    repository.loginUser(login)
                 }
                 else {
                     _responseState.value = Resource.Error(response.message())

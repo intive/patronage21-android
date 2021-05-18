@@ -10,15 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.Stage
+import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import com.intive.ui.components.*
 
 @Composable
 fun GroupDetailsScreen(
-    stageList: List<Stage>
+    stageList: List<Stage>,
+    getStageDetails: (Long) -> Unit,
+    navController: NavController? = null
 ) {
     Column(
         modifier = Modifier
@@ -31,7 +34,7 @@ fun GroupDetailsScreen(
                 state = listState,
             ) {
                 item {
-                    Column{
+                    Column {
                         TitleText(
                             text = "Grupa I",
                             modifier = Modifier
@@ -53,7 +56,7 @@ fun GroupDetailsScreen(
                         }
                     )
 
-                    Column{
+                    Column {
                         Text(
                             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                         )
@@ -64,21 +67,28 @@ fun GroupDetailsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             var index = 0
-                            while (!stageList.isNullOrEmpty() && index < stageList!!.size) {
+                            while (!stageList.isNullOrEmpty() && index < stageList.size) {
+                                val indexCloned = index
                                 Row {
                                     StageBoxButton(
                                         modifier = Modifier.weight(1f),
-                                        name = stageList!![index].name,
-                                        timeInterval = stageList!![index].timeInterval,
-                                        state = stageList!![index].state
-                                    )
+                                        name = stageList[index].name,
+                                        timeInterval = stageList[index].timeInterval,
+                                        state = stageList[index].state
+                                    ) {
+                                        getStageDetails(stageList[indexCloned].id.toLong())
+                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                    }
                                     Spacer(modifier = Modifier.size(20.dp))
                                     StageBoxButton(
                                         modifier = Modifier.weight(1f),
-                                        name = stageList!![index + 1].name,
-                                        timeInterval = stageList!![index + 1].timeInterval,
-                                        state = stageList!![index + 1].state
-                                    )
+                                        name = stageList[index + 1].name,
+                                        timeInterval = stageList[index + 1].timeInterval,
+                                        state = stageList[index + 1].state
+                                    ) {
+                                        getStageDetails(stageList[indexCloned + 1].id.toLong())
+                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                    }
                                 }
                                 Spacer(modifier = Modifier.size(20.dp))
                                 index += 2
@@ -90,9 +100,7 @@ fun GroupDetailsScreen(
                 item {
                     HeaderWithCount(
                         modifier = Modifier
-                            .padding(
-                                top = 16.dp
-                            ),
+                            .padding(top = 16.dp),
                         text = stringResource(id = R.string.leaders),
                         count = 0,
                         showCount = true,
@@ -102,9 +110,7 @@ fun GroupDetailsScreen(
                 item {
                     HeaderWithCount(
                         modifier = Modifier
-                            .padding(
-                                top = 16.dp
-                            ),
+                            .padding(top = 16.dp),
                         text = stringResource(id = R.string.candidates),
                         count = 0,
                         showCount = true,
@@ -128,12 +134,13 @@ fun StageBoxButton(
     modifier: Modifier,
     name: String,
     timeInterval: String,
-    state: String
+    state: String,
+    onClick: () -> Unit
 ) {
     Column(modifier) {
         BoxButton(
             text = name,
-            onClick = { },
+            onClick = onClick,
             contentOnTop = false
         ) {
             Text(text = timeInterval)

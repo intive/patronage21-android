@@ -26,6 +26,7 @@ class EditUserFragment : Fragment() {
         val mock = User(
             "Jan",
             "Kowalski",
+            "jkowalski",
             "Mężczyzna",
             "jankowalski@gmal.com",
             "123456789",

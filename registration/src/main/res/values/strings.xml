@@ -17,7 +17,7 @@
     <string name="email_hint">Email *</string>
     <string name="last_name_hint">Nazwisko *</string>
     <string name="first_name_hint">Imię *</string>
-    <string name="technologies_text">Jestem zainteresowany/-na udziałem w grupie (wybierz maksymalnie 3 technologie) *</string>
+    <string name="technologies_text">Jestem zainteresowany/-na udziałem w grupie *</string>
     <string name="select_technologies_error">Musisz wybrać minimum jedną, a maksymalnie trzy technologie</string>
     <string name="regulations_agree_text">Zapoznałem/-am się z Zasadami udziału w programie intive Patronage i akceptuję je w całości. Dostępne pod linkiem https://intive.com</string>
     <string name="rodo_agree_text">Administratorem Twoich danych osobowych zawartych w formularzu jest intive GmbH Spółka z ograniczoną odpowiedzialnością Oddział w Polsce z siedzibą w Warszawie. Wypełnienie powyższego formularza traktujemy jako zgodę na przetwarzanie Twoich danych osobowych dla potrzeb niezbędnych do przeprowadzenia postępowania kwalifikacyjnego do udziału w programie intive Patronage. Pamiętaj, że zgodę możesz wycofać w dowolnym czasie, przy czym wycofanie zgody nie wpłynie na zgodność z prawem przetwarzania dokonanego przed jej wycofaniem. Więcej informacji na temat tego, jak przetwarzamy Twoje dane osobowe i jakie prawa przysługują Ci na gruncie RODO znajdziesz tu: https://intive.com</string>
