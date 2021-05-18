@@ -62,7 +62,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
         when (response) {
             is Resource.Success -> {
                 viewmodel.resetResponseState()
-                val action = RegistrationFragmentDirections.actionVerifyEmail(email)
+                val action = RegistrationFragmentDirections.actionVerifyEmail(email, login)
                 navController.navigate(action)
             }
             is Resource.Error -> {

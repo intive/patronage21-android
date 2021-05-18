@@ -31,6 +31,9 @@
         <argument
             android:name="email"
             app:argType="string" />
+        <argument
+            android:name="login"
+            app:argType="string" />
         <action
             android:id="@+id/action_no_code"
             app:destination="@id/noCodeFragment" />
@@ -47,6 +50,9 @@
         android:label="NoCodeFragment" >
         <argument
             android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="login"
             app:argType="string" />
         <action
             android:id="@+id/action_verify_email_again"

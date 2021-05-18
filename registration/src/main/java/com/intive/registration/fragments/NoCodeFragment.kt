@@ -24,7 +24,10 @@ class NoCodeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewmodel.firstEmail = args.email
+        with(args) {
+            viewmodel.firstEmail = email
+            viewmodel.login = login
+        }
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
