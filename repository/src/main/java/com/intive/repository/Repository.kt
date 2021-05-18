@@ -40,8 +40,9 @@ interface Repository {
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 
-    suspend fun isUserLogged() : Boolean
-    suspend fun loginUser(login: String)
-    suspend fun logoutUser()
+    fun isUserLogged() : Boolean
+    fun getUserLoginOrNull(): String?
+    fun loginUser(login: String)
+    fun logoutUser()
 }
 

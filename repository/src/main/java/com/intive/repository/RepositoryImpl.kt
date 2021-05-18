@@ -8,8 +8,6 @@ import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.local.LocalRepository
-import com.intive.repository.local.SharedPreferenceSource
-import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.GradebookResponse
@@ -196,15 +194,19 @@ class RepositoryImpl(
         return networkRepository.getGradebook(group = group, sortby = sortby, page = page)
     }
 
-    override suspend fun isUserLogged(): Boolean {
+    override fun isUserLogged(): Boolean {
         return localRepository.isUserLogged()
     }
 
-    override suspend fun loginUser(login: String) {
+    override fun getUserLoginOrNull(): String? {
+        return localRepository.getUserLoginOrNull()
+    }
+
+    override fun loginUser(login: String) {
         localRepository.loginUser(login)
     }
 
-    override suspend fun logoutUser() {
+    override fun logoutUser() {
         localRepository.logoutUser()
     }
 }

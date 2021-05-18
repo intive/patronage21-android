@@ -15,4 +15,8 @@ class LocalRepository(
     fun logoutUser() {
         sharedPreferenceSource.logoutUser()
     }
+
+    fun getUserLoginOrNull(): String? {
+        return sharedPreferenceSource.getUserLoginOrNull()
+    }
 }
