@@ -4,18 +4,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.domain.model.User
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.RESPONSE_OK
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DeactivateUserViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
-    private val userLogin: String
 ) : ViewModel() {
 
     val typedLastName = mutableStateOf("")
@@ -24,10 +21,12 @@ class DeactivateUserViewModel(
     private val deactivateUserChannel = Channel<DeactivateUserEvent>()
     val deactivateUserEvent = deactivateUserChannel.receiveAsFlow()
 
-    init {
-        getUser(userLogin)
-    }
+    private var login: String? = null
 
+    init {
+        login = repository.getUserLoginOrNull()
+        login?.let { getUser(it) }
+    }
 
     fun onValueChange(newValue: String) {
         typedLastName.value = newValue
@@ -36,7 +35,7 @@ class DeactivateUserViewModel(
     fun onConfirmClick() {
         viewModelScope.launch(dispatchers.io) {
             try {
-                val response = repository.deactivateUser(userLogin).code()
+                val response = repository.deactivateUser(login!!).code()
                 if(response == RESPONSE_OK) {
                     deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
                 } else {
@@ -57,7 +56,7 @@ class DeactivateUserViewModel(
 
     fun isLastNameCorrect(): Boolean = typedLastName.value == userLastName.value
 
-    sealed class DeactivateUserEvent() {
+    sealed class DeactivateUserEvent {
         object NavigateToRegistrationScreen : DeactivateUserEvent()
         object ShowErrorMessage : DeactivateUserEvent()
     }

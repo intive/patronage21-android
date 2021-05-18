@@ -48,6 +48,7 @@ class DeactivateUserFragment : Fragment() {
             viewModel.deactivateUserEvent.collect { event ->
                 when(event) {
                     DeactivateUserViewModel.DeactivateUserEvent.NavigateToRegistrationScreen -> {
+                        //TODO: Handle navigating to RegistrationScreen
                         Toast.makeText(requireContext(), getString(R.string.account_was_deactivated), Toast.LENGTH_LONG).show()
                     }
                     DeactivateUserViewModel.DeactivateUserEvent.ShowErrorMessage -> {
