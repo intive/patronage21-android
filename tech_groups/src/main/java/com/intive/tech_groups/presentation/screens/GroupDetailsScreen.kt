@@ -29,121 +29,101 @@ fun GroupDetailsScreen(
     ) {
         val listState = rememberLazyListState()
 
-        LazyColumn(
-            state = listState,
-        ) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            start = dimensionResource(id = R.dimen.screen_padding),
-                            end = dimensionResource(id = R.dimen.screen_padding)
+        LayoutContainer {
+            LazyColumn(
+                state = listState,
+            ) {
+                item {
+                    Column {
+                        TitleText(
+                            text = "Grupa I",
+                            modifier = Modifier
+                                .padding(top = 15.dp, bottom = 15.dp)
                         )
-                ) {
-                    TitleText(
-                        text = "Grupa I",
-                        modifier = Modifier
-                            .padding(top = 15.dp, bottom = 15.dp)
-                    )
-                    Text(
-                        text = "Technologie:",
-                        style = MaterialTheme.typography.h6
-                    )
-                    Text(text = "Lorem ipsum")
-                }
-                SectionHeader(
-                    modifier = Modifier.padding(
-                        top = 15.dp,
-                        bottom = 15.dp,
-                        start = dimensionResource(id = R.dimen.screen_padding_small),
-                        end = dimensionResource(id = R.dimen.screen_padding_small)
-                    ),
-                    title = {
-                        SectionHeaderText(text = stringResource(id = R.string.description))
+                        Text(
+                            text = "Technologie:",
+                            style = MaterialTheme.typography.h6
+                        )
+                        Text(text = "Lorem ipsum")
                     }
-                )
-
-                Column(
-                    modifier = Modifier
-                        .padding(
-                            start = dimensionResource(id = R.dimen.screen_padding),
-                            end = dimensionResource(id = R.dimen.screen_padding)
-                        )
-                ) {
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    SectionHeader(
+                        modifier = Modifier.padding(
+                            top = 15.dp,
+                            bottom = 15.dp
+                        ),
+                        title = {
+                            SectionHeaderText(text = stringResource(id = R.string.description))
+                        }
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 15.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        var index = 0
-                        while (!stageList.isNullOrEmpty() && index < stageList.size) {
-                            val indexCloned = index
-                            Row {
-                                StageBoxButton(
-                                    modifier = Modifier.weight(1f),
-                                    name = stageList[index].name,
-                                    timeInterval = stageList[index].timeInterval,
-                                    state = stageList[index].state
-                                ) {
-                                    getStageDetails(stageList[indexCloned].id.toLong())
-                                    navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+
+                    Column {
+                        Text(
+                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 15.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            var index = 0
+                            while (!stageList.isNullOrEmpty() && index < stageList.size) {
+                                val indexCloned = index
+                                Row {
+                                    StageBoxButton(
+                                        modifier = Modifier.weight(1f),
+                                        name = stageList[index].name,
+                                        timeInterval = stageList[index].timeInterval,
+                                        state = stageList[index].state
+                                    ) {
+                                        getStageDetails(stageList[indexCloned].id.toLong())
+                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                    }
+                                    Spacer(modifier = Modifier.size(20.dp))
+                                    StageBoxButton(
+                                        modifier = Modifier.weight(1f),
+                                        name = stageList[index + 1].name,
+                                        timeInterval = stageList[index + 1].timeInterval,
+                                        state = stageList[index + 1].state
+                                    ) {
+                                        getStageDetails(stageList[indexCloned + 1].id.toLong())
+                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                    }
                                 }
                                 Spacer(modifier = Modifier.size(20.dp))
-                                StageBoxButton(
-                                    modifier = Modifier.weight(1f),
-                                    name = stageList[index + 1].name,
-                                    timeInterval = stageList[index + 1].timeInterval,
-                                    state = stageList[index + 1].state
-                                ) {
-                                    getStageDetails(stageList[indexCloned + 1].id.toLong())
-                                    navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
-                                }
+                                index += 2
                             }
-                            Spacer(modifier = Modifier.size(20.dp))
-                            index += 2
                         }
                     }
                 }
-            }
 
-            item {
-                HeaderWithCount(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp,
-                            start = dimensionResource(id = R.dimen.screen_padding_small),
-                            end = dimensionResource(id = R.dimen.screen_padding_small)
-                        ),
-                    text = stringResource(id = R.string.leaders),
-                    count = 0,
-                    showCount = true,
-                )
-            }
+                item {
+                    HeaderWithCount(
+                        modifier = Modifier
+                            .padding(top = 16.dp),
+                        text = stringResource(id = R.string.leaders),
+                        count = 0,
+                        showCount = true,
+                    )
+                }
 
-            item {
-                HeaderWithCount(
-                    modifier = Modifier
-                        .padding(
-                            top = 16.dp,
-                            start = dimensionResource(id = R.dimen.screen_padding_small),
-                            end = dimensionResource(id = R.dimen.screen_padding_small)
-                        ),
-                    text = stringResource(id = R.string.candidates),
-                    count = 0,
-                    showCount = true,
-                )
-            }
+                item {
+                    HeaderWithCount(
+                        modifier = Modifier
+                            .padding(top = 16.dp),
+                        text = stringResource(id = R.string.candidates),
+                        count = 0,
+                        showCount = true,
+                    )
+                }
 
-            item {
-                PrimaryButton(
-                    paddingTop = dimensionResource(id = R.dimen.screen_padding_small),
-                    text = stringResource(id = R.string.resign_from_candidacy),
-                    onClick = {}
-                )
+                item {
+                    PrimaryButton(
+                        paddingTop = dimensionResource(id = R.dimen.screen_padding_small),
+                        text = stringResource(id = R.string.resign_from_candidacy),
+                        onClick = {}
+                    )
+                }
             }
         }
     }
