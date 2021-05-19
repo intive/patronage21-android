@@ -46,7 +46,6 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
             title = stringResource(R.string.no_code_title),
             text = stringResource(R.string.no_code_subtitle)
         )
-        Spacer(modifier = Modifier.height(12.dp))
         EmailInput(email, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PrimaryButton(
