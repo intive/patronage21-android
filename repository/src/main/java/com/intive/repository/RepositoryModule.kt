@@ -24,7 +24,7 @@ import org.koin.core.qualifier.named
 import com.intive.repository.network.util.*
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
-private const val BASE_URL_JAVA = "http://intive-patronage.pl:9101/"
+private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
