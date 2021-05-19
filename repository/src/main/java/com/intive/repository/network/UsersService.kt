@@ -1,7 +1,6 @@
 package com.intive.repository.network
 
-import com.google.gson.JsonObject
-import com.intive.repository.network.model.UserDto
+import com.intive.repository.network.response.UserResponse
 import com.intive.repository.network.response.UsersResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -22,10 +21,10 @@ interface UsersService {
         @Query("login") login: String?,
     ): UsersResponse
 
-    @GET("api/users")
+    @GET("api/users/{login}")
     suspend fun getUser(
-        @Query("login") login: String
-    ): UserDto
+        @Path("login") login: String
+    ): UserResponse
 
     @PATCH("api/users/{login}/deactivate")
     suspend fun deactivateUser(

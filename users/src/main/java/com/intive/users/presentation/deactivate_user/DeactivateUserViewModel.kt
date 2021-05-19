@@ -36,7 +36,7 @@ class DeactivateUserViewModel(
         viewModelScope.launch(dispatchers.io) {
             try {
                 val response = repository.deactivateUser(login!!)
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
                     repository.logoutUser()
                 } else {
@@ -50,8 +50,12 @@ class DeactivateUserViewModel(
 
     private fun getUser(login: String) {
         viewModelScope.launch(dispatchers.io) {
-            val user = repository.getUser(login)
-            userLastName.value = user.lastName
+            try {
+                val user = repository.getUser(login)
+                userLastName.value = user.lastName
+            } catch (e: Exception) {
+                deactivateUserChannel.send(DeactivateUserEvent.ShowErrorMessage)
+            }
         }
     }
 

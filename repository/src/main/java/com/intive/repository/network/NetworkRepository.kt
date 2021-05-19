@@ -8,6 +8,7 @@ import retrofit2.Response
 import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.*
 import com.intive.repository.network.response.GradebookResponse
+import com.intive.repository.network.response.UserResponse
 import com.intive.repository.network.response.UsersResponse
 
 class NetworkRepository(
@@ -76,7 +77,7 @@ class NetworkRepository(
 
     suspend fun getUser(
         login: String
-    ): UserDto {
+    ): UserResponse {
         return usersService.getUser(login)
     }
 

@@ -115,7 +115,7 @@ class RepositoryImpl(
 
     override suspend fun getUser(login: String): User {
         return usersMapper.mapToDomainModel(
-            networkRepository.getUser(login)
+            networkRepository.getUser(login).user
         )
     }
 
