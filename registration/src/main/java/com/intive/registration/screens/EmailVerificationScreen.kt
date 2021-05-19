@@ -85,7 +85,7 @@ fun EmailVerificationScreen(
         ) {
             viewmodel.resetResponseState()
             val action = EmailVerificationFragmentDirections
-                .actionNoCode(viewmodel.email)
+                .actionNoCode(viewmodel.email, viewmodel.login)
             navController.navigate(action)
         }
     }

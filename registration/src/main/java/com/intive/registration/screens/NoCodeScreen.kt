@@ -46,14 +46,13 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
             title = stringResource(R.string.no_code_title),
             text = stringResource(R.string.no_code_subtitle)
         )
-        Spacer(modifier = Modifier.height(12.dp))
         EmailInput(email, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         PrimaryButton(
             text = stringResource(R.string.send_code_button)
         ) {
             viewmodel.sendRequestForCode()
-            val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email)
+            val action = NoCodeFragmentDirections.actionVerifyEmailAgain(email, viewmodel.login)
             navController.navigate(action)
         }
     }
