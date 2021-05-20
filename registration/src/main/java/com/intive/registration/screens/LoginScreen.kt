@@ -21,13 +21,14 @@ import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.R
 import com.intive.registration.fragments.LoginFragmentDirections
 import com.intive.repository.local.LocalRepository
+import com.intive.shared.NavigationViewModel
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.TitleText
 
 
 @Composable
-fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
+fun LoginScreen(viewmodel: LoginViewModel, navController: NavController, navigationViewModel: NavigationViewModel) {
     val scrollState = rememberScrollState()
 
     val login: String by viewmodel.login.observeAsState("")
@@ -60,6 +61,7 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
         }
         Button(onClick =  {
             viewmodel.repo.loginUser("Test")
+            navigationViewModel.loginUser("hello")
         }) {
             Text("Cheat")
         }

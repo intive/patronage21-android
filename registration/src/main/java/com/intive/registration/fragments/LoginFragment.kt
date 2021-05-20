@@ -13,14 +13,17 @@ import com.intive.registration.screens.SuccessScreen
 import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.viewmodels.RegistrationSuccessDialogState
 import com.intive.registration.viewmodels.SharedViewModel
+import com.intive.shared.NavigationViewModel
 import com.intive.shared.forceRestart
 import com.intive.ui.PatronativeTheme
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
     private val viewModel by viewModel<LoginViewModel>()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val navigationViewModel by sharedViewModel<NavigationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +32,10 @@ class LoginFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    LoginScreen(viewModel, findNavController())
+                    LoginScreen(viewModel, findNavController(), navigationViewModel)
                     if (sharedViewModel.successDialogState == RegistrationSuccessDialogState.SHOW_DIALOG) {
-                        SuccessScreen(sharedViewModel)
+                        SuccessScreen(sharedViewModel, navigationViewModel)
+
                         sharedViewModel.successDialogState =
                             RegistrationSuccessDialogState.HIDE_DIALOG
                     }

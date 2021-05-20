@@ -8,16 +8,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.intive.registration.R
 import com.intive.registration.viewmodels.SharedViewModel
+import com.intive.shared.NavigationViewModel
+import com.intive.shared.navigationModule
 import com.intive.ui.components.PrimaryButton
 
 @Composable
-fun SuccessScreen(sharedViewModel: SharedViewModel) {
-    AlertDialogSample(sharedViewModel)
+fun SuccessScreen(sharedViewModel: SharedViewModel, navigationViewModel: NavigationViewModel) {
+    AlertDialogSample(sharedViewModel, navigationViewModel)
 }
 
 
 @Composable
-fun AlertDialogSample(sharedViewModel: SharedViewModel) {
+fun AlertDialogSample(sharedViewModel: SharedViewModel, navigationViewModel: NavigationViewModel) {
     Column {
         val openDialog = remember { mutableStateOf(true) }
 
@@ -41,7 +43,8 @@ fun AlertDialogSample(sharedViewModel: SharedViewModel) {
                         text = stringResource(R.string.close_dialog)
                     ) {
                         openDialog.value = false
-                        sharedViewModel.shouldRestartActivity.value = true
+//                        sharedViewModel.shouldRestartActivity.value = true
+                        navigationViewModel.loginUser("hello")
                     }
                 },
             )
