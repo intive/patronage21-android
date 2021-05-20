@@ -16,16 +16,22 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidViewBinding
+import androidx.navigation.findNavController
 import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.R
 import com.intive.patronative.databinding.ContentMainBinding
+import com.intive.repository.local.LocalRepository
 import com.intive.ui.PatronativeTheme
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
+import org.koin.android.ext.android.inject
 
 
 class NavActivity : AppCompatActivity() {
+
+    private val localRepository: LocalRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,5 +77,18 @@ class NavActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val navController = findNavController(R.id.nav_host_fragment)
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        if(localRepository.isUserLogged()) {
+            navGraph.startDestination = R.id.homeScreenFragment
+        } else {
+            navGraph.startDestination = R.id.registration_nav_graph
+        }
+        navController.graph = navGraph
     }
 }
