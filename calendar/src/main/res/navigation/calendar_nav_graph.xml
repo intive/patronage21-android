@@ -25,6 +25,12 @@
         android:id="@+id/eventFragment"
         android:name="com.intive.calendar.fragments.EventFragment"
         android:label="EventFragment">
+
+        <argument
+            android:name="eventInfo"
+            app:argType="string" />
+
+        <deepLink android:id="@+id/eventDeepLink" app:uri="intive://eventFragment/{eventInfo}" />
     </fragment>
 
     <fragment
