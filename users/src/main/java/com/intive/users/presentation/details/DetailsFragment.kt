@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.net.Uri
+import com.intive.shared.forceRestart
 
 
 class DetailsFragment : Fragment() {
@@ -49,6 +50,10 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(!viewModel.localRepository.isUserLogged()){
+            requireActivity().forceRestart()
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.userContactEvent.collect { event ->

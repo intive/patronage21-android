@@ -7,16 +7,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.intive.registration.R
+import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.components.PrimaryButton
 
 @Composable
-fun SuccessScreen() {
-    AlertDialogSample()
+fun SuccessScreen(sharedViewModel: SharedViewModel) {
+    AlertDialogSample(sharedViewModel)
 }
 
 
 @Composable
-fun AlertDialogSample() {
+fun AlertDialogSample(sharedViewModel: SharedViewModel) {
     Column {
         val openDialog = remember { mutableStateOf(true) }
 
@@ -40,6 +41,7 @@ fun AlertDialogSample() {
                         text = stringResource(R.string.close_dialog)
                     ) {
                         openDialog.value = false
+                        sharedViewModel.shouldRestartActivity.value = true
                     }
                 },
             )
