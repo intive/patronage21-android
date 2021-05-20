@@ -8,8 +8,6 @@ import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.local.LocalRepository
-import com.intive.repository.local.SharedPreferenceSource
-import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.GradebookResponse
@@ -115,9 +113,19 @@ class RepositoryImpl(
         }
     }
 
+    override suspend fun getUser(login: String): User {
+        return usersMapper.mapToDomainModel(
+            networkRepository.getUser(login).user
+        )
+    }
+
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
         val response = getUsers(role = role, group = group, page = 1)
         return response.totalSize
+    }
+
+    override suspend fun deactivateUser(login: String): Response<String> {
+        return networkRepository.deactivateUser(login)
     }
 
     override val auditsMapper: AuditDtoMapper = auditMapper
@@ -154,7 +162,11 @@ class RepositoryImpl(
 
 
     override suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String> {
-        return networkRepository.updateInviteResponse(inviteResponseMapper.mapFromDomainModel(inviteResponse))
+        return networkRepository.updateInviteResponse(
+            inviteResponseMapper.mapFromDomainModel(
+                inviteResponse
+            )
+        )
     }
 
     override suspend fun sendRequestForCode(email: String) {
@@ -182,15 +194,19 @@ class RepositoryImpl(
         return networkRepository.getGradebook(group = group, sortby = sortby, page = page)
     }
 
-    override suspend fun isUserLogged(): Boolean {
+    override fun isUserLogged(): Boolean {
         return localRepository.isUserLogged()
     }
 
-    override suspend fun loginUser(login: String) {
+    override fun getUserLoginOrNull(): String? {
+        return localRepository.getUserLoginOrNull()
+    }
+
+    override fun loginUser(login: String) {
         localRepository.loginUser(login)
     }
 
-    override suspend fun logoutUser() {
+    override fun logoutUser() {
         localRepository.logoutUser()
     }
 }

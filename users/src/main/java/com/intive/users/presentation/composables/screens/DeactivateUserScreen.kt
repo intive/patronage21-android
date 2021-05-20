@@ -23,7 +23,7 @@ fun DeactivateUserScreen(
     viewModel: DeactivateUserViewModel,
     navController: NavController
 ) {
-    val lastName = viewModel.lastName
+    val lastName = viewModel.typedLastName
     LayoutContainer {
         Text(
             stringResource(R.string.deactivate_user_question),
@@ -73,8 +73,11 @@ fun DeactivateUserScreen(
             modifier = Modifier.padding(top = 30.dp)
         ) {
             PrimaryButton(
-                stringResource(R.string.deactivate_profile),
-                onClick = { /*TODO*/ }
+                text = stringResource(R.string.deactivate_profile),
+                enabled = viewModel.isLastNameCorrect(),
+                onClick = {
+                    viewModel.onConfirmClick()
+                }
             )
             Spacer(modifier = Modifier.size(10.dp))
             SecondaryButton(

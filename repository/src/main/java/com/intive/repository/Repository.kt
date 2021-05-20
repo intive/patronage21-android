@@ -1,6 +1,6 @@
 package com.intive.repository
 
-
+import com.intive.repository.domain.model.Event
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.domain.model.*
@@ -23,7 +23,9 @@ interface Repository {
     suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?): UsersResponse
     suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?, login: String?): UsersResponse
     suspend fun getUsers(page: Int, role: String, group: String?, query: String): UsersResponse
-    suspend fun getTotalUsersByRole(role: String,group: String?): Int
+    suspend fun getTotalUsersByRole(role: String, group: String?): Int
+    suspend fun getUser(login: String): User
+    suspend fun deactivateUser(login: String): Response<String>
 
     suspend fun searchAudits(page: Int, query: String): AuditResponse
 
@@ -38,8 +40,9 @@ interface Repository {
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 
-    suspend fun isUserLogged() : Boolean
-    suspend fun loginUser(login: String)
-    suspend fun logoutUser()
+    fun isUserLogged() : Boolean
+    fun getUserLoginOrNull(): String?
+    fun loginUser(login: String)
+    fun logoutUser()
 }
 

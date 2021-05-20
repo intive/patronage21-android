@@ -16,6 +16,10 @@ class SharedPreferenceSource(private val prefs: SharedPreferences) {
     fun logoutUser() {
         prefs.edit().clear().apply()
     }
+
+    fun getUserLoginOrNull(): String? {
+        return prefs.getString(LOGIN_KEY, null)
+    }
 }
 
 object SharedPreferencesKeys {
