@@ -1,6 +1,5 @@
 package com.intive.calendar.components
 
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,11 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.intive.calendar.R
+import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
 import java.util.*
 import com.intive.repository.domain.model.Event
+import com.intive.shared.EventBundle
 import com.intive.shared.getDateString
 import com.intive.shared.getFullDateString
 
@@ -141,8 +143,10 @@ fun DaysListItem(
                 users = events[0].users,
                 active = isDayActive
             )
-            val bundle = Bundle()
-            bundle.putParcelable(eventBundleKey, eventBundle)
+
+            val eventSerialized = Gson().toJson(eventBundle)
+            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
+
 
             WeekDayWithEvents(
                 headerColor = headerColor,
@@ -155,8 +159,7 @@ fun DaysListItem(
                     .background(bkgColor)
                     .clickable(onClick = {
                         navController.navigate(
-                            R.id.action_calendarFragment_to_eventFragment,
-                            bundle
+                            directions
                         )
                     })
             )
@@ -273,8 +276,8 @@ fun EventsItem(
         active = isDayActive
     )
 
-    val bundle = Bundle()
-    bundle.putParcelable(eventBundleKey, eventBundle)
+    val eventSerialized = Gson().toJson(eventBundle)
+    val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
 
     Row(
         modifier = Modifier
@@ -282,8 +285,7 @@ fun EventsItem(
             .fillMaxWidth()
             .clickable(onClick = {
                 navController.navigate(
-                    R.id.action_calendarFragment_to_eventFragment,
-                    bundle
+                    directions
                 )
             })
             .padding(start = 10.dp, top = 12.dp, bottom = 12.dp)

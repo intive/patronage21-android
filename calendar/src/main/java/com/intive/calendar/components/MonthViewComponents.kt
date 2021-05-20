@@ -20,9 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.intive.calendar.R
+import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
+import com.intive.shared.EventBundle
 import com.intive.shared.getDateString
 import com.intive.shared.getFullDateString
 import java.util.*
@@ -109,14 +112,14 @@ fun CalendarGrid(
                                 active = isDayActive
 
                             )
-                            val bundle = Bundle()
-                            bundle.putParcelable(eventBundleKey, eventBundle)
+
+                            val eventSerialized = Gson().toJson(eventBundle)
+                            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
 
                             onClick =
                                 {
                                     navController.navigate(
-                                        R.id.action_calendarFragment_to_eventFragment,
-                                        bundle
+                                        directions
                                     )
                                 }
 

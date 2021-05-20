@@ -19,9 +19,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
-import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
+import com.intive.shared.EventBundle
 
 
 @Composable

@@ -1,24 +1,21 @@
 package com.intive.calendar.fragments
 
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.EventScreenLayout
-import com.intive.calendar.utils.EventBundle
 import com.intive.calendar.utils.InviteResponseChannel
-import com.intive.calendar.utils.eventBundleKey
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.viewmodels.EventViewModel
+import com.intive.shared.EventBundle
 import com.intive.ui.PatronativeTheme
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -47,15 +44,6 @@ class EventFragment : Fragment() {
                 }
             }
         }
-
-        /*
-        lateinit var event: EventBundle
-        val bundle = this.arguments
-        if (bundle != null) {
-            event = bundle.getParcelable<Parcelable>(eventBundleKey) as EventBundle
-        }
-
-         */
 
         lateinit var event: EventBundle
         val safeArgs: EventFragmentArgs by navArgs()
