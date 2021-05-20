@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.EventScreenLayout
 import com.intive.calendar.utils.EventBundle
@@ -46,11 +48,20 @@ class EventFragment : Fragment() {
             }
         }
 
+        /*
         lateinit var event: EventBundle
         val bundle = this.arguments
         if (bundle != null) {
             event = bundle.getParcelable<Parcelable>(eventBundleKey) as EventBundle
         }
+
+         */
+
+        lateinit var event: EventBundle
+        val safeArgs: EventFragmentArgs by navArgs()
+        val eventString = safeArgs.eventInfo
+
+        event = Gson().fromJson(eventString, EventBundle::class.java)
 
         return ComposeView(requireContext()).apply {
             setContent {

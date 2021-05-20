@@ -1,5 +1,6 @@
 package com.intive.tech_groups.presentation.screens
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
@@ -22,13 +23,20 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.google.gson.Gson
+import com.intive.repository.domain.model.Event
+import com.intive.shared.EventBundle
 import com.intive.shared.getFullDateString
 import com.intive.shared.stringToCalendar
 import java.util.*
 
 
 @Composable
-fun StageScreen(stageViewModel: StageViewModel) {
+fun StageScreen(
+    stageViewModel: StageViewModel,
+    navController: NavController
+) {
 
     val stageDetails by stageViewModel.stageDetails.observeAsState()
 
@@ -73,10 +81,8 @@ fun StageScreen(stageViewModel: StageViewModel) {
 
                 stageDetails!!.events.forEach { event ->
                     EventListItem(
-                        date = event.date,
-                        name = event.name,
-                        timeStart = event.timeStart,
-                        timeEnd = event.timeEnd
+                        event = event,
+                        navController = navController
                     )
                     Divider(color = Color.LightGray)
                 }
@@ -128,24 +134,36 @@ fun StageScreen(stageViewModel: StageViewModel) {
 
 @Composable
 fun EventListItem(
-    date: String,
-    name: String,
-    timeStart: String,
-    timeEnd: String,
-    /*TODO: onClick */
+    event: Event,
+    navController: NavController
 ) {
 
-    val fontColor = if (stringToCalendar(date).before(Calendar.getInstance())) {
-        Color.Gray
+    var rowModifier: Modifier = Modifier.fillMaxWidth()
+    var fontColor: Color = Color.Black
+
+    val eventBundle = EventBundle(
+        id = event.id,
+        date = event.date,
+        time = "${event.timeStart} - ${event.timeEnd}",
+        name = event.name,
+        inviteResponse = event.inviteResponse,
+        users = event.users,
+        active = true /*TODO*/
+    )
+
+    val eventSerialized = Gson().toJson(eventBundle)
+
+    if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
+        fontColor = Color.Gray
     } else {
-        Color.Black
+        rowModifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { navController.navigate(Uri.parse("intive://eventFragment/$eventSerialized")) })
     }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = {})
+        modifier = rowModifier
     ) {
         Spacer(Modifier.width(10.dp))
 
@@ -153,7 +171,7 @@ fun EventListItem(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text = getFullDateString(date),
+                    text = getFullDateString(event.date),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
@@ -164,7 +182,7 @@ fun EventListItem(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text = "$name, $timeStart-$timeEnd",
+                    text = "${event.name}, ${event.timeStart}-${event.timeEnd}",
                     fontSize = 18.sp,
                     color = fontColor
                 )

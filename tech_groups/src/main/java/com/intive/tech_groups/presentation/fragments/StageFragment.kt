@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.intive.tech_groups.presentation.screens.StageScreen
 import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import com.intive.ui.PatronativeTheme
@@ -24,7 +25,7 @@ class StageFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    StageScreen(stageViewModel)
+                    StageScreen(stageViewModel, findNavController())
                 }
             }
         }
