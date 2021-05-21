@@ -19,15 +19,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
-import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
+import com.intive.shared.EventParcelable
 
 
 @Composable
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    event: EventBundle,
+    event: EventParcelable,
     refreshEventsList: () -> Unit
 ) {
     Column(
@@ -75,7 +75,7 @@ fun EventScreenLayout(
 
 @Composable
 fun InviteResponseButtons(
-    event: EventBundle,
+    event: EventParcelable,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     refreshEventsList: () -> Unit
 ) {

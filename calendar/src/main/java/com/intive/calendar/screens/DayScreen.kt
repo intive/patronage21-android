@@ -1,6 +1,5 @@
 package com.intive.calendar.screens
 
-import android.os.Bundle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.fragments.DayFragmentDirections
 import com.intive.calendar.utils.DayBundle
-import com.intive.calendar.utils.EventBundle
-import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
+import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
 import com.intive.ui.components.TitleText
 
@@ -65,7 +64,7 @@ fun EventsList(
 @Composable
 fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
         date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
@@ -74,16 +73,15 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         users = event.users,
         active = isDayActive
     )
-    val bundle = Bundle()
-    bundle.putParcelable(eventBundleKey, eventBundle)
+
+    val directions = DayFragmentDirections.actionDayFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = {
                 navController.navigate(
-                    R.id.action_dayFragment_to_eventFragment,
-                    bundle
+                    directions
                 )
             })
     ) {
