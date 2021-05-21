@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.intive.repository.Repository
 import com.intive.repository.local.LocalRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class NavigationViewModel(
-    private val localRepository: LocalRepository
+    private val repository: Repository
 ) : ViewModel() {
 
     private val _loggedInChannel = Channel<LoginEvent>()
@@ -19,7 +20,7 @@ class NavigationViewModel(
 
     init {
         viewModelScope.launch {
-            if(localRepository.isUserLogged()){
+            if(repository.isUserLogged()){
                 _loggedInChannel.send(LoginEvent.UserLoggedIn)
             } else {
                 _loggedInChannel.send(LoginEvent.UserLoggedOut)
@@ -28,14 +29,14 @@ class NavigationViewModel(
     }
 
     fun loginUser(login: String){
-        localRepository.loginUser(login)
+        repository.loginUser(login)
         viewModelScope.launch {
             _loggedInChannel.send(LoginEvent.UserLoggedIn)
         }
     }
 
     fun logoutUser() {
-        localRepository.logoutUser()
+        repository.logoutUser()
         viewModelScope.launch {
             _loggedInChannel.send(LoginEvent.UserLoggedOut)
         }
