@@ -8,9 +8,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class DetailsViewModel(
-    val localRepository: LocalRepository
-) : ViewModel() {
+class DetailsViewModel() : ViewModel() {
     data class Project(val name: String, val role: String)
 
     private val userContactEventChannel = Channel<UserContactEvent>()

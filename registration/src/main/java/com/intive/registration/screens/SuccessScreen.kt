@@ -43,8 +43,7 @@ fun AlertDialogSample(sharedViewModel: SharedViewModel, navigationViewModel: Nav
                         text = stringResource(R.string.close_dialog)
                     ) {
                         openDialog.value = false
-//                        sharedViewModel.shouldRestartActivity.value = true
-                        navigationViewModel.loginUser("hello")
+                        navigationViewModel.loginUser(sharedViewModel.login)
                     }
                 },
             )

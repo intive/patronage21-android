@@ -3,9 +3,7 @@ package com.intive.registration.viewmodels
 import androidx.lifecycle.*
 import com.intive.repository.local.LocalRepository
 
-class LoginViewModel(
-    val repo: LocalRepository
-) : ViewModel() {
+class LoginViewModel() : ViewModel() {
 
     private val _login = MutableLiveData("")
     val login: LiveData<String> = _login

@@ -64,6 +64,7 @@ fun EmailVerificationScreen(
             }
             is Resource.Success -> {
                 sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
+                sharedViewModel.login = viewmodel.login
                 val action = EmailVerificationFragmentDirections.actionSuccess()
                 navController.navigate(action)
             }
