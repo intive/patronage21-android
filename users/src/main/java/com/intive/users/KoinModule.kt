@@ -9,6 +9,6 @@ import org.koin.dsl.module
 
 val usersModule = module {
     viewModel { UsersViewModel(get(), get()) }
-    viewModel { DetailsViewModel(get()) }
+    viewModel { DetailsViewModel() }
     viewModel { DeactivateUserViewModel(get(), get()) }
 }

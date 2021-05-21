@@ -14,7 +14,6 @@ import com.intive.registration.viewmodels.LoginViewModel
 import com.intive.registration.viewmodels.RegistrationSuccessDialogState
 import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.shared.NavigationViewModel
-import com.intive.shared.forceRestart
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,7 +31,7 @@ class LoginFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    LoginScreen(viewModel, findNavController(), navigationViewModel)
+                    LoginScreen(viewModel, findNavController())
                     if (sharedViewModel.successDialogState == RegistrationSuccessDialogState.SHOW_DIALOG) {
                         SuccessScreen(sharedViewModel, navigationViewModel)
 
@@ -42,16 +41,5 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        sharedViewModel.shouldRestartActivity.observe(viewLifecycleOwner, {
-            if(it){
-                sharedViewModel.shouldRestartActivity.value = false
-                requireActivity().forceRestart()
-            }
-        })
     }
 }

@@ -28,7 +28,7 @@ import com.intive.ui.components.TitleText
 
 
 @Composable
-fun LoginScreen(viewmodel: LoginViewModel, navController: NavController, navigationViewModel: NavigationViewModel) {
+fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
 
     val login: String by viewmodel.login.observeAsState("")
@@ -58,12 +58,6 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController, navigat
         ) {
             val action = LoginFragmentDirections.actionRegister()
             navController.navigate(action)
-        }
-        Button(onClick =  {
-            viewmodel.repo.loginUser("Test")
-            navigationViewModel.loginUser("hello")
-        }) {
-            Text("Cheat")
         }
     }
 }

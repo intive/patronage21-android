@@ -30,7 +30,6 @@ import com.intive.calendar.utils.*
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     event: EventBundle,
-    navController: NavController,
     refreshEventsList: () -> Unit
 ) {
     Column(
@@ -60,7 +59,7 @@ fun EventScreenLayout(
                 showCount = true,
             )
 
-            UsersList(users = event.users, navController)
+            UsersList(users = event.users)
         }
 
         Column {
@@ -168,16 +167,14 @@ fun InviteResponseButtons(
 }
 
 @Composable
-fun UsersList(users: List<User>, navController: NavController) {
+fun UsersList(users: List<User>) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
             PersonListItem(
                 user = user,
-                onItemClick =  {
-                               navController.navigate(Uri.parse("intive://userDetails/test"))
-                },
+                onItemClick =  {},
                 rowPadding =  0.dp,
                 showAdditionalText = true,
                 additionalText = user.role
