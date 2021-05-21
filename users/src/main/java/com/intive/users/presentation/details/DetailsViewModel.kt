@@ -3,11 +3,12 @@ package com.intive.users.presentation.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.domain.model.User
+import com.intive.repository.local.LocalRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class DetailsViewModel : ViewModel() {
+class DetailsViewModel() : ViewModel() {
     data class Project(val name: String, val role: String)
 
     private val userContactEventChannel = Channel<UserContactEvent>()

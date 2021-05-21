@@ -5,6 +5,7 @@ import com.intive.registration.viewmodels.RegistrationSuccessDialogState.HIDE_DI
 
 class SharedViewModel : ViewModel() {
     var successDialogState = HIDE_DIALOG
+    var login: String = ""
 }
 
 object RegistrationSuccessDialogState {
