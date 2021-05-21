@@ -1,6 +1,5 @@
 package com.intive.patronative.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,20 +20,17 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.R
-import com.intive.repository.local.LocalRepository
 import com.intive.shared.NavigationViewModel
 import com.intive.ui.PatronativeTheme
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 import kotlinx.coroutines.flow.collect
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class NavActivity : AppCompatActivity() {
 
-    private val localRepository: LocalRepository by inject()
     private val navigationViewModel by viewModel<NavigationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
