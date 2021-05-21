@@ -47,9 +47,8 @@ class EventFragment : Fragment() {
 
         lateinit var event: EventParcelable
         val safeArgs: EventFragmentArgs by navArgs()
-        val eventString = safeArgs.eventInfo
 
-        event = safeArgs.eventInfoParcelable ?: Gson().fromJson(eventString, EventParcelable::class.java)
+        event = safeArgs.eventInfoParcelable ?: Gson().fromJson(safeArgs.eventInfo, EventParcelable::class.java)
 
         return ComposeView(requireContext()).apply {
             setContent {
