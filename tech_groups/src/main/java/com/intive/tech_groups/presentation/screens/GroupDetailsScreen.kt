@@ -12,13 +12,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.repository.domain.model.GroupParcelable
 import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.Stage
 import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import com.intive.ui.components.*
+import java.security.acl.Group
 
 @Composable
 fun GroupDetailsScreen(
+    group: GroupParcelable,
     stageList: List<Stage>,
     getStageDetails: (Long) -> Unit,
     navController: NavController? = null
@@ -36,7 +39,7 @@ fun GroupDetailsScreen(
                 item {
                     Column {
                         TitleText(
-                            text = "Grupa I",
+                            text = group.name,
                             modifier = Modifier
                                 .padding(top = 15.dp, bottom = 15.dp)
                         )
@@ -44,7 +47,9 @@ fun GroupDetailsScreen(
                             text = "Technologie:",
                             style = MaterialTheme.typography.h6
                         )
-                        Text(text = "Lorem ipsum")
+                        for(tech in group.techList){
+                            Text(text = "- $tech")
+                        }
                     }
                     SectionHeader(
                         modifier = Modifier.padding(

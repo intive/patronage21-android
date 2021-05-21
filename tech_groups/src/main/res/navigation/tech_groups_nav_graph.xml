@@ -20,6 +20,11 @@
         <action
             android:id="@+id/action_groupDetailsFragment_to_stageFragment"
             app:destination="@id/stageFragment" />
+        <argument
+            android:name="groupParcelable"
+            app:argType="com.intive.repository.domain.model.GroupParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment

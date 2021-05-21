@@ -68,11 +68,12 @@ fun MainScreen(
             ) {
                 var index = 0
                 while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
+                    val indexCloned = index
                     Row {
                         Column(Modifier.weight(1f)) {
                             BoxButton(
                                 text = filteredList!![index].name,
-                                onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()) },
+                                onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(filteredList!![indexCloned])) },
                             ) {
                                 Text("Technologie: ")
                                 for (technology in filteredList!![index].techList) {
@@ -85,7 +86,7 @@ fun MainScreen(
                             if (index + 1 < filteredList!!.size) {
                                 BoxButton(
                                     text = filteredList!![index + 1].name,
-                                    onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()) },
+                                    onClick = { navController.navigate(MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(filteredList!![indexCloned + 1])) },
                                     contentOnTop = false
                                 ) {
                                     Text("Technologie: ")
