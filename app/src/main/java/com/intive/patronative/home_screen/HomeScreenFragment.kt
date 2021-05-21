@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.intive.patronative.ui.components.HomeScreenBoxButtonsGrid
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -28,8 +27,6 @@ import com.intive.ui.components.*
 
 
 class HomeScreenFragment : Fragment() {
-
-    private val viewModel: HomeScreenViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

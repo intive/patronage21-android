@@ -118,26 +118,6 @@ class NavActivity : AppCompatActivity() {
                 }
             }
         }
-
-//        navigationViewModel.isLoggedIn.observe(this, { isLoggedIn ->
-//            val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-//            navController.graph = navGraph
-//            if (!isLoggedIn) {
-//                println("IF =-----= $intent")
-//                startDestination = R.id.registration_nav_graph
-//                val navOptions = NavOptions.Builder()
-//                    .setPopUpTo(R.id.nav_graph, true)
-//                    .build()
-//                navController.navigate(startDestination, null, navOptions)
-//            } else {
-//                startDestination =  R.id.nav_graph
-//                val navOptions = NavOptions.Builder()
-//                    .setPopUpTo(R.id.nav_graph, false)
-//                    .build()
-//                navController.navigate(startDestination, null, navOptions)
-//            }
-//        })
-
     }
 
 }
