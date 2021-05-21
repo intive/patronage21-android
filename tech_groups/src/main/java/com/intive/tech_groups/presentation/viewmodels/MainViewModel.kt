@@ -10,12 +10,12 @@ class MainViewModel : ViewModel() {
 
     val filters = listOf("Wszystkie grupy technologiczne", "Java", "Android", "QA", "JavaScript")
     val groups = listOf(
-        Group(name = "Grupa I", description = "des", techList = listOf("Java", "Android")),
-        Group(name = "Grupa II", description = "des", techList = listOf("JavaScript", "Android")),
-        Group(name = "Grupa III", description = "des", techList = listOf("JavaScript", "Java")),
-        Group(name = "Grupa IV", description = "des", techList = listOf("QA", "Android")),
-        Group(name = "Grupa V", description = "des", techList = listOf("JavaScript", "QA")),
-        Group(name = "Grupa VI", description = "des", techList = listOf("Java", "QA"))
+        Group(id = "0", name = "Grupa I", description = "des", techList = listOf("Java", "Android")),
+        Group(id = "1", name = "Grupa II", description = "des", techList = listOf("JavaScript", "Android")),
+        Group(id = "2", name = "Grupa III", description = "des", techList = listOf("JavaScript", "Java")),
+        Group(id = "3", name = "Grupa IV", description = "des", techList = listOf("QA", "Android")),
+        Group(id = "4", name = "Grupa V", description = "des", techList = listOf("JavaScript", "QA")),
+        Group(id = "5", name = "Grupa VI", description = "des", techList = listOf("Java", "QA"))
 
     )
 
