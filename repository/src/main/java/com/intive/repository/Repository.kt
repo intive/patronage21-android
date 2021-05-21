@@ -17,7 +17,7 @@ interface Repository {
     val gradebookMapper: GradebookDtoMapper
 
     suspend fun getTechnologies(): List<String>
-    suspend fun getTechnologyGroups(): List<Group>
+    suspend fun getTechnologyGroups(): List<GroupParcelable>
 
     suspend fun getUsers(page: Int, role: String, group: String?): UsersResponse
     suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?): UsersResponse

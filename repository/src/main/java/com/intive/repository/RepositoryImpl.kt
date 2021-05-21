@@ -139,7 +139,7 @@ class RepositoryImpl(
         return networkRepository.getTechnologies().groups
     }
 
-    override suspend fun getTechnologyGroups(): List<Group> {
+    override suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return networkRepository.getTechnologyGroups()
     }
 

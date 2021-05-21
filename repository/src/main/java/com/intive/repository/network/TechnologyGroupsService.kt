@@ -1,6 +1,6 @@
 package com.intive.repository.network
 
-import com.intive.repository.domain.model.Group
+import com.intive.repository.domain.model.GroupParcelable
 import retrofit2.http.*
 
 interface TechnologyGroupsService {
@@ -8,5 +8,5 @@ interface TechnologyGroupsService {
     suspend fun getTechnologies(): List<String>
 
     @GET("api/groups")
-    suspend fun getTechnologyGroups(): List<Group>
+    suspend fun getTechnologyGroups(): List<GroupParcelable>
 }

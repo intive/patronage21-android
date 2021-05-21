@@ -5,7 +5,7 @@ import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
-import com.intive.repository.domain.model.Group
+import com.intive.repository.domain.model.GroupParcelable
 import com.intive.repository.network.model.*
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UserResponse
@@ -89,7 +89,7 @@ class NetworkRepository(
         return technologyGroupsServiceJava.getTechnologies()
     }
 
-    suspend fun getTechnologyGroups(): List<Group> {
+    suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return technologyGroupsService.getTechnologyGroups()
     }
 
