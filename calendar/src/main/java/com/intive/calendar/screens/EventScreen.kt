@@ -1,5 +1,6 @@
 package com.intive.calendar.screens
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
+import androidx.navigation.NavController
 import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
@@ -28,6 +30,7 @@ import com.intive.calendar.utils.*
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     event: EventBundle,
+    navController: NavController,
     refreshEventsList: () -> Unit
 ) {
     Column(
@@ -57,7 +60,7 @@ fun EventScreenLayout(
                 showCount = true,
             )
 
-            UsersList(users = event.users)
+            UsersList(users = event.users, navController)
         }
 
         Column {
@@ -165,14 +168,16 @@ fun InviteResponseButtons(
 }
 
 @Composable
-fun UsersList(users: List<User>) {
+fun UsersList(users: List<User>, navController: NavController) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
             PersonListItem(
                 user = user,
-                onItemClick =  {},
+                onItemClick =  {
+                               navController.navigate(Uri.parse("intive://userDetails/test"))
+                },
                 rowPadding =  0.dp,
                 showAdditionalText = true,
                 additionalText = user.role

@@ -27,6 +27,7 @@ import com.intive.patronative.R
 import com.intive.registration.screens.SuccessScreen
 import com.intive.registration.viewmodels.RegistrationSuccessDialogState
 import com.intive.registration.viewmodels.SharedViewModel
+import com.intive.shared.forceRestart
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
 import com.intive.ui.components.*
@@ -35,7 +36,6 @@ import com.intive.ui.components.*
 class HomeScreenFragment : Fragment() {
 
     private val viewModel: HomeScreenViewModel by viewModels()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +45,6 @@ class HomeScreenFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     HomeScreen(navController = findNavController())
-                    if (sharedViewModel.successDialogState == RegistrationSuccessDialogState.SHOW_DIALOG) {
-                        SuccessScreen()
-                        sharedViewModel.successDialogState =
-                            RegistrationSuccessDialogState.HIDE_DIALOG
-                    }
                 }
             }
         }

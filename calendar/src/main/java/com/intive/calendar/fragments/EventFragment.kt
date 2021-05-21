@@ -57,7 +57,8 @@ class EventFragment : Fragment() {
                 PatronativeTheme {
                     EventScreenLayout(
                         updateInviteResponse = eventViewModel::updateInviteResponse,
-                        event = event
+                        event = event,
+                        navController = findNavController()
                     ) { calendarHomeViewModel.refreshEventsList() }
                 }
             }

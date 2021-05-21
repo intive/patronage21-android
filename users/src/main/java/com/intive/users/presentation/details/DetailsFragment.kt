@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.net.Uri
+import com.intive.shared.forceRestart
 
 
 class DetailsFragment : Fragment() {
