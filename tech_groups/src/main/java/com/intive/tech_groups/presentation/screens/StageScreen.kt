@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.repository.domain.model.Event
-import com.intive.shared.EventBundle
+import com.intive.shared.EventParcelable
 import com.intive.shared.getFullDateString
 import com.intive.shared.stringToCalendar
 import java.util.*
@@ -141,7 +141,7 @@ fun EventListItem(
     var rowModifier: Modifier = Modifier.fillMaxWidth()
     var fontColor: Color = Color.Black
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
         date = event.date,
         time = "${event.timeStart} - ${event.timeEnd}",
@@ -151,7 +151,7 @@ fun EventListItem(
         active = true /*TODO*/
     )
 
-    val eventSerialized = Gson().toJson(eventBundle)
+    val eventSerialized = Gson().toJson(eventParcelable)
 
     if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
         fontColor = Color.Gray

@@ -21,14 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
 import java.util.*
 import com.intive.repository.domain.model.Event
-import com.intive.shared.EventBundle
+import com.intive.shared.EventParcelable
 import com.intive.shared.getDateString
 import com.intive.shared.getFullDateString
 
@@ -134,7 +133,7 @@ fun DaysListItem(
 
             val header = getFullDateString(day)
 
-            val eventBundle = EventBundle(
+            val eventParcelable = EventParcelable(
                 id = events[0].id,
                 date = header,
                 time = "${events[0].timeStart} - ${events[0].timeEnd}",
@@ -144,9 +143,7 @@ fun DaysListItem(
                 active = isDayActive
             )
 
-            val eventSerialized = Gson().toJson(eventBundle)
-            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
-
+            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
             WeekDayWithEvents(
                 headerColor = headerColor,
@@ -266,7 +263,7 @@ fun EventsItem(
 
     val header = getFullDateString(date)
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
         date = header,
         time = "${event.timeStart} - ${event.timeEnd}",
@@ -276,8 +273,7 @@ fun EventsItem(
         active = isDayActive
     )
 
-    val eventSerialized = Gson().toJson(eventBundle)
-    val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
+    val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier

@@ -11,12 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.fragments.DayFragmentDirections
 import com.intive.calendar.utils.DayBundle
 import com.intive.repository.domain.model.Event
-import com.intive.shared.EventBundle
+import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
 import com.intive.ui.components.TitleText
 
@@ -65,7 +64,7 @@ fun EventsList(
 @Composable
 fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
         date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
@@ -75,8 +74,7 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         active = isDayActive
     )
 
-    val eventSerialized = Gson().toJson(eventBundle)
-    val directions = DayFragmentDirections.actionDayFragmentToEventFragment(eventSerialized)
+    val directions = DayFragmentDirections.actionDayFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier

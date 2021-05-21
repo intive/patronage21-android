@@ -15,7 +15,7 @@ import com.intive.calendar.screens.EventScreenLayout
 import com.intive.calendar.utils.InviteResponseChannel
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.viewmodels.EventViewModel
-import com.intive.shared.EventBundle
+import com.intive.shared.EventParcelable
 import com.intive.ui.PatronativeTheme
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -45,11 +45,11 @@ class EventFragment : Fragment() {
             }
         }
 
-        lateinit var event: EventBundle
+        lateinit var event: EventParcelable
         val safeArgs: EventFragmentArgs by navArgs()
         val eventString = safeArgs.eventInfo
 
-        event = Gson().fromJson(eventString, EventBundle::class.java)
+        event = safeArgs.eventInfoParcelable ?: Gson().fromJson(eventString, EventParcelable::class.java)
 
         return ComposeView(requireContext()).apply {
             setContent {

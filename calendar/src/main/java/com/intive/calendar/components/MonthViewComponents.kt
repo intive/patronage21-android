@@ -20,12 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
-import com.intive.shared.EventBundle
+import com.intive.shared.EventParcelable
 import com.intive.shared.getDateString
 import com.intive.shared.getFullDateString
 import java.util.*
@@ -102,7 +101,7 @@ fun CalendarGrid(
                         monthEvents[index].events!!.size == 1 -> {
                             val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
 
-                            val eventBundle = EventBundle(
+                            val eventParcelable = EventParcelable(
                                 id = monthEvents[index].events!![0].id,
                                 date = getFullDateString(items[it] as Calendar),
                                 time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
@@ -113,8 +112,7 @@ fun CalendarGrid(
 
                             )
 
-                            val eventSerialized = Gson().toJson(eventBundle)
-                            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventSerialized)
+                            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
                             onClick =
                                 {

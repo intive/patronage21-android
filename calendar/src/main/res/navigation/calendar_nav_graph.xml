@@ -28,7 +28,13 @@
 
         <argument
             android:name="eventInfo"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue='' />
+        <argument
+            android:name="eventInfoParcelable"
+            app:argType="com.intive.shared.EventParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
 
         <deepLink android:id="@+id/eventDeepLink" app:uri="intive://eventFragment/{eventInfo}" />
     </fragment>
