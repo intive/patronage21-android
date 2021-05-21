@@ -34,6 +34,22 @@ fun stringToCalendar(dateString: String, separator: String = "-"): Calendar {
     calendar[Calendar.YEAR] = dateElements[2].toInt()
     calendar[Calendar.MONTH] = dateElements[1].toInt() - 1
     calendar[Calendar.DAY_OF_MONTH] = dateElements[0].toInt()
+    calendar[Calendar.HOUR_OF_DAY] = dateElements[0].toInt()
+
+    return calendar
+}
+
+fun stringToCalendar(dateString: String, timeEnd: String, separator: String = "-"): Calendar {
+    val dateElements = dateString.split(separator)
+    val timeElements = timeEnd.split(":")
+
+    val calendar: Calendar = Calendar.getInstance()
+
+    calendar[Calendar.YEAR] = dateElements[2].toInt()
+    calendar[Calendar.MONTH] = dateElements[1].toInt() - 1
+    calendar[Calendar.DAY_OF_MONTH] = dateElements[0].toInt()
+    calendar[Calendar.HOUR_OF_DAY] = timeElements[0].toInt()
+    calendar[Calendar.MINUTE] = timeElements[1].toInt()
 
     return calendar
 }

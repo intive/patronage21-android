@@ -1,5 +1,6 @@
 package com.intive.users.presentation.deactivate_user
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,22 +40,5 @@ class DeactivateUserFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.deactivateUserEvent.collect { event ->
-                when(event) {
-                    DeactivateUserViewModel.DeactivateUserEvent.NavigateToRegistrationScreen -> {
-                        Toast.makeText(requireContext(), getString(R.string.account_was_deactivated), Toast.LENGTH_LONG).show()
-                        navigationViewModel.logoutUser()
-                    }
-                    DeactivateUserViewModel.DeactivateUserEvent.ShowErrorMessage -> {
-                        Toast.makeText(requireContext(), getString(R.string.an_error_occurred_during_deactivation), Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-}
 
