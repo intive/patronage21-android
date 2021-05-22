@@ -47,5 +47,7 @@ interface Repository {
 
     fun enableCaching()
     fun isCachingEnabled(): Boolean
+
+
 }
 

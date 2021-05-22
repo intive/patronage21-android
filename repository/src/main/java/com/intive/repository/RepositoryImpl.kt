@@ -3,6 +3,8 @@ package com.intive.repository
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
+import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.technologies.TechnologyEntity
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
@@ -13,6 +15,7 @@ import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
+import kotlinx.coroutines.coroutineScope
 import retrofit2.Response
 
 class RepositoryImpl(
@@ -24,7 +27,8 @@ class RepositoryImpl(
     private val newEventMapper: NewEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
     gbMapper: GradebookDtoMapper,
-    private val localRepository: LocalRepository
+    private val localRepository: LocalRepository,
+    private val databaseRepository: DatabaseRepository
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -136,15 +140,29 @@ class RepositoryImpl(
     }
 
     override suspend fun getTechnologies(): List<String> {
-        return when (isCachingEnabled()) {
-            // TODO: get data from Room
+        when (isCachingEnabled()) {
             true -> {
-                emptyList()
+                val technologyEntityList: List<TechnologyEntity> =
+                    databaseRepository.getAllTechnologies()
+                val technologiesList: MutableList<String> = mutableListOf()
+                technologyEntityList.forEach {
+                    technologiesList.add(it.name)
+                }
+
+                return technologiesList
             }
             false -> {
                 enableCaching()
-                networkRepository.getTechnologies().groups
-                // TODO: save to database
+                var technologyEntity: TechnologyEntity
+                val technologiesList = networkRepository.getTechnologies().groups
+                technologiesList.forEach {
+                    technologyEntity = TechnologyEntity(0, it)
+                    coroutineScope {
+                        databaseRepository.insert(technologyEntity)
+                    }
+                }
+
+                return technologiesList
             }
         }
     }
@@ -227,4 +245,5 @@ class RepositoryImpl(
     override fun isCachingEnabled(): Boolean {
         return localRepository.isCachingEnabled()
     }
+
 }
