@@ -10,6 +10,7 @@ import com.intive.repository.Repository
 import com.intive.repository.domain.model.Audit
 import com.intive.repository.network.*
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.SortTypes
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -29,10 +30,10 @@ class AuditViewModel(
 
     private val executeQuery: MutableStateFlow<String> = MutableStateFlow("")
 
-    private val _sortBy: MutableState<String> = mutableStateOf("")
-    val sortBy: State<String> = _sortBy
+    private val _sortBy: MutableState<SortTypes> = mutableStateOf(SortTypes.DESC)
+    val sortBy: State<SortTypes> = _sortBy
 
-    var executeSortBy: MutableStateFlow<String> = MutableStateFlow("desc")
+    var executeSortBy: MutableStateFlow<SortTypes> = MutableStateFlow(SortTypes.DESC)
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -45,7 +46,7 @@ class AuditViewModel(
         .distinctUntilChanged()
         .flatMapLatest { (query, sortBy) ->
             Pager(PagingConfig(pageSize = PAGE_SIZE)) {
-                AuditsSource(repository, query = query, sortBy = sortBy)
+                AuditsSource(repository, query = query, sortBy = sortBy.name.toLowerCase(Locale.ROOT))
             }.flow
                 .cachedIn(viewModelScope)
         }
@@ -71,11 +72,11 @@ class AuditViewModel(
 
     fun onSortByChanged(sort: String) {
         if (sort == "Od najnowszych")
-            _sortBy.value = "desc"
+            _sortBy.value = SortTypes.DESC
         else
-            _sortBy.value = "asc"
+            _sortBy.value = SortTypes.ASC
         viewModelScope.launch {
-            executeSortBy.emit(sortBy.value?.toLowerCase(Locale.ROOT))
+            executeSortBy.emit(sortBy.value)
         }
     }
 }
