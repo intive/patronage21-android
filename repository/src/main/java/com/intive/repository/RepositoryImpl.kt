@@ -209,4 +209,12 @@ class RepositoryImpl(
     override fun logoutUser() {
         localRepository.logoutUser()
     }
+
+    override fun enableCaching() {
+        localRepository.enableCaching()
+    }
+
+    override fun isCachingEnabled(): Boolean {
+        return localRepository.isCachingEnabled()
+    }
 }

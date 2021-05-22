@@ -44,5 +44,8 @@ interface Repository {
     fun getUserLoginOrNull(): String?
     fun loginUser(login: String)
     fun logoutUser()
+
+    fun enableCaching()
+    fun isCachingEnabled(): Boolean
 }
 
