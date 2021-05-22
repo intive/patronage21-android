@@ -64,9 +64,5 @@ fun Audit(audit: Audit) {
                     style = PatronageTypography.body1
             )
         }
-//        Text(
-//             text = audit.userName,
-//             style = PatronageTypography.body1
-//        )
     }
 }

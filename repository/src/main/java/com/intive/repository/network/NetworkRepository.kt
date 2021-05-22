@@ -36,8 +36,8 @@ class NetworkRepository(
         )
     }
 
-    suspend fun searchAudits(page: Int, query: String): AuditResponse {
-        return auditService.searchAudits(page, query)
+    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return auditService.searchAudits(page, query, sortBy)
     }
 
     suspend fun getUsers(

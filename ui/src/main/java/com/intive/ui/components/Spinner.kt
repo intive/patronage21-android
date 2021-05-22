@@ -2,22 +2,23 @@ package com.intive.ui.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.intive.ui.R
 
 @Composable
 fun Spinner(
     items: List<String>,
     label: String? = null,
+    dropDownIconShow: Boolean = false,
     onTitleSelected: (String) -> Unit
 ) {
     val text = rememberSaveable { mutableStateOf(items[0]) }
@@ -43,6 +44,7 @@ fun Spinner(
             }
             DropDownList(
                 requestToOpen = isOpen.value,
+                dropDownIconShow = dropDownIconShow,
                 list = items,
                 openCloseOfDropDownList,
                 selectedString = {
@@ -66,19 +68,22 @@ fun Spinner(
 @Composable
 fun DropDownList(
     requestToOpen: Boolean = false,
+    dropDownIconShow: Boolean = false,
     list: List<String>,
     request: (Boolean) -> Unit,
     selectedString: (String) -> Unit
 ) {
+    var selectedIndex by remember { mutableStateOf(0) }
     DropdownMenu(
         modifier = Modifier.fillMaxWidth(),
         expanded = requestToOpen,
         onDismissRequest = { request(false) },
     ) {
-        list.forEach { item ->
+        list.forEachIndexed { index, item ->
             DropdownMenuItem(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
+                    selectedIndex = index
                     request(false)
                     selectedString(item)
                 }
@@ -87,6 +92,20 @@ fun DropDownList(
                     item,
                     modifier = Modifier.wrapContentWidth()
                 )
+                if(dropDownIconShow){
+                    if (index == selectedIndex) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentWidth(Alignment.End),
+                        ) {
+                            Icon(
+                                Icons.Outlined.Done,
+                                contentDescription = stringResource(R.string.arrow_upward_icon_desc)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
