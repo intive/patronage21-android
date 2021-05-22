@@ -131,8 +131,8 @@ class RepositoryImpl(
     override val auditsMapper: AuditDtoMapper = auditMapper
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun searchAudits(page: Int, query: String): AuditResponse {
-        return networkRepository.searchAudits(page, query)
+    override suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return networkRepository.searchAudits(page, query, sortBy)
     }
 
     override suspend fun getTechnologies(): List<String> {

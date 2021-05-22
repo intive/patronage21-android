@@ -27,7 +27,7 @@ interface Repository {
     suspend fun getUser(login: String): User
     suspend fun deactivateUser(login: String): Response<String>
 
-    suspend fun searchAudits(page: Int, query: String): AuditResponse
+    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse
 
     suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>

@@ -4,6 +4,7 @@ dependencies {
 
     implementation project(":ui")
     implementation project(":repository")
+    implementation project(":shared")
 
     def nav_version = "2.3.5"
 

@@ -6,6 +6,7 @@ import com.intive.calendar.calendarModule
 import com.intive.audit.auditModule
 import com.intive.gradebook.gradebookModule
 import com.intive.repository.repositoryModule
+import com.intive.shared.navigationModule
 import com.intive.tech_groups.techGroupsModule
 import com.intive.users.usersModule
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +26,8 @@ class PatronativeApplication : Application() {
                 registrationModule,
                 usersModule,
                 techGroupsModule,
-                gradebookModule
+                gradebookModule,
+                navigationModule
             )
         }
     }

@@ -35,6 +35,7 @@ fun AuditsList(
     showFilterField: Boolean,
     onSearchIconClick: (Boolean) -> Unit,
     onFilterIconClick: (Boolean) -> Unit,
+    onSortByChanged: (String) -> Unit
 ) {
     Column(modifier = modifier) {
 
@@ -61,6 +62,7 @@ fun AuditsList(
                     listState.animateScrollToItem(index = 0)
                 }
             },
+            onSortByChanged = onSortByChanged
         )
 
         Box(

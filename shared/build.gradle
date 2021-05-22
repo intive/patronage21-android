@@ -36,6 +36,18 @@ dependencies {
     // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
 
+    // Koin
+    def koin_version =  "3.0.1"
+
+    // Koin main features for Android (Scope,ViewModel ...)
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // Koin Android - experimental builder extensions
+    implementation "io.insert-koin:koin-android-ext:$koin_version"
+    // Koin for Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Koin for Jetpack Compose (unstable version)
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
 }
 
 
