@@ -136,7 +136,17 @@ class RepositoryImpl(
     }
 
     override suspend fun getTechnologies(): List<String> {
-        return networkRepository.getTechnologies().groups
+        return when (isCachingEnabled()) {
+            // TODO: get data from Room
+            true -> {
+                emptyList()
+            }
+            false -> {
+                enableCaching()
+                networkRepository.getTechnologies().groups
+                // TODO: save to database
+            }
+        }
     }
 
     override suspend fun getTechnologyGroups(): List<Group> {
@@ -183,7 +193,7 @@ class RepositoryImpl(
     override suspend fun getStageDetails(id: Long): StageDetails {
         return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
     }
-      
+
     override val gradebookMapper: GradebookDtoMapper = gbMapper
 
     override suspend fun getGradebook(
