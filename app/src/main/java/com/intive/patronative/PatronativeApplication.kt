@@ -23,6 +23,7 @@ class PatronativeApplication : Application() {
                 repositoryModule,
                 auditModule, 
                 calendarModule,
+                usersModule,
                 registrationModule,
                 usersModule,
                 techGroupsModule,
