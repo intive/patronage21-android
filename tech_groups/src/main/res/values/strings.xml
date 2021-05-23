@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tech_groups_title">Grupy technologiczne</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="an_error_occurred">Wystąpił błąd</string>
+    <string name="technologies">Technologie:</string>
+    <string name="add_group">Dodaj gruppę technologiczną</string>
+    <string name="choose_technologies_for_group_text">Wybierz technologie przypisane do grupy:</string>
+    <string name="downloading_technologies">Pobieranie technologi</string>
+    <string name="error">Wystąpił błąd</string>
+    <string name="add_new_technology_group">Dodaj nową grupę technologiczną</string>
 
     <string name="lorem_ipsum_string">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="task_description">Opis zadania</string>
@@ -14,6 +22,5 @@
     <string name="stage_label">Etap</string>
     <string name="description">Opis</string>
     <string name="resign_from_candidacy">Zrezygnuj z kandydatury</string>
-
 
 </resources>

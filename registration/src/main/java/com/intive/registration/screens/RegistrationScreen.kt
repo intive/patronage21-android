@@ -8,6 +8,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -28,6 +29,7 @@ import com.intive.ui.components.*
 import kotlinx.coroutines.launch
 
 
+@ExperimentalComposeUiApi
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
     val response = viewmodel.responseState.value
@@ -157,6 +159,7 @@ private fun Logo() {
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun PhoneNumberInput(
     phoneNumber: String,
@@ -173,6 +176,7 @@ private fun PhoneNumberInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun GithubInput(
     githubUrl: String,
@@ -188,6 +192,7 @@ private fun GithubInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun ConfirmPasswordInput(
     confirmPassword: String,
@@ -205,6 +210,7 @@ private fun ConfirmPasswordInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun PasswordInput(
     password: String,
@@ -222,6 +228,7 @@ private fun PasswordInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun CodeVerificationInput(
     login: String,
@@ -237,6 +244,7 @@ private fun CodeVerificationInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun EmailInput(
     email: String,
@@ -253,6 +261,7 @@ private fun EmailInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun LastNameInput(
     lastName: String,
@@ -268,6 +277,7 @@ private fun LastNameInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun FirstNameInput(
     firstName: String,
