@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -48,10 +47,10 @@ fun MainScreen(
                 )
                 when (filters) {
                     is Resource.Success -> {
-                        Spinner(
+                        GroupSpinner(
                             items = filters.data!!
                         ) {
-                            viewModel.filterList(it)
+                            viewModel.filterList(it.queryValue)
                         }
                     }
                     is Resource.Error -> ErrorItem(
