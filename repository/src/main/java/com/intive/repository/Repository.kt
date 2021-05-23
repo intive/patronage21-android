@@ -37,6 +37,7 @@ interface Repository {
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
 
+    suspend fun getStages(groupId: String): List<Stage>
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 

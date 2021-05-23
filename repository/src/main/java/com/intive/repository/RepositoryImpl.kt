@@ -23,6 +23,7 @@ class RepositoryImpl(
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
+    private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
     private val localRepository: LocalRepository
 ) : Repository {
@@ -177,7 +178,11 @@ class RepositoryImpl(
 
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getStages(groupId: String): List<Stage> {
+        return stageDtoMapper.toDomainList(networkRepository.getStages(groupId))
     }
 
     override suspend fun getStageDetails(id: Long): StageDetails {

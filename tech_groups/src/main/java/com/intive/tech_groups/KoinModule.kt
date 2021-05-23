@@ -2,6 +2,7 @@ package com.intive.tech_groups
 
 
 import com.intive.tech_groups.presentation.viewmodels.AddGroupViewModel
+import com.intive.tech_groups.presentation.viewmodels.GroupDetailsViewModel
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -11,4 +12,5 @@ val techGroupsModule = module {
     viewModel { StageViewModel(get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { AddGroupViewModel(get()) }
+    viewModel { GroupDetailsViewModel(get(), get()) }
 }

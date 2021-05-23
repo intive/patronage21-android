@@ -1,15 +1,13 @@
 package com.intive.repository.network
 
-import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.domain.model.Stage
 import com.intive.repository.network.model.*
-import com.intive.repository.network.response.GradebookResponse
-import com.intive.repository.network.response.UserResponse
-import com.intive.repository.network.response.UsersResponse
+import com.intive.repository.network.response.*
 
 class NetworkRepository(
     private val usersService: UsersService,
@@ -18,6 +16,7 @@ class NetworkRepository(
     private val eventsService: EventsService,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val stageService: StageService,
     private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService
 ) {
@@ -118,6 +117,9 @@ class NetworkRepository(
         return eventsService.updateInviteResponse(inviteResponse)
     }
 
+    suspend fun getStages(groupId: String): List<StageDto> {
+        return stageService.getStages(groupId)
+    }
 
     suspend fun getStageDetails(id: Long): StageDetailsDto {
         return stageDetailsService.getStageDetails(id)
