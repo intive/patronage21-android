@@ -20,57 +20,6 @@ import com.intive.calendar.R
 
 
 @Composable
-fun OKButton(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp)
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.subtitle1,
-            color = Color.White
-        )
-    }
-}
-
-@Composable
-fun CancelButton(text: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp)
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.subtitle1,
-            color = Color.White
-        )
-    }
-}
-
-@Composable
-fun ClearButton(onClick: () -> Unit) {
-    Row(
-        horizontalArrangement = Arrangement.End,
-        modifier = Modifier.padding(12.dp)
-    ) {
-        IconButton(onClick = onClick) {
-            Icon(
-                imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(R.string.exit_dialog_btn_desc),
-                tint = Color.Black
-            )
-        }
-    }
-}
-
-
-@Composable
 fun ResponseButton(
     text: String,
     onSelectedColor: Color,
