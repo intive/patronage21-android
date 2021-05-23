@@ -32,4 +32,6 @@
     <string name="profile_picture">Zdjęcie profilowe</string>
     <string name="unknown_error_occurred">Wystąpił nieznany błąd</string>
     <string name="an_error_occurred">Wystąpił błąd</string>
+    <string name="account_was_deactivated">Konto zostało zdezaktywowane</string>
+    <string name="an_error_occurred_during_deactivation">Wystąpił błąd podczas deaktywacji konta</string>
 </resources>

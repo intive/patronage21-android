@@ -21,7 +21,7 @@ import com.intive.repository.network.*
 import org.koin.android.ext.koin.androidApplication
 import com.intive.repository.network.util.*
 import org.koin.core.qualifier.named
-import com.intive.repository.network.util.*
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
@@ -56,6 +56,7 @@ private fun createRetrofit(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }

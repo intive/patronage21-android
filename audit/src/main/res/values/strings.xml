@@ -2,4 +2,9 @@
     <string name="app_name">Audit</string>
     <!--AuditScreen text content-->
     <string name="search">Wyszukaj</string>
+
+    <string-array name="sort_spinner">
+        <item>"Od najnowszych"</item>
+        <item>"Od najstarszych"</item>
+    </string-array>
 </resources>

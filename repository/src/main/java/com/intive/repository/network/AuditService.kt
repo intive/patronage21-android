@@ -9,6 +9,7 @@ interface AuditService {
     @GET("api/audits")
     suspend fun searchAudits(
         @Query("page") page: Int,
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("sortBy") sortBy: String
     ): AuditResponse
 }

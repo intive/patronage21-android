@@ -35,7 +35,8 @@
     <fragment
         android:id="@+id/deactivateUserFragment"
         android:name="com.intive.users.presentation.deactivate_user.DeactivateUserFragment"
-        android:label="DeactivateUserFragment" />
+        android:label="DeactivateUserFragment" >
+    </fragment>
     <fragment
         android:id="@+id/editUserFragment"
         android:name="com.intive.users.presentation.edit_user.EditUserFragment"
