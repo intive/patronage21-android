@@ -18,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.database.Database
 import com.intive.repository.database.DatabaseRepository
-import com.intive.repository.database.technologies.TechnologyDao
 import com.intive.repository.local.LocalRepository
 import com.intive.repository.local.SharedPreferenceSource
 import com.intive.repository.network.*
@@ -58,7 +57,6 @@ val repositoryModule = module {
 }
 
 val databaseModule = module {
-
     single {
         Room.databaseBuilder(
             androidApplication(),
@@ -67,10 +65,11 @@ val databaseModule = module {
         ).build()
     }
 
-    factory<TechnologyDao> {
+    single {
         get<Database>().technologyDao()
     }
-    factory<DatabaseRepository> {
+
+    single {
         DatabaseRepository(technologyDao = get())
     }
 }
