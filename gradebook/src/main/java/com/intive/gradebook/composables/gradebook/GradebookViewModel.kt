@@ -12,9 +12,11 @@ import com.intive.repository.network.GRADEBOOK_PAGE_SIZE
 import com.intive.repository.network.GradebookSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -41,36 +43,44 @@ class GradebookViewModel(
     }
 
     init {
-        viewModelScope.launch(dispatchers.io) {
-            _techGroups.value = try {
-                val response = repository.getTechnologies()
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+        viewModelScope.launch {
+            _techGroups.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies()
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
+                }
             }
         }
     }
 
-    fun onTechGroupsRetryClicked() = viewModelScope.launch() {
+    fun onTechGroupsRetryClicked() {
+
         _techGroups.value = Resource.Loading()
-        _techGroups.value = try {
-            val response = repository.getTechnologies()
-            Resource.Success(response)
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage)
+
+        viewModelScope.launch {
+            _techGroups.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies()
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
+                }
+            }
         }
     }
 
     fun onTechGroupsChanged(group: String) {
         println(group)
-        if(group=="Wszystkie grupy")
-            groupStorage="all"
-        else if(group=="Mobile (Android)")
-            groupStorage="android"
+        if (group == "Wszystkie grupy")
+            groupStorage = "all"
+        else if (group == "Mobile (Android)")
+            groupStorage = "android"
         else
             groupStorage = group.toLowerCase(Locale.ROOT)
         viewModelScope.launch {
-            selectedGroupSort.emit(groupStorage+":"+sortbyStorage)
+            selectedGroupSort.emit(groupStorage + ":" + sortbyStorage)
         }
     }
 
@@ -83,7 +93,7 @@ class GradebookViewModel(
         else
             sortbyStorage = "asc"
         viewModelScope.launch {
-            selectedGroupSort.emit(groupStorage+":"+sortbyStorage)
+            selectedGroupSort.emit(groupStorage + ":" + sortbyStorage)
         }
     }
 }

@@ -15,10 +15,8 @@ import com.intive.repository.network.USERS_PAGE_SIZE
 import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import java.util.*
 
 private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
@@ -114,17 +112,21 @@ class UsersViewModel(
         getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
     }
 
+
     private fun getTechGroups() {
+
         _techGroups.value = Resource.Loading()
 
-        viewModelScope.launch(dispatchers.io) {
-            _techGroups.value = try {
-                val response = repository.getTechnologies().map { group ->
-                    GroupEntity(group, group)
+        viewModelScope.launch {
+            _techGroups.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies().map { group ->
+                        GroupEntity(group, group)
+                    }
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
                 }
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
             }
         }
     }

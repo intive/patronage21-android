@@ -1,6 +1,7 @@
 package com.intive.repository
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
@@ -140,16 +141,20 @@ class RepositoryImpl(
     }
 
     override suspend fun getTechnologies(): List<String> {
+
         when (isCachingEnabled()) {
+
             true -> {
-                val technologyEntityList: List<TechnologyEntity> =
-                    databaseRepository.getAllTechnologies()
+
+                val technologyEntityList = databaseRepository.getAllTechnologies()
                 val technologiesList: MutableList<String> = mutableListOf()
+
                 technologyEntityList.forEach {
                     technologiesList.add(it.name)
                 }
 
-                return technologiesList
+                return technologiesList.toList()
+
             }
             false -> {
                 enableCaching()
@@ -157,14 +162,14 @@ class RepositoryImpl(
                 val technologiesList = networkRepository.getTechnologies().groups
                 technologiesList.forEach {
                     technologyEntity = TechnologyEntity(0, it)
-                    coroutineScope {
-                        databaseRepository.insert(technologyEntity)
-                    }
+                    databaseRepository.insert(technologyEntity)
                 }
 
                 return technologiesList
             }
+
         }
+
     }
 
     override suspend fun getTechnologyGroups(): List<Group> {
