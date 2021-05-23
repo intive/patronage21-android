@@ -11,5 +11,4 @@ interface TechnologyDao {
 
     @Insert
     suspend fun insert(technology: TechnologyEntity)
-
 }

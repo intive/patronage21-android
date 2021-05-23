@@ -20,7 +20,7 @@ class LocalRepository(
         return sharedPreferenceSource.getUserLoginOrNull()
     }
 
-    fun enableCaching(){
+    fun enableCaching() {
         sharedPreferenceSource.enableCaching()
     }
 

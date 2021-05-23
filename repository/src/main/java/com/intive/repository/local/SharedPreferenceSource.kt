@@ -22,7 +22,7 @@ class SharedPreferenceSource(private val prefs: SharedPreferences) {
         return prefs.getString(LOGIN_KEY, null)
     }
 
-    fun enableCaching(){
+    fun enableCaching() {
         prefs.edit().putBoolean(CACHING_KEY, true).apply()
     }
 
