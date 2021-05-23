@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,6 +28,7 @@ import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.TitleText
 
 
+@ExperimentalComposeUiApi
 @Composable
 fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
@@ -62,6 +64,7 @@ fun LoginScreen(viewmodel: LoginViewModel, navController: NavController) {
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun LoginInput(
     login: String,
@@ -74,6 +77,7 @@ private fun LoginInput(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun PasswordInput(
     password: String,

@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,6 +24,7 @@ import com.intive.ui.components.IntroSection
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.TitleText
 
+@ExperimentalComposeUiApi
 @Composable
 fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
     val scrollState = rememberScrollState()
@@ -58,6 +60,7 @@ fun NoCodeScreen(viewmodel: NoCodeViewModel, navController: NavController) {
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 private fun EmailInput(
     email: String,
