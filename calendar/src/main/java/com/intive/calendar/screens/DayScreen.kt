@@ -17,6 +17,7 @@ import com.intive.calendar.utils.DayBundle
 import com.intive.repository.domain.model.Event
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
+import com.intive.ui.components.LayoutContainer
 import com.intive.ui.components.TitleText
 
 
@@ -25,18 +26,19 @@ fun DayLayout(
     navController: NavController,
     day: DayBundle
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(24.dp)
-    ) {
-        TitleText(text = day.date, modifier = Modifier.padding(bottom = 24.dp))
-        EventsList(
-            date = day.date,
-            eventsList = day.events,
-            navController = navController,
-            isDayActive = day.active
-        )
+    LayoutContainer {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+            TitleText(text = day.date, modifier = Modifier.padding(bottom = 16.dp))
+            EventsList(
+                date = day.date,
+                eventsList = day.events,
+                navController = navController,
+                isDayActive = day.active
+            )
+        }
     }
 }
 
@@ -74,7 +76,8 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         active = isDayActive
     )
 
-    val directions = DayFragmentDirections.actionDayFragmentToEventFragment(eventInfoParcelable = eventParcelable)
+    val directions =
+        DayFragmentDirections.actionDayFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier
@@ -88,7 +91,8 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(top = 8.dp, bottom = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
+            verticalArrangement = Arrangement.Center,
         ) {
 
             Text(

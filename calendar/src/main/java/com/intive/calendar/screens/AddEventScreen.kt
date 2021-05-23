@@ -18,13 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
-import com.intive.calendar.components.*
-import com.intive.ui.components.TitleText
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.platform.LocalFocusManager
+import com.intive.calendar.components.PickerRow
 import com.intive.shared.getDateString
-import com.intive.ui.components.CheckBoxesList
-import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.*
 
 @ExperimentalComposeUiApi
 @Composable
@@ -76,68 +74,74 @@ fun AddEventScreen(
 
     val lazyListState = rememberLazyListState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(24.dp)
-    ) {
+    LayoutContainer {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
 
-        LazyColumn(state = lazyListState, modifier = Modifier.weight(1f)) {
-            item {
+            LazyColumn(state = lazyListState, modifier = Modifier.weight(1f)) {
+                item {
 
-                Column {
+                    Column {
 
-                    TitleText(
-                        stringResource(R.string.add_event),
-                        Modifier.padding(bottom = 24.dp)
-                    )
-
-                    InputText(inputValue!!, addEventViewModel::setInputValue, LocalFocusManager.current)
-
-                    Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-                        PickerRow(
-                            stringResource(R.string.date_label),
-                            getDateString(date!!, "."),
-                            datePickerDialog
+                        TitleText(
+                            stringResource(R.string.add_event),
+                            Modifier.padding(bottom = 24.dp)
                         )
-                        PickerRow(
-                            stringResource(R.string.start_hour_label),
-                            "$hourStart:$minutesStart",
-                            startTimePickerDialog
-                        )
-                        PickerRow(
-                            stringResource(R.string.end_hour_label),
-                            "$hourEnd:$minutesEnd",
-                            endTimePickerDialog
-                        )
-                    }
 
-                    if (technologyGroups?.isNotEmpty() == true) {
-                        CheckBoxesList(
-                            title = stringResource(R.string.add_event_checkbox_header),
-                            onErrorText = "",
-                            items = technologyGroups!!,
-                            onItemSelected = addEventViewModel::updateSelectedTechnologyGroups,
-                            modifier = Modifier.padding(bottom = 14.dp),
-                            style = MaterialTheme.typography.h6
+                        InputText(
+                            inputValue!!,
+                            stringResource(R.string.add_event_hint),
+                            addEventViewModel::setInputValue,
+                            LocalFocusManager.current
                         )
-                    } else {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            CircularProgressIndicator()
+
+                        Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
+                            PickerRow(
+                                stringResource(R.string.date_label),
+                                getDateString(date!!, "."),
+                                datePickerDialog
+                            )
+                            PickerRow(
+                                stringResource(R.string.start_hour_label),
+                                "$hourStart:$minutesStart",
+                                startTimePickerDialog
+                            )
+                            PickerRow(
+                                stringResource(R.string.end_hour_label),
+                                "$hourEnd:$minutesEnd",
+                                endTimePickerDialog
+                            )
+                        }
+
+                        if (technologyGroups?.isNotEmpty() == true) {
+                            CheckBoxesList(
+                                title = stringResource(R.string.add_event_checkbox_header),
+                                onErrorText = "",
+                                items = technologyGroups!!,
+                                onItemSelected = addEventViewModel::updateSelectedTechnologyGroups,
+                                modifier = Modifier.padding(bottom = 14.dp),
+                                style = MaterialTheme.typography.h6
+                            )
+                        } else {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
                 }
             }
-        }
 
-        Column {
-            PrimaryButton(stringResource(R.string.accept_new_event)) {
-                addEventViewModel.isFormValid(
-                    popBackStack, refreshEventsList
-                )
+            Column {
+                PrimaryButton(stringResource(R.string.accept_new_event)) {
+                    addEventViewModel.isFormValid(
+                        popBackStack, refreshEventsList
+                    )
+                }
             }
         }
     }

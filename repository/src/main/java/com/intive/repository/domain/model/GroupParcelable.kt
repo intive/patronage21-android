@@ -8,5 +8,5 @@ data class GroupParcelable(
     val id: String,
     var name: String,
     var description: String,
-    var techList: List<String>
+    var technologies: List<String>
 ): Parcelable

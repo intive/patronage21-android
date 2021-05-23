@@ -47,7 +47,7 @@ fun GroupDetailsScreen(
                             text = "Technologie:",
                             style = MaterialTheme.typography.h6
                         )
-                        for(tech in group.techList){
+                        for(tech in group.technologies){
                             Text(text = "- $tech")
                         }
                     }
