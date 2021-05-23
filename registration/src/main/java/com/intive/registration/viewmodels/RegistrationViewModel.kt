@@ -10,6 +10,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class RegistrationViewModel(
@@ -17,16 +18,21 @@ class RegistrationViewModel(
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    private val _availableTechnologies: MutableState<Resource<List<String>>> = mutableStateOf(Resource.Loading())
+    private val _availableTechnologies: MutableState<Resource<List<String>>> =
+        mutableStateOf(Resource.Loading())
     val availableTechnologies: State<Resource<List<String>>> = _availableTechnologies
 
     init {
         viewModelScope.launch(dispatchers.io) {
             _availableTechnologies.value = try {
                 val response = repository.getTechnologies()
-                Resource.Success(response)
+                withContext(dispatchers.main) {
+                    Resource.Success(response)
+                }
             } catch (ex: Exception) {
-                Resource.Error(ex.localizedMessage)
+                withContext(dispatchers.main) {
+                    Resource.Error(ex.localizedMessage)
+                }
             }
         }
     }
@@ -98,18 +104,34 @@ class RegistrationViewModel(
         _regulationsAgree.value = newValue
     }
 
-    fun isFirstNameValid(): Boolean = firstName.value?.length ?: 0 >= 3
-    fun isLastNameValid(): Boolean = lastName.value?.length ?: 0 >= 3
+    fun isFirstNameValid(): Boolean = firstName.value?.matches(Regex("[A-Za-z]{2,30}")) ?: false
+    fun isLastNameValid(): Boolean = lastName.value?.matches(Regex("[A-Za-z]{2,30}")) ?: false
     fun isEmailValid(): Boolean = Patterns.EMAIL_ADDRESS.matcher(email.value.toString()).matches()
     fun isPhoneNumberValid(): Boolean = phoneNumber.value?.matches(Regex("\\d{9,9}")) ?: false
-    fun isPasswordValid(): Boolean = password.value?.length ?: 0 >= 8
-    fun isConfirmPasswordValid(): Boolean = isPasswordValid() && password.value == confirmPassword.value
+
+    fun isPasswordValid(): Boolean = password.value?.let {
+        it.length in 8..20 &&
+                it.contains(Regex("[A-Z]+")) &&
+                it.contains(Regex("[a-z]+")) &&
+                it.contains(Regex("[0-9]+")) &&
+                it.contains(Regex("[!@#\\$%\\^&\\*()\\-\\+]+"))
+    } ?: false
+
+    fun isConfirmPasswordValid(): Boolean =
+        isPasswordValid() && password.value == confirmPassword.value
+
     fun isTechnologiesListValid(): Boolean =
         !_technologiesList.isNullOrEmpty() && _technologiesList.size < 4
 
-    fun isLoginValid(): Boolean = login.value?.length ?: 0 >= 4
+    fun isLoginValid(): Boolean = login.value?.matches(Regex("[A-Za-z0-9]{2,15}")) ?: false
     fun isGithubUrlValid(): Boolean =
-        githubUrl.value.isNullOrEmpty() || githubUrl.value!!.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[-a-zA-Z0-9]{1,39}"))
+        githubUrl.value?.let {
+            it.isEmpty() ||
+                    it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
+                    !it.startsWith("-") &&
+                    !it.endsWith("-") &&
+                    !it.contains("--")
+        } ?: true
 
     fun isFormValid(): Boolean = isFirstNameValid() &&
             isLastNameValid() &&
@@ -130,6 +152,7 @@ class RegistrationViewModel(
             _technologiesList.add(technology)
         }
     }
+
     private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
     val responseState: State<Resource<String>?> = _responseState
 
@@ -147,18 +170,17 @@ class RegistrationViewModel(
                 password = password.value!!, //hash??
                 githubUrl = githubUrl.value!!
             )
-            for(item in _technologiesList) {
+            for (item in _technologiesList) {
                 println(item)
             }
             println(rodoAgree.value)
             println(_regulationsAgree.value)
-            val receivedResponse : Response<String>
+            val receivedResponse: Response<String>
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
-                if(receivedResponse.isSuccessful) {
+                if (receivedResponse.isSuccessful) {
                     _responseState.value = Resource.Success("")
-                }
-                else {
+                } else {
                     _responseState.value = Resource.Error(receivedResponse.message())
                 }
             } catch (ex: Exception) {

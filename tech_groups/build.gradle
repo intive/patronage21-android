@@ -4,6 +4,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
+apply from: "$rootProject.projectDir/shared.gradle"
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -40,7 +42,6 @@ android {
         kotlinCompilerExtensionVersion '1.0.0-beta01'
     }
 }
-
 
 dependencies {
     def nav_version = "2.3.4"
@@ -101,4 +102,5 @@ dependencies {
 
     implementation project(":ui")
     implementation project(":repository")
+    implementation project(":shared")
 }

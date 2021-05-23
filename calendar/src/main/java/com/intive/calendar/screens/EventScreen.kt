@@ -1,5 +1,6 @@
 package com.intive.calendar.screens
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -10,71 +11,66 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
-import com.intive.ui.components.UsersHeader
+import com.intive.ui.components.HeaderWithCount
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
-import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
+import com.intive.shared.EventParcelable
+import com.intive.ui.components.LayoutContainer
 
 
 @Composable
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    navController: NavController,
-    event: EventBundle,
-    refreshCalendar: () -> Unit
+    event: EventParcelable,
+    refreshEventsList: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(24.dp)
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
+    LayoutContainer {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
-            TitleText(
-                text = event.name,
-                modifier = Modifier.padding(bottom = 4.dp),
-                style = MaterialTheme.typography.h6,
-                color = Color.Black
-            )
-
-            Text(
-                "${stringResource(R.string.hour)}: ${event.time}",
-                style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
-
-            UsersHeader(
-                text = stringResource(R.string.event_users_label),
-                count = event.users.size,
-                showCount = true,
-            )
-
-            UsersList(users = event.users)
-        }
-
-        Column {
-
-            if (event.active) {
-                InviteResponseButtons(
-                    event = event,
-                    updateInviteResponse = updateInviteResponse,
-                    refreshCalendar = refreshCalendar
+                TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
+                TitleText(
+                    text = event.name,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.h6,
+                    color = Color.Black
                 )
+
+                Text(
+                    "${stringResource(R.string.hour)}: ${event.time}",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+
+                HeaderWithCount(
+                    text = stringResource(R.string.event_users_label),
+                    count = event.users.size,
+                    showCount = true,
+                )
+
+                UsersList(users = event.users)
             }
 
-            CancelButton(stringResource(R.string.go_back)) {
-                refreshCalendar()
-                navController.popBackStack()
+            Column {
+
+                if (event.active) {
+                    InviteResponseButtons(
+                        event = event,
+                        updateInviteResponse = updateInviteResponse,
+                        refreshEventsList = refreshEventsList
+                    )
+                }
             }
         }
     }
@@ -82,23 +78,20 @@ fun EventScreenLayout(
 
 @Composable
 fun InviteResponseButtons(
-    event: EventBundle,
+    event: EventParcelable,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    refreshCalendar: () -> Unit
+    refreshEventsList: () -> Unit
 ) {
 
     val acceptBtnSelected = remember { mutableStateOf(false) }
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
 
-
-
     when (event.inviteResponse) {
         InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
         InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
         InviteResponse.DECLINED.name -> declineBtnSelected.value = true
     }
-
 
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
@@ -114,10 +107,9 @@ fun InviteResponseButtons(
                         userId,
                         event.id,
                         InviteResponse.ACCEPTED.name,
-                        refreshCalendar,
+                        refreshEventsList,
                     )
                 }
-
 
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
@@ -131,13 +123,12 @@ fun InviteResponseButtons(
                 selected = unknownBtnSelected
             )
             {
-
                 if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
                     updateInviteResponse(
                         userId,
                         event.id,
                         InviteResponse.UNKNOWN.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 
@@ -153,13 +144,12 @@ fun InviteResponseButtons(
                 selected = declineBtnSelected
             )
             {
-
                 if (event.inviteResponse != InviteResponse.DECLINED.name) {
                     updateInviteResponse(
                         userId,
                         event.id,
                         InviteResponse.DECLINED.name,
-                        refreshCalendar
+                        refreshEventsList
                     )
                 }
 
@@ -177,7 +167,13 @@ fun UsersList(users: List<User>) {
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
-            PersonListItem(user, {}, 0.dp, true)
+            PersonListItem(
+                user = user,
+                onItemClick = {},
+                rowPadding = 0.dp,
+                showAdditionalText = true,
+                additionalText = user.role
+            )
         }
     }
 }

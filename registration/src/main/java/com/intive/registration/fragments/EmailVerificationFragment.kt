@@ -28,8 +28,10 @@ class EmailVerificationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val email = args.email
-        viewModel.email = email
+        with(args) {
+            viewModel.email = email
+            viewModel.login = login
+        }
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {

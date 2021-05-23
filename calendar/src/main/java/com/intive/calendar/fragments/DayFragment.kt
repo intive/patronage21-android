@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.navigation.fragment.findNavController
-import com.intive.calendar.R
 import com.intive.calendar.screens.DayLayout
 import com.intive.calendar.utils.DayBundle
 import com.intive.calendar.utils.dayBundleKey
@@ -26,8 +25,6 @@ class DayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        context?.theme?.applyStyle(R.style.ThemeDialogFullScreen, true)
-
         lateinit var day: DayBundle
         val bundle = this.arguments
         if (bundle != null) {
@@ -40,7 +37,7 @@ class DayFragment : Fragment() {
                     DayLayout(
                         navController = findNavController(),
                         day = day
-                    ) { calendarHomeViewModel.refreshCalendar() }
+                    )
                 }
             }
         }

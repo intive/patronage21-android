@@ -8,6 +8,7 @@ import com.intive.calendar.utils.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.getDateString
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel
@@ -31,10 +32,10 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
     private val _date = MutableLiveData(Calendar.getInstance())
     val date: LiveData<Calendar> = _date
 
-    private val _hourStart = MutableLiveData("${hour + 1}")
+    private val _hourStart = MutableLiveData("$hour")
     var hourStart: LiveData<String> = _hourStart
 
-    private val _hourEnd = MutableLiveData("${hour + 2}")
+    private val _hourEnd = MutableLiveData("$hour")
     var hourEnd: LiveData<String> = _hourEnd
 
     private val _minutesStart = MutableLiveData("00")
@@ -98,12 +99,14 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
 
     private fun isDateValid(): Boolean {
         val today: Calendar = Calendar.getInstance()
+        val startDate = _date.value?.clone() as Calendar
         _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
         _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it.toInt()) }
-        return today.before(_date.value)
+        return today.before(_date.value) && !startDate.before(Calendar.getInstance())
     }
 
     private fun isTimeValid(): Boolean {
+
         val endDate = _date.value?.clone() as Calendar
         _hourEnd.value?.let { endDate.set(Calendar.HOUR, it.toInt()) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it.toInt()) }
@@ -111,7 +114,7 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
     }
 
     private fun areCheckboxesValid(): Boolean {
-        return _selectedTechnologyGroups.size in 1..3
+        return _selectedTechnologyGroups.size >= 1
     }
 
     private fun isInputValid(): Boolean {

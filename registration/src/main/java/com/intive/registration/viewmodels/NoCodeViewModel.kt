@@ -17,6 +17,7 @@ class NoCodeViewModel(
 ) : ViewModel() {
 
     lateinit var firstEmail: String //email entered in first screen
+    lateinit var login: String
 
     private val _email = MutableLiveData("")
     val email: LiveData<String> = _email

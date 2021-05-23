@@ -1,108 +1,65 @@
 package com.intive.audit.presentation.audit
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.network.*
+import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.SortTypes
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import com.intive.audit.presentation.audit.AuditListEvent.*
+import java.util.*
 
 const val TAG = "AuditViewModel"
 const val PAGE_SIZE = 30
 
 class AuditViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    val audits: MutableState<List<Audit>> = mutableStateOf(listOf())
+    private val _query: MutableState<String> = mutableStateOf("")
+    val query: State<String> = _query
 
-    val query = mutableStateOf("")
+    private val executeQuery: MutableStateFlow<String> = MutableStateFlow("")
+
+    private val _sortBy: MutableState<SortTypes> = mutableStateOf(SortTypes.DESC)
+    val sortBy: State<SortTypes> = _sortBy
+
+    var executeSortBy: MutableStateFlow<SortTypes> = MutableStateFlow(SortTypes.DESC)
+
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    var audits: Flow<PagingData<Audit>> = combine(
+        executeQuery,
+        executeSortBy
+    ) { query, sortBy ->
+        Pair(query, sortBy)
+    }
+        .distinctUntilChanged()
+        .flatMapLatest { (query, sortBy) ->
+            Pager(PagingConfig(pageSize = PAGE_SIZE)) {
+                AuditsSource(repository, query = query, sortBy = sortBy.name.toLowerCase(Locale.ROOT))
+            }.flow
+                .cachedIn(viewModelScope)
+        }
 
     val showSearchField = mutableStateOf(false)
 
     val showFilterField = mutableStateOf(false)
 
-    val page = mutableStateOf(1)
-
-    private var auditListScrollPosition = 0
-
-    init {
-        onTriggerEvent(NewSearchEvent)
-    }
-
-    fun onTriggerEvent(event: AuditListEvent){
-        viewModelScope.launch {
-            try {
-                when (event) {
-                    is NewSearchEvent -> {
-                        newSearch()
-                    }
-                    is NextPageEvent -> {
-                        nextPage()
-                    }
-                }
-            } catch (e: Exception){
-                Log.e(TAG, "onTriggerEvent: Exception: ${e}, ${e.cause}")
-            }
-        }
-    }
-
-    private suspend fun newSearch(){
-
-        resetSearchState()
-
-        val result = repository.searchAudits(
-            page = 1,
-            query = query.value
-        )
-        audits.value = result
-    }
-
-    private suspend fun nextPage(){
-
-        /*
-         prevent duplicate events due to recomposition happening to quickly -
-         jezeli zjedziemy na dol ekranu, to zanim zaladuje sie kolejna strona mija kilka milisekud
-         musimy unikac tego aby w przeciagu tych kilku milisekund nie wywolala sie funkcja nextPage (skoro juz czekamy na kolejna strone)
-        */
-        if ((auditListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
-            incrementPage()
-            val result = repository.searchAudits(
-                page = page.value,
-                query = query.value
-            )
-            appendAudits(result)
-        }
-    }
-
-    private fun appendAudits(audits: List<Audit>) {
-        val current = ArrayList(this.audits.value)
-        current.addAll(audits)
-        this.audits.value = current
-    }
-
-    private fun incrementPage() {
-        this.page.value = page.value + 1
-    }
-
-    fun onChangeAuditScrollPosition(position: Int) {
-        auditListScrollPosition = position
-    }
-
-    /**
-     * Called when newSearch() is executed
-     */
-    private fun resetSearchState() {
-        audits.value = listOf()
-        page.value = 1
-        onChangeAuditScrollPosition(0)
-    }
-
     fun onQueryChanged(query: String) {
-        this.query.value = query
+        _query.value = query
+        viewModelScope.launch(dispatchers.io) {
+            executeQuery.emit(query)
+        }
     }
 
     fun onSearchIconClick(showSearchField: Boolean){
@@ -111,5 +68,15 @@ class AuditViewModel(
 
     fun onFilterIconClick(showFilterField: Boolean){
         this.showFilterField.value = showFilterField
+    }
+
+    fun onSortByChanged(sort: String) {
+        if (sort == "Od najnowszych")
+            _sortBy.value = SortTypes.DESC
+        else
+            _sortBy.value = SortTypes.ASC
+        viewModelScope.launch {
+            executeSortBy.emit(sortBy.value)
+        }
     }
 }

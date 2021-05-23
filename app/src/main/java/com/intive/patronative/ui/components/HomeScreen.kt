@@ -22,34 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.patronative.R
 import com.intive.ui.PatronageTypography
-
-@Composable
-fun BoxButton(text: String,
-              borderColor: Color = MaterialTheme.colors.primary,
-              onClick: (() -> Unit) = {},
-              content: @Composable ()->Unit){
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio(1f)
-        .border(border = BorderStroke(1.dp, color = borderColor), shape = RoundedCornerShape(20.dp))
-        .clip(shape = RoundedCornerShape(20.dp))
-        .clickable { onClick() }){
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .aspectRatio(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,) {
-            content()
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                style = PatronageTypography.body2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
+import com.intive.ui.components.BoxButton
 
 @Preview
 @Composable
@@ -110,7 +83,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)){
                 BoxButton(
                     text = stringResource(R.string.diary_module),
-                    onClick = { /*TODO: Place diary module navDestination here*/ }
+                    onClick = { navController?.navigate(Uri.parse("intive://gradebookFragment")) }
                 ){
                     Icon(
                         Icons.Outlined.Book,
