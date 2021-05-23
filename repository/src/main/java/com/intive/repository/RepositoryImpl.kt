@@ -145,24 +145,14 @@ class RepositoryImpl(
         when (isCachingEnabled()) {
 
             true -> {
-
                 val technologyEntityList = databaseRepository.getAllTechnologies()
-                val technologiesList: MutableList<String> = mutableListOf()
-
-                technologyEntityList.forEach {
-                    technologiesList.add(it.name)
-                }
-
-                return technologiesList.toList()
-
+                return technologyEntityList.map { it.name }
             }
             false -> {
                 enableCaching()
-                var technologyEntity: TechnologyEntity
                 val technologiesList = networkRepository.getTechnologies().groups
                 technologiesList.forEach {
-                    technologyEntity = TechnologyEntity(0, it)
-                    databaseRepository.insert(technologyEntity)
+                    databaseRepository.insert(TechnologyEntity(0, it))
                 }
 
                 return technologiesList
