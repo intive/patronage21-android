@@ -1,5 +1,6 @@
 package com.intive.calendar.screens
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,55 +20,57 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.colorResource
-import com.intive.calendar.utils.EventBundle
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
+import com.intive.shared.EventParcelable
+import com.intive.ui.components.LayoutContainer
 
 
 @Composable
 fun EventScreenLayout(
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    event: EventBundle,
+    event: EventParcelable,
     refreshEventsList: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(24.dp)
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
+    LayoutContainer {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
 
-            TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
-            TitleText(
-                text = event.name,
-                modifier = Modifier.padding(bottom = 4.dp),
-                style = MaterialTheme.typography.h6,
-                color = Color.Black
-            )
-
-            Text(
-                "${stringResource(R.string.hour)}: ${event.time}",
-                style = MaterialTheme.typography.subtitle1,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
-
-            HeaderWithCount(
-                text = stringResource(R.string.event_users_label),
-                count = event.users.size,
-                showCount = true,
-            )
-
-            UsersList(users = event.users)
-        }
-
-        Column {
-
-            if (event.active) {
-                InviteResponseButtons(
-                    event = event,
-                    updateInviteResponse = updateInviteResponse,
-                    refreshEventsList = refreshEventsList
+                TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
+                TitleText(
+                    text = event.name,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    style = MaterialTheme.typography.h6,
+                    color = Color.Black
                 )
+
+                Text(
+                    "${stringResource(R.string.hour)}: ${event.time}",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+
+                HeaderWithCount(
+                    text = stringResource(R.string.event_users_label),
+                    count = event.users.size,
+                    showCount = true,
+                )
+
+                UsersList(users = event.users)
+            }
+
+            Column {
+
+                if (event.active) {
+                    InviteResponseButtons(
+                        event = event,
+                        updateInviteResponse = updateInviteResponse,
+                        refreshEventsList = refreshEventsList
+                    )
+                }
             }
         }
     }
@@ -75,7 +78,7 @@ fun EventScreenLayout(
 
 @Composable
 fun InviteResponseButtons(
-    event: EventBundle,
+    event: EventParcelable,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     refreshEventsList: () -> Unit
 ) {
@@ -84,14 +87,11 @@ fun InviteResponseButtons(
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
 
-
-
     when (event.inviteResponse) {
         InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
         InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
         InviteResponse.DECLINED.name -> declineBtnSelected.value = true
     }
-
 
     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f)) {
@@ -111,7 +111,6 @@ fun InviteResponseButtons(
                     )
                 }
 
-
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = false
@@ -124,7 +123,6 @@ fun InviteResponseButtons(
                 selected = unknownBtnSelected
             )
             {
-
                 if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
                     updateInviteResponse(
                         userId,
@@ -146,7 +144,6 @@ fun InviteResponseButtons(
                 selected = declineBtnSelected
             )
             {
-
                 if (event.inviteResponse != InviteResponse.DECLINED.name) {
                     updateInviteResponse(
                         userId,
@@ -172,8 +169,8 @@ fun UsersList(users: List<User>) {
         items(users) { user ->
             PersonListItem(
                 user = user,
-                onItemClick =  {},
-                rowPadding =  0.dp,
+                onItemClick = {},
+                rowPadding = 0.dp,
                 showAdditionalText = true,
                 additionalText = user.role
             )

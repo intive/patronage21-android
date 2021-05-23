@@ -1,30 +1,30 @@
 package com.intive.repository
 
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
-import com.intive.repository.network.util.EventDtoMapper
-
-import com.intive.repository.domain.model.Audit
+import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
-import com.intive.repository.network.ROLE_CANDIDATE
+import com.intive.repository.local.LocalRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
+import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
-import com.intive.repository.network.util.NewEventDtoMapper
-import com.intive.repository.network.util.UserDtoMapper
+import com.intive.repository.network.util.*
 import retrofit2.Response
 
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
-    private val auditMapped: AuditDtoMapper,
+    auditMapper: AuditDtoMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
-    private val newEventMapper: NewEventDtoMapper
+    private val newEventMapper: NewEventDtoMapper,
+    private val stageDetailsMapper: StageDetailsDtoMapper,
+    gbMapper: GradebookDtoMapper,
+    private val localRepository: LocalRepository
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -113,20 +113,30 @@ class RepositoryImpl(
         }
     }
 
+    override suspend fun getUser(login: String): User {
+        return usersMapper.mapToDomainModel(
+            networkRepository.getUser(login).user
+        )
+    }
+
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
         val response = getUsers(role = role, group = group, page = 1)
         return response.totalSize
     }
 
+    override suspend fun deactivateUser(login: String): Response<String> {
+        return networkRepository.deactivateUser(login)
+    }
+
+    override val auditsMapper: AuditDtoMapper = auditMapper
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun searchAudits(page: Int, query: String): List<Audit> {
-        return networkRepository.searchAudits(page, query).map { audit ->
-            auditMapped.mapToDomainModel(audit)
-        }
+    override suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return networkRepository.searchAudits(page, query, sortBy)
     }
 
     override suspend fun getTechnologies(): List<String> {
-        return networkRepository.getTechnologies()
+        return networkRepository.getTechnologies().groups
     }
 
     override suspend fun getTechnologyGroups(): List<Group> {
@@ -152,7 +162,11 @@ class RepositoryImpl(
 
 
     override suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String> {
-        return networkRepository.updateInviteResponse(inviteResponseMapper.mapFromDomainModel(inviteResponse))
+        return networkRepository.updateInviteResponse(
+            inviteResponseMapper.mapFromDomainModel(
+                inviteResponse
+            )
+        )
     }
 
     override suspend fun sendRequestForCode(email: String) {
@@ -164,5 +178,35 @@ class RepositoryImpl(
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
 
+    }
+
+    override suspend fun getStageDetails(id: Long): StageDetails {
+        return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
+    }
+      
+    override val gradebookMapper: GradebookDtoMapper = gbMapper
+
+    override suspend fun getGradebook(
+        group: String,
+        sortby: String,
+        page: Int
+    ): GradebookResponse {
+        return networkRepository.getGradebook(group = group, sortby = sortby, page = page)
+    }
+
+    override fun isUserLogged(): Boolean {
+        return localRepository.isUserLogged()
+    }
+
+    override fun getUserLoginOrNull(): String? {
+        return localRepository.getUserLoginOrNull()
+    }
+
+    override fun loginUser(login: String) {
+        localRepository.loginUser(login)
+    }
+
+    override fun logoutUser() {
+        localRepository.logoutUser()
     }
 }

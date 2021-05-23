@@ -1,6 +1,8 @@
 package com.intive.repository
 
 
+import android.app.Application
+import android.content.SharedPreferences
 import com.intive.repository.network.util.EventDtoMapper
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
@@ -13,31 +15,56 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
+import com.intive.repository.local.LocalRepository
+import com.intive.repository.local.SharedPreferenceSource
 import com.intive.repository.network.*
+import org.koin.android.ext.koin.androidApplication
+import com.intive.repository.network.util.*
+import org.koin.core.qualifier.named
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
+private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get()) }
-    single { createRetrofit() }
-    single { createUsersService(get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single(named("mocklab")) { createRetrofit() }
+    single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
-    single { createTechnologiesService(get()) }
-    single { createAuditService(get()) }
+    single { createTechnologiesService(get(named("mocklab"))) }
+    single { createAuditService(get((named("mocklab")))) }
     single { createAuditMapper() }
-    single { createEventsService(get()) }
+    single { createEventsService(get((named("mocklab")))) }
     single { createEventsMapper() }
     single { createEventInviteResponseMapper() }
     single { createNewEventsMapper() }
     single { createDispatchers() }
-    single { createRegistrationService(get()) }
+    single { createRegistrationService(get((named("mocklab")))) }
+    single(named("java")){ createRetrofit2() }
+    single { createTechnologiesJavaService(get(named("java"))) }
+    single { createStageDetailsService(get((named("mocklab")))) }
+    single { createStageDetailsMapper() }
+    single { createGradebookService(get((named("mocklab")))) }
+    single { createGradebookMapper() }
+    single { provideSharedPref(androidApplication()) }
+    single { LocalRepository(get())}
+    single { SharedPreferenceSource(get()) }
 }
 
 private fun createRetrofit(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .build()
+}
+
+private fun createRetrofit2(): Retrofit {
+
+    return Retrofit.Builder()
+        .baseUrl(BASE_URL_JAVA)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }
@@ -84,3 +111,22 @@ private fun createRegistrationService(retrofit: Retrofit): RegistrationService {
     return retrofit.create(RegistrationService::class.java)
 }
 
+private fun createTechnologiesJavaService(retrofit: Retrofit): TechnologyGroupsServiceJava {
+    return retrofit.create(TechnologyGroupsServiceJava::class.java)
+}
+
+private fun createStageDetailsMapper(): StageDetailsDtoMapper = StageDetailsDtoMapper()
+
+private fun createStageDetailsService(retrofit: Retrofit): StageDetailsService {
+    return retrofit.create(StageDetailsService::class.java)
+}
+
+private fun createGradebookService(retrofit: Retrofit): GradebookService {
+    return retrofit.create(GradebookService::class.java)
+}
+
+private fun createGradebookMapper(): GradebookDtoMapper = GradebookDtoMapper()
+
+fun provideSharedPref(app: Application): SharedPreferences {
+    return androidx.preference.PreferenceManager.getDefaultSharedPreferences(app)
+}

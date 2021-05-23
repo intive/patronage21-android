@@ -11,8 +11,6 @@ import java.util.*
 
 class AuditDtoMapper : DomainMapper<AuditDto, Audit> {
 
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun mapToDomainModel(model: AuditDto): Audit {
 

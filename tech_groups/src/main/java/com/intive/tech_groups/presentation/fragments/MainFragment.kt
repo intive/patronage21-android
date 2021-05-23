@@ -23,7 +23,9 @@ class MainFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    MainScreen(viewModel, findNavController())
+                    MainScreen(
+                        viewModel = viewModel,
+                        navController = findNavController())
                 }
             }
         }

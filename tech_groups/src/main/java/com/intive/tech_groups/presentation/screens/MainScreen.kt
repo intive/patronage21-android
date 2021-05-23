@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
+import com.intive.tech_groups.presentation.fragments.MainFragmentDirections
 import com.intive.tech_groups.presentation.viewmodels.MainViewModel
 import com.intive.ui.components.*
 import com.intive.ui.components.BoxButton
@@ -29,96 +30,102 @@ fun MainScreen(
     val filters = viewModel.filters.value
     val groups = viewModel.groups.value
 
-    FABLayout(
-        onClick = { navController.navigate(R.id.action_add_group) },
-        contentDescription = stringResource(R.string.add_new_technology_group)
-            ) {
-        val scrollState = rememberScrollState()
-        Column(
-            modifier = Modifier
-                .padding(
-                    start = dimensionResource(id = R.dimen.screen_padding),
-                    end = dimensionResource(id = R.dimen.screen_padding),
-                )
-                .fillMaxWidth()
-                .verticalScroll(scrollState),
+    LayoutContainer{
+        FABLayout(
+            onClick = { navController.navigate(R.id.action_add_group) },
+            contentDescription = stringResource(R.string.add_new_technology_group)
         ) {
-            TitleText(
-                text = stringResource(R.string.tech_groups_title),
-                modifier = Modifier
-                    .padding(top = 15.dp, bottom = 15.dp)
-            )
-            when (filters) {
-                is Resource.Success -> {
-                    Spinner(
-                        items = filters.data!!
-                    ) {
-                        viewModel.filterList(it)
-                    }
-                }
-                is Resource.Error -> ErrorItem(
-                    message = stringResource(id = R.string.an_error_occurred)
-                ) {
-                    viewModel.getFilters()
-                }
-                is Resource.Loading -> {
-                    Box {
-                        Spinner(listOf("")) {}
-                        LoadingItem()
-                    }
-                }
-            }
+            val scrollState = rememberScrollState()
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .verticalScroll(scrollState),
             ) {
-                when (groups) {
+                TitleText(
+                    text = stringResource(R.string.tech_groups_title),
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 15.dp)
+                )
+                when (filters) {
                     is Resource.Success -> {
-                        var index = 0
-                        while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
-                            Row {
-                                Column(Modifier.weight(1f)) {
-                                    BoxButton(
-                                        text = filteredList!![index].name,
-                                        onClick = { },
-                                        contentOnTop = false
-                                    ) {
-                                        Text(stringResource(R.string.technologies))
-                                        for (technology in filteredList!![index].technologies) {
-                                            Text(technology)
-                                        }
-                                    }
-                                }
-                                Spacer(modifier = Modifier.size(20.dp))
-                                Column(Modifier.weight(1f)) {
-                                    if (index + 1 < filteredList!!.size) {
-                                        BoxButton(
-                                            text = filteredList!![index + 1].name,
-                                            onClick = { },
-                                            contentOnTop = false
-                                        ) {
-                                            Text(stringResource(R.string.technologies))
-                                            for (technology in filteredList!![index + 1].technologies) {
-                                                Text(technology)
-                                            }
-                                        }
-                                    }
-                                    Spacer(modifier = Modifier.size(20.dp))
-                                    index += 2
-                                }
-                            }
+                        Spinner(
+                            items = filters.data!!
+                        ) {
+                            viewModel.filterList(it)
                         }
                     }
                     is Resource.Error -> ErrorItem(
                         message = stringResource(id = R.string.an_error_occurred)
                     ) {
-                        viewModel.getGroups()
+                        viewModel.getFilters()
                     }
                     is Resource.Loading -> {
                         Box {
+                            Spinner(listOf("")) {}
                             LoadingItem()
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    when (groups) {
+                        is Resource.Success -> {
+                            var index = 0
+                            while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
+                                Row {
+                                    Column(Modifier.weight(1f)) {
+                                        BoxButton(
+                                            text = filteredList!![index].name,
+                                            onClick = {
+                                                navController.navigate(
+                                                    MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()
+                                                )
+                                            },
+                                            contentOnTop = false
+                                        ) {
+                                            Text(stringResource(R.string.technologies))
+                                            for (technology in filteredList!![index].technologies) {
+                                                Text(technology)
+                                            }
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.size(20.dp))
+                                    Column(Modifier.weight(1f)) {
+                                        if (index + 1 < filteredList!!.size) {
+                                            BoxButton(
+                                                text = filteredList!![index + 1].name,
+                                                onClick = {
+                                                    navController.navigate(
+                                                        MainFragmentDirections.actionMainFragmentToGroupDetailsFragment()
+                                                    )
+                                                },
+                                                contentOnTop = false
+                                            ) {
+                                                Text(stringResource(R.string.technologies))
+                                                for (technology in filteredList!![index + 1].technologies) {
+                                                    Text(technology)
+                                                }
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.size(20.dp))
+                                        index += 2
+                                    }
+                                }
+                            }
+                        }
+                        is Resource.Error -> ErrorItem(
+                            message = stringResource(id = R.string.an_error_occurred)
+                        ) {
+                            viewModel.getGroups()
+                        }
+                        is Resource.Loading -> {
+                            Box {
+                                LoadingItem()
+                            }
                         }
                     }
                 }

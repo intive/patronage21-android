@@ -1,6 +1,5 @@
 package com.intive.calendar.screens
 
-import android.os.Bundle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,11 +12,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.fragments.DayFragmentDirections
 import com.intive.calendar.utils.DayBundle
-import com.intive.calendar.utils.EventBundle
-import com.intive.calendar.utils.eventBundleKey
 import com.intive.repository.domain.model.Event
+import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
+import com.intive.ui.components.LayoutContainer
 import com.intive.ui.components.TitleText
 
 
@@ -26,18 +26,25 @@ fun DayLayout(
     navController: NavController,
     day: DayBundle
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(24.dp)
-    ) {
-        TitleText(day.date, Modifier.padding(bottom = 24.dp))
-        EventsList(day.events, navController, day.active)
+    LayoutContainer {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+        ) {
+            TitleText(text = day.date, modifier = Modifier.padding(bottom = 16.dp))
+            EventsList(
+                date = day.date,
+                eventsList = day.events,
+                navController = navController,
+                isDayActive = day.active
+            )
+        }
     }
 }
 
 @Composable
 fun EventsList(
+    date: String,
     eventsList: List<Event>,
     navController: NavController,
     isDayActive: Boolean
@@ -46,40 +53,46 @@ fun EventsList(
 
     LazyColumn(state = scrollState) {
         items(eventsList.size) {
-            EventsListItem(eventsList[it], navController, isDayActive)
+            EventsListItem(
+                date = date,
+                event = eventsList[it],
+                navController = navController,
+                isDayActive = isDayActive
+            )
         }
     }
 }
 
 @Composable
-fun EventsListItem(event: Event, navController: NavController, isDayActive: Boolean) {
+fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
-        date = event.date,
+        date = date,
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
         inviteResponse = event.inviteResponse,
         users = event.users,
         active = isDayActive
     )
-    val bundle = Bundle()
-    bundle.putParcelable(eventBundleKey, eventBundle)
+
+    val directions =
+        DayFragmentDirections.actionDayFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = {
                 navController.navigate(
-                    R.id.action_dayFragment_to_eventFragment,
-                    bundle
+                    directions
                 )
             })
     ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(8.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
+            verticalArrangement = Arrangement.Center,
         ) {
 
             Text(

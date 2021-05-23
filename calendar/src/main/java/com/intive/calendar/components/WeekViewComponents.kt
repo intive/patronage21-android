@@ -1,6 +1,5 @@
 package com.intive.calendar.components
 
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,10 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
 import java.util.*
 import com.intive.repository.domain.model.Event
+import com.intive.shared.EventParcelable
+import com.intive.shared.getDateString
+import com.intive.shared.getFullDateString
 
 
 @Composable
@@ -128,10 +131,9 @@ fun DaysListItem(
         }
         events.size == 1 -> {
 
-            val header =
-                "${weekDaysCalendarClass[day[Calendar.DAY_OF_WEEK]]}, ${getDateString(day, ".")}"
+            val header = getFullDateString(day)
 
-            val eventBundle = EventBundle(
+            val eventParcelable = EventParcelable(
                 id = events[0].id,
                 date = header,
                 time = "${events[0].timeStart} - ${events[0].timeEnd}",
@@ -140,8 +142,8 @@ fun DaysListItem(
                 users = events[0].users,
                 active = isDayActive
             )
-            val bundle = Bundle()
-            bundle.putParcelable(eventBundleKey, eventBundle)
+
+            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
             WeekDayWithEvents(
                 headerColor = headerColor,
@@ -154,8 +156,7 @@ fun DaysListItem(
                     .background(bkgColor)
                     .clickable(onClick = {
                         navController.navigate(
-                            R.id.action_calendarFragment_to_eventFragment,
-                            bundle
+                            directions
                         )
                     })
             )
@@ -260,10 +261,9 @@ fun EventsItem(
     isDayActive: Boolean
 ) {
 
-    val header =
-        "${weekDaysCalendarClass[date[Calendar.DAY_OF_WEEK]]}, ${getDateString(date, ".")}"
+    val header = getFullDateString(date)
 
-    val eventBundle = EventBundle(
+    val eventParcelable = EventParcelable(
         id = event.id,
         date = header,
         time = "${event.timeStart} - ${event.timeEnd}",
@@ -273,8 +273,7 @@ fun EventsItem(
         active = isDayActive
     )
 
-    val bundle = Bundle()
-    bundle.putParcelable(eventBundleKey, eventBundle)
+    val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier
@@ -282,8 +281,7 @@ fun EventsItem(
             .fillMaxWidth()
             .clickable(onClick = {
                 navController.navigate(
-                    R.id.action_calendarFragment_to_eventFragment,
-                    bundle
+                    directions
                 )
             })
             .padding(start = 10.dp, top = 12.dp, bottom = 12.dp)

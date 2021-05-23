@@ -1,25 +1,25 @@
 package com.intive.repository.network
 
-
+import com.intive.repository.network.response.AuditResponse
+import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import com.intive.repository.domain.model.Group
-import com.intive.repository.network.model.EventDto
-import com.intive.repository.network.model.AuditDto
-
-import com.intive.repository.network.model.EventInviteResponseDto
-import com.intive.repository.network.model.NewEventDto
+import com.intive.repository.network.model.*
+import com.intive.repository.network.response.GradebookResponse
+import com.intive.repository.network.response.UserResponse
 import com.intive.repository.network.response.UsersResponse
-
-
 
 class NetworkRepository(
     private val usersService: UsersService,
     private val auditService: AuditService,
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService,
-    private val registrationService: RegistrationService
+    private val registrationService: RegistrationService,
+    private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val stageDetailsService: StageDetailsService,
+    private val gradebookService: GradebookService
 ) {
     suspend fun getUsers(
         page: Int,
@@ -34,6 +34,10 @@ class NetworkRepository(
             lastName = null,
             login = null
         )
+    }
+
+    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return auditService.searchAudits(page, query, sortBy)
     }
 
     suspend fun getUsers(
@@ -71,16 +75,18 @@ class NetworkRepository(
         )
     }
 
-//    suspend fun getAudits(): List<AuditDto> {
-//        return auditService.getAudits()
-//    }
-
-    suspend fun searchAudits(page: Int, query: String): List<AuditDto> {
-        return auditService.searchAudits(page, query).audits
+    suspend fun getUser(
+        login: String
+    ): UserResponse {
+        return usersService.getUser(login)
     }
 
-    suspend fun getTechnologies(): List<String> {
-        return technologyGroupsService.getTechnologies()
+    suspend fun deactivateUser(login: String): Response<String> {
+        return usersService.deactivateUser(login)
+    }
+
+    suspend fun getTechnologies(): TechnologiesList {
+        return technologyGroupsServiceJava.getTechnologies()
     }
 
     suspend fun getTechnologyGroups(): List<Group> {
@@ -111,6 +117,18 @@ class NetworkRepository(
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
         return eventsService.updateInviteResponse(inviteResponse)
     }
-}
 
+
+    suspend fun getStageDetails(id: Long): StageDetailsDto {
+        return stageDetailsService.getStageDetails(id)
+    }
+
+    suspend fun getGradebook(
+        group: String,
+        sortby: String,
+        page: Int
+    ): GradebookResponse {
+        return gradebookService.getGradebook(group = group, sortby=sortby, page = page)
+    }
+}
 

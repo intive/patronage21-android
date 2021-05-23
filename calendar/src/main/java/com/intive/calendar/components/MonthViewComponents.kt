@@ -21,8 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.calendar.R
+import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
+import com.intive.shared.EventParcelable
+import com.intive.shared.getDateString
+import com.intive.shared.getFullDateString
 import java.util.*
 
 
@@ -97,14 +101,9 @@ fun CalendarGrid(
                         monthEvents[index].events!!.size == 1 -> {
                             val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
 
-                            val eventBundle = EventBundle(
+                            val eventParcelable = EventParcelable(
                                 id = monthEvents[index].events!![0].id,
-                                date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
-                                    getDateString(
-                                        (items[it] as Calendar),
-                                        "."
-                                    )
-                                }",
+                                date = getFullDateString(items[it] as Calendar),
                                 time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
                                 name = monthEvents[index].events!![0].name,
                                 inviteResponse = monthEvents[index].events!![0].inviteResponse,
@@ -112,14 +111,13 @@ fun CalendarGrid(
                                 active = isDayActive
 
                             )
-                            val bundle = Bundle()
-                            bundle.putParcelable(eventBundleKey, eventBundle)
+
+                            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
                             onClick =
                                 {
                                     navController.navigate(
-                                        R.id.action_calendarFragment_to_eventFragment,
-                                        bundle
+                                        directions
                                     )
                                 }
 
@@ -131,12 +129,7 @@ fun CalendarGrid(
                             val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
 
                             val dayBundle = DayBundle(
-                                date = "${weekDaysCalendarClass[(items[it] as Calendar)[Calendar.DAY_OF_WEEK]]}, ${
-                                    getDateString(
-                                        (items[it] as Calendar),
-                                        "."
-                                    )
-                                }",
+                                date = getFullDateString(items[it] as Calendar),
                                 events = monthEvents[index].events!!,
                                 active = isDayActive
                             )
