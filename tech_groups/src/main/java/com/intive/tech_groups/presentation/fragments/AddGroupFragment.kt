@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.intive.tech_groups.presentation.screens.MainScreen
-import com.intive.tech_groups.presentation.viewmodels.MainViewModel
+import com.intive.tech_groups.presentation.screens.AddGroupScreen
+import com.intive.tech_groups.presentation.viewmodels.AddGroupViewModel
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainFragment : Fragment() {
+class AddGroupFragment : Fragment() {
 
-    private val viewModel: MainViewModel by viewModel<MainViewModel>()
+    private val viewModel: AddGroupViewModel by viewModel<AddGroupViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,9 +23,7 @@ class MainFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    MainScreen(
-                        viewModel = viewModel,
-                        navController = findNavController())
+                    AddGroupScreen(viewModel, findNavController())
                 }
             }
         }
