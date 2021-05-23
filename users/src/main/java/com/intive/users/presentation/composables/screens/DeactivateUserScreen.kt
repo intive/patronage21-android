@@ -12,6 +12,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.shared.NavigationViewModel
 import com.intive.ui.components.LayoutContainer
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.SecondaryButton
@@ -21,6 +22,7 @@ import com.intive.users.presentation.deactivate_user.DeactivateUserViewModel
 @Composable
 fun DeactivateUserScreen(
     viewModel: DeactivateUserViewModel,
+    navigationViewModel: NavigationViewModel,
     navController: NavController
 ) {
     val lastName = viewModel.typedLastName
@@ -86,6 +88,9 @@ fun DeactivateUserScreen(
                     navController.popBackStack()
                 }
             )
+        }
+        if(viewModel.shouldShowDeactivationSuccessfulDialog.value) {
+            DeactivationSuccess(viewModel = viewModel)
         }
     }
 }
