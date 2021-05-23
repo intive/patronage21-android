@@ -1,7 +1,6 @@
 package com.intive.repository
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
@@ -16,7 +15,6 @@ import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
-import kotlinx.coroutines.coroutineScope
 import retrofit2.Response
 
 class RepositoryImpl(

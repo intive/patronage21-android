@@ -12,7 +12,6 @@ import com.intive.repository.domain.model.Group
 import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
