@@ -49,7 +49,7 @@ fun HomeScreenTechGroupsButton(){
 }
 
 @Composable
-fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavController? = null){ // null for Previews
+fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavController? = null, onClickCalendar:() -> Unit = {}){ // null for Previews
     Column {
         Row {
             Column (Modifier.weight(1f)) {
@@ -96,7 +96,10 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.calendar_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://calendarFragment")) }
+                    onClick = {
+                        navController?.navigate(Uri.parse("intive://calendarFragment"))
+                        onClickCalendar()
+                    }
                 ) {
                     Icon(
                         Icons.Outlined.CalendarToday,

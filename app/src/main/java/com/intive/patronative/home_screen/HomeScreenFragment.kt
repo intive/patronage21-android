@@ -20,13 +20,17 @@ import com.intive.patronative.ui.components.HomeScreenBoxButtonsGrid
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.patronative.R
 import com.intive.ui.PatronageTypography
 import com.intive.ui.PatronativeTheme
 import com.intive.ui.components.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class HomeScreenFragment : Fragment() {
+
+    private val calendarViewModel by sharedViewModel<CalendarHomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +39,10 @@ class HomeScreenFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
-                    HomeScreen(navController = findNavController())
+                    HomeScreen(navController = findNavController(), onClickCalendar = {
+                        calendarViewModel.refreshCalendar()
+                        calendarViewModel.showWeekView()
+                    })
                 }
             }
         }
@@ -49,7 +56,11 @@ class HomeScreenFragment : Fragment() {
 }
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController? = null,
+    onClickCalendar: () -> Unit = {}
+) {
     Column(modifier) {
         val scrollState = rememberScrollState()
         Column(
@@ -81,7 +92,8 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                 ) {
                     HomeScreenBoxButtonsGrid(
                         modifier = Modifier.size(20.dp),
-                        navController = navController
+                        navController = navController,
+                        onClickCalendar = onClickCalendar
                     )
                 }
             }
