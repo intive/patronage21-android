@@ -34,4 +34,7 @@
     <string name="an_error_occurred">Wystąpił błąd</string>
     <string name="account_was_deactivated">Konto zostało zdezaktywowane</string>
     <string name="an_error_occurred_during_deactivation">Wystąpił błąd podczas deaktywacji konta</string>
+    <string name="successfully_deactivated_account">Pomyślnie zdezaktywowano konto</string>
+    <string name="redirect_to_login_screen">Nastąpi przekierowanie do ekranu logowania</string>
+    <string name="ok">OK</string>
 </resources>
