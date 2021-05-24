@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -54,6 +55,7 @@ class EventFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     EventScreenLayout(
+                        navController = findNavController(),
                         updateInviteResponse = eventViewModel::updateInviteResponse,
                         event = event
                     ) { calendarHomeViewModel.refreshEventsList() }
