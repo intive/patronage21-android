@@ -1,7 +1,6 @@
 package com.intive.repository
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
