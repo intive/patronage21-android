@@ -128,21 +128,17 @@ fun CalendarGrid(
                         monthEvents[index].events!!.size > 1 -> {
                             val isDayActive = !((items[it] as Calendar).before(Calendar.getInstance()))
 
-                            val dayBundle = DayBundle(
+                            val dayParcelable = DayParcelable(
                                 date = getFullDateString(items[it] as Calendar),
                                 events = monthEvents[index].events!!,
                                 active = isDayActive
                             )
-                            val bundle = Bundle()
-                            bundle.putParcelable(dayBundleKey, dayBundle)
 
+                            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToDayFragment(dayInfo = dayParcelable)
 
                             onClick =
                                 {
-                                    navController.navigate(
-                                        R.id.action_calendarFragment_to_dayFragment,
-                                        bundle
-                                    )
+                                    navController.navigate(directions)
                                 }
 
                             dayColumnModifier = Modifier
