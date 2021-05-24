@@ -18,14 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEventViewModel
 import java.util.*
-import com.intive.calendar.components.*
-import com.intive.ui.components.TitleText
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.platform.LocalFocusManager
+import com.intive.calendar.components.PickerRow
 import com.intive.shared.getDateString
-import com.intive.ui.components.CheckBoxesList
-import com.intive.ui.components.LayoutContainer
-import com.intive.ui.components.PrimaryButton
+import com.intive.ui.components.*
 
 @ExperimentalComposeUiApi
 @Composable
@@ -95,6 +92,7 @@ fun AddEventScreen(
 
                         InputText(
                             inputValue!!,
+                            stringResource(R.string.add_event_hint),
                             addEventViewModel::setInputValue,
                             LocalFocusManager.current
                         )
