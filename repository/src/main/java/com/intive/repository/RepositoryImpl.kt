@@ -1,6 +1,7 @@
 package com.intive.repository
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
@@ -146,10 +147,13 @@ class RepositoryImpl(
                 return technologyEntityList.map { it.name }
             }
             false -> {
-                enableCaching()
                 val technologiesList = networkRepository.getTechnologies().groups
-                technologiesList.forEach {
-                    databaseRepository.insert(TechnologyEntity(0, it))
+
+                if (technologiesList.isNotEmpty()) {
+                    enableCaching()
+                    technologiesList.forEach {
+                        databaseRepository.insert(TechnologyEntity(0, it))
+                    }
                 }
 
                 return technologiesList
