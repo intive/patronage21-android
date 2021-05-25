@@ -22,8 +22,15 @@ class AddGroupViewModel(
     private val _name = MutableLiveData("")
     val name: LiveData<String> = _name
 
+    private val _description = MutableLiveData("")
+    val description: LiveData<String> = _description
+
     fun onNameChange(newValue: String) {
         _name.value = newValue
+    }
+
+    fun onDescriptionChange(newValue: String) {
+        _description.value = newValue
     }
 
     private val _technologies: MutableState<Resource<List<String>>> =

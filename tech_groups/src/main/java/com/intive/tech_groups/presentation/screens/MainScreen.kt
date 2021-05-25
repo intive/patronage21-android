@@ -30,6 +30,7 @@ fun MainScreen(
     val groups = viewModel.groups.value
 
 
+    LayoutContainer(bottomPadding = 0.dp) {
     FABLayout(
         onClick = { navController.navigate(R.id.action_add_group) },
         contentDescription = stringResource(R.string.add_new_technology_group)
@@ -40,7 +41,6 @@ fun MainScreen(
                 .fillMaxWidth()
                 .verticalScroll(scrollState),
         ) {
-            LayoutContainer {
                 TitleText(
                     text = stringResource(R.string.tech_groups_title),
                     modifier = Modifier
