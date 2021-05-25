@@ -56,6 +56,11 @@
         <action
             android:id="@+id/action_dayFragment_to_eventFragment"
             app:destination="@id/eventFragment" />
+        <argument
+            android:name="dayInfo"
+            app:argType="com.intive.calendar.utils.DayParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

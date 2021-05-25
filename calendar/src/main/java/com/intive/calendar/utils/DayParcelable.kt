@@ -7,7 +7,7 @@ import kotlinx.parcelize.RawValue
 
 
 @Parcelize
-data class DayBundle(
+data class DayParcelable(
     val date: String,
     val events: @RawValue List<Event>,
     val active: Boolean

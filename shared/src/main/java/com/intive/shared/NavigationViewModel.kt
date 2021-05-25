@@ -36,7 +36,6 @@ class NavigationViewModel(
     }
 
     fun logoutUser() {
-        repository.logoutUser()
         viewModelScope.launch {
             _loggedInChannel.send(LoginEvent.UserLoggedOut)
         }

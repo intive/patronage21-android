@@ -1,15 +1,18 @@
 package com.intive.registration.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,6 +20,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.intive.registration.R
 import com.intive.registration.components.InputTextState.*
 
+@ExperimentalComposeUiApi
 @Composable
 fun InputText(
     text: String,
@@ -41,6 +45,7 @@ fun InputText(
     val onFocusChanged: (Boolean) -> Unit = {
         hasFocus.value = it
     }
+    val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
@@ -90,7 +95,9 @@ fun InputText(
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Done,
             keyboardType = keyboardType
-        )
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {keyboardController?.hideSoftwareKeyboard()})
     )
 }
 
