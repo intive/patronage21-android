@@ -48,6 +48,9 @@
     <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
     <string name="edit_event_description">Edytuj wydarzenie</string>
     <string name="delete_event_description">Usuń wydarzenie</string>
+    <string name="remove_event_dialog_text">Usunąć wydarzenie?</string>
+    <string name="ok">OK</string>
+    <string name="cancel_dialog">Anuluj</string>
 
     <string-array name="calendar_views_list">
         <item>Tydzień</item>

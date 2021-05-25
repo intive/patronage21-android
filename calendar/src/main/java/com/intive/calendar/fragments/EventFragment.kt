@@ -55,6 +55,7 @@ class EventFragment : Fragment() {
             setContent {
                 PatronativeTheme {
                     EventScreenLayout(
+                        eventViewModel = eventViewModel,
                         navController = findNavController(),
                         updateInviteResponse = eventViewModel::updateInviteResponse,
                         event = event

@@ -1,5 +1,7 @@
 package com.intive.calendar.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.InviteResponseChannel
@@ -12,17 +14,25 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.util.*
 
 class EventViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
+    private val _showDeleteDialog = MutableLiveData(false)
+    val showDeleteDialog: LiveData<Boolean> = _showDeleteDialog
+
     private val inviteResponseChannel = Channel<InviteResponseChannel>()
     val inviteResponseFlow = inviteResponseChannel.receiveAsFlow()
 
     private fun showSnackbar() = viewModelScope.launch {
         inviteResponseChannel.send(InviteResponseChannel.Error)
+    }
+
+    fun showDeleteDialog(value: Boolean) {
+        _showDeleteDialog.value = value
     }
 
     fun updateInviteResponse(
