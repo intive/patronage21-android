@@ -33,6 +33,7 @@ fun AddGroupScreen(
 ) {
     val scrollState = rememberScrollState()
     val name: String by viewModel.name.observeAsState("")
+    val description: String by viewModel.description.observeAsState("")
     val technologies = viewModel.technologies.value
     val response = viewModel.responseState.value
 
@@ -65,6 +66,13 @@ fun AddGroupScreen(
                 textState = name,
                 label = stringResource(R.string.group_name),
                 setInputValue = viewModel::onNameChange,
+                focusManager = LocalFocusManager.current
+            )
+            Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+            InputText(
+                textState = description,
+                label = stringResource(R.string.description),
+                setInputValue = viewModel::onDescriptionChange,
                 focusManager = LocalFocusManager.current
             )
             Spacer(modifier = Modifier.height(SPACER_HEIGHT))
