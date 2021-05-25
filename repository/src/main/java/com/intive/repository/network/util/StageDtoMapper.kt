@@ -12,7 +12,8 @@ class StageDtoMapper : DomainMapper<StageDto, Stage> {
         return Stage(
             id = model.id,
             name = model.name,
-            timeInterval = model.timeInterval,
+            dateBegin = model.dateBegin,
+            dateEnd = model.dateEnd,
             state = model.state
         )
     }
@@ -21,7 +22,8 @@ class StageDtoMapper : DomainMapper<StageDto, Stage> {
         return StageDto(
             id = domainModel.id,
             name = domainModel.name,
-            timeInterval = domainModel.timeInterval,
+            dateBegin = domainModel.dateBegin,
+            dateEnd = domainModel.dateEnd,
             state = domainModel.state
         )
     }

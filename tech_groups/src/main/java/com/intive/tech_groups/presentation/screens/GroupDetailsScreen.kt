@@ -83,7 +83,8 @@ fun GroupDetailsScreen(
                                             StageBoxButton(
                                                 modifier = Modifier.weight(1f),
                                                 name = stageList.data!![index].name,
-                                                timeInterval = stageList.data!![index].timeInterval,
+                                                dateBegin = stageList.data!![index].dateBegin,
+                                                dateEnd = stageList.data!![index].dateEnd,
                                                 state = stageList.data!![index].state
                                             ) {
                                                 getStageDetails(stageList.data!![indexCloned].id.toLong())
@@ -93,7 +94,8 @@ fun GroupDetailsScreen(
                                             StageBoxButton(
                                                 modifier = Modifier.weight(1f),
                                                 name = stageList.data!![index + 1].name,
-                                                timeInterval = stageList.data!![index + 1].timeInterval,
+                                                dateBegin = stageList.data!![index + 1].dateBegin,
+                                                dateEnd = stageList.data!![index + 1].dateEnd,
                                                 state = stageList.data!![index + 1].state
                                             ) {
                                                 getStageDetails(stageList.data!![indexCloned + 1].id.toLong())
@@ -156,7 +158,8 @@ fun GroupDetailsScreen(
 fun StageBoxButton(
     modifier: Modifier,
     name: String,
-    timeInterval: String,
+    dateBegin: String,
+    dateEnd: String,
     state: String,
     onClick: () -> Unit
 ) {
@@ -166,7 +169,11 @@ fun StageBoxButton(
             onClick = onClick,
             contentOnTop = false
         ) {
-            Text(text = timeInterval)
+            Row{
+                Text(text = dateBegin)
+                Text(text = dateEnd)
+            }
+
             Text(text = state)
         }
     }
