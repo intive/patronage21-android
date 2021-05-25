@@ -42,7 +42,8 @@ fun EventScreenLayout(
         DeleteEventDialog(
             viewModel = eventViewModel,
             navController = navController,
-            showDeleteDialog
+            showDeleteDialog,
+            event.id
         )
     }
 
@@ -225,7 +226,8 @@ fun UsersList(navController: NavController, users: List<User>) {
 fun DeleteEventDialog(
     viewModel: EventViewModel,
     navController: NavController,
-    showDeleteDialog: Boolean?
+    showDeleteDialog: Boolean?,
+    eventId: Long
 ) {
     Column {
 
@@ -234,12 +236,16 @@ fun DeleteEventDialog(
             AlertDialog(
                 onDismissRequest = { viewModel.showDeleteDialog(false) },
                 title = {
-                    Text(stringResource(R.string.remove_event_dialog_text), modifier = Modifier.padding(bottom = 24.dp))
+                    Text(
+                        stringResource(R.string.delete_event_dialog_text),
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    )
                 },
                 confirmButton = {
                     PrimaryButton(
                         text = stringResource(R.string.ok)
                     ) {
+                        viewModel.deleteEvent(eventId) { navController.popBackStack() }
                         viewModel.showDeleteDialog(false)
                     }
 

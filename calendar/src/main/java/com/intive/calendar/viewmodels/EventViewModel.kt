@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.intive.calendar.utils.InviteResponseChannel
+import com.intive.calendar.utils.EventScreenChannel
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.util.DispatcherProvider
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.util.*
 
 class EventViewModel(
     private val repository: Repository,
@@ -24,11 +23,11 @@ class EventViewModel(
     private val _showDeleteDialog = MutableLiveData(false)
     val showDeleteDialog: LiveData<Boolean> = _showDeleteDialog
 
-    private val inviteResponseChannel = Channel<InviteResponseChannel>()
-    val inviteResponseFlow = inviteResponseChannel.receiveAsFlow()
+    private val eventScreenChannel = Channel<EventScreenChannel>()
+    val eventScreenFlow = eventScreenChannel.receiveAsFlow()
 
-    private fun showSnackbar() = viewModelScope.launch {
-        inviteResponseChannel.send(InviteResponseChannel.Error)
+    private fun showSnackbar(message: EventScreenChannel) = viewModelScope.launch {
+        eventScreenChannel.send(message)
     }
 
     fun showDeleteDialog(value: Boolean) {
@@ -42,13 +41,11 @@ class EventViewModel(
         refreshCalendar: () -> Unit
     ) {
 
-
         val res = EventInviteResponse(userId, eventId, inviteResponse)
 
         val handler = CoroutineExceptionHandler { _, _ ->
-            showSnackbar()
+            showSnackbar(EventScreenChannel.InviteResponseError)
         }
-
 
         var response: Response<String>
 
@@ -61,9 +58,30 @@ class EventViewModel(
             if (response.isSuccessful) {
                 refreshCalendar()
             } else {
-                showSnackbar()
+                showSnackbar(EventScreenChannel.InviteResponseError)
             }
         }
+    }
 
+    fun deleteEvent(eventId: Long, popBackStack: () -> Boolean) {
+        var response: Response<String>
+
+        val handler = CoroutineExceptionHandler { _, _ ->
+            showSnackbar(EventScreenChannel.EventDeleteError)
+        }
+
+        viewModelScope.launch(handler) {
+
+            withContext(dispatchers.io) {
+                response = repository.deleteEvent(eventId)
+            }
+
+            if (response.isSuccessful) {
+                showSnackbar(EventScreenChannel.EventDeleteSuccess)
+                popBackStack()
+            } else {
+                showSnackbar(EventScreenChannel.EventDeleteError)
+            }
+        }
     }
 }
