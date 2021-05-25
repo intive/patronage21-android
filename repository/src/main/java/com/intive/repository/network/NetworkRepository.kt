@@ -1,15 +1,14 @@
 package com.intive.repository.network
 
-import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.model.*
 import retrofit2.Response
-
+import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.network.response.*
 import com.intive.repository.network.response.UsersResponse
 import retrofit2.http.Body
-import com.intive.repository.network.model.*
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UserResponse
 
@@ -20,6 +19,7 @@ class NetworkRepository(
     private val eventsService: EventsService,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val stageService: StageService,
     private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService
 ) {
@@ -91,7 +91,7 @@ class NetworkRepository(
         return technologyGroupsServiceJava.getTechnologies()
     }
 
-    suspend fun getTechnologyGroups(): List<Group> {
+    suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return technologyGroupsService.getTechnologyGroups()
     }
 
@@ -118,6 +118,10 @@ class NetworkRepository(
 
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
         return eventsService.updateInviteResponse(inviteResponse)
+    }
+
+    suspend fun getStages(groupId: String): List<StageDto> {
+        return stageService.getStages(groupId)
     }
 
     suspend fun addGroup(@Body group: JsonObject) : Response<String> {

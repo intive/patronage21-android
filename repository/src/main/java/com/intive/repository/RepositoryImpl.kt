@@ -7,7 +7,6 @@ import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
-import com.intive.repository.network.model.Group
 import com.intive.repository.local.LocalRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
@@ -24,6 +23,7 @@ class RepositoryImpl(
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
+    private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
     private val localRepository: LocalRepository
 ) : Repository {
@@ -140,7 +140,7 @@ class RepositoryImpl(
         return networkRepository.getTechnologies().groups
     }
 
-    override suspend fun getTechnologyGroups(): List<Group> {
+    override suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return networkRepository.getTechnologyGroups()
     }
 
@@ -178,12 +178,18 @@ class RepositoryImpl(
 
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
-
     }
 
-    override suspend fun addGroup(group: Group): Response<String> {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getStages(groupId: String): List<Stage> {
+        return stageDtoMapper.toDomainList(networkRepository.getStages(groupId))
+    }
+
+    override suspend fun addGroup(group: GroupParcelable): Response<String> {
         val bodyGroup = JsonObject()
+        bodyGroup.addProperty("id", group.id)
         bodyGroup.addProperty("name", group.name)
+        bodyGroup.addProperty("description", group.description)
         bodyGroup.addProperty("technologies", group.technologies.toString())
         return networkRepository.addGroup(bodyGroup)
     }

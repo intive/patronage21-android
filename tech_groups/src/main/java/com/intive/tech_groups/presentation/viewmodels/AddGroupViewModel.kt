@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.network.model.Group
+import com.intive.repository.domain.model.GroupParcelable
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
@@ -67,8 +67,10 @@ class AddGroupViewModel(
 //                return@launch
 //            }
             _responseState.value = Resource.Loading()
-            val group = Group(
+            val group = GroupParcelable(
+                id = "",
                 name = name.value!!,
+                description = "",
                 technologies = chosenTechnologies
             )
             val receivedResponse : Response<String>
