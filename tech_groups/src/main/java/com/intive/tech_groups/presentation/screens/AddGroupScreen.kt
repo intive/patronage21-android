@@ -10,8 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
@@ -23,6 +25,7 @@ import com.intive.tech_groups.R
 import com.intive.tech_groups.presentation.fragments.AddGroupFragmentDirections
 import com.intive.ui.components.*
 
+@ExperimentalComposeUiApi
 @Composable
 fun AddGroupScreen(
     viewModel: AddGroupViewModel,
@@ -58,13 +61,11 @@ fun AddGroupScreen(
                 modifier = Modifier
             )
             Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                maxLines = 1,
-                value = name,
-                onValueChange = viewModel::onNameChange,
-                label = { Text(text = stringResource(R.string.group_name)) }
+            InputText(
+                textState = name,
+                label = stringResource(R.string.group_name),
+                setInputValue = viewModel::onNameChange,
+                focusManager = LocalFocusManager.current
             )
             Spacer(modifier = Modifier.height(SPACER_HEIGHT))
             when (technologies) {
