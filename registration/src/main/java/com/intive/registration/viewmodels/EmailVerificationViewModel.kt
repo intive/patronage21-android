@@ -5,8 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
-import com.intive.repository.util.DispatcherProvider
-import com.intive.repository.util.Resource
+import com.intive.repository.util.*
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -39,7 +38,12 @@ class EmailVerificationViewModel(
                     repository.loginUser(login)
                 }
                 else {
-                    _responseState.value = Resource.Error(response.message())
+                    val responseCode = response.code()
+                    _responseState.value = when {
+                        isServerError(responseCode) -> Resource.Error(SERVER_ERROR)
+                        responseCode == RESPONSE_NOT_FOUND -> Resource.Error(RESPONSE_NOT_FOUND.toString())
+                        else -> Resource.Error(response.message())
+                    }
                 }
             } catch (ex: Exception) {
                 _responseState.value = Resource.Error(ex.localizedMessage)
