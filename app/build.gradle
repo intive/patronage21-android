@@ -1,20 +1,24 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "com.example.patron_a_tive"
+        applicationId 'com.intive.patronative'
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        compose true
+        viewBinding true
     }
 
     buildTypes {
@@ -24,22 +28,99 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.0-beta01'
+    }
+
 }
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    implementation 'androidx.navigation:navigation-runtime:2.3.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    def nav_version = "2.3.4"
+
+    implementation project(":ui")
+    implementation project(":calendar")
+    implementation project(":repository")
+    implementation project(":audit")
+    implementation project(":users")
+    implementation project(":registration")
+    implementation project(":tech_groups")
+    implementation project(":shared")
+    implementation project(":gradebook")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0-rc01'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    // Testing Navigation
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    // Jetpack Compose
+    implementation "androidx.compose.ui:ui:1.0.0-beta01"
+    // Tooling support (Previews, etc.)
+    implementation "androidx.compose.ui:ui-tooling:1.0.0-beta01"
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation "androidx.compose.foundation:foundation:1.0.0-beta01"
+    // Material Design
+    implementation "androidx.compose.material:material:1.0.0-beta01"
+    // Material design icons
+    implementation "androidx.compose.material:material-icons-core:1.0.0-beta01"
+    implementation "androidx.compose.material:material-icons-extended:1.0.0-beta01"
+    // Integration with activities
+    implementation "androidx.activity:activity-compose:1.3.0-alpha04"
+    // Integration with ViewModels
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha03"
+    implementation "androidx.compose.ui:ui-viewbinding:1.0.0-beta01"
+    // Integration with observables
+    implementation "androidx.compose.runtime:runtime-livedata:1.0.0-beta01"
+    implementation "androidx.compose.runtime:runtime-rxjava2:1.0.0-beta01"
+
+    // UI Tests
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.0.0-beta02"
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    def appCenterSdkVersion = '4.1.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
+    // Koin
+    def koin_version =  "3.0.1"
+
+    // Koin main features for Android (Scope,ViewModel ...)
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // Koin Android - experimental builder extensions
+    implementation "io.insert-koin:koin-android-ext:$koin_version"
+    // Koin for Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Koin for Jetpack Compose (unstable version)
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
+
 }

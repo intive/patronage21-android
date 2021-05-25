@@ -1,0 +1,33 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy new debug build to AppCenter"
+  lane :deployAppCenterDebug do
+
+    gradle(task: "clean assembleDebug")
+
+    appcenter_upload(
+      api_token: ENV["APP_CENTER_TOKEN"],
+      owner_name: "Patronage-2021",
+      app_name: "Patronage2021",
+      destinations: "Collaborators, Testers QA",
+      file: "./app/build/outputs/apk/debug/app-debug.apk",
+      notify_testers: false
+    )
+  end
+end

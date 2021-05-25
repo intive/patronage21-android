@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/calendar_nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.intive.calendar.fragments.CalendarHomeFragment"
+        android:label="CalendarFragment">
+        <deepLink app:uri="intive://calendarFragment" />
+
+        <action
+            android:id="@+id/action_calendarFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_dayFragment"
+            app:destination="@id/dayFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.intive.calendar.fragments.EventFragment"
+        android:label="EventFragment">
+
+        <argument
+            android:name="eventInfo"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="eventInfoParcelable"
+            app:argType="com.intive.shared.EventParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+        <deepLink android:id="@+id/eventDeepLink" app:uri="intive://eventFragment/{eventInfo}" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="com.intive.calendar.fragments.AddEventFragment"
+        android:label="AddEventFragment">
+        <action
+            android:id="@+id/action_addEventFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dayFragment"
+        android:name="com.intive.calendar.fragments.DayFragment"
+        android:label="DayFragment">
+        <action
+            android:id="@+id/action_dayFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
+        <argument
+            android:name="dayInfo"
+            app:argType="com.intive.calendar.utils.DayParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+</navigation>

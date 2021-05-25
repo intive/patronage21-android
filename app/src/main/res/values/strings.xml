@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Patron-a-tive</string>
+    <string name="app_bar_text">Patron-a-tive!</string>
+
+    <!--HomeScreen text content-->
+    <string name="home_screen_greeting">Witaj w Patron-a-tive!</string>
+    <string name="home_screen_text">Aplikacja Parton-a-tive pozwala na zarządzanie
+        programem stażowym, jego użytkownikami oraz wydarzeniami</string>
+
+    <!--Modules Icons Descriptions-->
+    <string name="tech_groups_module_miniature_desc">Miniaturka modułu grup technologicznych</string>
+    <string name="users_module_miniature_desc">Miniaturka modułu użytkowników</string>
+    <string name="diary_module_miniature_desc">Miniaturka modułu dzienniczka</string>
+    <string name="calendar_module_miniature_desc">Miniaturka modułu kalendarza</string>
+    <string name="logs_module_miniature_desc">Miniaturka modułu audytu zdarzeń</string>
+    <string name="registration_module_miniature_desc">Miniaturka modułu rejestracji</string>
+
 </resources>
