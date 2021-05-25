@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.fragments.DayFragmentDirections
-import com.intive.calendar.utils.DayBundle
+import com.intive.calendar.utils.DayParcelable
 import com.intive.repository.domain.model.Event
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
@@ -24,7 +24,7 @@ import com.intive.ui.components.TitleText
 @Composable
 fun DayLayout(
     navController: NavController,
-    day: DayBundle
+    day: DayParcelable
 ) {
     LayoutContainer {
         Column(

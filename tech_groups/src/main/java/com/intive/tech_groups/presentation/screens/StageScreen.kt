@@ -138,8 +138,6 @@ fun EventListItem(
     navController: NavController
 ) {
 
-    var rowModifier: Modifier = Modifier.fillMaxWidth()
-    var fontColor: Color = Color.Black
 
     val eventParcelable = EventParcelable(
         id = event.id,
@@ -153,17 +151,17 @@ fun EventListItem(
 
     val eventSerialized = Gson().toJson(eventParcelable)
 
-    if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
-        fontColor = Color.Gray
+    val fontColor = if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
+        Color.Gray
     } else {
-        rowModifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = { navController.navigate(Uri.parse("intive://eventFragment/$eventSerialized")) })
+        Color.Black
     }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = rowModifier
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { navController.navigate(Uri.parse("intive://eventFragment/$eventSerialized")) })
     ) {
         Spacer(Modifier.width(10.dp))
 
