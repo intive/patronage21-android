@@ -30,11 +30,11 @@ fun MainScreen(
     val groups = viewModel.groups.value
 
 
-    LayoutContainer(bottomPadding = 0.dp) {
     FABLayout(
         onClick = { navController.navigate(R.id.action_add_group) },
         contentDescription = stringResource(R.string.add_new_technology_group)
     ) {
+        LayoutContainer(bottomPadding = 0.dp) {
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
