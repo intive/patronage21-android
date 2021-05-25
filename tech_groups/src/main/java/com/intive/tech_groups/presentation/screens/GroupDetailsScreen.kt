@@ -113,7 +113,6 @@ fun GroupDetailsScreen(
                                 }
                                 is Resource.Loading -> {
                                     Box {
-                                        Spinner(listOf("")) {}
                                         LoadingItem()
                                     }
                                 }
@@ -170,10 +169,8 @@ fun StageBoxButton(
             contentOnTop = false
         ) {
             Row{
-                Text(text = dateBegin)
-                Text(text = dateEnd)
+                Text(text = "${dateBegin.dropLast(5)} - $dateEnd")
             }
-
             Text(text = state)
         }
     }

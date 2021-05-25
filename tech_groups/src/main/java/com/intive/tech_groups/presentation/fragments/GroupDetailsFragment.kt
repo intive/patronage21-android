@@ -36,10 +36,8 @@ class GroupDetailsFragment : Fragment(){
 //                Stage("3","Etap IV", "01.07-31.08.2021", "nieaktywny")
 //            )
 
-            lateinit var group: GroupParcelable
             val safeArgs: GroupDetailsFragmentArgs by navArgs()
-
-            group = safeArgs.groupParcelable!!
+            val group = safeArgs.groupParcelable!!
 
             groupDetailsViewModel.getStages(group.id)
 
