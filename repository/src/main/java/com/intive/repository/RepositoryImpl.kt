@@ -7,6 +7,7 @@ import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.network.model.Group
 import com.intive.repository.local.LocalRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
@@ -178,6 +179,13 @@ class RepositoryImpl(
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
 
+    }
+
+    override suspend fun addGroup(group: Group): Response<String> {
+        val bodyGroup = JsonObject()
+        bodyGroup.addProperty("name", group.name)
+        bodyGroup.addProperty("technologies", group.technologies.toString())
+        return networkRepository.addGroup(bodyGroup)
     }
 
     override suspend fun getStageDetails(id: Long): StageDetails {

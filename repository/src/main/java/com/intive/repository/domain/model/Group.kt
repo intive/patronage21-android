@@ -1,7 +1,6 @@
-package com.intive.repository.domain.model
+package com.intive.repository.network.model
 
 data class Group(
     var name: String,
-    var description: String,
     var technologies: List<String>
 )

@@ -8,11 +8,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
+import com.intive.repository.network.model.Group
+import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class AddGroupViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _name = MutableLiveData("")
@@ -50,6 +54,35 @@ class AddGroupViewModel(
             chosenTechnologies.remove(technology)
         } else {
             chosenTechnologies.add(technology)
+        }
+    }
+
+    private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
+    val responseState: State<Resource<String>?> = _responseState
+
+    fun addGroup() {
+        viewModelScope.launch(dispatchers.io) {
+//            if(name.value.isNullOrEmpty()) {
+//                _responseState.value = Resource.Error("")
+//                return@launch
+//            }
+            _responseState.value = Resource.Loading()
+            val group = Group(
+                name = name.value!!,
+                technologies = chosenTechnologies
+            )
+            val receivedResponse : Response<String>
+            try {
+                receivedResponse = repository.addGroup(group)
+                if(receivedResponse.isSuccessful) {
+                    _responseState.value = Resource.Success("")
+                }
+                else {
+                    _responseState.value = Resource.Error(receivedResponse.message())
+                }
+            } catch (ex: Exception) {
+                _responseState.value = Resource.Error(ex.localizedMessage)
+            }
         }
     }
 }

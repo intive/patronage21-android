@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.domain.model.Group
+import com.intive.repository.network.model.Group
 import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
