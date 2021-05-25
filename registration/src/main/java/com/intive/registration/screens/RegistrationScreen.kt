@@ -23,8 +23,11 @@ import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.viewmodels.RegistrationViewModel
 import com.intive.registration.R
 import com.intive.registration.components.*
+import com.intive.registration.fragments.EmailVerificationFragmentDirections
 import com.intive.registration.fragments.RegistrationFragmentDirections
+import com.intive.repository.util.RESPONSE_NOT_FOUND
 import com.intive.repository.util.Resource
+import com.intive.repository.util.SERVER_ERROR
 import com.intive.ui.components.*
 import kotlinx.coroutines.launch
 
@@ -68,14 +71,28 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
                 navController.navigate(action)
             }
             is Resource.Error -> {
-                Text(
-                    text = response.message?: stringResource(R.string.error_occured),
-                    color = Color.Red,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-                coroutineScope.launch {
-                    scrollState.scrollTo(0)
+                when (response.message) {
+                    SERVER_ERROR -> {
+                        val action =
+                            EmailVerificationFragmentDirections.actionError(R.string.server_connection_error)
+                        navController.navigate(action)
+                    }
+                    RESPONSE_NOT_FOUND.toString() -> {
+                        val action =
+                            EmailVerificationFragmentDirections.actionError(R.string.internet_connection_error)
+                        navController.navigate(action)
+                    }
+                    else -> {
+                        Text(
+                            text = response.message ?: stringResource(R.string.error_occured),
+                            color = Color.Red,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+                        coroutineScope.launch {
+                            scrollState.scrollTo(0)
+                        }
+                    }
                 }
             }
         }

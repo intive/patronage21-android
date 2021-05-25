@@ -42,6 +42,8 @@
     <string name="login_not_available">Login zajęty</string>
     <string name="server_error">Błąd serwera</string>
     <string name="processing">Przetwarzanie...</string>
+    <string name="server_connection_error">Problem z połączeniem z serwerem</string>
+    <string name="unknown_error">Wystąpił nieznany błąd</string>
 
 
     <string-array name="titles_array">

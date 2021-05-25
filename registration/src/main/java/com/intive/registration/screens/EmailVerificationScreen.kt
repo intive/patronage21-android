@@ -21,8 +21,11 @@ import com.intive.registration.Constants.SPACER_HEIGHT
 import com.intive.registration.R
 import com.intive.registration.components.InputText
 import com.intive.registration.fragments.EmailVerificationFragmentDirections
+import com.intive.registration.fragments.RegistrationFragmentDirections
 import com.intive.registration.viewmodels.*
+import com.intive.repository.util.RESPONSE_NOT_FOUND
 import com.intive.repository.util.Resource
+import com.intive.repository.util.SERVER_ERROR
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.TitleText
@@ -57,12 +60,24 @@ fun EmailVerificationScreen(
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         when(response) {
             is Resource.Error -> {
-                Text(
-                    text = response.message?: stringResource(R.string.internet_connection_error),
-                    color = Color.Red,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+                when (response.message) {
+                    SERVER_ERROR -> {
+                        val action = EmailVerificationFragmentDirections.actionError(R.string.server_connection_error)
+                        navController.navigate(action)
+                    }
+                    RESPONSE_NOT_FOUND.toString() -> {
+                        val action = EmailVerificationFragmentDirections.actionError(R.string.internet_connection_error)
+                        navController.navigate(action)
+                    }
+                    else -> {
+                        Text(
+                            text = stringResource(R.string.wrong_code),
+                            color = Color.Red,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(SPACER_HEIGHT))
+                    }
+                }
             }
             is Resource.Success -> {
                 sharedViewModel.successDialogState = RegistrationSuccessDialogState.SHOW_DIALOG
