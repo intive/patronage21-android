@@ -24,12 +24,13 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModel<MainViewModel>()
     private val args: MainFragmentArgs by navArgs()
+    private var showSnackbar = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         lifecycleScope.launchWhenStarted {
-            if(args.message == SUCCESS_KEY) {
+            if(args.message == SUCCESS_KEY && showSnackbar) {
                 Snackbar.make(
                     requireView(),
                     requireContext().getString(R.string.group_created),
@@ -46,5 +47,11 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    }
+
+    //dont show snackbar again
+    override fun onPause() {
+        super.onPause()
+        showSnackbar = false
     }
 }
