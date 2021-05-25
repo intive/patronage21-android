@@ -185,6 +185,15 @@ class RepositoryImpl(
         return stageDtoMapper.toDomainList(networkRepository.getStages(groupId))
     }
 
+    override suspend fun addGroup(group: GroupParcelable): Response<String> {
+        val bodyGroup = JsonObject()
+        bodyGroup.addProperty("id", group.id)
+        bodyGroup.addProperty("name", group.name)
+        bodyGroup.addProperty("description", group.description)
+        bodyGroup.addProperty("technologies", group.technologies.toString())
+        return networkRepository.addGroup(bodyGroup)
+    }
+
     override suspend fun getStageDetails(id: Long): StageDetails {
         return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
     }

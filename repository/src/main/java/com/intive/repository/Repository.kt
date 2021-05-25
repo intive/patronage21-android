@@ -1,6 +1,9 @@
 package com.intive.repository
 
 import com.intive.repository.domain.model.Event
+import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.domain.model.NewEvent
+import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.domain.model.*
@@ -38,6 +41,7 @@ interface Repository {
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
 
     suspend fun getStages(groupId: String): List<Stage>
+    suspend fun addGroup(group: GroupParcelable) : Response<String>
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 
