@@ -33,7 +33,9 @@ fun GroupDetailsScreen(
     ) {
         val listState = rememberLazyListState()
 
-        LayoutContainer {
+        LayoutContainer(
+            bottomPadding = 0.dp
+        ) {
             LazyColumn(
                 state = listState,
             ) {
@@ -42,7 +44,7 @@ fun GroupDetailsScreen(
                         TitleText(
                             text = group.name,
                             modifier = Modifier
-                                .padding(top = 15.dp, bottom = 15.dp)
+                                .padding(bottom = 15.dp)
                         )
                         Text(
                             text = "Technologie:",

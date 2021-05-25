@@ -29,21 +29,22 @@ fun MainScreen(
     val filters = viewModel.filters.value
     val groups = viewModel.groups.value
 
-    LayoutContainer{
-        FABLayout(
-            onClick = { navController.navigate(R.id.action_add_group) },
-            contentDescription = stringResource(R.string.add_new_technology_group)
+
+    FABLayout(
+        onClick = { navController.navigate(R.id.action_add_group) },
+        contentDescription = stringResource(R.string.add_new_technology_group)
+    ) {
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
         ) {
-            val scrollState = rememberScrollState()
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(scrollState),
-            ) {
+            LayoutContainer {
                 TitleText(
                     text = stringResource(R.string.tech_groups_title),
                     modifier = Modifier
-                        .padding(top = 15.dp, bottom = 15.dp)
+                        .padding(bottom = 15.dp)
                 )
                 when (filters) {
                     is Resource.Success -> {
@@ -83,7 +84,8 @@ fun MainScreen(
                                             onClick = {
                                                 navController.navigate(
                                                     MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(
-                                                        filteredList!![indexCloned])
+                                                        filteredList!![indexCloned]
+                                                    )
                                                 )
                                             },
                                             contentOnTop = false
@@ -102,7 +104,8 @@ fun MainScreen(
                                                 onClick = {
                                                     navController.navigate(
                                                         MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(
-                                                            filteredList!![indexCloned + 1])
+                                                            filteredList!![indexCloned + 1]
+                                                        )
                                                     )
                                                 },
                                                 contentOnTop = false
