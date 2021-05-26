@@ -3,7 +3,6 @@ package com.intive.tech_groups.presentation.screens
 import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -84,7 +83,7 @@ fun StageScreen(
                         event = event,
                         navController = navController
                     )
-                    Divider(color = Color.LightGray)
+                    Divider()
                 }
 
                 Spacer(Modifier.height(24.dp))
@@ -138,24 +137,28 @@ fun EventListItem(
     navController: NavController
 ) {
 
+    var fontColor = Color.Black
+    var eventActive = true
+
+
+    if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
+        fontColor = Color.Gray
+        eventActive = false
+    }
 
     val eventParcelable = EventParcelable(
         id = event.id,
-        date = event.date,
+        date = getFullDateString(event.date),
         time = "${event.timeStart} - ${event.timeEnd}",
         name = event.name,
         inviteResponse = event.inviteResponse,
         users = event.users,
-        active = true /*TODO*/
+        active = eventActive
     )
 
     val eventSerialized = Gson().toJson(eventParcelable)
 
-    val fontColor = if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
-        Color.Gray
-    } else {
-        Color.Black
-    }
+
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
