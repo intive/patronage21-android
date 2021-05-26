@@ -181,8 +181,8 @@ class RepositoryImpl(
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 
-    override suspend fun editEvent(event: EditEvent): Response<String> {
-        return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event))
+    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+        return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

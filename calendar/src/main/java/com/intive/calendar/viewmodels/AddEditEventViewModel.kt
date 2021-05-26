@@ -180,7 +180,8 @@ class AddEditEventViewModel(
 
     fun editEvent(
         refreshCalendar: () -> Unit,
-        popBackStack: () -> Boolean
+        popBackStack: () -> Boolean,
+        id: Long
     ) {
         val date = getDateString(_date.value!!)
         val timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!)
@@ -199,7 +200,7 @@ class AddEditEventViewModel(
             viewModelScope.launch(handler) {
 
                 withContext(dispatchers.io) {
-                    response = repository.editEvent(editEvent)
+                    response = repository.editEvent(editEvent, id)
                 }
 
                 if (response.isSuccessful) {

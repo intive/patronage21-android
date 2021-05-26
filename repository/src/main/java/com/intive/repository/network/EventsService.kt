@@ -30,6 +30,6 @@ interface EventsService {
 
     @PUT("api/events/edit")
     @Headers("Content-Type: application/json")
-    suspend fun editEvent(@Body event: EditEventDto): Response<String>
+    suspend fun editEvent(@Body event: EditEventDto, @Query("id") id: Long): Response<String>
 
 }

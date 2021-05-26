@@ -49,7 +49,7 @@ interface Repository {
 
     suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
-    suspend fun editEvent(event: EditEvent): Response<String>
+    suspend fun editEvent(event: EditEvent, id: Long): Response<String>
 
     suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>

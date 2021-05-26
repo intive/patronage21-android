@@ -32,7 +32,7 @@ fun EditEventScreen(
         titleText = stringResource(R.string.edit_event_header),
         addEditEventViewModel = addEditEventViewModel,
         context = context,
-        onClick = { addEditEventViewModel.editEvent(refreshEventsList, popBackStack) }
+        onClick = { addEditEventViewModel.editEvent(refreshEventsList, popBackStack, event.id) }
     )
 
 }
