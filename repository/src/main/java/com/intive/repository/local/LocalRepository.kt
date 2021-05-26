@@ -19,4 +19,12 @@ class LocalRepository(
     fun getUserLoginOrNull(): String? {
         return sharedPreferenceSource.getUserLoginOrNull()
     }
+
+    fun enableCaching() {
+        sharedPreferenceSource.enableCaching()
+    }
+
+    fun isCachingEnabled(): Boolean {
+        return sharedPreferenceSource.isCachingEnabled()
+    }
 }
