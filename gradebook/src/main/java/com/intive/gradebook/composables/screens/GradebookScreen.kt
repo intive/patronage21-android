@@ -41,14 +41,107 @@ fun GradebookScreen(
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     val setting = remember { mutableStateOf("") }
     val thirdColumn = remember { mutableStateOf("") }
+
+    if (viewModel.stage == "null") {
+        FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data))
+        {
+            Screen(viewModel, navController, setting, thirdColumn)
+            var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = {},
+                    text = {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        )
+                        {
+                            Text(
+                                text = stringResource(id = R.string.select_data),
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spinner(
+                                items = stringArrayResource(id = R.array.addcolumn_spinner).asList()
+                            ) {
+                                addedColumn = it
+                            }
+                        }
+                    },
+                    dismissButton = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Button(
+                                onClick = {
+                                    setting.value = addedColumn
+                                    thirdColumn.value = addedColumn
+                                    setShowDialog(false)
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
+                                shape = RoundedCornerShape(24.dp),
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(200.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.save_data),
+                                    color = Color.White,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+                    },
+                    confirmButton = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Button(
+                                onClick = {
+                                    setShowDialog(false)
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
+                                shape = RoundedCornerShape(24.dp),
+                                modifier = Modifier
+                                    .height(50.dp)
+                                    .width(200.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.cancel),
+                                    color = Color.White,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    } else {
+        setting.value = viewModel.stage
+        thirdColumn.value = "Etap " + setting.value
+        Screen(viewModel, navController, setting, thirdColumn)
+    }
+}
+
+@Composable
+fun Screen(
+    viewModel: GradebookViewModel,
+    navController: NavController,
+    setting: MutableState<String>,
+    thirdColumn: MutableState<String>
+) {
     val participants = viewModel.participants.collectAsLazyPagingItems()
     val groups = viewModel.techGroups.value
     val lazyListState = rememberLazyListState()
     Column {
         val modifier = Modifier.padding(
-            start = 30.dp,
-            end = 30.dp,
-            bottom = 8.dp,
+            start = 24.dp,
+            end = 24.dp,
+            bottom = 24.dp,
             top = 16.dp
         )
         LazyColumn(
@@ -59,8 +152,7 @@ fun GradebookScreen(
                     modifier = modifier
                 ) {
                     if (viewModel.stage == "null") {
-                        ScreenInfo()
-                        Spacer(modifier = Modifier.padding(16.dp))
+                        IntroSection(stringResource(R.string.page_name),stringResource(R.string.description))
 
                         when (groups) {
                             is Resource.Success -> {
@@ -82,6 +174,7 @@ fun GradebookScreen(
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.padding(16.dp))
                     } else {
                         var groupName = viewModel.groupStorage
                         if (groupName == "java")
@@ -96,10 +189,9 @@ fun GradebookScreen(
                                 viewModel.stage + " dla grupy " +
                                 groupName + "."
                         viewModel.onTechGroupsChanged(viewModel.groupStorage)
-                        ScreenInfo(text = text)
+                        IntroSection(stringResource(R.string.page_name),text)
                     }
 
-                    Spacer(modifier = Modifier.padding(16.dp))
                     Spinner(
                         items = stringArrayResource(id = R.array.sort_spinner).asList()
                     ) { sort ->
@@ -177,86 +269,8 @@ fun GradebookScreen(
                     }
                 }
             }
+            item {Spacer(modifier = Modifier.padding(24.dp))}
         }
-    }
-    if (viewModel.stage == "null") {
-        FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data), { })
-        var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = {},
-                text = {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    )
-                    {
-                        Text(
-                            text = stringResource(id = R.string.select_data),
-                            color = Color.Black,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spinner(
-                            items = stringArrayResource(id = R.array.addcolumn_spinner).asList()
-                        ) {
-                            addedColumn = it
-                        }
-                    }
-                },
-                dismissButton = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = {
-                                setting.value = addedColumn
-                                thirdColumn.value = addedColumn
-                                setShowDialog(false)
-                            },
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                            shape = RoundedCornerShape(24.dp),
-                            modifier = Modifier
-                                .height(50.dp)
-                                .width(200.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.save_data),
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-                },
-                confirmButton = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = {
-                                setShowDialog(false)
-                            },
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                            shape = RoundedCornerShape(24.dp),
-                            modifier = Modifier
-                                .height(50.dp)
-                                .width(200.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.cancel),
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-                }
-            )
-        }
-    } else {
-        setting.value = viewModel.stage
-        thirdColumn.value = "Etap " + setting.value
     }
 }
 
