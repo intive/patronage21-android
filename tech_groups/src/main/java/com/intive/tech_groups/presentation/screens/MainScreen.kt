@@ -31,10 +31,6 @@ fun MainScreen(
 
 
     FABLayout(
-        modifier = Modifier.padding(
-            bottom = 12.dp,
-            end = 12.dp
-        ),
         onClick = { navController.navigate(R.id.action_add_group) },
         contentDescription = stringResource(R.string.add_new_technology_group)
     ) {
