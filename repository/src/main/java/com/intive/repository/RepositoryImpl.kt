@@ -223,4 +223,8 @@ class RepositoryImpl(
     override fun logoutUser() {
         localRepository.logoutUser()
     }
+
+    override suspend fun deleteEvent(id: Long): Response<String> {
+        return networkRepository.deleteEvent(id)
+    }
 }
