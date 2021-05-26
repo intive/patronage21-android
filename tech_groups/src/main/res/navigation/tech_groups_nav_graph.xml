@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tech_groups_nav_graph.xml"
+    android:id="@+id/tech_groups_nav_graph"
     app:startDestination="@id/mainFragment">
 
     <fragment
@@ -9,9 +9,14 @@
         android:name="com.intive.tech_groups.presentation.fragments.MainFragment"
         android:label="TechGroupsMainFragment" >
         <deepLink app:uri="intive://techGroupsMainFragment" />
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/action_add_group"
             app:destination="@id/addGroupFragment" />
+
         <action
             android:id="@+id/action_mainFragment_to_groupDetailsFragment"
             app:destination="@id/groupDetailsFragment" />
@@ -23,6 +28,11 @@
         <action
             android:id="@+id/action_groupDetailsFragment_to_stageFragment"
             app:destination="@id/stageFragment" />
+        <argument
+            android:name="groupParcelable"
+            app:argType="com.intive.repository.domain.model.GroupParcelable"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -33,5 +43,11 @@
     <fragment
         android:id="@+id/addGroupFragment"
         android:name="com.intive.tech_groups.presentation.fragments.AddGroupFragment"
-        android:label="AddGroupFragment" />
+        android:label="AddGroupFragment" >
+        <action
+            android:id="@+id/action_back_to_groups"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@+id/tech_groups_nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

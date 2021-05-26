@@ -1,15 +1,16 @@
 package com.intive.repository.network
 
-import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
 import com.intive.repository.domain.model.UserRegistration
-import retrofit2.Response
-import com.intive.repository.domain.model.Group
 import com.intive.repository.network.model.*
+import retrofit2.Response
+import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.network.response.*
+import com.intive.repository.network.response.UsersResponse
+import retrofit2.http.Body
 import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UserResponse
-import com.intive.repository.network.response.UsersResponse
 
 class NetworkRepository(
     private val usersService: UsersService,
@@ -18,6 +19,7 @@ class NetworkRepository(
     private val eventsService: EventsService,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
+    private val stageService: StageService,
     private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService
 ) {
@@ -89,7 +91,7 @@ class NetworkRepository(
         return technologyGroupsServiceJava.getTechnologies()
     }
 
-    suspend fun getTechnologyGroups(): List<Group> {
+    suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return technologyGroupsService.getTechnologyGroups()
     }
 
@@ -106,6 +108,10 @@ class NetworkRepository(
         return eventsService.addNewEvent(event)
     }
 
+    suspend fun deleteEvent(id: Long): Response<String> {
+        return eventsService.deleteEvent(id)
+    }
+
     suspend fun sendCodeToServer(body: JsonObject): Response<String> {
         return registrationService.sendCodeToServer(body)
     }
@@ -114,10 +120,17 @@ class NetworkRepository(
         return registrationService.sendRequestForCode(body)
     }
 
-    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String> {
         return eventsService.updateInviteResponse(inviteResponse)
     }
 
+    suspend fun getStages(groupId: String): List<StageDto> {
+        return stageService.getStages(groupId)
+    }
+
+    suspend fun addGroup(@Body group: JsonObject) : Response<String> {
+        return technologyGroupsService.addGroup(group)
+    }
 
     suspend fun getStageDetails(id: Long): StageDetailsDto {
         return stageDetailsService.getStageDetails(id)
@@ -128,7 +141,7 @@ class NetworkRepository(
         sortby: String,
         page: Int
     ): GradebookResponse {
-        return gradebookService.getGradebook(group = group, sortby=sortby, page = page)
+        return gradebookService.getGradebook(group = group, sortby = sortby, page = page)
     }
 }
 

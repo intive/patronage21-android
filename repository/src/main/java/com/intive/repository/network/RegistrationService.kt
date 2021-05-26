@@ -1,7 +1,6 @@
 package com.intive.repository.network
 
 import com.google.gson.JsonObject
-import com.intive.repository.domain.model.Group
 import com.intive.repository.domain.model.UserRegistration
 import retrofit2.Response
 import retrofit2.http.*
