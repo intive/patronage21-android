@@ -27,10 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
+import com.intive.calendar.fragments.EventFragmentDirections
 import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.LayoutContainer
+
 
 
 @Composable
@@ -70,7 +72,10 @@ fun EventScreenLayout(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            IconButton(onClick = { /* TODO */ }) {
+
+                            val directions = EventFragmentDirections.actionEventFragmentToEditEventFragment(eventInfoParcelable = event)
+
+                            IconButton(onClick = { navController.navigate(directions) }) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
                                     contentDescription = stringResource(R.string.edit_event_description),

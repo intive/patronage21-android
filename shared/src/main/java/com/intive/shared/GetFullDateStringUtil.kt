@@ -27,7 +27,14 @@ fun getFullDateString(date: Calendar): String {
 
 
 fun stringToCalendar(dateString: String, separator: String = "-"): Calendar {
-    val dateElements = dateString.split(separator)
+
+    var date = dateString
+
+    if(dateString.contains(",")) {
+        date = dateString.substringAfter(", ")
+    }
+
+    val dateElements = date.split(separator)
 
     val calendar: Calendar = Calendar.getInstance()
 
