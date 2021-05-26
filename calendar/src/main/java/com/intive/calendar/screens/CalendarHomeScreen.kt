@@ -43,11 +43,12 @@ fun CalendarHomeLayout(
     val calendarViewsList = stringArrayResource(R.array.calendar_views_list).asList()
 
 
-    LayoutContainer {
-        FABLayout(
-            onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
-            contentDescription = stringResource(R.string.add_event_btn_desc)
-        ) {
+
+    FABLayout(
+        onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
+        contentDescription = stringResource(R.string.add_event_btn_desc)
+    ) {
+        LayoutContainer {
             IntroSection(
                 title = stringResource(R.string.calendar),
                 text = stringResource(R.string.lorem_ipsum)
@@ -77,8 +78,6 @@ fun CalendarHomeLayout(
             ) { calendarViewModel.goToNextMonth() }
         }
     }
-
-
 }
 
 
