@@ -207,6 +207,7 @@ class AddEditEventViewModel(
                     showSnackbar(EventChannel.EditEventSuccess)
                     refreshEventsList()
                     popBackStack()
+                    popBackStack()
                 } else {
                     showSnackbar(EventChannel.EditEventError)
                 }

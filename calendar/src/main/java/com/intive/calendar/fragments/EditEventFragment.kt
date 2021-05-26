@@ -28,7 +28,6 @@ class EditEventFragment : Fragment() {
     private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
 
-
     @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,7 +92,7 @@ class EditEventFragment : Fragment() {
                     EditEventScreen(
                         requireContext(),
                         event,
-                        { findNavController().popBackStack(R.id.calendarFragment, false) },
+                        { findNavController().popBackStack() },
                         addEventViewModel,
                     ) { calendarHomeViewModel.refreshEventsList() }
                 }
