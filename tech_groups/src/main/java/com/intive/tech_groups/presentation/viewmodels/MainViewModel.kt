@@ -10,11 +10,14 @@ import com.intive.repository.domain.model.GroupParcelable
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.GroupEntity
+import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _filters: MutableState<Resource<List<GroupEntity>>> =
@@ -39,11 +42,10 @@ class MainViewModel(
         val list = mutableListOf<GroupParcelable>()
         if (filter == null) {
             groups.value.data?.let { list.addAll(it) }
-        }
-        else {
+        } else {
             groups.value.data?.let {
-                for(item in it) {
-                    if(item.technologies.contains(filter)) {
+                for (item in it) {
+                    if (item.technologies.contains(filter)) {
                         list.add(item)
                     }
                 }
@@ -67,12 +69,15 @@ class MainViewModel(
 
     fun getFilters() {
         viewModelScope.launch {
-            _filters.value = try {
-                val response = repository.getTechnologies().map { group ->
-                    GroupEntity(group, group) }
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+            _filters.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies().map { group ->
+                        GroupEntity(group, group)
+                    }
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
+                }
             }
         }
     }

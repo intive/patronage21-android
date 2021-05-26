@@ -8,10 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.intive.repository.domain.model.GroupParcelable
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
-import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class AddGroupViewModel(
@@ -47,11 +48,13 @@ class AddGroupViewModel(
 
     private fun getTechnologies() {
         viewModelScope.launch {
-            _technologies.value = try {
-                val response = repository.getTechnologies()
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
+            _technologies.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies()
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
+                }
             }
         }
     }

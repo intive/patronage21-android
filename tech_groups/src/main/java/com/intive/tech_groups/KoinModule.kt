@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val techGroupsModule = module {
     viewModel { StageViewModel(get(), get()) }
-    viewModel { MainViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
     viewModel { GroupDetailsViewModel(get(), get()) }
     viewModel { AddGroupViewModel(get(), get()) }
 }

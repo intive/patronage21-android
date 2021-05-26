@@ -50,6 +50,7 @@ interface Repository {
     suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
     suspend fun editEvent(event: EditEvent, id: Long): Response<String>
+    suspend fun deleteEvent(id: Long): Response<String>
 
     suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
@@ -66,6 +67,8 @@ interface Repository {
     fun loginUser(login: String)
     fun logoutUser()
 
-    suspend fun deleteEvent(id: Long): Response<String>
+    fun enableCaching()
+    fun isCachingEnabled(): Boolean
+
 }
 

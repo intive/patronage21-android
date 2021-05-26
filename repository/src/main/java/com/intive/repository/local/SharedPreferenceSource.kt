@@ -1,6 +1,7 @@
 package com.intive.repository.local
 
 import android.content.SharedPreferences
+import com.intive.repository.local.SharedPreferencesKeys.CACHING_KEY
 import com.intive.repository.local.SharedPreferencesKeys.LOGIN_KEY
 
 class SharedPreferenceSource(private val prefs: SharedPreferences) {
@@ -20,8 +21,17 @@ class SharedPreferenceSource(private val prefs: SharedPreferences) {
     fun getUserLoginOrNull(): String? {
         return prefs.getString(LOGIN_KEY, null)
     }
+
+    fun enableCaching() {
+        prefs.edit().putBoolean(CACHING_KEY, true).apply()
+    }
+
+    fun isCachingEnabled(): Boolean {
+        return prefs.getBoolean(CACHING_KEY, false)
+    }
 }
 
 object SharedPreferencesKeys {
     const val LOGIN_KEY = "login_key"
+    const val CACHING_KEY = "caching_key"
 }
