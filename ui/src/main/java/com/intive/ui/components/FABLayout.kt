@@ -9,7 +9,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.intive.ui.R
 
 @Composable
 fun FABLayout(onClick: () -> Unit, contentDescription: String, content: @Composable () -> Unit) {
@@ -30,7 +31,8 @@ fun FABLayout(onClick: () -> Unit, contentDescription: String, content: @Composa
         ) {
             FloatingActionButton(
                 onClick = onClick,
-                backgroundColor = colors.primary
+                backgroundColor = colors.primary,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.screen_padding))
             ) {
                 Icon(
                     Icons.Filled.Add,
