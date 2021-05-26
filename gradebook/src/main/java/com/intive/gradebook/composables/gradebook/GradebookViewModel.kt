@@ -16,6 +16,7 @@ import com.intive.repository.util.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -80,16 +81,16 @@ class GradebookViewModel(
     }
 
     private fun getTechGroups() {
-        _techGroups.value = Resource.Loading()
-
-        viewModelScope.launch(dispatchers.io) {
-            _techGroups.value = try {
-                val response = repository.getTechnologies().map { group ->
-                    GroupEntity(group, group)
+        viewModelScope.launch {
+            _techGroups.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies().map { group ->
+                        GroupEntity(group, group)
+                    }
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
                 }
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
             }
         }
     }
