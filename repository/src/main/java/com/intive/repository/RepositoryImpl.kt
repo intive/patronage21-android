@@ -24,6 +24,7 @@ class RepositoryImpl(
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
+    private val editEventMapper: EditEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
     private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
@@ -200,6 +201,10 @@ class RepositoryImpl(
 
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
+    }
+
+    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+        return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

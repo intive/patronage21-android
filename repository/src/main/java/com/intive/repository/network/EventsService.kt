@@ -1,5 +1,6 @@
 package com.intive.repository.network
 
+import com.intive.repository.network.model.EditEventDto
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.EventInviteResponseDto
 import com.intive.repository.network.model.NewEventDto
@@ -26,5 +27,9 @@ interface EventsService {
 
     @DELETE("api/events")
     suspend fun deleteEvent(@Query("id") id: Long): Response<String>
+
+    @PUT("api/events/edit")
+    @Headers("Content-Type: application/json")
+    suspend fun editEvent(@Body event: EditEventDto, @Query("id") id: Long): Response<String>
 
 }
