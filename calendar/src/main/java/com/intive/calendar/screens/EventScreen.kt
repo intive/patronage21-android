@@ -43,8 +43,9 @@ fun EventScreenLayout(
         DeleteEventDialog(
             viewModel = eventViewModel,
             navController = navController,
-            showDeleteDialog,
-            event.id
+            refreshEventsList = refreshEventsList,
+            showDeleteDialog = showDeleteDialog,
+            eventId = event.id
         )
     }
 
@@ -80,7 +81,10 @@ fun EventScreenLayout(
                             modifier = Modifier.fillMaxWidth()
                         ) {
 
-                            val directions = EventFragmentDirections.actionEventFragmentToEditEventFragment(eventInfoParcelable = event)
+                            val directions =
+                                EventFragmentDirections.actionEventFragmentToEditEventFragment(
+                                    eventInfoParcelable = event
+                                )
 
                             IconButton(onClick = { navController.navigate(directions) }) {
                                 Icon(
@@ -231,6 +235,7 @@ fun UsersList(navController: NavController, users: List<User>) {
 fun DeleteEventDialog(
     viewModel: EventViewModel,
     navController: NavController,
+    refreshEventsList: () -> Unit,
     showDeleteDialog: Boolean?,
     eventId: Long
 ) {
@@ -252,7 +257,10 @@ fun DeleteEventDialog(
                             text = stringResource(R.string.ok),
                             paddingBottom = 8.dp
                         ) {
-                            viewModel.deleteEvent(eventId) { navController.popBackStack() }
+                            viewModel.deleteEvent(
+                                eventId,
+                                { navController.popBackStack() },
+                                { refreshEventsList() })
                             viewModel.showDeleteDialog(false)
                         }
                         SecondaryButton(text = stringResource(R.string.cancel_dialog)) {

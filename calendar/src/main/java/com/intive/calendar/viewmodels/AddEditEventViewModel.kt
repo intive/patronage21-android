@@ -142,7 +142,7 @@ class AddEditEventViewModel(
     }
 
     fun addNewEvent(
-        refreshCalendar: () -> Unit,
+        refreshEventsList: () -> Unit,
         popBackStack: () -> Boolean
     ) {
 
@@ -168,7 +168,7 @@ class AddEditEventViewModel(
 
                 if (response.isSuccessful) {
                     showSnackbar(EventChannel.AddEventSuccess)
-                    refreshCalendar()
+                    refreshEventsList()
                     popBackStack()
                 } else {
                     showSnackbar(EventChannel.AddEventError)
@@ -179,7 +179,7 @@ class AddEditEventViewModel(
     }
 
     fun editEvent(
-        refreshCalendar: () -> Unit,
+        refreshEventsList: () -> Unit,
         popBackStack: () -> Boolean,
         id: Long
     ) {
@@ -205,7 +205,7 @@ class AddEditEventViewModel(
 
                 if (response.isSuccessful) {
                     showSnackbar(EventChannel.EditEventSuccess)
-                    refreshCalendar()
+                    refreshEventsList()
                     popBackStack()
                 } else {
                     showSnackbar(EventChannel.EditEventError)
