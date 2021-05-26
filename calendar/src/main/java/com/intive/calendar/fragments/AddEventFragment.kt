@@ -36,10 +36,17 @@ class AddEventFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             addEventViewModel.addEventFlow.collect { event ->
                 when (event) {
-                    is AddNewEvent.Error -> {
+                    is AddNewEvent.AddEventError -> {
                         Snackbar.make(
                             requireView(),
                             requireContext().getString(R.string.add_event_error_msg),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is AddNewEvent.AddEventSuccess -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.add_event_success),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }

@@ -154,7 +154,7 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
         val newEvent =
             NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
         val handler = CoroutineExceptionHandler { _, _ ->
-            showSnackbar(AddNewEvent.Error)
+            showSnackbar(AddNewEvent.AddEventError)
         }
 
 
@@ -167,10 +167,11 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
             }
 
             if (response.isSuccessful) {
+                showSnackbar(AddNewEvent.AddEventSuccess)
                 refreshCalendar()
                 popBackStack()
             } else {
-                showSnackbar(AddNewEvent.Error)
+                showSnackbar(AddNewEvent.AddEventError)
             }
         }
 

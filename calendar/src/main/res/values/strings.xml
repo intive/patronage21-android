@@ -54,6 +54,9 @@
     <string name="delete_event_success">Wydarzenie zostało usunięte</string>
     <string name="ok">OK</string>
     <string name="cancel_dialog">Anuluj</string>
+    <string name="edit_event_error_msg">Edycja nie powiodła się</string>
+    <string name="edit_event_success">Wydarzenie zostało zmienione</string>
+    <string name="add_event_success">Nowe wydarzenie zostało dodane</string>
 
     <string-array name="calendar_views_list">
         <item>Tydzień</item>
