@@ -16,7 +16,7 @@ import com.intive.shared.stringToCalendar
 fun EditEventScreen(
     context: Context,
     event: EventParcelable,
-    popBackStack: () -> Boolean,
+    popBackStack: () -> Unit,
     addEditEventViewModel: AddEditEventViewModel,
     refreshEventsList: () -> Unit
 ) {

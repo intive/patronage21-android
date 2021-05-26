@@ -180,7 +180,7 @@ class AddEditEventViewModel(
 
     fun editEvent(
         refreshEventsList: () -> Unit,
-        popBackStack: () -> Boolean,
+        popBackStack: () -> Unit,
         id: Long
     ) {
         val date = getDateString(_date.value!!)

@@ -80,6 +80,7 @@ class EventViewModel(
                 showSnackbar(EventScreenChannel.EventDeleteSuccess)
                 refreshEventsList()
                 popBackStack()
+                popBackStack()
             } else {
                 showSnackbar(EventScreenChannel.EventDeleteError)
             }

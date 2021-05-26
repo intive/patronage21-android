@@ -93,7 +93,7 @@ class EditEventFragment : Fragment() {
                     EditEventScreen(
                         requireContext(),
                         event,
-                        { findNavController().popBackStack() },
+                        { findNavController().popBackStack(R.id.calendarFragment, false) },
                         addEventViewModel,
                     ) { calendarHomeViewModel.refreshEventsList() }
                 }
