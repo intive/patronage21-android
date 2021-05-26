@@ -47,7 +47,6 @@ fun stringToCalendar(dateString: String): Calendar {
     calendar[Calendar.YEAR] = dateElements[2].toInt()
     calendar[Calendar.MONTH] = dateElements[1].toInt() - 1
     calendar[Calendar.DAY_OF_MONTH] = dateElements[0].toInt()
-    calendar[Calendar.HOUR_OF_DAY] = dateElements[0].toInt()
 
     return calendar
 }
