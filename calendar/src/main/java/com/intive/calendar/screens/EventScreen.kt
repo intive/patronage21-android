@@ -75,7 +75,8 @@ fun EventScreenLayout(
                     Column(modifier = Modifier.weight(1f)) {
                         Row(
                             horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
                             IconButton(onClick = { /* TODO */ }) {
                                 Icon(
