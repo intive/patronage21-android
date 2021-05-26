@@ -108,6 +108,10 @@ class NetworkRepository(
         return eventsService.addNewEvent(event)
     }
 
+    suspend fun editEvent(event: EditEventDto): Response<String> {
+        return eventsService.editEvent(event)
+    }
+
     suspend fun deleteEvent(id: Long): Response<String> {
         return eventsService.deleteEvent(id)
     }

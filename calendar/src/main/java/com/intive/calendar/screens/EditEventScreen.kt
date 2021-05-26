@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
 import com.intive.calendar.R
-import com.intive.calendar.viewmodels.AddEventViewModel
+import com.intive.calendar.viewmodels.AddEditEventViewModel
 import com.intive.calendar.components.EventForm
 import com.intive.calendar.utils.extractTimeFromString
 import com.intive.shared.EventParcelable
@@ -17,22 +17,22 @@ fun EditEventScreen(
     context: Context,
     event: EventParcelable,
     popBackStack: () -> Boolean,
-    addEventViewModel: AddEventViewModel,
+    addEditEventViewModel: AddEditEventViewModel,
     refreshEventsList: () -> Unit
 ) {
 
     val time = extractTimeFromString(event.time)
 
-    addEventViewModel.setDate(stringToCalendar(event.date, "."))
-    addEventViewModel.setInputValue(event.name)
-    addEventViewModel.setTimeStart(time[0], time[1])
-    addEventViewModel.setTimeEnd(time[2], time[3])
+    addEditEventViewModel.setDate(stringToCalendar(event.date, "."))
+    addEditEventViewModel.setInputValue(event.name)
+    addEditEventViewModel.setTimeStart(time[0], time[1])
+    addEditEventViewModel.setTimeEnd(time[2], time[3])
 
     EventForm(
         titleText = stringResource(R.string.edit_event_header),
-        addEventViewModel = addEventViewModel,
+        addEditEventViewModel = addEditEventViewModel,
         context = context,
-        onClick = { addEventViewModel.editEvent(refreshEventsList, popBackStack) }
+        onClick = { addEditEventViewModel.editEvent(refreshEventsList, popBackStack) }
     )
 
 }

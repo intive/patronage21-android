@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.stringResource
 import com.intive.calendar.R
-import com.intive.calendar.viewmodels.AddEventViewModel
+import com.intive.calendar.viewmodels.AddEditEventViewModel
 import com.intive.calendar.components.EventForm
 
 
@@ -14,16 +14,16 @@ import com.intive.calendar.components.EventForm
 fun AddEventScreen(
     context: Context,
     popBackStack: () -> Boolean,
-    addEventViewModel: AddEventViewModel,
+    addEditEventViewModel: AddEditEventViewModel,
     refreshEventsList: () -> Unit
 ) {
 
     EventForm(
         titleText = stringResource(R.string.add_event),
-        addEventViewModel = addEventViewModel,
+        addEditEventViewModel = addEditEventViewModel,
         context = context,
         onClick = {
-            addEventViewModel.addNewEvent(refreshEventsList, popBackStack)
+            addEditEventViewModel.addNewEvent(refreshEventsList, popBackStack)
         }
     )
 }

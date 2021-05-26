@@ -27,7 +27,7 @@ private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
@@ -39,6 +39,7 @@ val repositoryModule = module {
     single { createEventsMapper() }
     single { createEventInviteResponseMapper() }
     single { createNewEventsMapper() }
+    single { createEditEventsMapper() }
     single { createDispatchers() }
     single { createRegistrationService(get((named("mocklab")))) }
     single(named("java")){ createRetrofit2() }
@@ -96,6 +97,8 @@ private fun createEventsService(retrofit: Retrofit): EventsService {
 private fun createEventInviteResponseMapper(): EventInviteResponseDtoMapper = EventInviteResponseDtoMapper()
 
 private fun createNewEventsMapper(): NewEventDtoMapper = NewEventDtoMapper()
+
+private fun createEditEventsMapper(): EditEventDtoMapper = EditEventDtoMapper()
 
 fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
     override val main: CoroutineDispatcher

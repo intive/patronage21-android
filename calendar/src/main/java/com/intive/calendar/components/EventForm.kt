@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
-import com.intive.calendar.viewmodels.AddEventViewModel
+import com.intive.calendar.viewmodels.AddEditEventViewModel
 import com.intive.shared.getDateString
 import com.intive.ui.components.*
 import java.util.*
@@ -27,18 +27,18 @@ import java.util.*
 @Composable
 fun EventForm(
     titleText: String,
-    addEventViewModel: AddEventViewModel,
+    addEditEventViewModel: AddEditEventViewModel,
     context: Context,
     onClick: () -> Unit
 ) {
 
-    val date by addEventViewModel.date.observeAsState()
-    val hourStart by addEventViewModel.hourStart.observeAsState()
-    val hourEnd by addEventViewModel.hourEnd.observeAsState()
-    val minutesStart by addEventViewModel.minutesStart.observeAsState()
-    val minutesEnd by addEventViewModel.minutesEnd.observeAsState()
-    val inputValue by addEventViewModel.inputValue.observeAsState()
-    val technologyGroups by addEventViewModel.technologyGroups.observeAsState()
+    val date by addEditEventViewModel.date.observeAsState()
+    val hourStart by addEditEventViewModel.hourStart.observeAsState()
+    val hourEnd by addEditEventViewModel.hourEnd.observeAsState()
+    val minutesStart by addEditEventViewModel.minutesStart.observeAsState()
+    val minutesEnd by addEditEventViewModel.minutesEnd.observeAsState()
+    val inputValue by addEditEventViewModel.inputValue.observeAsState()
+    val technologyGroups by addEditEventViewModel.technologyGroups.observeAsState()
 
     val lazyListState = rememberLazyListState()
 
@@ -55,21 +55,21 @@ fun EventForm(
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, day)
-            addEventViewModel.setDate(calendar)
+            addEditEventViewModel.setDate(calendar)
         }, year, month, day
     )
 
     val startTimePickerDialog = TimePickerDialog(
         context,
         { _, hourOfDay, minute ->
-            addEventViewModel.setTimeStart(hourOfDay, minute)
+            addEditEventViewModel.setTimeStart(hourOfDay, minute)
         }, hour, minute, true
     )
 
     val endTimePickerDialog = TimePickerDialog(
         context,
         { _, hourOfDay, minute ->
-            addEventViewModel.setTimeEnd(hourOfDay, minute)
+            addEditEventViewModel.setTimeEnd(hourOfDay, minute)
         }, hour, minute, true
     )
 
@@ -92,7 +92,7 @@ fun EventForm(
                         InputText(
                             inputValue!!,
                             stringResource(R.string.add_event_hint),
-                            addEventViewModel::setInputValue,
+                            addEditEventViewModel::setInputValue,
                             LocalFocusManager.current
                         )
 
@@ -119,7 +119,7 @@ fun EventForm(
                                 title = stringResource(R.string.add_event_checkbox_header),
                                 onErrorText = "",
                                 items = technologyGroups!!,
-                                onItemSelected = addEventViewModel::updateSelectedTechnologyGroups,
+                                onItemSelected = addEditEventViewModel::updateSelectedTechnologyGroups,
                                 modifier = Modifier.padding(bottom = 14.dp),
                                 style = MaterialTheme.typography.h6
                             )
