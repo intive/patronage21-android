@@ -242,20 +242,20 @@ fun DeleteEventDialog(
                         modifier = Modifier.padding(bottom = 24.dp)
                     )
                 },
-                confirmButton = {
-                    PrimaryButton(
-                        text = stringResource(R.string.ok)
-                    ) {
-                        viewModel.deleteEvent(eventId) { navController.popBackStack() }
-                        viewModel.showDeleteDialog(false)
+                buttons = {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        PrimaryButton(
+                            text = stringResource(R.string.ok),
+                            paddingBottom = 8.dp
+                        ) {
+                            viewModel.deleteEvent(eventId) { navController.popBackStack() }
+                            viewModel.showDeleteDialog(false)
+                        }
+                        SecondaryButton(text = stringResource(R.string.cancel_dialog)) {
+                            viewModel.showDeleteDialog(false)
+                        }
                     }
-
                 },
-                dismissButton = {
-                    SecondaryButton(text = stringResource(R.string.cancel_dialog)) {
-                        viewModel.showDeleteDialog(false)
-                    }
-                }
             )
         }
     }
