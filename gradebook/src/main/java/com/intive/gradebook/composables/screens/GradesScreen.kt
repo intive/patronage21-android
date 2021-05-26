@@ -62,10 +62,7 @@ fun GradesScreen(
         )
         for (i in 0 until user.grades.size) {
             GradesListItem(user.gradeNames[i], user.grades[i], user.gradeReviews[i])
-            Divider(
-                color = Color.LightGray,
-                thickness = 2.dp
-            )
+            Divider()
         }
         Column {
             GradebookHeader(

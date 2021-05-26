@@ -74,24 +74,11 @@ fun GradebookScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Button(
-                                onClick = {
-                                    setting.value = addedColumn
-                                    thirdColumn.value = addedColumn
-                                    setShowDialog(false)
-                                },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                                shape = RoundedCornerShape(24.dp),
-                                modifier = Modifier
-                                    .height(50.dp)
-                                    .width(200.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.save_data),
-                                    color = Color.White,
-                                    fontSize = 18.sp
-                                )
-                            }
+                            PrimaryButton(text = stringResource(R.string.save_data), onClick = {
+                                setting.value = addedColumn
+                                thirdColumn.value = addedColumn
+                                setShowDialog(false)
+                            })
                         }
                     },
                     confirmButton = {
@@ -99,22 +86,9 @@ fun GradebookScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Button(
-                                onClick = {
-                                    setShowDialog(false)
-                                },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                                shape = RoundedCornerShape(24.dp),
-                                modifier = Modifier
-                                    .height(50.dp)
-                                    .width(200.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.cancel),
-                                    color = Color.White,
-                                    fontSize = 18.sp
-                                )
-                            }
+                            SecondaryButton(text = stringResource(R.string.cancel), onClick = {
+                                setShowDialog(false)
+                            })
                         }
                     }
                 )
@@ -257,14 +231,7 @@ fun Screen(
                                     bundle
                                 )
                             }, addedColumn = setting.value)
-                            Divider(
-                                color = Color.LightGray,
-                                thickness = 2.dp,
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp
-                                )
-                            )
+                            Divider()
                         }
                     }
                 }
