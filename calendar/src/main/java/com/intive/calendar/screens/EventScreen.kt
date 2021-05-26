@@ -17,8 +17,14 @@ import com.intive.repository.domain.model.User
 import com.intive.ui.components.TitleText
 import com.intive.ui.components.HeaderWithCount
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
 import com.intive.ui.components.PersonListItem
@@ -42,18 +48,47 @@ fun EventScreenLayout(
             Column(modifier = Modifier.weight(1f)) {
 
                 TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
-                TitleText(
-                    text = event.name,
-                    modifier = Modifier.padding(bottom = 4.dp),
-                    style = MaterialTheme.typography.h6,
-                    color = Color.Black
-                )
 
-                Text(
-                    "${stringResource(R.string.hour)}: ${event.time}",
-                    style = MaterialTheme.typography.subtitle1,
-                    modifier = Modifier.padding(bottom = 24.dp)
-                )
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.weight(2f)) {
+                        TitleText(
+                            text = event.name,
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            style = MaterialTheme.typography.h6,
+                            color = Color.Black
+                        )
+
+                        Text(
+                            "${stringResource(R.string.hour)}: ${event.time}",
+                            style = MaterialTheme.typography.subtitle1,
+                            modifier = Modifier.padding(bottom = 24.dp)
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            IconButton(onClick = { /* TODO */ }) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = stringResource(R.string.edit_event_description),
+                                    tint = MaterialTheme.colors.primary,
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
+                            }
+                            IconButton(onClick = {}) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = stringResource(R.string.delete_event_description),
+                                    tint = MaterialTheme.colors.primary,
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
+                            }
+                        }
+                    }
+                }
 
                 HeaderWithCount(
                     text = stringResource(R.string.event_users_label),
