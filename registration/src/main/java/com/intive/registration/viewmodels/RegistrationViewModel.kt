@@ -7,8 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.UserRegistration
-import com.intive.repository.util.DispatcherProvider
-import com.intive.repository.util.Resource
+import com.intive.repository.util.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -170,18 +169,18 @@ class RegistrationViewModel(
                 password = password.value!!, //hash??
                 githubUrl = githubUrl.value!!
             )
-            for (item in _technologiesList) {
-                println(item)
-            }
-            println(rodoAgree.value)
-            println(_regulationsAgree.value)
             val receivedResponse: Response<String>
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
                     _responseState.value = Resource.Success("")
                 } else {
-                    _responseState.value = Resource.Error(receivedResponse.message())
+                    val responseCode = receivedResponse.code()
+                    _responseState.value = when {
+                        isServerError(responseCode) -> Resource.Error(SERVER_ERROR)
+                        responseCode == RESPONSE_NOT_FOUND -> Resource.Error(RESPONSE_NOT_FOUND.toString())
+                        else -> Resource.Error(receivedResponse.message())
+                    }
                 }
             } catch (ex: Exception) {
                 _responseState.value = Resource.Error(ex.localizedMessage)

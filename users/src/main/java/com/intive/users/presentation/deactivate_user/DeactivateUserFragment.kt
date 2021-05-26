@@ -1,6 +1,5 @@
 package com.intive.users.presentation.deactivate_user
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +32,7 @@ class DeactivateUserFragment : Fragment() {
                 PatronativeTheme {
                     DeactivateUserScreen(
                         viewModel = viewModel,
+                        navigationViewModel = navigationViewModel,
                         navController = findNavController()
                     )
                 }
@@ -47,8 +47,10 @@ class DeactivateUserFragment : Fragment() {
             viewModel.deactivateUserEvent.collect { event ->
                 when(event) {
                     DeactivateUserViewModel.DeactivateUserEvent.NavigateToRegistrationScreen -> {
-                        Toast.makeText(requireContext(), getString(R.string.account_was_deactivated), Toast.LENGTH_LONG).show()
                         navigationViewModel.logoutUser()
+                    }
+                    DeactivateUserViewModel.DeactivateUserEvent.ShowSuccessMessage -> {
+                        viewModel.shouldShowDeactivationSuccessfulDialog.value = true
                     }
                     DeactivateUserViewModel.DeactivateUserEvent.ShowErrorMessage -> {
                         Toast.makeText(requireContext(), getString(R.string.an_error_occurred_during_deactivation), Toast.LENGTH_LONG).show()

@@ -12,15 +12,19 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.domain.model.Stage
+import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
-import com.intive.tech_groups.presentation.Stage
-import com.intive.tech_groups.presentation.viewmodels.StageViewModel
+
 import com.intive.ui.components.*
 
 @Composable
 fun GroupDetailsScreen(
-    stageList: List<Stage>,
+    group: GroupParcelable,
+    stageList: Resource<List<Stage>>?,
     getStageDetails: (Long) -> Unit,
+    onGetStagesRetryClick: (String) -> Unit,
     navController: NavController? = null
 ) {
     Column(
@@ -29,22 +33,26 @@ fun GroupDetailsScreen(
     ) {
         val listState = rememberLazyListState()
 
-        LayoutContainer {
+        LayoutContainer(
+            bottomPadding = 0.dp
+        ) {
             LazyColumn(
                 state = listState,
             ) {
                 item {
                     Column {
                         TitleText(
-                            text = "Grupa I",
+                            text = group.name,
                             modifier = Modifier
-                                .padding(top = 15.dp, bottom = 15.dp)
+                                .padding(bottom = 15.dp)
                         )
                         Text(
                             text = "Technologie:",
                             style = MaterialTheme.typography.h6
                         )
-                        Text(text = "Lorem ipsum")
+                        for(tech in group.technologies){
+                            Text(text = "- $tech")
+                        }
                     }
                     SectionHeader(
                         modifier = Modifier.padding(
@@ -66,32 +74,48 @@ fun GroupDetailsScreen(
                                 .padding(top = 15.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            var index = 0
-                            while (!stageList.isNullOrEmpty() && index < stageList.size) {
-                                val indexCloned = index
-                                Row {
-                                    StageBoxButton(
-                                        modifier = Modifier.weight(1f),
-                                        name = stageList[index].name,
-                                        timeInterval = stageList[index].timeInterval,
-                                        state = stageList[index].state
-                                    ) {
-                                        getStageDetails(stageList[indexCloned].id.toLong())
-                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
-                                    }
-                                    Spacer(modifier = Modifier.size(20.dp))
-                                    StageBoxButton(
-                                        modifier = Modifier.weight(1f),
-                                        name = stageList[index + 1].name,
-                                        timeInterval = stageList[index + 1].timeInterval,
-                                        state = stageList[index + 1].state
-                                    ) {
-                                        getStageDetails(stageList[indexCloned + 1].id.toLong())
-                                        navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                            when (stageList) {
+                                is Resource.Success -> {
+                                    var index = 0
+                                    while (!stageList.data.isNullOrEmpty() && index < stageList.data!!.size) {
+                                        val indexCloned = index
+                                        Row {
+                                            StageBoxButton(
+                                                modifier = Modifier.weight(1f),
+                                                name = stageList.data!![index].name,
+                                                dateBegin = stageList.data!![index].dateBegin,
+                                                dateEnd = stageList.data!![index].dateEnd,
+                                                state = stageList.data!![index].state
+                                            ) {
+                                                getStageDetails(stageList.data!![indexCloned].id.toLong())
+                                                navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                            }
+                                            Spacer(modifier = Modifier.size(20.dp))
+                                            StageBoxButton(
+                                                modifier = Modifier.weight(1f),
+                                                name = stageList.data!![index + 1].name,
+                                                dateBegin = stageList.data!![index + 1].dateBegin,
+                                                dateEnd = stageList.data!![index + 1].dateEnd,
+                                                state = stageList.data!![index + 1].state
+                                            ) {
+                                                getStageDetails(stageList.data!![indexCloned + 1].id.toLong())
+                                                navController?.navigate(R.id.action_groupDetailsFragment_to_stageFragment)
+                                            }
+                                        }
+                                        Spacer(modifier = Modifier.size(20.dp))
+                                        index += 2
                                     }
                                 }
-                                Spacer(modifier = Modifier.size(20.dp))
-                                index += 2
+                                is Resource.Error -> ErrorItem(
+                                    message = stringResource(id = R.string.an_error_occurred),
+                                ) {
+                                    onGetStagesRetryClick(group.id)
+                                }
+                                is Resource.Loading -> {
+                                    Box {
+                                        LoadingItem()
+                                    }
+                                }
                             }
                         }
                     }
@@ -133,7 +157,8 @@ fun GroupDetailsScreen(
 fun StageBoxButton(
     modifier: Modifier,
     name: String,
-    timeInterval: String,
+    dateBegin: String,
+    dateEnd: String,
     state: String,
     onClick: () -> Unit
 ) {
@@ -143,7 +168,9 @@ fun StageBoxButton(
             onClick = onClick,
             contentOnTop = false
         ) {
-            Text(text = timeInterval)
+            Row{
+                Text(text = "${dateBegin.dropLast(5)} - $dateEnd")
+            }
             Text(text = state)
         }
     }

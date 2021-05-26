@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.intive.repository.domain.model.GroupParcelable
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.domain.model.Group
 import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
@@ -24,12 +24,12 @@ class MainViewModel(
         mutableStateOf(Resource.Loading())
     val filters: State<Resource<List<GroupEntity>>> = _filters
 
-    private val _groups: MutableState<Resource<List<Group>>> =
+    private val _groups: MutableState<Resource<List<GroupParcelable>>> =
         mutableStateOf(Resource.Loading())
-    val groups: State<Resource<List<Group>>> = _groups
+    val groups: State<Resource<List<GroupParcelable>>> = _groups
 
-    private val _filteredList = MutableLiveData<List<Group>>(emptyList())
-    val filteredList: LiveData<List<Group>> = _filteredList
+    private val _filteredList = MutableLiveData<List<GroupParcelable>>(emptyList())
+    val filteredList: LiveData<List<GroupParcelable>> = _filteredList
 
     init {
         viewModelScope.launch {
@@ -38,9 +38,8 @@ class MainViewModel(
         }
     }
 
-
     fun filterList(filter: String?) {
-        val list = mutableListOf<Group>()
+        val list = mutableListOf<GroupParcelable>()
         if (filter == null) {
             groups.value.data?.let { list.addAll(it) }
         } else {

@@ -25,6 +25,7 @@ class RepositoryImpl(
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
+    private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
     private val localRepository: LocalRepository,
     private val databaseRepository: DatabaseRepository
@@ -161,7 +162,7 @@ class RepositoryImpl(
 
     }
 
-    override suspend fun getTechnologyGroups(): List<Group> {
+    override suspend fun getTechnologyGroups(): List<GroupParcelable> {
         return networkRepository.getTechnologyGroups()
     }
 
@@ -199,7 +200,20 @@ class RepositoryImpl(
 
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getStages(groupId: String): List<Stage> {
+        return stageDtoMapper.toDomainList(networkRepository.getStages(groupId))
+    }
+
+    override suspend fun addGroup(group: GroupParcelable): Response<String> {
+        val bodyGroup = JsonObject()
+        bodyGroup.addProperty("id", group.id)
+        bodyGroup.addProperty("name", group.name)
+        bodyGroup.addProperty("description", group.description)
+        bodyGroup.addProperty("technologies", group.technologies.toString())
+        return networkRepository.addGroup(bodyGroup)
     }
 
     override suspend fun getStageDetails(id: Long): StageDetails {
@@ -238,6 +252,10 @@ class RepositoryImpl(
 
     override fun isCachingEnabled(): Boolean {
         return localRepository.isCachingEnabled()
+    }
+
+    override suspend fun deleteEvent(id: Long): Response<String> {
+        return networkRepository.deleteEvent(id)
     }
 
 }

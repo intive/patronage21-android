@@ -8,10 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
-import com.intive.repository.util.DispatcherProvider
-import com.intive.repository.util.Resource
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.util.DispatcherProvider
+import com.intive.repository.util.Resource
+import retrofit2.Response
 
 class AddGroupViewModel(
     private val repository: Repository,
@@ -21,8 +23,15 @@ class AddGroupViewModel(
     private val _name = MutableLiveData("")
     val name: LiveData<String> = _name
 
+    private val _description = MutableLiveData("")
+    val description: LiveData<String> = _description
+
     fun onNameChange(newValue: String) {
         _name.value = newValue
+    }
+
+    fun onDescriptionChange(newValue: String) {
+        _description.value = newValue
     }
 
     private val _technologies: MutableState<Resource<List<String>>> =
@@ -55,6 +64,37 @@ class AddGroupViewModel(
             chosenTechnologies.remove(technology)
         } else {
             chosenTechnologies.add(technology)
+        }
+    }
+
+    private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
+    val responseState: State<Resource<String>?> = _responseState
+
+    fun addGroup() {
+        viewModelScope.launch(dispatchers.io) {
+//            if(name.value.isNullOrEmpty()) {
+//                _responseState.value = Resource.Error("")
+//                return@launch
+//            }
+            _responseState.value = Resource.Loading()
+            val group = GroupParcelable(
+                id = "",
+                name = name.value!!,
+                description = "",
+                technologies = chosenTechnologies
+            )
+            val receivedResponse : Response<String>
+            try {
+                receivedResponse = repository.addGroup(group)
+                if(receivedResponse.isSuccessful) {
+                    _responseState.value = Resource.Success("")
+                }
+                else {
+                    _responseState.value = Resource.Error(receivedResponse.message())
+                }
+            } catch (ex: Exception) {
+                _responseState.value = Resource.Error(ex.localizedMessage)
+            }
         }
     }
 }

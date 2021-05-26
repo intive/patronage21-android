@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.intive.calendar.R
 import com.intive.calendar.screens.EventScreenLayout
-import com.intive.calendar.utils.InviteResponseChannel
+import com.intive.calendar.utils.EventScreenChannel
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
 import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.shared.EventParcelable
@@ -26,18 +27,33 @@ class EventFragment : Fragment() {
     private val eventViewModel by viewModel<EventViewModel>()
     private val calendarHomeViewModel by sharedViewModel<CalendarHomeViewModel>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         lifecycleScope.launchWhenStarted {
-            eventViewModel.inviteResponseFlow.collect { event ->
+            eventViewModel.eventScreenFlow.collect { event ->
                 when (event) {
-                    is InviteResponseChannel.Error -> {
+                    is EventScreenChannel.InviteResponseError -> {
                         Snackbar.make(
                             requireView(),
                             requireContext().getString(R.string.event_invite_response_error_msg),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is EventScreenChannel.EventDeleteError -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.delete_event_error),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    is EventScreenChannel.EventDeleteSuccess -> {
+                        Snackbar.make(
+                            requireView(),
+                            requireContext().getString(R.string.delete_event_success),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
@@ -48,12 +64,17 @@ class EventFragment : Fragment() {
         lateinit var event: EventParcelable
         val safeArgs: EventFragmentArgs by navArgs()
 
-        event = safeArgs.eventInfoParcelable ?: Gson().fromJson(safeArgs.eventInfo, EventParcelable::class.java)
+        event = safeArgs.eventInfoParcelable ?: Gson().fromJson(
+            safeArgs.eventInfo,
+            EventParcelable::class.java
+        )
 
         return ComposeView(requireContext()).apply {
             setContent {
                 PatronativeTheme {
                     EventScreenLayout(
+                        eventViewModel = eventViewModel,
+                        navController = findNavController(),
                         updateInviteResponse = eventViewModel::updateInviteResponse,
                         event = event
                     ) { calendarHomeViewModel.refreshEventsList() }
