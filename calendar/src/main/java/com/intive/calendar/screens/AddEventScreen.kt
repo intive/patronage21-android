@@ -22,7 +22,8 @@ fun AddEventScreen(
         titleText = stringResource(R.string.add_event),
         addEventViewModel = addEventViewModel,
         context = context,
-        popBackStack = popBackStack,
-        refreshEventsList = refreshEventsList
+        onClick = {
+            addEventViewModel.addNewEvent(refreshEventsList, popBackStack)
+        }
     )
 }

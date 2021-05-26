@@ -1,5 +1,6 @@
 package com.intive.calendar.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class AddEventViewModel(private val repository: Repository, private val dispatchers: DispatcherProvider) : ViewModel() {
+class AddEventViewModel(
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
+) : ViewModel() {
 
 
     private val addEventChannel = Channel<AddNewEvent>()
@@ -121,6 +125,24 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
         return _inputValue.value != ""
     }
 
+
+    private fun isFormValid(): Boolean {
+        if (!isInputValid()) {
+            showSnackbar(AddNewEvent.InvalidInput)
+        } else if (!isDateValid()) {
+            showSnackbar(AddNewEvent.InvalidDate)
+        } else if (!isTimeValid()) {
+            showSnackbar(AddNewEvent.InvalidTime)
+        } else if (!areCheckboxesValid()) {
+            showSnackbar(AddNewEvent.InvalidCheckboxes)
+        } else {
+            return true
+        }
+        return false
+    }
+
+
+    /*
     fun isFormValid(popBackStack: () -> Boolean, refreshCalendar: () -> Unit) {
         if (!isInputValid()) {
             showSnackbar(AddNewEvent.InvalidInput)
@@ -142,38 +164,50 @@ class AddEventViewModel(private val repository: Repository, private val dispatch
         }
     }
 
-    private fun addNewEvent(
-        date: String,
-        timeStart: String,
-        timeEnd: String,
-        name: String,
+     */
+
+    fun addNewEvent(
         refreshCalendar: () -> Unit,
         popBackStack: () -> Boolean
     ) {
 
-        val newEvent =
-            NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
-        val handler = CoroutineExceptionHandler { _, _ ->
-            showSnackbar(AddNewEvent.AddEventError)
-        }
+        val date = getDateString(_date.value!!)
+        val timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!)
+        val timeEnd = timeToString(_hourEnd.value!!, _minutesEnd.value!!)
+        val name = _inputValue.value!!
 
-
-        var response: Response<String>
-
-        viewModelScope.launch(handler) {
-
-            withContext(dispatchers.io) {
-                response = repository.addNewEvent(newEvent)
+        if (isFormValid()) {
+            val newEvent =
+                NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
+            val handler = CoroutineExceptionHandler { _, _ ->
+                showSnackbar(AddNewEvent.AddEventError)
             }
 
-            if (response.isSuccessful) {
-                showSnackbar(AddNewEvent.AddEventSuccess)
-                refreshCalendar()
-                popBackStack()
-            } else {
-                showSnackbar(AddNewEvent.AddEventError)
+            var response: Response<String>
+
+            viewModelScope.launch(handler) {
+
+                withContext(dispatchers.io) {
+                    response = repository.addNewEvent(newEvent)
+                }
+
+                if (response.isSuccessful) {
+                    showSnackbar(AddNewEvent.AddEventSuccess)
+                    refreshCalendar()
+                    popBackStack()
+                } else {
+                    showSnackbar(AddNewEvent.AddEventError)
+                }
             }
         }
 
     }
+
+    fun editEvent(
+        refreshCalendar: () -> Unit,
+        popBackStack: () -> Boolean
+    ) {
+
+    }
+
 }

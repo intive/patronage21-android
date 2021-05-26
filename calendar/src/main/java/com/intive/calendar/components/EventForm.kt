@@ -29,8 +29,7 @@ fun EventForm(
     titleText: String,
     addEventViewModel: AddEventViewModel,
     context: Context,
-    popBackStack: () -> Boolean,
-    refreshEventsList: () -> Unit
+    onClick: () -> Unit
 ) {
 
     val date by addEventViewModel.date.observeAsState()
@@ -137,11 +136,7 @@ fun EventForm(
             }
 
             Column {
-                PrimaryButton(stringResource(R.string.accept_new_event)) {
-                    addEventViewModel.isFormValid(
-                        popBackStack, refreshEventsList
-                    )
-                }
+                PrimaryButton(stringResource(R.string.accept_new_event), onClick = onClick)
             }
         }
     }
