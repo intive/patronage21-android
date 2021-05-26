@@ -164,7 +164,15 @@ fun GradebookScreen(
             }
         }
     }
-    FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data), { })
+    FABLayout(
+        modifier = Modifier.padding(
+            bottom = 12.dp,
+            end = 12.dp
+        ),
+        onClick = { setShowDialog(true) },
+        contentDescription = stringResource(id = R.string.select_data),
+        content = { }
+    )
     var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
     if (showDialog) {
         AlertDialog(
