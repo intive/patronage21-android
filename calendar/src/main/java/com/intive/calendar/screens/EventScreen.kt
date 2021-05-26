@@ -4,9 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -14,34 +11,43 @@ import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
-import com.intive.ui.components.TitleText
-import com.intive.ui.components.HeaderWithCount
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
 import com.intive.calendar.fragments.EventFragmentDirections
-import com.intive.ui.components.PersonListItem
 import com.intive.calendar.utils.*
+import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.shared.EventParcelable
-import com.intive.ui.components.LayoutContainer
-
+import com.intive.ui.components.*
 
 
 @Composable
 fun EventScreenLayout(
+    eventViewModel: EventViewModel,
     navController: NavController,
     updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     event: EventParcelable,
     refreshEventsList: () -> Unit
 ) {
+
+    val showDeleteDialog by eventViewModel.showDeleteDialog.observeAsState()
+
+    if (showDeleteDialog == true) {
+        DeleteEventDialog(
+            viewModel = eventViewModel,
+            navController = navController,
+            showDeleteDialog,
+            event.id
+        )
+    }
+
     LayoutContainer {
         Column(
             modifier = Modifier
@@ -50,6 +56,7 @@ fun EventScreenLayout(
             Column(modifier = Modifier.weight(1f)) {
 
                 TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
+
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.weight(2f)) {
@@ -83,7 +90,7 @@ fun EventScreenLayout(
                                     modifier = Modifier.align(Alignment.CenterVertically)
                                 )
                             }
-                            IconButton(onClick = {}) {
+                            IconButton(onClick = { eventViewModel.showDeleteDialog(true) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = stringResource(R.string.delete_event_description),
@@ -211,10 +218,48 @@ fun UsersList(navController: NavController, users: List<User>) {
         items(users) { user ->
             PersonListItem(
                 user = user,
-                onItemClick = { navController.navigate(Uri.parse("intive://userDetails/${user.login}"))},
+                onItemClick = { navController.navigate(Uri.parse("intive://userDetails/${user.login}")) },
                 rowPadding = 0.dp,
                 showAdditionalText = true,
                 additionalText = user.role
+            )
+        }
+    }
+}
+
+@Composable
+fun DeleteEventDialog(
+    viewModel: EventViewModel,
+    navController: NavController,
+    showDeleteDialog: Boolean?,
+    eventId: Long
+) {
+    Column {
+
+        if (showDeleteDialog == true) {
+
+            AlertDialog(
+                onDismissRequest = { viewModel.showDeleteDialog(false) },
+                title = {
+                    Text(
+                        stringResource(R.string.delete_event_dialog_text),
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    )
+                },
+                buttons = {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        PrimaryButton(
+                            text = stringResource(R.string.ok),
+                            paddingBottom = 8.dp
+                        ) {
+                            viewModel.deleteEvent(eventId) { navController.popBackStack() }
+                            viewModel.showDeleteDialog(false)
+                        }
+                        SecondaryButton(text = stringResource(R.string.cancel_dialog)) {
+                            viewModel.showDeleteDialog(false)
+                        }
+                    }
+                },
             )
         }
     }
