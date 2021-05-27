@@ -63,7 +63,7 @@ class EventViewModel(
         }
     }
 
-    fun deleteEvent(eventId: Long, popBackStack: () -> Boolean, refreshEventsList: () -> Unit) {
+    fun deleteEvent(eventId: Long, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
         var response: Response<String>
 
         val handler = CoroutineExceptionHandler { _, _ ->
@@ -79,7 +79,6 @@ class EventViewModel(
             if (response.isSuccessful) {
                 showSnackbar(EventScreenChannel.EventDeleteSuccess)
                 refreshEventsList()
-                popBackStack()
                 popBackStack()
             } else {
                 showSnackbar(EventScreenChannel.EventDeleteError)

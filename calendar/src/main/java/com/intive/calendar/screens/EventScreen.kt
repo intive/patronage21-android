@@ -243,6 +243,13 @@ fun DeleteEventDialog(
 
         if (showDeleteDialog == true) {
 
+            val navigationFun =
+                if (navController.previousBackStackEntry?.destination?.id == R.id.calendarFragment || navController.previousBackStackEntry?.destination?.id == R.id.dayFragment) {
+                    { navController.popBackStack(R.id.calendarFragment, false) }
+                } else {
+                    { navController.popBackStack() }
+                }
+
             AlertDialog(
                 onDismissRequest = { viewModel.showDeleteDialog(false) },
                 title = {
@@ -259,7 +266,7 @@ fun DeleteEventDialog(
                         ) {
                             viewModel.deleteEvent(
                                 eventId,
-                                { navController.popBackStack() },
+                                { navigationFun() },
                                 { refreshEventsList() })
                             viewModel.showDeleteDialog(false)
                         }
