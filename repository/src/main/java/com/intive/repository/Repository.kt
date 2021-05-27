@@ -23,8 +23,23 @@ interface Repository {
     suspend fun getTechnologyGroups(): List<GroupParcelable>
 
     suspend fun getUsers(page: Int, role: String, group: String?): UsersResponse
-    suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?): UsersResponse
-    suspend fun getUsers(page: Int, role: String, group: String?, firstName: String?, lastName: String?, login: String?): UsersResponse
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponse
+
+    suspend fun getUsers(
+        page: Int,
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+        login: String?
+    ): UsersResponse
+
     suspend fun getUsers(page: Int, role: String, group: String?, query: String): UsersResponse
     suspend fun getTotalUsersByRole(role: String, group: String?): Int
     suspend fun getUser(login: String): User
@@ -34,8 +49,10 @@ interface Repository {
 
     suspend fun addNewEvent(event: NewEvent): Response<String>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
+    suspend fun editEvent(event: EditEvent, id: Long): Response<String>
+    suspend fun deleteEvent(id: Long): Response<String>
 
-    suspend fun sendDataFromRegistrationForm(user: UserRegistration) : Response<String>
+    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>
@@ -45,9 +62,13 @@ interface Repository {
     suspend fun getStageDetails(id: Long): StageDetails
     suspend fun getGradebook(group: String, sortby: String, page: Int): GradebookResponse
 
-    fun isUserLogged() : Boolean
+    fun isUserLogged(): Boolean
     fun getUserLoginOrNull(): String?
     fun loginUser(login: String)
     fun logoutUser()
+
+    fun enableCaching()
+    fun isCachingEnabled(): Boolean
+
 }
 

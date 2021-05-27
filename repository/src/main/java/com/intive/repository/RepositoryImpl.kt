@@ -3,6 +3,8 @@ package com.intive.repository
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
+import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.technologies.TechnologyEntity
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
@@ -22,10 +24,12 @@ class RepositoryImpl(
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
+    private val editEventMapper: EditEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
     private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
-    private val localRepository: LocalRepository
+    private val localRepository: LocalRepository,
+    private val databaseRepository: DatabaseRepository
 ) : Repository {
 
     override val usersMapper: UserDtoMapper = userMapper
@@ -137,7 +141,26 @@ class RepositoryImpl(
     }
 
     override suspend fun getTechnologies(): List<String> {
-        return networkRepository.getTechnologies().groups
+
+        when (isCachingEnabled()) {
+            true -> {
+                val technologyEntityList = databaseRepository.getAllTechnologies()
+                return technologyEntityList.map { it.name }
+            }
+            false -> {
+                val technologiesList = networkRepository.getTechnologies().groups
+
+                if (technologiesList.isNotEmpty()) {
+                    enableCaching()
+                    technologiesList.forEach {
+                        databaseRepository.insert(TechnologyEntity(0, it))
+                    }
+                }
+
+                return technologiesList
+            }
+        }
+
     }
 
     override suspend fun getTechnologyGroups(): List<GroupParcelable> {
@@ -180,6 +203,10 @@ class RepositoryImpl(
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 
+    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+        return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getStages(groupId: String): List<Stage> {
         return stageDtoMapper.toDomainList(networkRepository.getStages(groupId))
@@ -197,7 +224,7 @@ class RepositoryImpl(
     override suspend fun getStageDetails(id: Long): StageDetails {
         return stageDetailsMapper.mapToDomainModel(networkRepository.getStageDetails(id))
     }
-      
+
     override val gradebookMapper: GradebookDtoMapper = gbMapper
 
     override suspend fun getGradebook(
@@ -223,4 +250,17 @@ class RepositoryImpl(
     override fun logoutUser() {
         localRepository.logoutUser()
     }
+
+    override fun enableCaching() {
+        localRepository.enableCaching()
+    }
+
+    override fun isCachingEnabled(): Boolean {
+        return localRepository.isCachingEnabled()
+    }
+
+    override suspend fun deleteEvent(id: Long): Response<String> {
+        return networkRepository.deleteEvent(id)
+    }
+
 }

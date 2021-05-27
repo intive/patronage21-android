@@ -108,6 +108,14 @@ class NetworkRepository(
         return eventsService.addNewEvent(event)
     }
 
+    suspend fun editEvent(event: EditEventDto, id: Long): Response<String> {
+        return eventsService.editEvent(event, id)
+    }
+
+    suspend fun deleteEvent(id: Long): Response<String> {
+        return eventsService.deleteEvent(id)
+    }
+
     suspend fun sendCodeToServer(body: JsonObject): Response<String> {
         return registrationService.sendCodeToServer(body)
     }
@@ -116,7 +124,7 @@ class NetworkRepository(
         return registrationService.sendRequestForCode(body)
     }
 
-    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String>{
+    suspend fun updateInviteResponse(inviteResponse: EventInviteResponseDto): Response<String> {
         return eventsService.updateInviteResponse(inviteResponse)
     }
 
@@ -137,7 +145,7 @@ class NetworkRepository(
         sortby: String,
         page: Int
     ): GradebookResponse {
-        return gradebookService.getGradebook(group = group, sortby=sortby, page = page)
+        return gradebookService.getGradebook(group = group, sortby = sortby, page = page)
     }
 }
 

@@ -5,6 +5,7 @@ import com.intive.registration.registrationModule
 import com.intive.calendar.calendarModule
 import com.intive.audit.auditModule
 import com.intive.gradebook.gradebookModule
+import com.intive.repository.databaseModule
 import com.intive.repository.repositoryModule
 import com.intive.shared.navigationModule
 import com.intive.tech_groups.techGroupsModule
@@ -28,7 +29,8 @@ class PatronativeApplication : Application() {
                 usersModule,
                 techGroupsModule,
                 gradebookModule,
-                navigationModule
+                navigationModule,
+                databaseModule
             )
         }
     }

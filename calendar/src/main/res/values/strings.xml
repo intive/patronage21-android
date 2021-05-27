@@ -46,6 +46,17 @@
     <string name="spinner_component_btn_desc">Wybór trybu kalendarza</string>
     <string name="add_event_no_connection_error_msg">Nie udało się dodać wydarzenia - brak internetu</string>
     <string name="add_event_error_msg">Nie udało się dodać wydarzenia</string>
+    <string name="edit_event_description">Edytuj wydarzenie</string>
+    <string name="delete_event_description">Usuń wydarzenie</string>
+    <string name="edit_event_header">Edytuj wydarzenie</string>
+    <string name="delete_event_dialog_text">Usunąć wydarzenie?</string>
+    <string name="delete_event_error">Nie udało się usunąć wydarzenia</string>
+    <string name="delete_event_success">Wydarzenie zostało usunięte</string>
+    <string name="ok">OK</string>
+    <string name="cancel_dialog">Anuluj</string>
+    <string name="edit_event_error_msg">Edycja nie powiodła się</string>
+    <string name="edit_event_success">Wydarzenie zostało zmienione</string>
+    <string name="add_event_success">Nowe wydarzenie zostało dodane</string>
 
     <string-array name="calendar_views_list">
         <item>Tydzień</item>
