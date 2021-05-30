@@ -26,7 +26,6 @@ import com.intive.ui.CalendarDimens
 import com.intive.ui.components.*
 
 
-@ExperimentalFoundationApi
 @Composable
 fun CalendarHomeLayout(
     navController: NavController,

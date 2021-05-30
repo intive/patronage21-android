@@ -1,6 +1,5 @@
 package com.intive.calendar.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +25,6 @@ import com.intive.shared.getFullDateString
 import java.util.*
 
 
-@ExperimentalFoundationApi
 @Composable
 fun MonthView(
     navController: NavController,
@@ -51,7 +49,6 @@ fun MonthView(
     }
 }
 
-@ExperimentalFoundationApi
 @Composable
 fun CalendarGrid(
     navController: NavController,
