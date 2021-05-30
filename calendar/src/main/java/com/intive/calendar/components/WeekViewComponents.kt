@@ -3,8 +3,6 @@ package com.intive.calendar.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -62,28 +60,25 @@ fun DaysList(
     weekEventsList: List<Day>,
     navController: NavController
 ) {
-    val scrollState = rememberLazyListState()
 
-    LazyColumn(state = scrollState) {
-        items(7) {
-            if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
+    (0..6).forEach {
+        if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
+            DaysListItem(
+                index = it,
+                navController = navController,
+                day = currentWeek[it],
+                events = emptyList()
+            )
+        } else {
+            val index =
+                weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
+            weekEventsList[index].events?.let { event ->
                 DaysListItem(
                     index = it,
                     navController = navController,
                     day = currentWeek[it],
-                    events = emptyList()
+                    events = event
                 )
-            } else {
-                val index =
-                    weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
-                weekEventsList[index].events?.let { event ->
-                    DaysListItem(
-                        index = it,
-                        navController = navController,
-                        day = currentWeek[it],
-                        events = event
-                    )
-                }
             }
         }
     }
@@ -143,7 +138,9 @@ fun DaysListItem(
                 active = isDayActive
             )
 
-            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
+            val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(
+                eventInfoParcelable = eventParcelable
+            )
 
             WeekDayWithEvents(
                 headerColor = headerColor,
@@ -273,7 +270,8 @@ fun EventsItem(
         active = isDayActive
     )
 
-    val directions = CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
+    val directions =
+        CalendarHomeFragmentDirections.actionCalendarFragmentToEventFragment(eventInfoParcelable = eventParcelable)
 
     Row(
         modifier = Modifier
