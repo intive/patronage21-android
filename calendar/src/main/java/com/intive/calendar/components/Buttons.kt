@@ -1,22 +1,18 @@
 package com.intive.calendar.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.intive.calendar.R
+import com.intive.ui.CalendarDimens
 
 
 @Composable
@@ -39,7 +35,8 @@ fun ResponseButton(
         ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.subtitle1,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = CalendarDimens.dimens.response_button_font,
             color = if (selected.value) Color.White else Color.Black
         )
     }

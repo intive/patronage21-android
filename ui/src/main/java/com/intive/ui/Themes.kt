@@ -30,14 +30,17 @@ private val LocalAppDimens = staticCompositionLocalOf {
 
 class CalendarDimensions(
     val calendar_header_font: TextUnit,
+    val response_button_font: TextUnit
 )
 
 val standardDimensions = CalendarDimensions(
     calendar_header_font = 20.sp,
+    response_button_font = 16.sp
 )
 
 val smallDimensions = CalendarDimensions(
     calendar_header_font = 16.sp,
+    response_button_font = 14.sp
 )
 
 object CalendarDimens {
