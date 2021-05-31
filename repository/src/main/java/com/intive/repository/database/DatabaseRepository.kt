@@ -13,4 +13,10 @@ class DatabaseRepository(private val technologyDao: TechnologyDao) {
         technologyDao.insert(technology)
     }
 
+    suspend fun clearTechnologiesTable() = technologyDao.clearTechnologiesTable()
+
+    suspend fun getCount(): Int  {
+        return technologyDao.getCount()
+    }
+
 }

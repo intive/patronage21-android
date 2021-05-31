@@ -142,16 +142,17 @@ class RepositoryImpl(
 
     override suspend fun getTechnologies(): List<String> {
 
-        when (isCachingEnabled()) {
-            true -> {
+        when {
+            isCachingEnabled() && databaseRepository.getCount() > 0  -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }
-            false -> {
+            else -> {
                 val technologiesList = networkRepository.getTechnologies().groups
 
                 if (technologiesList.isNotEmpty()) {
                     enableCaching()
+                    databaseRepository.clearTechnologiesTable()
                     technologiesList.forEach {
                         databaseRepository.insert(TechnologyEntity(0, it))
                     }
