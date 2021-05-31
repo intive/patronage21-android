@@ -57,7 +57,7 @@ fun Spinner(
             modifier = Modifier
                 .matchParentSize()
                 .background(Color.Transparent)
-                .padding(top = 10.dp)
+                .padding(top = 8.dp)
                 .clickable(
                     onClick = { isOpen.value = true }
                 )
