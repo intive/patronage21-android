@@ -108,9 +108,6 @@ fun UsersScreen(
                     loadState.refresh is LoadState.Loading -> {
                         item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
                     }
-                    loadState.append is LoadState.Loading -> {
-                        item { LoadingItem() }
-                    }
                     loadState.refresh is LoadState.Error -> {
                         val e = leaders.loadState.refresh as LoadState.Error
                         item {
@@ -174,14 +171,8 @@ fun UsersScreen(
 
             candidates.apply {
                 when {
-                    loadState.source.refresh is LoadState.Loading -> {
-                        item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
-                    }
                     loadState.refresh is LoadState.Loading -> {
                         item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
-                    }
-                    loadState.append is LoadState.Loading -> {
-                        item { LoadingItem() }
                     }
                     loadState.refresh is LoadState.Error -> {
                         val e = candidates.loadState.refresh as LoadState.Error
