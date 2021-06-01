@@ -11,4 +11,10 @@ interface TechnologyDao {
 
     @Insert
     suspend fun insert(technology: TechnologyEntity)
+
+    @Query("DELETE FROM technologies_table")
+    suspend fun clearTechnologiesTable()
+
+    @Query("SELECT COUNT(*) FROM technologies_table")
+    suspend fun getCount(): Int
 }
