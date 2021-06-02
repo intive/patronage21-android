@@ -10,7 +10,7 @@
         android:label="AuditScreenFragment">
 
         <deepLink
-            android:id="@+id/deepLink"
+            android:id="@+id/auditDeepLink"
             app:uri="//patronative.page.link/auditFragment" />
     </fragment>
 
