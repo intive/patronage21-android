@@ -8,7 +8,7 @@
         android:id="@+id/auditFragment"
         android:name="com.intive.audit.presentation.audit.AuditFragment"
         android:label="AuditScreenFragment">
-        <deepLink app:uri="intive://auditFragment" />
+        <deepLink app:uri="https://patronative.page.link/auditFragment" />
     </fragment>
 
 </navigation>

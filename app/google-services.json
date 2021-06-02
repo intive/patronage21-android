@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "729747461429",
+    "project_id": "patronage-af727",
+    "storage_bucket": "patronage-af727.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729747461429:android:e389f6394f926f1726a87c",
+        "android_client_info": {
+          "package_name": "com.intive.patronative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729747461429-ed0romr40vbv9scherf21d59i5pqt6gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intive.patronative",
+            "certificate_hash": "6c7745cc30ab84717937c7f467b55480e3d09f90"
+          }
+        },
+        {
+          "client_id": "729747461429-41ro4qt2cjrnijj17jt2nlkrs41sed4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAivEw-THjA0djnaL0yAZ_RN7YbNjkKuEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729747461429-41ro4qt2cjrnijj17jt2nlkrs41sed4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
