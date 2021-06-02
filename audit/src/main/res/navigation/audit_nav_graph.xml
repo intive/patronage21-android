@@ -11,7 +11,7 @@
 
         <deepLink
             android:id="@+id/auditDeepLink"
-            app:uri="//patronative.page.link/auditFragment" />
+            app:uri="https://patronative.page.link/auditFragment" />
     </fragment>
 
 </navigation>
