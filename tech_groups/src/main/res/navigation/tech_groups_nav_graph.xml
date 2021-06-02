@@ -7,12 +7,12 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.intive.tech_groups.presentation.fragments.MainFragment"
-        android:label="TechGroupsMainFragment" >
-        <deepLink app:uri="intive://techGroupsMainFragment" />
+        android:label="TechGroupsMainFragment">
+
         <argument
             android:name="message"
-            app:argType="string"
-            android:defaultValue="" />
+            android:defaultValue=""
+            app:argType="string" />
         <action
             android:id="@+id/action_add_group"
             app:destination="@id/addGroupFragment" />
@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_mainFragment_to_groupDetailsFragment"
             app:destination="@id/groupDetailsFragment" />
+        <deepLink
+            android:id="@+id/techGroupsMainDeepLink"
+            app:uri="https://patronative.page.link/techGroups/MainFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupDetailsFragment"
