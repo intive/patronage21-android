@@ -124,7 +124,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.registration_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://loginFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/loginFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.PersonAdd,
