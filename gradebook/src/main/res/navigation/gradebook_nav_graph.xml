@@ -7,11 +7,14 @@
     <fragment
         android:id="@+id/gradebookFragment"
         android:name="com.intive.gradebook.composables.gradebook.GradebookFragment"
-        android:label="GradebookFragment" >
-        <deepLink app:uri="intive://gradebookFragment" />
+        android:label="GradebookFragment">
+
         <action
             android:id="@+id/action_gradebookFragment_to_gradesFragment"
             app:destination="@id/gradesFragment" />
+        <deepLink
+            android:id="@+id/gradebookDeepLink"
+            app:uri="https://patronative.page.link/gradebookFragment" />
     </fragment>
     <fragment
         android:id="@+id/gradesFragment"
