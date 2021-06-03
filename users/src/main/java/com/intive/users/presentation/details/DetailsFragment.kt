@@ -15,20 +15,18 @@ import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.net.Uri
+import org.koin.core.parameter.parametersOf
 
 
 class DetailsFragment : Fragment() {
 
-    private val viewModel: DetailsViewModel by viewModel<DetailsViewModel>()
     private val args: DetailsFragmentArgs by navArgs()
+    private val viewModel: DetailsViewModel by viewModel { parametersOf(args.login) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mock = viewModel.user
-        mock.firstName = args.login
-        val projects = viewModel.projects
 
         val navController = findNavController()
 
@@ -37,8 +35,6 @@ class DetailsFragment : Fragment() {
                 PatronativeTheme {
                     DetailsScreen(
                         navController = navController,
-                        user = mock,
-                        projects = projects,
                         viewModel = viewModel
                     )
                 }

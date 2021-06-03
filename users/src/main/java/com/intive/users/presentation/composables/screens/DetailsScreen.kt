@@ -21,25 +21,39 @@ import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.intive.ui.components.HeaderWithCount
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.repository.domain.model.User
-import com.intive.ui.components.LayoutContainer
-import com.intive.ui.components.PrimaryButton
-import com.intive.ui.components.SecondaryButton
-import com.intive.ui.components.Divider
+import com.intive.repository.util.Resource
+import com.intive.ui.components.*
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
     navController: NavController,
+    viewModel: DetailsViewModel
+) {
+    when(viewModel.user.value){
+        is Resource.Success -> {
+            SuccessScreen(
+                user = viewModel.user.value.data!!,
+                viewModel = viewModel,
+                navController = navController,
+            )
+        }
+        is Resource.Error -> Text("Error", color = Color.Red)
+        is Resource.Loading -> LoadingItem()
+    }
+}
+
+@Composable
+fun SuccessScreen(
     user: User,
     viewModel: DetailsViewModel,
-    projects: List<DetailsViewModel.Project>
+    navController: NavController
 ) {
     val scrollState = rememberScrollState()
-
+    val projects = viewModel.projects
     LayoutContainer {
         Column(
             modifier = Modifier
@@ -145,7 +159,6 @@ fun DetailsScreen(
             }
         }
     }
-
 }
 
 @Composable
