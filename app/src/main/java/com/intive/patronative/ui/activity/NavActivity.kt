@@ -3,6 +3,7 @@ package com.intive.patronative.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.intive.patronative.ui.components.PatronativeAppBar
 import com.intive.patronative.R
 import com.intive.shared.NavigationViewModel

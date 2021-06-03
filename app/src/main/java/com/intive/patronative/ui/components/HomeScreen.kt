@@ -55,7 +55,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.tech_groups_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://techGroupsMainFragment")) },
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/techGroups/MainFragment")) },
                 ) {
                     Icon(
                         Icons.Outlined.Keyboard,
@@ -68,7 +68,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.users_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://usersFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/usersFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.Person,
@@ -83,7 +83,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)){
                 BoxButton(
                     text = stringResource(R.string.diary_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://gradebookFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/gradebookFragment")) }
                 ){
                     Icon(
                         Icons.Outlined.Book,
@@ -96,7 +96,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.calendar_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://calendarFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/calendarFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.CalendarToday,
@@ -111,7 +111,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.logs_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://auditFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/auditFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.MenuBook,
@@ -124,7 +124,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)) {
                 BoxButton(
                     text = stringResource(R.string.registration_module),
-                    onClick = { navController?.navigate(Uri.parse("intive://loginFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/loginFragment")) }
                 ) {
                     Icon(
                         Icons.Outlined.PersonAdd,
