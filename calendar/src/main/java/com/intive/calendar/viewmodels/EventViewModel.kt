@@ -38,7 +38,7 @@ class EventViewModel(
         userId: Long,
         eventId: Long,
         inviteResponse: String,
-        refreshCalendar: () -> Unit
+        refreshEventsList: () -> Unit
     ) {
 
         val res = EventInviteResponse(userId, eventId, inviteResponse)
@@ -56,14 +56,14 @@ class EventViewModel(
             }
 
             if (response.isSuccessful) {
-                refreshCalendar()
+                refreshEventsList()
             } else {
                 showSnackbar(EventScreenChannel.InviteResponseError)
             }
         }
     }
 
-    fun deleteEvent(eventId: Long, popBackStack: () -> Boolean) {
+    fun deleteEvent(eventId: Long, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
         var response: Response<String>
 
         val handler = CoroutineExceptionHandler { _, _ ->
@@ -78,6 +78,7 @@ class EventViewModel(
 
             if (response.isSuccessful) {
                 showSnackbar(EventScreenChannel.EventDeleteSuccess)
+                refreshEventsList()
                 popBackStack()
             } else {
                 showSnackbar(EventScreenChannel.EventDeleteError)

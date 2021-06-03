@@ -34,7 +34,7 @@ fun PickerRow(label: String, value: String, pickerDialog: AlertDialog) {
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = stringResource(R.string.edit_btn_desc),
-                tint = MaterialTheme.colors.secondary,
+                tint = MaterialTheme.colors.primary,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
         }

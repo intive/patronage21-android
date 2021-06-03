@@ -18,15 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.intive.calendar.R
 import com.intive.calendar.components.*
 import com.intive.calendar.viewmodels.CalendarHomeViewModel
+import com.intive.ui.CalendarDimens
 import com.intive.ui.components.*
 
 
-@ExperimentalFoundationApi
 @Composable
 fun CalendarHomeLayout(
     navController: NavController,
@@ -48,34 +47,42 @@ fun CalendarHomeLayout(
         onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
         contentDescription = stringResource(R.string.add_event_btn_desc)
     ) {
-        LayoutContainer {
-            IntroSection(
-                title = stringResource(R.string.calendar),
-                text = stringResource(R.string.lorem_ipsum)
-            )
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .verticalScroll(scrollState),
+        ) {
 
-            Spinner(
-                items = calendarViewsList,
-                onTitleSelected = calendarViewModel::onCalendarViewChange
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            LayoutContainer {
+                IntroSection(
+                    title = stringResource(R.string.calendar),
+                    text = stringResource(R.string.lorem_ipsum)
+                )
 
-            WeekView(
-                currentWeek = currentWeek,
-                weekEventsList = weekEventsList,
-                navController = navController,
-                showWeekView = showWeekView,
-                header = weekHeader,
-                goToPreviousWeek = { calendarViewModel.goToPreviousWeek() }
-            ) { calendarViewModel.goToNextWeek() }
-            MonthView(
-                navController = navController,
-                showWeekView = showWeekView,
-                headerMonth = monthHeader,
-                currentMonth = currentMonth,
-                monthEvents = monthEvents,
-                goToPreviousMonth = { calendarViewModel.goToPreviousMonth() }
-            ) { calendarViewModel.goToNextMonth() }
+                Spinner(
+                    items = calendarViewsList,
+                    onTitleSelected = calendarViewModel::onCalendarViewChange
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                WeekView(
+                    currentWeek = currentWeek,
+                    weekEventsList = weekEventsList,
+                    navController = navController,
+                    showWeekView = showWeekView,
+                    header = weekHeader,
+                    goToPreviousWeek = { calendarViewModel.goToPreviousWeek() }
+                ) { calendarViewModel.goToNextWeek() }
+                MonthView(
+                    navController = navController,
+                    showWeekView = showWeekView,
+                    headerMonth = monthHeader,
+                    currentMonth = currentMonth,
+                    monthEvents = monthEvents,
+                    goToPreviousMonth = { calendarViewModel.goToPreviousMonth() }
+                ) { calendarViewModel.goToNextMonth() }
+            }
         }
     }
 }
@@ -102,7 +109,7 @@ fun CalendarHeader(period: String, onClickPrev: () -> Unit, onClickNext: () -> U
             text = period,
             style = TextStyle(
                 color = Color.White,
-                fontSize = 20.sp,
+                fontSize =  CalendarDimens.dimens.calendar_header_font,
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.align(Alignment.CenterVertically)

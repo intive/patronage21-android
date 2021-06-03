@@ -21,6 +21,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
+import com.intive.calendar.fragments.EventFragmentDirections
 import com.intive.calendar.utils.*
 import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.shared.EventParcelable
@@ -42,8 +43,9 @@ fun EventScreenLayout(
         DeleteEventDialog(
             viewModel = eventViewModel,
             navController = navController,
-            showDeleteDialog,
-            event.id
+            refreshEventsList = refreshEventsList,
+            showDeleteDialog = showDeleteDialog,
+            eventId = event.id
         )
     }
 
@@ -78,7 +80,13 @@ fun EventScreenLayout(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            IconButton(onClick = { /* TODO */ }) {
+
+                            val directions =
+                                EventFragmentDirections.actionEventFragmentToEditEventFragment(
+                                    eventInfoParcelable = event
+                                )
+
+                            IconButton(onClick = { navController.navigate(directions) }) {
                                 Icon(
                                     imageVector = Icons.Default.Edit,
                                     contentDescription = stringResource(R.string.edit_event_description),
@@ -227,12 +235,20 @@ fun UsersList(navController: NavController, users: List<User>) {
 fun DeleteEventDialog(
     viewModel: EventViewModel,
     navController: NavController,
+    refreshEventsList: () -> Unit,
     showDeleteDialog: Boolean?,
     eventId: Long
 ) {
     Column {
 
         if (showDeleteDialog == true) {
+
+            val navigationFun =
+                if (navController.previousBackStackEntry?.destination?.id == R.id.calendarFragment || navController.previousBackStackEntry?.destination?.id == R.id.dayFragment) {
+                    { navController.popBackStack(R.id.calendarFragment, false) }
+                } else {
+                    { navController.popBackStack() }
+                }
 
             AlertDialog(
                 onDismissRequest = { viewModel.showDeleteDialog(false) },
@@ -248,7 +264,10 @@ fun DeleteEventDialog(
                             text = stringResource(R.string.ok),
                             paddingBottom = 8.dp
                         ) {
-                            viewModel.deleteEvent(eventId) { navController.popBackStack() }
+                            viewModel.deleteEvent(
+                                eventId,
+                                { navigationFun() },
+                                { refreshEventsList() })
                             viewModel.showDeleteDialog(false)
                         }
                         SecondaryButton(text = stringResource(R.string.cancel_dialog)) {

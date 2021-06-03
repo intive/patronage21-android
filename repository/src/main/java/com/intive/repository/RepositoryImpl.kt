@@ -24,6 +24,7 @@ class RepositoryImpl(
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
+    private val editEventMapper: EditEventDtoMapper,
     private val stageDetailsMapper: StageDetailsDtoMapper,
     private val stageDtoMapper: StageDtoMapper,
     gbMapper: GradebookDtoMapper,
@@ -141,16 +142,17 @@ class RepositoryImpl(
 
     override suspend fun getTechnologies(): List<String> {
 
-        when (isCachingEnabled()) {
-            true -> {
+        when {
+            isCachingEnabled() && databaseRepository.getCount() > 0  -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }
-            false -> {
+            else -> {
                 val technologiesList = networkRepository.getTechnologies().groups
 
                 if (technologiesList.isNotEmpty()) {
                     enableCaching()
+                    databaseRepository.clearTechnologiesTable()
                     technologiesList.forEach {
                         databaseRepository.insert(TechnologyEntity(0, it))
                     }
@@ -200,6 +202,10 @@ class RepositoryImpl(
 
     override suspend fun addNewEvent(event: NewEvent): Response<String> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
+    }
+
+    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+        return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
