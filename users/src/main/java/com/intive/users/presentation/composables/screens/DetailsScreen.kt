@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -22,6 +23,7 @@ import androidx.navigation.NavController
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.repository.util.Resource
+import com.intive.shared.decodeBase64IntoBitmap
 import com.intive.ui.components.*
 import com.intive.users.presentation.composables.ProjectListItem
 
@@ -64,7 +66,11 @@ fun SuccessScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
+                        bitmap = if(user.image != null) {
+                            user.image!!.decodeBase64IntoBitmap().asImageBitmap()
+                        } else {
+                            ImageBitmap.imageResource(id = R.drawable.aaa)
+                        },
                         contentDescription = stringResource(id = R.string.profile_picture),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
