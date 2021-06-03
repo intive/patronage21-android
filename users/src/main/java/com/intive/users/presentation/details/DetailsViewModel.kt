@@ -6,21 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.Project
 import com.intive.repository.domain.model.User
-import com.intive.repository.local.LocalRepository
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class DetailsViewModel(
     private val userLogin: String,
     private val repository: Repository,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
-    data class Project(val name: String, val role: String)
 
     private val userContactEventChannel = Channel<UserContactEvent>()
     val userContactEvent = userContactEventChannel.receiveAsFlow()

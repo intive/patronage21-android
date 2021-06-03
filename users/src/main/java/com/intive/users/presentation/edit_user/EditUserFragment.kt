@@ -24,10 +24,12 @@ class EditUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val mock = User(
+            "",
             "Jan",
             "Kowalski",
             "jkowalski",
             "Mężczyzna",
+            emptyList(),
             "jankowalski@gmal.com",
             "123456789",
             "github.com/KowalskiJan",
