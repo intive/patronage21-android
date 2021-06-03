@@ -36,7 +36,6 @@ fun DetailsScreen(
     when(viewModel.user.value){
         is Resource.Success -> {
             SuccessScreen(
-                user = viewModel.user.value.data!!,
                 viewModel = viewModel,
                 navController = navController,
             )
@@ -48,12 +47,12 @@ fun DetailsScreen(
 
 @Composable
 fun SuccessScreen(
-    user: User,
     viewModel: DetailsViewModel,
     navController: NavController
 ) {
     val scrollState = rememberScrollState()
     val projects = viewModel.projects
+    val user = viewModel.user.value.data!!
     LayoutContainer {
         Column(
             modifier = Modifier
