@@ -83,7 +83,7 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             Column (Modifier.weight(1f)){
                 BoxButton(
                     text = stringResource(R.string.diary_module),
-                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/gradebookFragment")) }
+                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/gradebookFragment/all/null")) }
                 ){
                     Icon(
                         Icons.Outlined.Book,

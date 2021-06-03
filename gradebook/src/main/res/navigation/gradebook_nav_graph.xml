@@ -8,24 +8,29 @@
         android:id="@+id/gradebookFragment"
         android:name="com.intive.gradebook.composables.gradebook.GradebookFragment"
         android:label="GradebookFragment">
-
+        <deepLink app:uri="https://patronative.page.link/gradebookFragment/{group}/{stage}" />
+        <argument
+            android:name="group"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
+            android:name="stage"
+            android:defaultValue="null"
+            app:argType="string" />
         <action
             android:id="@+id/action_gradebookFragment_to_gradesFragment"
             app:destination="@id/gradesFragment" />
-        <deepLink
-            android:id="@+id/gradebookDeepLink"
-            app:uri="https://patronative.page.link/gradebookFragment" />
     </fragment>
     <fragment
         android:id="@+id/gradesFragment"
         android:name="com.intive.gradebook.composables.grades.GradesFragment"
         android:label="GradesFragment">
-            <argument
+        <argument
             android:name="firstName"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="lastName"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="gradeNames"
             app:argType="string[]" />

@@ -62,7 +62,8 @@ fun GradebookListItem(
             )
         }
         Row(modifier = Modifier.fillMaxWidth(0.60f)) {
-            if (addedColumn == "Grupa") {
+            if (addedColumn == "")
+            else if (addedColumn == "Grupa") {
                 Text(
                     text = gradebook.group,
                     fontSize = 15.sp,
@@ -79,6 +80,38 @@ fun GradebookListItem(
                     modifier = Modifier
                         .padding(start = 12.dp)
                 )
+            } else {
+                var stage: Int
+                if(addedColumn=="I")
+                    stage=0
+                else if(addedColumn=="II")
+                    stage=1
+                else if(addedColumn=="III")
+                    stage=2
+                else if(addedColumn=="IV")
+                    stage=3
+                else if(addedColumn=="V")
+                    stage=4
+                else
+                    stage=5
+                if (stage >= gradebook.entries.size)
+                    Text(
+                        text = 0.toString(),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(start = 12.dp)
+                    )
+                else
+                    Text(
+                        text = gradebook.entries[stage].grade.toString(),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .padding(start = 12.dp)
+                    )
             }
         }
         Row()
