@@ -18,12 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
-import com.intive.repository.domain.model.User
 import com.intive.repository.util.Resource
 import com.intive.ui.components.*
 import com.intive.users.presentation.composables.ProjectListItem
@@ -40,7 +37,7 @@ fun DetailsScreen(
                 navController = navController,
             )
         }
-        is Resource.Error -> Text("Error", color = Color.Red)
+        is Resource.Error -> Text(stringResource(id = R.string.unknown_error_occurred), color = Color.Red)
         is Resource.Loading -> LoadingItem()
     }
 }
