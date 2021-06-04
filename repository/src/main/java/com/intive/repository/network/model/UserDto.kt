@@ -12,5 +12,6 @@ data class UserDto(
     var phoneNumber: String,
     var gitHubUrl: String,
     var role: String,
+    var bio: String,
     var status: String
 )
