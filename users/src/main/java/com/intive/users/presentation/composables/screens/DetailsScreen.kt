@@ -50,7 +50,6 @@ fun SuccessScreen(
     navController: NavController
 ) {
     val scrollState = rememberScrollState()
-    val projects = viewModel.projects
     val user = viewModel.user.value.data!!
     LayoutContainer {
         Column(
@@ -101,10 +100,10 @@ fun SuccessScreen(
             Column {
                 HeaderWithCount(
                     text = stringResource(R.string.projects),
-                    count = projects.size,
+                    count = user.projects.size,
                     showCount = true
                 )
-                projects.forEach { project ->
+                user.projects.forEach { project ->
                     ProjectListItem(project)
                     Divider()
                 }
