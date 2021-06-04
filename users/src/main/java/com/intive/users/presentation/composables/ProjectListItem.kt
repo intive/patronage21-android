@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.intive.users.presentation.details.DetailsViewModel
+import com.intive.repository.domain.model.Project
 
 @Composable
-fun ProjectListItem(project: DetailsViewModel.Project) {
+fun ProjectListItem(project: Project) {
     Column(modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 16.dp)) {
         Text(
             text = project.name,

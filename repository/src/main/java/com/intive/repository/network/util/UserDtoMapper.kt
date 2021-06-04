@@ -4,12 +4,14 @@ import com.intive.repository.domain.model.User
 import com.intive.repository.domain.util.DomainMapper
 import com.intive.repository.network.model.UserDto
 
-class   UserDtoMapper : DomainMapper<UserDto, User> {
+class UserDtoMapper : DomainMapper<UserDto, User> {
     override fun mapToDomainModel(model: UserDto): User {
         return User(
             firstName = model.firstName,
             lastName = model.lastName,
-            login = model.userName,
+            login = model.login,
+            projects = model.projects,
+            image = model.image,
             gender = "Mężczyzna",
             email = model.email,
             phoneNumber = model.phoneNumber,
@@ -23,8 +25,10 @@ class   UserDtoMapper : DomainMapper<UserDto, User> {
         return UserDto(
             firstName = domainModel.firstName,
             lastName = domainModel.lastName,
-            userName = domainModel.login,
+            login = domainModel.login,
             email = domainModel.email,
+            image = domainModel.image,
+            projects = domainModel.projects,
             phoneNumber = domainModel.phoneNumber,
             gitHubUrl = domainModel.github,
             status = "ACTIVE",

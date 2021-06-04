@@ -1,30 +1,41 @@
 package com.intive.users.presentation.details
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.intive.repository.Repository
+import com.intive.repository.domain.model.Project
 import com.intive.repository.domain.model.User
-import com.intive.repository.local.LocalRepository
+import com.intive.repository.util.DispatcherProvider
+import com.intive.repository.util.Resource
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class DetailsViewModel() : ViewModel() {
-    data class Project(val name: String, val role: String)
+class DetailsViewModel(
+    private val userLogin: String,
+    private val repository: Repository,
+    private val dispatchers: DispatcherProvider
+) : ViewModel() {
 
     private val userContactEventChannel = Channel<UserContactEvent>()
     val userContactEvent = userContactEventChannel.receiveAsFlow()
 
-    val user = User(
-        firstName = "Jan",
-        lastName = "Kowalski",
-        login = "jkowalski",
-        gender = "Mężczyzna",
-        email = "jankowalski@gmal.com",
-        phoneNumber = "123456789",
-        github = "github.com/KowalskiJan",
-        bio = "Jestem programista",
-        role = "Candidate"
-    )
+    private val _user: MutableState<Resource<User>> = mutableStateOf(Resource.Loading())
+    val user: State<Resource<User>> = _user
+
+    init {
+        try {
+            viewModelScope.launch(dispatchers.io) {
+                val user = repository.getUser(userLogin)
+                _user.value = Resource.Success(user)
+            }
+        } catch (e: Exception) {
+            _user.value = Resource.Error(e.localizedMessage)
+        }
+    }
 
     val projects = listOf(
         Project("Projekt I", "Scrum Master"),
