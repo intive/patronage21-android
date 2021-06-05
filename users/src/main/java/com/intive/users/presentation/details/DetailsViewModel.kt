@@ -37,12 +37,6 @@ class DetailsViewModel(
         }
     }
 
-    val projects = listOf(
-        Project("Projekt I", "Scrum Master"),
-        Project("Projekt II", "Product Owner"),
-        Project("Projekt III", "Developer")
-    )
-
     fun onDialPhoneClicked(phoneNumber: String) = viewModelScope.launch {
         userContactEventChannel.send(UserContactEvent.DialPhoneNumber(phoneNumber))
     }

@@ -16,7 +16,7 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             email = model.email,
             phoneNumber = model.phoneNumber,
             github = model.gitHubUrl,
-            bio = "User has not set a bio",
+            bio = model.bio,
             role = model.role
         )
     }
@@ -32,6 +32,7 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             phoneNumber = domainModel.phoneNumber,
             gitHubUrl = domainModel.github,
             status = "ACTIVE",
+            bio = domainModel.bio,
             role = domainModel.role
         )
     }
