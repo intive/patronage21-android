@@ -9,10 +9,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.intive.ui.components.PrimaryButton
 import com.intive.users.R
-import com.intive.users.presentation.deactivate_user.DeactivateUserViewModel
+import com.intive.users.presentation.user.UserViewModel
 
 @Composable
-fun DeactivationSuccess(viewModel: DeactivateUserViewModel) {
+fun DeactivationSuccess(viewModel: UserViewModel) {
     Column {
         val openDialog = remember { mutableStateOf(true) }
 

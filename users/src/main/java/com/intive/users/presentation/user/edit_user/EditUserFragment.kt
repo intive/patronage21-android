@@ -1,4 +1,4 @@
-package com.intive.users.presentation.edit_user
+package com.intive.users.presentation.user.edit_user
 
 import android.os.Bundle
 import android.view.LayoutInflater
