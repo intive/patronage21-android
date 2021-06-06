@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.intive.ui.PatronativeTheme
 import com.intive.repository.domain.model.User
 import com.intive.users.presentation.composables.screens.EditUserScreen
+import com.intive.users.presentation.user.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class EditUserFragment : Fragment() {
 
-    private val viewModel: EditUserViewModel by viewModels()
+    private val viewModel: UserViewModel by sharedViewModel()
 
     @ExperimentalComposeUiApi
     override fun onCreateView(
@@ -23,19 +24,7 @@ class EditUserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mock = User(
-            "",
-            "Jan",
-            "Kowalski",
-            "jkowalski",
-            "Mężczyzna",
-            emptyList(),
-            "jankowalski@gmal.com",
-            "123456789",
-            "github.com/KowalskiJan",
-            "Jestem programista",
-            "Candidate"
-        )
+
 
         val navController = findNavController()
 
@@ -44,7 +33,7 @@ class EditUserFragment : Fragment() {
                 PatronativeTheme {
                     EditUserScreen(
                         navController = navController,
-                        user = mock,
+                        viewModel = viewModel,
                     )
                 }
             }

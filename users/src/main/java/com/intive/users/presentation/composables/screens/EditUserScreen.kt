@@ -11,19 +11,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.intive.shared.decodeBase64IntoBitmap
 import com.intive.users.R
-import com.intive.repository.domain.model.User
 import com.intive.ui.components.LayoutContainer
 import com.intive.ui.components.PrimaryButton
 import com.intive.ui.components.SecondaryButton
 import com.intive.ui.components.Spinner
 import com.intive.users.presentation.composables.ImageEdit
+import com.intive.users.presentation.user.UserViewModel
 
 const val MAX_TEXT_FIELD_LENGTH = 35
 
@@ -31,8 +33,10 @@ const val MAX_TEXT_FIELD_LENGTH = 35
 @Composable
 fun EditUserScreen(
     navController: NavController,
-    user: User,
+    viewModel: UserViewModel,
 ) {
+    val user = viewModel.user.value.data!!
+
     val firstName = mutableStateOf(user.firstName)
     val lastName = mutableStateOf(user.lastName)
     val email = mutableStateOf(user.email)
@@ -53,17 +57,8 @@ fun EditUserScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ImageEdit(
+                profilePhoto = user.image?.decodeBase64IntoBitmap()?.asImageBitmap(),
                 onClick = { /*TODO: goto Image Chooser*/ }
-            )
-            Spacer(modifier = Modifier.size(10.dp))
-            Spinner(
-                label = stringResource(R.string.gender),
-                items = listOf(
-                    stringResource(R.string.male),
-                    stringResource(R.string.female),
-                    stringResource(R.string.different)
-                ),
-                onTitleSelected = { /*TODO: onTitleSelect*/ }
             )
             Spacer(modifier = Modifier.size(10.dp))
             OutlinedTextField(
@@ -209,7 +204,6 @@ fun EditUserScreen(
             SecondaryButton(
                 text = stringResource(R.string.cancel),
                 onClick = {
-                    //TODO: cancel changes here
                     navController.popBackStack()
                 }
             )
