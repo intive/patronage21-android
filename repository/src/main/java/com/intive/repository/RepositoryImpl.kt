@@ -133,6 +133,10 @@ class RepositoryImpl(
         return networkRepository.deactivateUser(login)
     }
 
+    override suspend fun updateUser(user: User): Response<String> {
+        return networkRepository.updateUser(user)
+    }
+
     override val auditsMapper: AuditDtoMapper = auditMapper
 
     @RequiresApi(Build.VERSION_CODES.O)

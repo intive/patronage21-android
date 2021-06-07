@@ -1,5 +1,6 @@
 package com.intive.users.presentation.user
 
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -69,8 +70,15 @@ class UserViewModel(
         deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
     }
 
-    fun onEditUserButtonPressed() {
-        TODO("Not yet implemented")
+    fun onEditUserButtonPressed(user: User) {
+        try {
+            viewModelScope.launch {
+                repository.updateUser(user)
+            }
+        } catch (e: Exception) {
+            Log.e("EDIT", e.localizedMessage ?: "Error updating user")
+        }
+
     }
 
     fun onDialPhoneClicked(phoneNumber: String) = viewModelScope.launch {
@@ -109,7 +117,6 @@ class UserViewModel(
             isBioValid(user.bio)
 
     fun isLastNameEnteredCorrectly(): Boolean = typedLastName.value == userLastName.value
-
 
     sealed class UserContactEvent {
         data class DialPhoneNumber(val phoneNumber: String) : UserContactEvent()

@@ -204,7 +204,7 @@ fun EditUserScreen(
                 text = stringResource(R.string.save),
                 enabled = viewModel.isFormValid(userCopy),
                 onClick = {
-                    viewModel.onEditUserButtonPressed()
+                    viewModel.onEditUserButtonPressed(userCopy)
                 }
             )
             Spacer(modifier = Modifier.size(10.dp))
