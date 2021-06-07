@@ -31,17 +31,15 @@ fun GradebookListItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .padding(
-                start = 16.dp,
-                end = 16.dp
-            )
             .clickable {
                 onItemClick(gradebook)
             },
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
-        Row(modifier = Modifier.fillMaxWidth(0.50f))
+        Row(modifier = Modifier
+            .fillMaxWidth(0.50f)
+            .align(Alignment.CenterVertically))
         {
             Image(
                 bitmap = ImageBitmap.imageResource(id = com.intive.gradebook.R.drawable.aaa),
@@ -52,6 +50,7 @@ fun GradebookListItem(
                     .width(30.dp)
                     .height(30.dp)
                     .clip(CircleShape)
+                    .align(Alignment.CenterVertically)
             )
             Text(
                 text = "${gradebook.firstName} ${gradebook.lastName}",
@@ -59,62 +58,51 @@ fun GradebookListItem(
                 color = Color.Black,
                 modifier = Modifier
                     .padding(start = 12.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
-        Row(modifier = Modifier.fillMaxWidth(0.60f)) {
+        Row(modifier = Modifier
+            .fillMaxWidth(0.60f)
+            .align(Alignment.CenterVertically)) {
+            var text: String
             if (addedColumn == "")
-            else if (addedColumn == "Grupa") {
+            else {
+                if (addedColumn == "Grupa") {
+                    text = gradebook.group
+                } else if (addedColumn == "Ostatnia ocena") {
+                    text = gradebook.entries[gradebook.entries.size - 1].grade.toString()
+                } else {
+                    var stage: Int
+                    if (addedColumn == "I")
+                        stage = 0
+                    else if (addedColumn == "II")
+                        stage = 1
+                    else if (addedColumn == "III")
+                        stage = 2
+                    else if (addedColumn == "IV")
+                        stage = 3
+                    else if (addedColumn == "V")
+                        stage = 4
+                    else
+                        stage = 5
+
+                    if (stage >= gradebook.entries.size)
+                        text = 0.toString()
+                    else
+                        text = gradebook.entries[stage].grade.toString()
+                }
                 Text(
-                    text = gradebook.group,
-                    fontSize = 15.sp,
-                    color = Color.Black,
-                    modifier = Modifier
-                        .padding(start = 12.dp)
-                )
-            } else if (addedColumn == "Ostatnia ocena") {
-                Text(
-                    text = gradebook.entries[gradebook.entries.size - 1].grade.toString(),
+                    text = text,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
                     modifier = Modifier
                         .padding(start = 12.dp)
+                        .align(Alignment.CenterVertically)
                 )
-            } else {
-                var stage: Int
-                if(addedColumn=="I")
-                    stage=0
-                else if(addedColumn=="II")
-                    stage=1
-                else if(addedColumn=="III")
-                    stage=2
-                else if(addedColumn=="IV")
-                    stage=3
-                else if(addedColumn=="V")
-                    stage=4
-                else
-                    stage=5
-                if (stage >= gradebook.entries.size)
-                    Text(
-                        text = 0.toString(),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(start = 12.dp)
-                    )
-                else
-                    Text(
-                        text = gradebook.entries[stage].grade.toString(),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(start = 12.dp)
-                    )
             }
         }
-        Row()
+        Row(modifier = Modifier.align(Alignment.CenterVertically))
         {
             Text(
                 text = "${gradebook.averageGrade}${stringResource(R.string.max_grade)}",
@@ -123,6 +111,7 @@ fun GradebookListItem(
                 color = Color.Black,
                 modifier = Modifier
                     .padding(start = 12.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
     }
