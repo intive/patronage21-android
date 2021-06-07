@@ -82,7 +82,7 @@ fun DeactivateUserScreen(
             ) {
                 PrimaryButton(
                     text = stringResource(R.string.deactivate_profile),
-                    enabled = viewModel.isLastNameCorrect(),
+                    enabled = viewModel.isLastNameEnteredCorrectly(),
                     onClick = {
                         viewModel.onConfirmClick()
                     }

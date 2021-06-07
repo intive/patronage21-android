@@ -35,21 +35,20 @@ fun EditUserScreen(
     navController: NavController,
     viewModel: UserViewModel,
 ) {
-    val user = viewModel.user.value.data!!
+    val userCopy = viewModel.user.value.data!!.copy()
 
-    val firstName = mutableStateOf(user.firstName)
-    val lastName = mutableStateOf(user.lastName)
-    val email = mutableStateOf(user.email)
-    val phoneNumber = mutableStateOf(user.phoneNumber)
-    val github = mutableStateOf(user.github)
-    val bio = mutableStateOf(user.bio)
+    val firstName = mutableStateOf(userCopy.firstName)
+    val lastName = mutableStateOf(userCopy.lastName)
+    val email = mutableStateOf(userCopy.email)
+    val phoneNumber = mutableStateOf(userCopy.phoneNumber)
+    val github = mutableStateOf(userCopy.github)
+    val bio = mutableStateOf(userCopy.bio)
 
     val scrollState = rememberScrollState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    LayoutContainer(
-    ) {
+    LayoutContainer {
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -57,7 +56,7 @@ fun EditUserScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ImageEdit(
-                profilePhoto = user.image?.decodeBase64IntoBitmap()?.asImageBitmap(),
+                profilePhoto = userCopy.image?.decodeBase64IntoBitmap()?.asImageBitmap(),
                 onClick = { /*TODO: goto Image Chooser*/ }
             )
             Spacer(modifier = Modifier.size(10.dp))
@@ -68,9 +67,10 @@ fun EditUserScreen(
                 onValueChange = {
                     if (willTextFit(it)) {
                         firstName.value = it
-                        user.firstName = it
+                        userCopy.firstName = it
                     }
                 },
+                isError = !viewModel.isFirstNameValid(firstName.value),
                 label = { Text(text = stringResource(R.string.first_name)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -91,9 +91,10 @@ fun EditUserScreen(
                 onValueChange = {
                     if (willTextFit(it)) {
                         lastName.value = it
-                        user.lastName = it
+                        userCopy.lastName = it
                     }
                 },
+                isError = !viewModel.isLastNameValid(lastName.value),
                 label = { Text(text = stringResource(R.string.last_name)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -114,9 +115,10 @@ fun EditUserScreen(
                 onValueChange = {
                     if (willTextFit(it)) {
                         email.value = it
-                        user.email = it
+                        userCopy.email = it
                     }
                 },
+                isError = !viewModel.isEmailValid(email.value),
                 label = { Text(text = stringResource(R.string.email_address)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -137,9 +139,10 @@ fun EditUserScreen(
                 onValueChange = {
                     if (willTextFit(it)) {
                         phoneNumber.value = it
-                        user.phoneNumber = it
+                        userCopy.phoneNumber = it
                     }
                 },
+                isError = !viewModel.isPhoneNumberValid(phoneNumber.value),
                 label = { Text(text = stringResource(R.string.phone_number)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,
@@ -160,9 +163,10 @@ fun EditUserScreen(
                 onValueChange = {
                     if (willTextFit(it)) {
                         github.value = it
-                        user.github = it
+                        userCopy.github = it
                     }
                 },
+                isError = !viewModel.isGithubUrlValid(github.value),
                 label = { Text(text = stringResource(R.string.github)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -181,8 +185,9 @@ fun EditUserScreen(
                 value = bio.value,
                 onValueChange = {
                     bio.value = it
-                    user.bio = it
+                    userCopy.bio = it
                 },
+                isError = !viewModel.isBioValid(bio.value),
                 label = { Text(text = stringResource(R.string.bio)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -197,7 +202,9 @@ fun EditUserScreen(
             Spacer(modifier = Modifier.size(30.dp))
             PrimaryButton(
                 text = stringResource(R.string.save),
+                enabled = viewModel.isFormValid(userCopy),
                 onClick = {
+                    viewModel.onEditUserButtonPressed()
                 }
             )
             Spacer(modifier = Modifier.size(10.dp))

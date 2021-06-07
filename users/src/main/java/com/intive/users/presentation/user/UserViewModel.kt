@@ -1,5 +1,6 @@
 package com.intive.users.presentation.user
 
+import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +69,9 @@ class UserViewModel(
         deactivateUserChannel.send(DeactivateUserEvent.NavigateToRegistrationScreen)
     }
 
-    fun isLastNameCorrect(): Boolean = typedLastName.value == userLastName.value
+    fun onEditUserButtonPressed() {
+        TODO("Not yet implemented")
+    }
 
     fun onDialPhoneClicked(phoneNumber: String) = viewModelScope.launch {
         userContactEventChannel.send(UserContactEvent.DialPhoneNumber(phoneNumber))
@@ -81,6 +84,32 @@ class UserViewModel(
     fun onLaunchWebsiteClicked(websiteUrl: String) = viewModelScope.launch {
         userContactEventChannel.send(UserContactEvent.LaunchWebsite(websiteUrl))
     }
+
+    fun isFirstNameValid(firstName: String): Boolean = firstName.matches(Regex("[A-Za-z]{2,30}"))
+    fun isLastNameValid(lastName: String): Boolean = lastName.matches(Regex("[A-Za-z]{2,30}"))
+    fun isEmailValid(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    fun isPhoneNumberValid(phoneNumber: String): Boolean = phoneNumber.matches(Regex("\\d{9,9}"))
+    fun isGithubUrlValid(githubUrl: String): Boolean =
+        githubUrl.let {
+            it.isEmpty() ||
+                    it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
+                    !it.startsWith("-") &&
+                    !it.endsWith("-") &&
+                    !it.contains("--")
+        }
+    fun isBioValid(bio: String): Boolean = bio.isNotEmpty() && bio.length < 100
+
+    fun isFormValid(
+        user: User,
+    ) = isFirstNameValid(user.firstName) &&
+            isLastNameValid(user.lastName) &&
+            isEmailValid(user.email) &&
+            isPhoneNumberValid(user.phoneNumber) &&
+            isGithubUrlValid(user.github) &&
+            isBioValid(user.bio)
+
+    fun isLastNameEnteredCorrectly(): Boolean = typedLastName.value == userLastName.value
+
 
     sealed class UserContactEvent {
         data class DialPhoneNumber(val phoneNumber: String) : UserContactEvent()
