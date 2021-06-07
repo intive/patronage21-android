@@ -34,6 +34,9 @@ class UserViewModel(
     private val userContactEventChannel = Channel<UserContactEvent>()
     val userContactEvent = userContactEventChannel.receiveAsFlow()
 
+    private val editUserChannel = Channel<EditUserEvent>()
+    val editUserEvent = editUserChannel.receiveAsFlow()
+
     init {
         try {
             viewModelScope.launch(dispatchers.io) {
@@ -72,11 +75,19 @@ class UserViewModel(
 
     fun onEditUserButtonPressed(user: User) {
         try {
-            viewModelScope.launch {
-                repository.updateUser(user)
+            viewModelScope.launch(dispatchers.io) {
+                val response = repository.updateUser(user)
+
+                if(response.isSuccessful) {
+                    editUserChannel.send(EditUserEvent.OnSuccessfulEdit)
+                } else {
+                    editUserChannel.send(EditUserEvent.OnFailedEdit)
+                }
             }
         } catch (e: Exception) {
-            Log.e("EDIT", e.localizedMessage ?: "Error updating user")
+            viewModelScope.launch {
+                editUserChannel.send(EditUserEvent.OnFailedEdit)
+            }
         }
 
     }
@@ -128,5 +139,10 @@ class UserViewModel(
         object NavigateToRegistrationScreen : DeactivateUserEvent()
         object ShowSuccessMessage : DeactivateUserEvent()
         object ShowErrorMessage : DeactivateUserEvent()
+    }
+
+    sealed class EditUserEvent {
+        object OnSuccessfulEdit : EditUserEvent()
+        object OnFailedEdit : EditUserEvent()
     }
 }
