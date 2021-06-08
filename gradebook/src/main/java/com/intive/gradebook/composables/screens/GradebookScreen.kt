@@ -167,7 +167,7 @@ fun Screen(
                     }
 
                     Spinner(
-                        items = stringArrayResource(id = R.array.sort_spinner).asList()
+                        items = stringArrayResource(id = R.array.users_sort_spinner).asList()
                     ) { sort ->
                         viewModel.onSortByChanged(sort)
                     }
