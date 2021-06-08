@@ -6,6 +6,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.model.*
 import retrofit2.Response
 import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.domain.model.User
 import com.intive.repository.network.response.*
 import com.intive.repository.network.response.UsersResponse
 import retrofit2.http.Body
@@ -85,6 +86,21 @@ class NetworkRepository(
 
     suspend fun deactivateUser(login: String): Response<String> {
         return usersService.deactivateUser(login)
+    }
+
+    suspend fun updateUser(user: User): Response<String> {
+        return usersService.updateUser(
+            UpdateUserDto(
+                firstName = user.firstName,
+                lastName = user.lastName,
+                login = user.login,
+                projects = user.projects,
+                email = user.email,
+                phoneNumber = user.phoneNumber,
+                gitHubUrl = user.github,
+                bio = user.bio
+            )
+        )
     }
 
     suspend fun getTechnologies(): TechnologiesList {

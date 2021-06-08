@@ -37,4 +37,6 @@
     <string name="successfully_deactivated_account">Pomyślnie zdezaktywowano konto</string>
     <string name="redirect_to_login_screen">Nastąpi przekierowanie do ekranu logowania</string>
     <string name="ok">OK</string>
+    <string name="successfully_updated_user">Pomyślnie zaktualizowano dane</string>
+    <string name="failed_to_update_user">Nie udało się zaktualizować danych</string>
 </resources>

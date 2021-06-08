@@ -1,5 +1,7 @@
 package com.intive.repository.network
 
+import com.intive.repository.domain.model.User
+import com.intive.repository.network.model.UpdateUserDto
 import com.intive.repository.network.response.UserResponse
 import com.intive.repository.network.response.UsersResponse
 import retrofit2.Response
@@ -29,5 +31,10 @@ interface UsersService {
     @PATCH("api/users/{login}/deactivate")
     suspend fun deactivateUser(
         @Path("login") login: String
+    ): Response<String>
+
+    @PUT("api/users")
+    suspend fun updateUser(
+        @Body user: UpdateUserDto
     ): Response<String>
 }

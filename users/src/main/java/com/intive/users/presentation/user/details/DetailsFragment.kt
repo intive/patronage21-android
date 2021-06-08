@@ -1,4 +1,4 @@
-package com.intive.users.presentation.details
+package com.intive.users.presentation.user.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,16 +12,17 @@ import androidx.navigation.fragment.navArgs
 import com.intive.ui.PatronativeTheme
 import com.intive.users.presentation.composables.screens.DetailsScreen
 import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.net.Uri
+import com.intive.users.presentation.user.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.parameter.parametersOf
 
 
 class DetailsFragment : Fragment() {
 
     private val args: DetailsFragmentArgs by navArgs()
-    private val viewModel: DetailsViewModel by viewModel { parametersOf(args.login) }
+    private val viewModel: UserViewModel by sharedViewModel { parametersOf(args.login) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,14 +49,14 @@ class DetailsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.userContactEvent.collect { event ->
                 when(event) {
-                    is DetailsViewModel.UserContactEvent.DialPhoneNumber -> {
+                    is UserViewModel.UserContactEvent.DialPhoneNumber -> {
                         val phoneNumber = event.phoneNumber
 
                         val intent =
                             Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
                         startActivity(intent)
                     }
-                    is DetailsViewModel.UserContactEvent.LaunchWebsite -> {
+                    is UserViewModel.UserContactEvent.LaunchWebsite -> {
                         var websiteUrl = event.websiteUrl
                         if (!websiteUrl.startsWith("http://") && !websiteUrl.startsWith("https://"))
                             websiteUrl = "http://$websiteUrl"
@@ -64,7 +65,7 @@ class DetailsFragment : Fragment() {
                             Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
                         startActivity(intent)
                     }
-                    is DetailsViewModel.UserContactEvent.SendEmail -> {
+                    is UserViewModel.UserContactEvent.SendEmail -> {
                         val email = event.email
 
                         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))

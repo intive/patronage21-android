@@ -23,26 +23,27 @@ import com.intive.users.R
 
 @Composable
 fun ImageEdit(
-        onClick: () -> Unit
+    profilePhoto: ImageBitmap?,
+    onClick: () -> Unit
 ) {
     Box(
-            contentAlignment = Alignment.BottomEnd,
-            modifier = Modifier
-                    .size(150.dp)
+        contentAlignment = Alignment.BottomEnd,
+        modifier = Modifier
+            .size(150.dp)
 
     ) {
         Image(
-                bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
-                contentDescription = stringResource(R.string.profile_picture),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape)
-                        .clickable { onClick() }
+            bitmap = profilePhoto ?: ImageBitmap.imageResource(id = R.drawable.aaa),
+            contentDescription = stringResource(R.string.profile_picture),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .clickable { onClick() }
         )
         Icon(
-                imageVector = Icons.Outlined.Edit,
-                contentDescription = stringResource(R.string.edit_icon)
+            imageVector = Icons.Outlined.Edit,
+            contentDescription = stringResource(R.string.edit_icon)
         )
     }
 }

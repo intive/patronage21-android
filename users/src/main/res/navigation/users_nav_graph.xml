@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.intive.users.presentation.details.DetailsFragment"
+        android:name="com.intive.users.presentation.user.details.DetailsFragment"
         android:label="DetailsFragment">
         <action
             android:id="@+id/action_detailsFragment_to_deactivateUserFragment"
@@ -36,11 +36,11 @@
     </fragment>
     <fragment
         android:id="@+id/deactivateUserFragment"
-        android:name="com.intive.users.presentation.deactivate_user.DeactivateUserFragment"
+        android:name="com.intive.users.presentation.user.deactivate_user.DeactivateUserFragment"
         android:label="DeactivateUserFragment" >
     </fragment>
     <fragment
         android:id="@+id/editUserFragment"
-        android:name="com.intive.users.presentation.edit_user.EditUserFragment"
+        android:name="com.intive.users.presentation.user.edit_user.EditUserFragment"
         android:label="EditUserFragment" />
 </navigation>
