@@ -21,6 +21,11 @@ or alternatively using `brew install fastlane`
 fastlane android deployAppCenterDebug
 ```
 Deploy new debug build to AppCenter
+### android beta
+```
+fastlane android beta
+```
+Deploy a beta version to Google Play
 
 ----
 

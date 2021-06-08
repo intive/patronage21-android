@@ -30,4 +30,35 @@ platform :android do
       notify_testers: false
     )
   end
+  
+  desc "Deploy a beta version to Google Play"
+  lane :beta do
+    
+	# Clean build folder
+    gradle(
+      task: "clean"
+    )
+	
+	vc = google_play_track_version_codes
+    vcb = google_play_track_version_codes(track: 'beta')
+    max_value = [vc[0].to_i, vcb[0].to_i].max
+    version_updated = max_value + 1
+    increment_version_code(gradle_file_path: "./app/build.gradle", version_code: version_updated.to_i)
+	increment_version_code(gradle_file_path: "./shared.gradle", version_code: version_updated.to_i)
+
+    # Do the bundle of the application
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      properties: {
+        "android.injected.signing.store.file" => Dir.pwd + "/upload-keystore.jks",
+    "android.injected.signing.store.password" => "Patronageage2021",
+        "android.injected.signing.key.alias" => "upload",
+        "android.injected.signing.key.password" => "Patronageage2021"
+      }
+    )
+    upload_to_play_store(track: 'beta')
+  end
+  
+  
 end
