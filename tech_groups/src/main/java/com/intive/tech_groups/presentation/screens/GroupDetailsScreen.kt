@@ -66,7 +66,7 @@ fun GroupDetailsScreen(
 
                     Column {
                         Text(
-                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                            text = group.description
                         )
                         Column(
                             modifier = Modifier
