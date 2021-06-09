@@ -20,6 +20,5 @@ jobs:
       - run: fastlane env
       - run: fastlane install_plugins --verbose
             - uses: maierj/fastlane-action@v2.0.1
-        env:
         with:
           lane: 'beta'
