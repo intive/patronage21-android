@@ -146,6 +146,7 @@ fun GroupDetailsScreen(
                 item {
                     PrimaryButton(
                         paddingTop = dimensionResource(id = R.dimen.screen_padding_small),
+                        paddingBottom = dimensionResource(id = R.dimen.screen_padding_small),
                         text = stringResource(id = R.string.resign_from_candidacy),
                         onClick = {}
                     )
