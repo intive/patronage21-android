@@ -20,17 +20,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
 import com.intive.repository.util.Resource
 import com.intive.shared.decodeBase64IntoBitmap
 import com.intive.ui.components.*
+import com.intive.users.presentation.user.UserViewModel
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
     navController: NavController,
-    viewModel: DetailsViewModel
+    viewModel: UserViewModel
 ) {
     when(viewModel.user.value){
         is Resource.Success -> {
@@ -46,7 +46,7 @@ fun DetailsScreen(
 
 @Composable
 fun SuccessScreen(
-    viewModel: DetailsViewModel,
+    viewModel: UserViewModel,
     navController: NavController
 ) {
     val scrollState = rememberScrollState()

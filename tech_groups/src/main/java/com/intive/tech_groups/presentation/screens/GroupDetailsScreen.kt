@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -66,7 +68,7 @@ fun GroupDetailsScreen(
 
                     Column {
                         Text(
-                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                            text = group.description
                         )
                         Column(
                             modifier = Modifier
@@ -144,6 +146,7 @@ fun GroupDetailsScreen(
                 item {
                     PrimaryButton(
                         paddingTop = dimensionResource(id = R.dimen.screen_padding_small),
+                        paddingBottom = dimensionResource(id = R.dimen.screen_padding_small),
                         text = stringResource(id = R.string.resign_from_candidacy),
                         onClick = {}
                     )
@@ -169,7 +172,19 @@ fun StageBoxButton(
             contentOnTop = false
         ) {
             Row{
-                Text(text = "${dateBegin.dropLast(5)} - $dateEnd")
+                val textStyleBody1 = MaterialTheme.typography.body1
+                val (textStyle, updateTextStyle) = remember { mutableStateOf(textStyleBody1) }
+                Text(
+                    text = " ${dateBegin.dropLast(5)} - $dateEnd ",
+                    style = textStyle,
+                    maxLines = 1,
+                    softWrap = false,
+                    onTextLayout = { textLayoutResult ->
+                        if (textLayoutResult.didOverflowWidth) {
+                            updateTextStyle(textStyle.copy(fontSize = textStyle.fontSize * 0.9))
+                        }
+                    }
+                )
             }
             Text(text = state)
         }

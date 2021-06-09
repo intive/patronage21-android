@@ -44,6 +44,7 @@ interface Repository {
     suspend fun getTotalUsersByRole(role: String, group: String?): Int
     suspend fun getUser(login: String): User
     suspend fun deactivateUser(login: String): Response<String>
+    suspend fun updateUser(user: User): Response<String>
 
     suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse
 

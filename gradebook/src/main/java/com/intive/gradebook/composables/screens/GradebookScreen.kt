@@ -167,7 +167,7 @@ fun Screen(
                     }
 
                     Spinner(
-                        items = stringArrayResource(id = R.array.sort_spinner).asList()
+                        items = stringArrayResource(id = R.array.users_sort_spinner).asList()
                     ) { sort ->
                         viewModel.onSortByChanged(sort)
                     }
@@ -177,9 +177,7 @@ fun Screen(
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp
+                            top = 16.dp
                         )
                 ) {
                     GradebookHeader(
@@ -236,7 +234,7 @@ fun Screen(
                     }
                 }
             }
-            item {Spacer(modifier = Modifier.padding(24.dp))}
+            item {Spacer(modifier = Modifier.padding(top = 24.dp, bottom = 24.dp))}
         }
     }
 }
