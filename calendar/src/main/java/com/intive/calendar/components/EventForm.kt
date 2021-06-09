@@ -7,15 +7,19 @@ import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEditEventViewModel
@@ -38,6 +42,7 @@ fun EventForm(
     val minutesStart by addEditEventViewModel.minutesStart.observeAsState()
     val minutesEnd by addEditEventViewModel.minutesEnd.observeAsState()
     val inputValue by addEditEventViewModel.inputValue.observeAsState()
+    val descriptionValue by addEditEventViewModel.descriptionValue.observeAsState()
     val technologyGroups by addEditEventViewModel.technologyGroups.observeAsState()
 
     val lazyListState = rememberLazyListState()
@@ -114,14 +119,30 @@ fun EventForm(
                             )
                         }
 
+                        Text(
+                            stringResource(R.string.event_description),
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            style = MaterialTheme.typography.h6
+                        )
+
+                        InputText(
+                            textState = descriptionValue!!,
+                            label = "",
+                            setInputValue = addEditEventViewModel::setDescriptionValue,
+                            focusManager = LocalFocusManager.current,
+                            modifier = Modifier
+                                .height(100.dp)
+                                .padding(bottom = 16.dp)
+                        )
+
                         if (technologyGroups?.isNotEmpty() == true) {
                             CheckBoxesList(
                                 title = stringResource(R.string.add_event_checkbox_header),
                                 onErrorText = "",
                                 items = technologyGroups!!,
                                 onItemSelected = addEditEventViewModel::updateSelectedTechnologyGroups,
-                                modifier = Modifier.padding(bottom = 14.dp),
-                                style = MaterialTheme.typography.h6
+                                modifier = Modifier.padding(bottom = 4.dp),
+                                style = MaterialTheme.typography.h6,
                             )
                         } else {
                             Row(
@@ -141,3 +162,4 @@ fun EventForm(
         }
     }
 }
+

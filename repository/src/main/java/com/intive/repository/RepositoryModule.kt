@@ -28,11 +28,12 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
+private const val BASE_URL_JS = "https://api-patronage21.herokuapp.com/"
 private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
@@ -57,6 +58,8 @@ val repositoryModule = module {
     single { provideSharedPref(androidApplication()) }
     single { LocalRepository(get())}
     single { SharedPreferenceSource(get()) }
+    single(named("js")){ createRetrofitJS() }
+    single { createEventsJSService(get(named("js"))) }
 }
 
 val databaseModule = module {
@@ -94,6 +97,14 @@ private fun createRetrofit2(): Retrofit {
         .build()
 }
 
+private fun createRetrofitJS(): Retrofit {
+
+    return Retrofit.Builder()
+        .baseUrl(BASE_URL_JS)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+        .build()
+}
+
 private fun createUsersService(retrofit: Retrofit): UsersService {
     return retrofit.create(UsersService::class.java)
 }
@@ -114,6 +125,10 @@ private fun createUserMapper(): UserDtoMapper = UserDtoMapper()
 
 private fun createEventsService(retrofit: Retrofit): EventsService {
     return retrofit.create(EventsService::class.java)
+}
+
+private fun createEventsJSService(retrofit: Retrofit): EventsServiceJS {
+    return retrofit.create(EventsServiceJS::class.java)
 }
 
 private fun createEventInviteResponseMapper(): EventInviteResponseDtoMapper = EventInviteResponseDtoMapper()
