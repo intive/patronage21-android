@@ -2,6 +2,7 @@ name: Beta Release
 on:
   push:
     branches:
+      - feature/IP2-573
       - develop
   workflow_dispatch:
 
