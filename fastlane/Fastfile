@@ -57,9 +57,9 @@ platform :android do
       build_type: 'Release',
       properties: {
         "android.injected.signing.store.file" => Dir.pwd + "/upload-keystore.jks",
-    "android.injected.signing.store.password" => "Patronageage2021",
-        "android.injected.signing.key.alias" => "upload",
-        "android.injected.signing.key.password" => "Patronageage2021"
+		"android.injected.signing.store.password" => ENV["RELEASE_KEY"],
+        "android.injected.signing.key.alias" => ENV["RELEASE_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["RELEASE_KEY"]
       }
     )
     upload_to_play_store(track: 'beta')
