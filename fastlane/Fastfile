@@ -55,7 +55,7 @@ platform :android do
       task: 'bundle',
       build_type: 'Release',
       properties: {
-        "android.injected.signing.store.file" => Pathname.getwd.parent + "/upload-keystore.jks",
+        "android.injected.signing.store.file" => File.dirname(Dir.pwd) + "/upload-keystore.jks",
 		"android.injected.signing.store.password" => ENV["RELEASE_KEY"],
         "android.injected.signing.key.alias" => ENV["RELEASE_KEY_ALIAS"],
         "android.injected.signing.key.password" => ENV["RELEASE_KEY"]
