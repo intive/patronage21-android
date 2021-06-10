@@ -9,6 +9,7 @@ import com.intive.repository.Repository
 import com.intive.repository.domain.model.EditEvent
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.getDateAndTimeString
 import com.intive.shared.getDateString
 import kotlinx.coroutines.*
 import java.util.*
@@ -51,6 +52,9 @@ class AddEditEventViewModel(
     private val _inputValue = MutableLiveData("")
     var inputValue: LiveData<String> = _inputValue
 
+    private val _descriptionValue = MutableLiveData("")
+    var descriptionValue: LiveData<String> = _descriptionValue
+
     private val _technologyGroups: MutableLiveData<List<String>> = MutableLiveData(emptyList())
     var technologyGroups: LiveData<List<String>> = _technologyGroups
 
@@ -79,6 +83,10 @@ class AddEditEventViewModel(
 
     fun setInputValue(value: String) {
         _inputValue.value = value
+    }
+
+    fun setDescriptionValue(value: String) {
+        _descriptionValue.value = value
     }
 
     fun setDate(value: Calendar) {
@@ -146,19 +154,20 @@ class AddEditEventViewModel(
         popBackStack: () -> Boolean
     ) {
 
-        val date = getDateString(_date.value!!)
-        val timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!)
-        val timeEnd = timeToString(_hourEnd.value!!, _minutesEnd.value!!)
         val name = _inputValue.value!!
+        val description = _descriptionValue.value!!
+        val timeStart = "${_hourStart.value!!}:${_minutesStart.value!!}:00"
+        val timeEnd = "${_hourEnd.value!!}:${_minutesEnd.value!!}:00"
+        val dateStart = getDateAndTimeString(_date.value!!, timeStart)
+        val dateEnd = getDateAndTimeString(_date.value!!, timeEnd)
 
         if (isFormValid()) {
-            val newEvent =
-                NewEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
+            val newEvent = NewEvent(name, description, dateStart, dateEnd)
             val handler = CoroutineExceptionHandler { _, _ ->
                 showSnackbar(EventChannel.AddEventError)
             }
 
-            var response: Response<String>
+            var response: Response<Any>
 
             viewModelScope.launch(handler) {
 

@@ -204,7 +204,7 @@ class RepositoryImpl(
         networkRepository.sendRequestForCode(body)
     }
 
-    override suspend fun addNewEvent(event: NewEvent): Response<String> {
+    override suspend fun addNewEvent(event: NewEvent): Response<Any> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 

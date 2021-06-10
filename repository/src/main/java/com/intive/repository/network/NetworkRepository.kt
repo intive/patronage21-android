@@ -18,6 +18,7 @@ class NetworkRepository(
     private val auditService: AuditService,
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService,
+    private val eventsServiceJS: EventsServiceJS,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
     private val stageService: StageService,
@@ -120,8 +121,8 @@ class NetworkRepository(
     }
 
 
-    suspend fun addNewEvent(event: NewEventDto): Response<String> {
-        return eventsService.addNewEvent(event)
+    suspend fun addNewEvent(event: NewEventDto): Response<Any> {
+        return eventsServiceJS.addNewEvent(event)
     }
 
     suspend fun editEvent(event: EditEventDto, id: Long): Response<String> {
