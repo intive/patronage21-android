@@ -1,5 +1,7 @@
 package com.intive.repository
 
+import com.intive.repository.database.audits.AuditEntity
+import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.domain.model.NewEvent
@@ -12,12 +14,14 @@ import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.GradebookDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
+import java.time.OffsetDateTime
 
 interface Repository {
 
     val usersMapper: UserDtoMapper
     val auditsMapper: AuditDtoMapper
     val gradebookMapper: GradebookDtoMapper
+    val auditsEntityMapper: AuditEntityMapper
 
     suspend fun getTechnologies(): List<String>
     suspend fun getTechnologyGroups(): List<GroupParcelable>
@@ -47,6 +51,10 @@ interface Repository {
     suspend fun updateUser(user: User): Response<String>
 
     suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse
+    suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity>
+    suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity>
+    suspend fun getAudits(): List<Audit>
+    suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String)
 
     suspend fun addNewEvent(event: NewEvent): Response<Any>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>

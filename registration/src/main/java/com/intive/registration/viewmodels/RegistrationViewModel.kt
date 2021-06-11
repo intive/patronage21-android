@@ -11,6 +11,7 @@ import com.intive.repository.util.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.time.OffsetDateTime
 
 class RegistrationViewModel(
     private val repository: Repository,
@@ -173,6 +174,7 @@ class RegistrationViewModel(
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
+                    repository.insertAudit("Rejestracja", OffsetDateTime.now(), login.value!!)
                     _responseState.value = Resource.Success("")
                 } else {
                     val responseCode = receivedResponse.code()

@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.audits.AuditEntity
 import com.intive.repository.database.technologies.TechnologyEntity
+import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.network.response.AuditResponse
@@ -16,11 +18,13 @@ import com.intive.repository.network.response.GradebookResponse
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
 import retrofit2.Response
+import java.time.OffsetDateTime
 
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
     auditMapper: AuditDtoMapper,
+    auditEntityMapper: AuditEntityMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
@@ -138,16 +142,59 @@ class RepositoryImpl(
     }
 
     override val auditsMapper: AuditDtoMapper = auditMapper
+    override val auditsEntityMapper: AuditEntityMapper = auditEntityMapper
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
         return networkRepository.searchAudits(page, query, sortBy)
     }
 
+    override suspend fun getAudits(): List<Audit> {
+        val auditEntityList = databaseRepository.getAllAudits()
+        return when{
+            databaseRepository.getAuditsCount() > 0 -> {
+                auditEntityList.map {
+                    auditsEntityMapper.mapFromEntityModel(it)
+                }
+            }
+            else -> {
+                emptyList()
+            }
+        }
+    }
+
+    override suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity> {
+        val auditEntityList = databaseRepository.searchAuditsAsc(query, loadSize)
+        return when{
+            databaseRepository.getAuditsCount() > 0 -> {
+                auditEntityList
+            }
+            else -> {
+                emptyList()
+            }
+        }
+    }
+
+    override suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity> {
+        val auditEntityList = databaseRepository.searchAuditsAsc(query, loadSize)
+        return when{
+            databaseRepository.getAuditsCount() > 0 -> {
+                auditEntityList
+            }
+            else -> {
+                emptyList()
+            }
+        }
+    }
+
+    override suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String) {
+        databaseRepository.insert(auditsEntityMapper.mapToEntityModel(Audit("", title, date, userName)))
+    }
+
     override suspend fun getTechnologies(): List<String> {
 
         when {
-            isCachingEnabled() && databaseRepository.getCount() > 0  -> {
+            isCachingEnabled() && databaseRepository.getTechnologiesCount() > 0  -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }
