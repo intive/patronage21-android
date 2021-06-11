@@ -7,11 +7,8 @@ import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,7 +16,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
 import com.intive.calendar.viewmodels.AddEditEventViewModel
@@ -36,7 +32,8 @@ fun EventForm(
     onClick: () -> Unit
 ) {
 
-    val date by addEditEventViewModel.date.observeAsState()
+    val dateStart by addEditEventViewModel.dateStart.observeAsState()
+    val dateEnd by addEditEventViewModel.dateEnd.observeAsState()
     val hourStart by addEditEventViewModel.hourStart.observeAsState()
     val hourEnd by addEditEventViewModel.hourEnd.observeAsState()
     val minutesStart by addEditEventViewModel.minutesStart.observeAsState()
@@ -54,13 +51,23 @@ fun EventForm(
     val hour = c[Calendar.HOUR_OF_DAY]
     val minute = c[Calendar.MINUTE]
 
-    val datePickerDialog = DatePickerDialog(
+    val startDatePickerDialog = DatePickerDialog(
         context, { _: DatePicker, year: Int, month: Int, day: Int ->
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, month)
             calendar.set(Calendar.DAY_OF_MONTH, day)
-            addEditEventViewModel.setDate(calendar)
+            addEditEventViewModel.setStartDate(calendar)
+        }, year, month, day
+    )
+
+    val endDatePickerDialog = DatePickerDialog(
+        context, { _: DatePicker, year: Int, month: Int, day: Int ->
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, day)
+            addEditEventViewModel.setEndDate(calendar)
         }, year, month, day
     )
 
@@ -102,21 +109,8 @@ fun EventForm(
                         )
 
                         Column(modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-                            PickerRow(
-                                stringResource(R.string.date_label),
-                                getDateString(date!!, "."),
-                                datePickerDialog
-                            )
-                            PickerRow(
-                                stringResource(R.string.start_hour_label),
-                                "$hourStart:$minutesStart",
-                                startTimePickerDialog
-                            )
-                            PickerRow(
-                                stringResource(R.string.end_hour_label),
-                                "$hourEnd:$minutesEnd",
-                                endTimePickerDialog
-                            )
+                            PickerRow(stringResource(R.string.event_start_date_label), getDateString(dateStart!!, "."), "$hourStart:$minutesStart", startDatePickerDialog, startTimePickerDialog)
+                            PickerRow(stringResource(R.string.event_end_date_label), getDateString(dateEnd!!, "."), "$hourEnd:$minutesEnd", endDatePickerDialog, endTimePickerDialog)
                         }
 
                         Text(

@@ -32,10 +32,13 @@ class AddEditEventViewModel(
     }
 
     private val c: Calendar = Calendar.getInstance()
-    private val hour = c[Calendar.HOUR_OF_DAY]
+    private var hour = c[Calendar.HOUR_OF_DAY]
 
-    private val _date = MutableLiveData(Calendar.getInstance())
-    val date: LiveData<Calendar> = _date
+    private val _dateStart = MutableLiveData(Calendar.getInstance())
+    val dateStart: LiveData<Calendar> = _dateStart
+
+    private val _dateEnd = MutableLiveData(Calendar.getInstance())
+    val dateEnd: LiveData<Calendar> = _dateEnd
 
     private val _hourStart = MutableLiveData("$hour")
     var hourStart: LiveData<String> = _hourStart
@@ -89,8 +92,12 @@ class AddEditEventViewModel(
         _descriptionValue.value = value
     }
 
-    fun setDate(value: Calendar) {
-        _date.value = value
+    fun setStartDate(value: Calendar) {
+        _dateStart.value = value
+    }
+
+    fun setEndDate(value: Calendar) {
+        _dateEnd.value = value
     }
 
     fun setTimeStart(hour: Int, minutes: Int) {
@@ -110,19 +117,15 @@ class AddEditEventViewModel(
     }
 
     private fun isDateValid(): Boolean {
-        val today: Calendar = Calendar.getInstance()
-        val startDate = _date.value?.clone() as Calendar
-        _hourStart.value?.let { _date.value?.set(Calendar.HOUR, it.toInt()) }
-        _minutesStart.value?.let { _date.value?.set(Calendar.MINUTE, it.toInt()) }
-        return today.before(_date.value) && !startDate.before(Calendar.getInstance())
-    }
-
-    private fun isTimeValid(): Boolean {
-
-        val endDate = _date.value?.clone() as Calendar
-        _hourEnd.value?.let { endDate.set(Calendar.HOUR, it.toInt()) }
+        val today = Calendar.getInstance()
+        val startDate = _dateStart.value?.clone() as Calendar
+        _hourStart.value?.let { startDate.set(Calendar.HOUR_OF_DAY, it.toInt()) }
+        _minutesStart.value?.let { startDate.set(Calendar.MINUTE, it.toInt()) }
+        val endDate = _dateEnd.value?.clone() as Calendar
+        _hourEnd.value?.let { endDate.set(Calendar.HOUR_OF_DAY, it.toInt()) }
         _minutesEnd.value?.let { endDate.set(Calendar.MINUTE, it.toInt()) }
-        return !endDate.before(_date.value)
+
+        return !startDate.before(today) && endDate.after(startDate)
     }
 
     private fun areCheckboxesValid(): Boolean {
@@ -133,14 +136,11 @@ class AddEditEventViewModel(
         return _inputValue.value != ""
     }
 
-
     private fun isFormValid(): Boolean {
         if (!isInputValid()) {
             showSnackbar(EventChannel.InvalidInput)
         } else if (!isDateValid()) {
             showSnackbar(EventChannel.InvalidDate)
-        } else if (!isTimeValid()) {
-            showSnackbar(EventChannel.InvalidTime)
         } else if (!areCheckboxesValid()) {
             showSnackbar(EventChannel.InvalidCheckboxes)
         } else {
@@ -158,8 +158,8 @@ class AddEditEventViewModel(
         val description = _descriptionValue.value!!
         val timeStart = "${_hourStart.value!!}:${_minutesStart.value!!}:00"
         val timeEnd = "${_hourEnd.value!!}:${_minutesEnd.value!!}:00"
-        val dateStart = getDateAndTimeString(_date.value!!, timeStart)
-        val dateEnd = getDateAndTimeString(_date.value!!, timeEnd)
+        val dateStart = getDateAndTimeString(_dateStart.value!!, timeStart)
+        val dateEnd = getDateAndTimeString(_dateEnd.value!!, timeEnd)
 
         if (isFormValid()) {
             val newEvent = NewEvent(name, description, dateStart, dateEnd)
@@ -192,7 +192,7 @@ class AddEditEventViewModel(
         popBackStack: () -> Unit,
         id: Long
     ) {
-        val date = getDateString(_date.value!!)
+        val date = getDateString(_dateStart.value!!)
         val timeStart = timeToString(_hourStart.value!!, _minutesStart.value!!)
         val timeEnd = timeToString(_hourEnd.value!!, _minutesEnd.value!!)
         val name = _inputValue.value!!

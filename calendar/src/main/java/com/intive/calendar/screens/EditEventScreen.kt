@@ -23,7 +23,7 @@ fun EditEventScreen(
 
     val time = extractTimeFromString(event.time)
 
-    addEditEventViewModel.setDate(stringToCalendar(event.date))
+    addEditEventViewModel.setStartDate(stringToCalendar(event.date))
     addEditEventViewModel.setInputValue(event.name)
     addEditEventViewModel.setTimeStart(time[0], time[1])
     addEditEventViewModel.setTimeEnd(time[2], time[3])
