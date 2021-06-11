@@ -2,6 +2,7 @@ package com.intive.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.paging.PagingSource
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
 import com.intive.repository.database.audits.AuditEntity
@@ -149,52 +150,20 @@ class RepositoryImpl(
         return networkRepository.searchAudits(page, query, sortBy)
     }
 
-    override suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity> {
-        val auditEntityList = databaseRepository.getAllAuditsAsc(loadSize)
-        return when{
-            databaseRepository.getAuditsCount() > 0 -> {
-                auditEntityList
-            }
-            else -> {
-                emptyList()
-            }
-        }
+    override fun getAllAuditsAsc(): PagingSource<Int, AuditEntity> {
+        return databaseRepository.getAllAuditsAsc()
     }
 
-    override suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity> {
-        val auditEntityList = databaseRepository.getAllAuditsDesc(loadSize)
-        return when{
-            databaseRepository.getAuditsCount() > 0 -> {
-                auditEntityList
-            }
-            else -> {
-                emptyList()
-            }
-        }
+    override fun getAllAuditsDesc(): PagingSource<Int, AuditEntity> {
+        return databaseRepository.getAllAuditsDesc()
     }
 
-    override suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity> {
-        val auditEntityList = databaseRepository.searchAuditsAsc(query, loadSize)
-        return when{
-            databaseRepository.getAuditsCount() > 0 -> {
-                auditEntityList
-            }
-            else -> {
-                emptyList()
-            }
-        }
+    override fun searchAuditsAsc(query: String): PagingSource<Int, AuditEntity> {
+        return databaseRepository.searchAuditsAsc(query)
     }
 
-    override suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity> {
-        val auditEntityList = databaseRepository.searchAuditsDesc(query, loadSize)
-        return when{
-            databaseRepository.getAuditsCount() > 0 -> {
-                auditEntityList
-            }
-            else -> {
-                emptyList()
-            }
-        }
+    override fun searchAuditsDesc(query: String): PagingSource<Int, AuditEntity> {
+        return databaseRepository.searchAuditsDesc(query)
     }
 
     override suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String) {

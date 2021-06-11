@@ -1,5 +1,6 @@
 package com.intive.repository.database
 
+import androidx.paging.PagingSource
 import com.intive.repository.database.audits.AuditDao
 import com.intive.repository.database.audits.AuditEntity
 import com.intive.repository.database.technologies.TechnologyDao
@@ -24,24 +25,19 @@ class DatabaseRepository(
         return technologyDao.getCount()
     }
 
-    suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity> =
-        auditDao.getAllAuditsAsc(loadSize)
+    fun getAllAuditsAsc(): PagingSource<Int, AuditEntity> =
+        auditDao.getAllAuditsAsc()
 
-    suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity> =
-        auditDao.getAllAuditsDesc(loadSize)
+    fun getAllAuditsDesc(): PagingSource<Int, AuditEntity> =
+        auditDao.getAllAuditsDesc()
 
-    suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity> =
-        auditDao.searchAuditsAsc(query, loadSize)
+    fun searchAuditsAsc(query: String): PagingSource<Int, AuditEntity> =
+        auditDao.searchAuditsAsc(query)
 
-    suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity> =
-        auditDao.searchAuditsDesc(query, loadSize)
+    fun searchAuditsDesc(query: String): PagingSource<Int, AuditEntity> =
+        auditDao.searchAuditsDesc(query)
 
     suspend fun insert(audit: AuditEntity){
         auditDao.insert(audit)
     }
-
-    suspend fun getAuditsCount(): Int  {
-        return auditDao.getCount()
-    }
-
 }
