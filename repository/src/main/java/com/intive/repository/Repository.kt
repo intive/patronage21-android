@@ -50,10 +50,11 @@ interface Repository {
     suspend fun deactivateUser(login: String): Response<String>
     suspend fun updateUser(user: User): Response<String>
 
+    suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity>
+    suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity>
     suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse
     suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity>
     suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity>
-    suspend fun getAudits(): List<Audit>
     suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String)
 
     suspend fun addNewEvent(event: NewEvent): Response<Any>

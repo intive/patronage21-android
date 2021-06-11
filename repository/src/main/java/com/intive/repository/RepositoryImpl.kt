@@ -149,13 +149,23 @@ class RepositoryImpl(
         return networkRepository.searchAudits(page, query, sortBy)
     }
 
-    override suspend fun getAudits(): List<Audit> {
-        val auditEntityList = databaseRepository.getAllAudits()
+    override suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity> {
+        val auditEntityList = databaseRepository.getAllAuditsAsc(loadSize)
         return when{
             databaseRepository.getAuditsCount() > 0 -> {
-                auditEntityList.map {
-                    auditsEntityMapper.mapFromEntityModel(it)
-                }
+                auditEntityList
+            }
+            else -> {
+                emptyList()
+            }
+        }
+    }
+
+    override suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity> {
+        val auditEntityList = databaseRepository.getAllAuditsDesc(loadSize)
+        return when{
+            databaseRepository.getAuditsCount() > 0 -> {
+                auditEntityList
             }
             else -> {
                 emptyList()
@@ -176,7 +186,7 @@ class RepositoryImpl(
     }
 
     override suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity> {
-        val auditEntityList = databaseRepository.searchAuditsAsc(query, loadSize)
+        val auditEntityList = databaseRepository.searchAuditsDesc(query, loadSize)
         return when{
             databaseRepository.getAuditsCount() > 0 -> {
                 auditEntityList

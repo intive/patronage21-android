@@ -18,11 +18,17 @@ class AuditsPagingSource(
         return try {
             val position = params.key ?: INITIAL_PAGE_INDEX
             val auditResponse =
-                when (sortBy) {
-                    "desc" -> repository.searchAuditsDesc(query, params.loadSize)
-                    else -> repository.searchAuditsAsc(query, params.loadSize)
+                if(query.isEmpty()){
+                    when (sortBy) {
+                        "desc" -> repository.getAllAuditsDesc(params.loadSize)
+                        else -> repository.getAllAuditsAsc(params.loadSize)
+                    }
+                }else{
+                    when (sortBy) {
+                        "desc" -> repository.searchAuditsDesc(query, params.loadSize)
+                        else -> repository.searchAuditsAsc(query, params.loadSize)
+                    }
                 }
-
 
             LoadResult.Page(
                 data = repository.auditsEntityMapper.toModelList(auditResponse),

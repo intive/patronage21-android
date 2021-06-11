@@ -6,13 +6,16 @@ import androidx.room.Query
 
 @Dao
 interface AuditDao {
-    @Query("SELECT * FROM audits_table ORDER BY id ASC")
-    fun getAllAudits(): List<AuditEntity>
+    @Query("SELECT * FROM audits_table ORDER BY id ASC LIMIT :loadSize")
+    suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity>
 
-    @Query("SELECT * FROM audits_table WHERE title LIKE:query ORDER BY id ASC LIMIT :loadSize")
+    @Query("SELECT * FROM audits_table ORDER BY id DESC LIMIT :loadSize")
+    suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity>
+
+    @Query("SELECT * FROM audits_table WHERE title LIKE:query ORDER BY date ASC LIMIT :loadSize")
     suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity>
 
-    @Query("SELECT * FROM audits_table WHERE title LIKE:query ORDER BY id DESC LIMIT :loadSize")
+    @Query("SELECT * FROM audits_table WHERE title LIKE:query ORDER BY date DESC LIMIT :loadSize")
     suspend fun searchAuditsDesc(query: String, loadSize: Int): List<AuditEntity>
 
     @Insert

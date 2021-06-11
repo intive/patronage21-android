@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class RegistrationViewModel(
     private val repository: Repository,
@@ -174,7 +176,9 @@ class RegistrationViewModel(
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
-                    repository.insertAudit("Rejestracja", OffsetDateTime.now(), login.value!!)
+                    val dateFormat = "uuuu-MM-dd'T'HH:mm:ssXXXXX"
+                    val format = DateTimeFormatter.ofPattern(dateFormat, Locale.GERMAN)
+                    repository.insertAudit("Rejestracja", OffsetDateTime.parse(OffsetDateTime.now().format(format)), login.value!!)
                     _responseState.value = Resource.Success("")
                 } else {
                     val responseCode = receivedResponse.code()

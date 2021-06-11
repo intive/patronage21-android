@@ -11,7 +11,7 @@ class AuditEntityMapper {
 
     fun mapToEntityModel(model: Audit): AuditEntity{
         return AuditEntity(
-            id = 1,
+            id = 0,
             title = model.title,
             date = model.date.toString(),
             userName = model.userName

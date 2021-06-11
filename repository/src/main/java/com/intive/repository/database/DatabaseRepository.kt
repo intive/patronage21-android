@@ -24,8 +24,11 @@ class DatabaseRepository(
         return technologyDao.getCount()
     }
 
-    fun getAllAudits(): List<AuditEntity> =
-        auditDao.getAllAudits()
+    suspend fun getAllAuditsAsc(loadSize: Int): List<AuditEntity> =
+        auditDao.getAllAuditsAsc(loadSize)
+
+    suspend fun getAllAuditsDesc(loadSize: Int): List<AuditEntity> =
+        auditDao.getAllAuditsDesc(loadSize)
 
     suspend fun searchAuditsAsc(query: String, loadSize: Int): List<AuditEntity> =
         auditDao.searchAuditsAsc(query, loadSize)
