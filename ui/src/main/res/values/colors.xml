@@ -8,6 +8,8 @@
     <color name="light_blue700">#0288d1</color>
     <color name="red800">#c62828</color>
     <color name="pale_blue">#bce6ff</color>
+    <color name="very_pale_blue">#eef5fb</color>
+
 
     <color name="dark_green">#008c00</color>
     <color name="dark_red">#bf0000</color>

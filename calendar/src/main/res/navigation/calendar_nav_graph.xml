@@ -8,7 +8,7 @@
         android:id="@+id/calendarFragment"
         android:name="com.intive.calendar.fragments.CalendarHomeFragment"
         android:label="CalendarFragment">
-        <deepLink app:uri="intive://calendarFragment" />
+
 
         <action
             android:id="@+id/action_calendarFragment_to_eventFragment"
@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_calendarFragment_to_dayFragment"
             app:destination="@id/dayFragment" />
+        <deepLink
+            android:id="@+id/calendarDeepLink"
+            app:uri="https://patronative.page.link/calendarFragment" />
     </fragment>
 
     <fragment
@@ -40,7 +43,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
 
-        <deepLink android:id="@+id/eventDeepLink" app:uri="intive://eventFragment/{eventInfo}" />
+        <deepLink
+            android:id="@+id/eventDeepLink"
+            app:uri="intive://eventFragment/{eventInfo}" />
     </fragment>
 
     <fragment

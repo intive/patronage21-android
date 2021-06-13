@@ -6,6 +6,7 @@ import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.model.*
 import retrofit2.Response
 import com.intive.repository.domain.model.GroupParcelable
+import com.intive.repository.domain.model.User
 import com.intive.repository.network.response.*
 import com.intive.repository.network.response.UsersResponse
 import retrofit2.http.Body
@@ -17,6 +18,7 @@ class NetworkRepository(
     private val auditService: AuditService,
     private val technologyGroupsService: TechnologyGroupsService,
     private val eventsService: EventsService,
+    private val eventsServiceJS: EventsServiceJS,
     private val registrationService: RegistrationService,
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
     private val stageService: StageService,
@@ -87,6 +89,21 @@ class NetworkRepository(
         return usersService.deactivateUser(login)
     }
 
+    suspend fun updateUser(user: User): Response<String> {
+        return usersService.updateUser(
+            UpdateUserDto(
+                firstName = user.firstName,
+                lastName = user.lastName,
+                login = user.login,
+                projects = user.projects,
+                email = user.email,
+                phoneNumber = user.phoneNumber,
+                gitHubUrl = user.github,
+                bio = user.bio
+            )
+        )
+    }
+
     suspend fun getTechnologies(): TechnologiesList {
         return technologyGroupsServiceJava.getTechnologies()
     }
@@ -104,8 +121,8 @@ class NetworkRepository(
     }
 
 
-    suspend fun addNewEvent(event: NewEventDto): Response<String> {
-        return eventsService.addNewEvent(event)
+    suspend fun addNewEvent(event: NewEventDto): Response<Any> {
+        return eventsServiceJS.addNewEvent(event)
     }
 
     suspend fun editEvent(event: EditEventDto, id: Long): Response<String> {

@@ -1,0 +1,26 @@
+name: Beta Release
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.2'
+          bundler-cache: true
+      - run: bundle install
+      - run: fastlane env
+      - run: fastlane install_plugins --verbose
+      - uses: maierj/fastlane-action@v2.0.1
+        env:
+          RELEASE_KEY: ${{ secrets.RELEASE_KEY }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+        with:
+          lane: 'beta'

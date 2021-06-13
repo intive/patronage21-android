@@ -1,6 +1,6 @@
 package com.intive.calendar.utils
 
-fun formatTime(hour: Int, minutes: Int): Pair<String, String> {
+fun formatTime(hour: Int, minutes: Int): String {
 
     val hourString = when {
         hour < 10 -> "0$hour"
@@ -13,7 +13,7 @@ fun formatTime(hour: Int, minutes: Int): Pair<String, String> {
         else -> "$minutes"
     }
 
-    return Pair(hourString, minutesString)
+    return "$hourString:$minutesString"
 }
 
 fun timeToString(hour: String, minutes: String): String {

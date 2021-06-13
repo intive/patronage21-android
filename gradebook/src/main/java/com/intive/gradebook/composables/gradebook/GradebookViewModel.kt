@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.intive.repository.Repository
 import com.intive.repository.domain.model.Gradebook
+import com.intive.repository.domain.model.GroupEntity
 import com.intive.repository.network.GRADEBOOK_PAGE_SIZE
 import com.intive.repository.network.GradebookSource
 import com.intive.repository.util.DispatcherProvider
@@ -24,13 +25,16 @@ class GradebookViewModel(
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    private val _techGroups: MutableState<Resource<List<String>>> =
+    private val _techGroups: MutableState<Resource<List<GroupEntity>>> =
         mutableStateOf(Resource.Loading())
-    val techGroups: State<Resource<List<String>>> = _techGroups
+    val techGroups: State<Resource<List<GroupEntity>>> = _techGroups
 
     var groupStorage = "all"
     var sortbyStorage = "alpha"
-    private val selectedGroupSort: MutableStateFlow<String> = MutableStateFlow("all:alpha")
+    var stage = "null"
+
+    private val selectedGroupSort: MutableStateFlow<String> =
+        MutableStateFlow(groupStorage + ":" + sortbyStorage)
 
     @ExperimentalCoroutinesApi
     var participants: Flow<PagingData<Gradebook>> = selectedGroupSort.flatMapLatest { g ->
@@ -42,42 +46,22 @@ class GradebookViewModel(
     }
 
     init {
-        viewModelScope.launch {
-            _techGroups.value = withContext(dispatchers.io) {
-                try {
-                    val response = repository.getTechnologies()
-                    Resource.Success(response)
-                } catch (e: Exception) {
-                    Resource.Error(e.localizedMessage)
-                }
-            }
-        }
+        getTechGroups()
     }
 
-    fun onTechGroupsRetryClicked() {
-
-        _techGroups.value = Resource.Loading()
-
-        viewModelScope.launch {
-            _techGroups.value = withContext(dispatchers.io) {
-                try {
-                    val response = repository.getTechnologies()
-                    Resource.Success(response)
-                } catch (e: Exception) {
-                    Resource.Error(e.localizedMessage)
-                }
-            }
-        }
+    fun onTechGroupsRetryClicked() = viewModelScope.launch(dispatchers.io) {
+        getTechGroups()
     }
 
-    fun onTechGroupsChanged(group: String) {
-        println(group)
-        if (group == "Wszystkie grupy")
+    fun onTechGroupsChanged(group: String?) {
+        if (group == null)
+            groupStorage = "all"
+        else if (group == "Wszystkie grupy")
             groupStorage = "all"
         else if (group == "Mobile (Android)")
             groupStorage = "android"
         else
-            groupStorage = group.toLowerCase(Locale.ROOT)
+            groupStorage = group!!.toLowerCase(Locale.ROOT)
         viewModelScope.launch {
             selectedGroupSort.emit(groupStorage + ":" + sortbyStorage)
         }
@@ -93,6 +77,21 @@ class GradebookViewModel(
             sortbyStorage = "asc"
         viewModelScope.launch {
             selectedGroupSort.emit(groupStorage + ":" + sortbyStorage)
+        }
+    }
+
+    private fun getTechGroups() {
+        viewModelScope.launch {
+            _techGroups.value = withContext(dispatchers.io) {
+                try {
+                    val response = repository.getTechnologies().map { group ->
+                        GroupEntity(group, group)
+                    }
+                    Resource.Success(response)
+                } catch (e: Exception) {
+                    Resource.Error(e.localizedMessage)
+                }
+            }
         }
     }
 }

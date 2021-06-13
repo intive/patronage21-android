@@ -12,34 +12,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.intive.ui.components.HeaderWithCount
-import com.intive.users.presentation.details.DetailsViewModel
 import com.intive.users.R
-import com.intive.repository.domain.model.User
-import com.intive.ui.components.LayoutContainer
-import com.intive.ui.components.PrimaryButton
-import com.intive.ui.components.SecondaryButton
-import com.intive.ui.components.Divider
+import com.intive.repository.util.Resource
+import com.intive.shared.decodeBase64IntoBitmap
+import com.intive.ui.components.*
+import com.intive.users.presentation.user.UserViewModel
 import com.intive.users.presentation.composables.ProjectListItem
 
 @Composable
 fun DetailsScreen(
     navController: NavController,
-    user: User,
-    viewModel: DetailsViewModel,
-    projects: List<DetailsViewModel.Project>
+    viewModel: UserViewModel
+) {
+    when(viewModel.user.value){
+        is Resource.Success -> {
+            SuccessScreen(
+                viewModel = viewModel,
+                navController = navController,
+            )
+        }
+        is Resource.Error -> Text(stringResource(id = R.string.unknown_error_occurred), color = Color.Red)
+        is Resource.Loading -> LoadingItem()
+    }
+}
+
+@Composable
+fun SuccessScreen(
+    viewModel: UserViewModel,
+    navController: NavController
 ) {
     val scrollState = rememberScrollState()
-
+    val user = viewModel.user.value.data!!
     LayoutContainer {
         Column(
             modifier = Modifier
@@ -54,7 +65,11 @@ fun DetailsScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
-                        bitmap = ImageBitmap.imageResource(id = R.drawable.aaa),
+                        bitmap = if(user.image != null) {
+                            user.image!!.decodeBase64IntoBitmap().asImageBitmap()
+                        } else {
+                            ImageBitmap.imageResource(id = R.drawable.aaa)
+                        },
                         contentDescription = stringResource(id = R.string.profile_picture),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -85,10 +100,10 @@ fun DetailsScreen(
             Column {
                 HeaderWithCount(
                     text = stringResource(R.string.projects),
-                    count = projects.size,
+                    count = user.projects.size,
                     showCount = true
                 )
-                projects.forEach { project ->
+                user.projects.forEach { project ->
                     ProjectListItem(project)
                     Divider()
                 }
@@ -145,7 +160,6 @@ fun DetailsScreen(
             }
         }
     }
-
 }
 
 @Composable

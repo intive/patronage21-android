@@ -6,8 +6,49 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
+
+@Composable
+fun ProvideDimens(
+    calendarDimensions: CalendarDimensions,
+    content: @Composable () -> Unit
+) {
+    val dimensionSet = remember { calendarDimensions }
+    CompositionLocalProvider(LocalAppDimens provides dimensionSet, content = content)
+}
+
+private val LocalAppDimens = staticCompositionLocalOf {
+    smallDimensions
+}
+
+class CalendarDimensions(
+    val calendar_header_font: TextUnit,
+    val response_button_font: TextUnit
+)
+
+val standardDimensions = CalendarDimensions(
+    calendar_header_font = 20.sp,
+    response_button_font = 16.sp
+)
+
+val smallDimensions = CalendarDimensions(
+    calendar_header_font = 16.sp,
+    response_button_font = 14.sp
+)
+
+object CalendarDimens {
+    val dimens: CalendarDimensions
+        @Composable
+        get() = LocalAppDimens.current
+}
+
 
 @Composable
 fun PatronativeTheme(
@@ -56,10 +97,18 @@ fun PatronativeTheme(
     )
     val myColors = colors ?: if (isDarkTheme) patronativeDarkPalette else patronativeLightPalette
 
-    MaterialTheme(
-        colors = myColors,
-        typography = PatronageTypography
-    ){
-        content()
+    val configuration = LocalConfiguration.current
+    val calendarDimensions =
+        if (configuration.screenWidthDp <= 320) smallDimensions else standardDimensions
+
+    ProvideDimens(calendarDimensions = calendarDimensions) {
+        MaterialTheme(
+            colors = myColors,
+            typography = PatronageTypography
+        ) {
+            content()
+        }
     }
 }
+
+

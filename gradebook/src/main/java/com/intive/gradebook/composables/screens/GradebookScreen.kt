@@ -40,14 +40,82 @@ fun GradebookScreen(
 ) {
     val (showDialog, setShowDialog) = remember { mutableStateOf(false) }
     val setting = remember { mutableStateOf("") }
+    val thirdColumn = remember { mutableStateOf("") }
+
+    if (viewModel.stage == "null") {
+        FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data))
+        {
+            Screen(viewModel, navController, setting, thirdColumn)
+            var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = {},
+                    text = {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        )
+                        {
+                            Text(
+                                text = stringResource(id = R.string.select_data),
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spinner(
+                                items = stringArrayResource(id = R.array.addcolumn_spinner).asList()
+                            ) {
+                                addedColumn = it
+                            }
+                        }
+                    },
+                    dismissButton = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            PrimaryButton(text = stringResource(R.string.save_data), onClick = {
+                                setting.value = addedColumn
+                                thirdColumn.value = addedColumn
+                                setShowDialog(false)
+                            })
+                        }
+                    },
+                    confirmButton = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            SecondaryButton(text = stringResource(R.string.cancel), onClick = {
+                                setShowDialog(false)
+                            })
+                        }
+                    }
+                )
+            }
+        }
+    } else {
+        setting.value = viewModel.stage
+        thirdColumn.value = "Etap " + setting.value
+        Screen(viewModel, navController, setting, thirdColumn)
+    }
+}
+
+@Composable
+fun Screen(
+    viewModel: GradebookViewModel,
+    navController: NavController,
+    setting: MutableState<String>,
+    thirdColumn: MutableState<String>
+) {
     val participants = viewModel.participants.collectAsLazyPagingItems()
     val groups = viewModel.techGroups.value
     val lazyListState = rememberLazyListState()
     Column {
         val modifier = Modifier.padding(
-            start = 30.dp,
-            end = 30.dp,
-            bottom = 8.dp,
+            start = 24.dp,
+            end = 24.dp,
+            bottom = 24.dp,
             top = 16.dp
         )
         LazyColumn(
@@ -57,36 +125,49 @@ fun GradebookScreen(
                 Column(
                     modifier = modifier
                 ) {
-                    ScreenInfo()
-                    Spacer(modifier = Modifier.padding(16.dp))
+                    if (viewModel.stage == "null") {
+                        IntroSection(stringResource(R.string.page_name),stringResource(R.string.description))
 
-                    when (groups) {
-                        is Resource.Success -> {
-                            var items = groups.data!!
-                                .toMutableList()
-                            items.add(0, "Wszystkie grupy")
-                            Spinner(
-                                items = items
-                            ) { group ->
-                                viewModel.onTechGroupsChanged(group)
+                        when (groups) {
+                            is Resource.Success -> {
+                                GroupSpinner(
+                                    items = groups.data!!
+                                ) { group ->
+                                    viewModel.onTechGroupsChanged(group.queryValue)
+                                }
+                            }
+                            is Resource.Error -> com.intive.ui.components.ErrorItem(
+                                message = stringResource(id = R.string.error_message),
+                            ) {
+                                viewModel.onTechGroupsRetryClicked()
+                            }
+                            is Resource.Loading -> {
+                                Box {
+                                    Spinner(listOf("")) {}
+                                    com.intive.ui.components.LoadingItem()
+                                }
                             }
                         }
-                        is Resource.Error -> com.intive.ui.components.ErrorItem(
-                            message = stringResource(id = R.string.error_message),
-                        ) {
-                            viewModel.onTechGroupsRetryClicked()
-                        }
-                        is Resource.Loading -> {
-                            Box {
-                                Spinner(listOf("")) {}
-                                com.intive.ui.components.LoadingItem()
-                            }
-                        }
+                        Spacer(modifier = Modifier.padding(16.dp))
+                    } else {
+                        var groupName = viewModel.groupStorage
+                        if (groupName == "java")
+                            groupName = "Java"
+                        else if (groupName == "javascript")
+                            groupName = "JavaScript"
+                        else if (groupName == "qa")
+                            groupName = "QA"
+                        else if (groupName == "android")
+                            groupName = "Mobile (Android)"
+                        var text = "Poniżej przedstawione są oceny z etapu " +
+                                viewModel.stage + " dla grupy " +
+                                groupName + "."
+                        viewModel.onTechGroupsChanged(viewModel.groupStorage)
+                        IntroSection(stringResource(R.string.page_name),text)
                     }
 
-                    Spacer(modifier = Modifier.padding(16.dp))
                     Spinner(
-                        items = stringArrayResource(id = R.array.sort_spinner).asList()
+                        items = stringArrayResource(id = R.array.users_sort_spinner).asList()
                     ) { sort ->
                         viewModel.onSortByChanged(sort)
                     }
@@ -96,15 +177,13 @@ fun GradebookScreen(
                 Column(
                     modifier = Modifier
                         .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp
+                            top = 16.dp
                         )
                 ) {
                     GradebookHeader(
                         text_col1 = stringResource(id = R.string.participants),
                         text_col2 = stringResource(id = R.string.average_grade),
-                        text_col3 = setting.value,
+                        text_col3 = thirdColumn.value,
                         showText2 = true,
                         showText3 = true,
                         fraction = 0.50f,
@@ -150,92 +229,13 @@ fun GradebookScreen(
                                     bundle
                                 )
                             }, addedColumn = setting.value)
-                            Divider(
-                                color = Color.LightGray,
-                                thickness = 2.dp,
-                                modifier = Modifier.padding(
-                                    start = 16.dp,
-                                    end = 16.dp
-                                )
-                            )
+                            Divider()
                         }
                     }
                 }
             }
+            item {Spacer(modifier = Modifier.padding(top = 24.dp, bottom = 24.dp))}
         }
-    }
-    FABLayout({ setShowDialog(true) }, stringResource(id = R.string.select_data), { })
-    var addedColumn = stringArrayResource(id = R.array.addcolumn_spinner)[0]
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = {},
-            text = {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                )
-                {
-                    Text(
-                        text = stringResource(id = R.string.select_data),
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spinner(
-                        items = stringArrayResource(id = R.array.addcolumn_spinner).asList()
-                    ) {
-                        addedColumn = it
-                    }
-                }
-            },
-            dismissButton = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Button(
-                        onClick = {
-                            setting.value = addedColumn
-                            setShowDialog(false)
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                        shape = RoundedCornerShape(24.dp),
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(200.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.save_data),
-                            color = Color.White,
-                            fontSize = 18.sp
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Button(
-                        onClick = {
-                            setShowDialog(false)
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
-                        shape = RoundedCornerShape(24.dp),
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(200.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.cancel),
-                            color = Color.White,
-                            fontSize = 18.sp
-                        )
-                    }
-                }
-            }
-        )
     }
 }
 

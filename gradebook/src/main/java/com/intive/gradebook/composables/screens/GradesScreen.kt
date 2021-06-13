@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,10 +63,7 @@ fun GradesScreen(
         )
         for (i in 0 until user.grades.size) {
             GradesListItem(user.gradeNames[i], user.grades[i], user.gradeReviews[i])
-            Divider(
-                color = Color.LightGray,
-                thickness = 2.dp
-            )
+            Divider()
         }
         Column {
             GradebookHeader(

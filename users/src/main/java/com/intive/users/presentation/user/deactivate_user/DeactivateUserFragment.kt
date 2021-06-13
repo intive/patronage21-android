@@ -1,4 +1,4 @@
-package com.intive.users.presentation.deactivate_user
+package com.intive.users.presentation.user.deactivate_user
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,14 +12,14 @@ import androidx.navigation.fragment.findNavController
 import com.intive.shared.NavigationViewModel
 import com.intive.ui.PatronativeTheme
 import com.intive.users.R
+import com.intive.users.presentation.user.UserViewModel
 import com.intive.users.presentation.composables.screens.DeactivateUserScreen
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DeactivateUserFragment : Fragment() {
 
-    private val viewModel by viewModel<DeactivateUserViewModel>()
+    private val viewModel by sharedViewModel<UserViewModel>()
     private val navigationViewModel by sharedViewModel<NavigationViewModel>()
 
     override fun onCreateView(
@@ -32,7 +32,6 @@ class DeactivateUserFragment : Fragment() {
                 PatronativeTheme {
                     DeactivateUserScreen(
                         viewModel = viewModel,
-                        navigationViewModel = navigationViewModel,
                         navController = findNavController()
                     )
                 }
@@ -46,13 +45,13 @@ class DeactivateUserFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.deactivateUserEvent.collect { event ->
                 when(event) {
-                    DeactivateUserViewModel.DeactivateUserEvent.NavigateToRegistrationScreen -> {
+                    UserViewModel.DeactivateUserEvent.NavigateToRegistrationScreen -> {
                         navigationViewModel.logoutUser()
                     }
-                    DeactivateUserViewModel.DeactivateUserEvent.ShowSuccessMessage -> {
+                    UserViewModel.DeactivateUserEvent.ShowSuccessMessage -> {
                         viewModel.shouldShowDeactivationSuccessfulDialog.value = true
                     }
-                    DeactivateUserViewModel.DeactivateUserEvent.ShowErrorMessage -> {
+                    UserViewModel.DeactivateUserEvent.ShowErrorMessage -> {
                         Toast.makeText(requireContext(), getString(R.string.an_error_occurred_during_deactivation), Toast.LENGTH_LONG).show()
                     }
                 }

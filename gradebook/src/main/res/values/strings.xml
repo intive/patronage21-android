@@ -19,7 +19,7 @@
         <item>"Grupa"</item>
         <item>"Ostatnia ocena"</item>
     </string-array>
-    <string-array name="sort_spinner">
+    <string-array name="users_sort_spinner">
         <item>"Alfabetycznie"</item>
         <item>"Od najwyższych ocen"</item>
         <item>"Od najniższych ocen"</item>

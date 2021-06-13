@@ -26,7 +26,6 @@ fun GradesListItem(gradeName: String, grade: Float, gradeReview: String) {
                 text = gradeName,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 16.dp)
                     .fillMaxWidth(0.9f)
             )
             Text(
@@ -34,14 +33,13 @@ fun GradesListItem(gradeName: String, grade: Float, gradeReview: String) {
                 fontWeight = FontWeight.Bold
             )
         }
-        Text(
+        /*Text(
             text = stringResource(R.string.ground),
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+            fontWeight = FontWeight.Bold
+        )*/
         Text(
             text = gradeReview,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.padding(top = 16.dp)
         )
     }
 }

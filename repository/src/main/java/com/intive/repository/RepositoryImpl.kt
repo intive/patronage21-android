@@ -133,6 +133,10 @@ class RepositoryImpl(
         return networkRepository.deactivateUser(login)
     }
 
+    override suspend fun updateUser(user: User): Response<String> {
+        return networkRepository.updateUser(user)
+    }
+
     override val auditsMapper: AuditDtoMapper = auditMapper
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -142,16 +146,17 @@ class RepositoryImpl(
 
     override suspend fun getTechnologies(): List<String> {
 
-        when (isCachingEnabled()) {
-            true -> {
+        when {
+            isCachingEnabled() && databaseRepository.getCount() > 0  -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }
-            false -> {
+            else -> {
                 val technologiesList = networkRepository.getTechnologies().groups
 
                 if (technologiesList.isNotEmpty()) {
                     enableCaching()
+                    databaseRepository.clearTechnologiesTable()
                     technologiesList.forEach {
                         databaseRepository.insert(TechnologyEntity(0, it))
                     }
@@ -199,7 +204,7 @@ class RepositoryImpl(
         networkRepository.sendRequestForCode(body)
     }
 
-    override suspend fun addNewEvent(event: NewEvent): Response<String> {
+    override suspend fun addNewEvent(event: NewEvent): Response<Any> {
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 

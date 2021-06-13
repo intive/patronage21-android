@@ -11,7 +11,6 @@
     <include app:graph="@navigation/tech_groups_nav_graph"/>
     <include app:graph="@navigation/gradebook_nav_graph"/>
 
-
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.intive.patronative.home_screen.HomeScreenFragment"

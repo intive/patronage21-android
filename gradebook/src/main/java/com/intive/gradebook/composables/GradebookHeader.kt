@@ -29,7 +29,7 @@ fun GradebookHeader(
     showCount: Boolean = false,
     showText2: Boolean = false,
     showText3: Boolean = false,
-    fraction: Float = 0.9f,
+    fraction: Float = 0.95f,
     fraction2: Float = 0.1f
 ) {
     Row(
@@ -39,15 +39,17 @@ fun GradebookHeader(
             .background(backgroundColor),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 12.dp)) {
             Text(
                 text = text_col1,
                 color = textColor,
                 fontSize = 18.sp,
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 modifier = Modifier
-                    .padding(start = 16.dp)
                     .fillMaxWidth(fraction)
+                    .align(Alignment.CenterVertically)
             )
             if (text_col3 != null && showText3) {
                 Text(
@@ -55,21 +57,27 @@ fun GradebookHeader(
                     color = textColor,
                     fontSize = 18.sp,
                     style = TextStyle(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.fillMaxWidth(fraction2)
+                    modifier = Modifier
+                        .fillMaxWidth(fraction2)
+                        .align(Alignment.CenterVertically)
                 )
             }
             if (count != null && showCount) {
                 Text(
                     text = count.toString(),
                     color = textColor,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
                 )
             } else if (text_col2 != null && showText2) {
                 Text(
                     text = text_col2,
                     color = textColor,
                     fontSize = 18.sp,
-                    style = TextStyle(fontWeight = FontWeight.Bold)
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
                 )
             }
         }
