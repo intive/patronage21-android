@@ -8,6 +8,7 @@ import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.response.GradebookResponse
+import com.intive.repository.network.response.RegistrationResponse
 import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.GradebookDtoMapper
@@ -53,7 +54,7 @@ interface Repository {
     suspend fun editEvent(event: EditEvent, id: Long): Response<String>
     suspend fun deleteEvent(id: Long): Response<String>
 
-    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String>
+    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<RegistrationResponse>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>
     suspend fun sendRequestForCode(email: String)
     suspend fun updateInviteResponse(inviteResponse: EventInviteResponse): Response<String>

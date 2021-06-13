@@ -33,7 +33,7 @@ private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
@@ -47,6 +47,7 @@ val repositoryModule = module {
     single { createEditEventsMapper() }
     single { createDispatchers() }
     single { createRegistrationService(get((named("mocklab")))) }
+    single { createRegistrationServiceJava(get(named("java"))) }
     single(named("java")){ createRetrofit2() }
     single { createTechnologiesJavaService(get(named("java"))) }
     single { createStageService(get((named("mocklab")))) }
@@ -150,6 +151,10 @@ fun createDispatchers(): DispatcherProvider = object : DispatcherProvider {
 
 private fun createRegistrationService(retrofit: Retrofit): RegistrationService {
     return retrofit.create(RegistrationService::class.java)
+}
+
+private fun createRegistrationServiceJava(retrofit: Retrofit): RegistrationServiceJava {
+    return retrofit.create(RegistrationServiceJava::class.java)
 }
 
 private fun createTechnologiesJavaService(retrofit: Retrofit): TechnologyGroupsServiceJava {

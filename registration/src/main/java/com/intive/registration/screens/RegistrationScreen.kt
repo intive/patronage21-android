@@ -84,7 +84,7 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
                     }
                     else -> {
                         Text(
-                            text = response.message ?: stringResource(R.string.error_occured),
+                            text = if(response.message.isNullOrEmpty()) stringResource(R.string.error_occured) else response.message!!,
                             color = Color.Red,
                             fontWeight = FontWeight.Bold
                         )

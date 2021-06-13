@@ -6,7 +6,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.TechnologyGroup
 import com.intive.repository.domain.model.UserRegistration
+import com.intive.repository.network.response.RegistrationResponse
 import com.intive.repository.util.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -164,17 +166,19 @@ class RegistrationViewModel(
                 lastName = lastName.value!!,
                 email = email.value!!,
                 phoneNumber = phoneNumber.value!!,
-                technologies = _technologiesList.toString(),
+                groups = _technologiesList.map { TechnologyGroup(it) },
                 login = login.value!!,
-                password = password.value!!, //hash??
                 githubUrl = githubUrl.value!!
             )
-            val receivedResponse: Response<String>
+            val receivedResponse: Response<RegistrationResponse>
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
                     _responseState.value = Resource.Success("")
                 } else {
+                    println("zły kod odp")
+                    println(receivedResponse.code())
+                    println(receivedResponse.body()?.violationErrors.isNullOrEmpty())
                     val responseCode = receivedResponse.code()
                     _responseState.value = when {
                         isServerError(responseCode) -> Resource.Error(SERVER_ERROR)
