@@ -5,8 +5,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.intive.repository.Repository
+import com.intive.repository.domain.model.TechnologyGroup
 import com.intive.repository.domain.model.UserRegistration
+import com.intive.repository.network.response.RegistrationResponse
 import com.intive.repository.util.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -155,37 +159,51 @@ class RegistrationViewModel(
     private val _responseState: MutableState<Resource<String>?> = mutableStateOf(null)
     val responseState: State<Resource<String>?> = _responseState
 
+    val _scrollUp: MutableState<Boolean> = mutableStateOf(false)
+    val scrollUp: State<Boolean> = _scrollUp
+
     fun sendDataToServer() {
         viewModelScope.launch(dispatchers.io) {
             _responseState.value = Resource.Loading()
             val user = UserRegistration(
-                gender = _title.value!!,
+                gender = _title.value ?: "MALE",
                 firstName = firstName.value!!,
                 lastName = lastName.value!!,
                 email = email.value!!,
                 phoneNumber = phoneNumber.value!!,
-                technologies = _technologiesList.toString(),
+                groups = _technologiesList.map { TechnologyGroup(it) },
                 login = login.value!!,
-                password = password.value!!, //hash??
-                githubUrl = githubUrl.value!!
+                gitHubUrl = githubUrl.value!!
             )
-            val receivedResponse: Response<String>
+            val receivedResponse: Response<RegistrationResponse>
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
                     _responseState.value = Resource.Success("")
                 } else {
+                    _scrollUp.value = true
+                    val gson = Gson()
+                    val type = object : TypeToken<RegistrationResponse>() {}.type
+                    var errorResponse: RegistrationResponse? = gson.fromJson(receivedResponse.errorBody()!!.charStream(), type)
+                    var message = ""
+                    for(error in errorResponse!!.violationErrors!!) {
+                        message += error.fieldName + "\n" + error.message + "\n\n"
+                    }
                     val responseCode = receivedResponse.code()
                     _responseState.value = when {
                         isServerError(responseCode) -> Resource.Error(SERVER_ERROR)
                         responseCode == RESPONSE_NOT_FOUND -> Resource.Error(RESPONSE_NOT_FOUND.toString())
-                        else -> Resource.Error(receivedResponse.message())
+                        else -> Resource.Error(message = message)
                     }
                 }
             } catch (ex: Exception) {
                 _responseState.value = Resource.Error(ex.localizedMessage)
             }
         }
+    }
+
+    fun resetScrolling() {
+        _scrollUp.value = false
     }
 
     fun resetResponseState() {

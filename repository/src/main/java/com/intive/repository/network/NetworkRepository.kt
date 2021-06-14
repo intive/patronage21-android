@@ -23,7 +23,8 @@ class NetworkRepository(
     private val technologyGroupsServiceJava: TechnologyGroupsServiceJava,
     private val stageService: StageService,
     private val stageDetailsService: StageDetailsService,
-    private val gradebookService: GradebookService
+    private val gradebookService: GradebookService,
+    private val registrationServiceJava: RegistrationServiceJava,
 ) {
     suspend fun getUsers(
         page: Int,
@@ -112,8 +113,8 @@ class NetworkRepository(
         return technologyGroupsService.getTechnologyGroups()
     }
 
-    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String> {
-        return registrationService.sendDataFromRegistrationForm(user)
+    suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<RegistrationResponse> {
+        return registrationServiceJava.sendDataFromRegistrationForm(user)
     }
 
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<EventDto> {
