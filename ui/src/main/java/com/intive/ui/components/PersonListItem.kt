@@ -11,12 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.intive.repository.domain.model.User
+import com.intive.shared.decodeBase64IntoBitmap
+import com.intive.ui.R
 
 
 @Composable
@@ -46,7 +49,11 @@ fun PersonListItem(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    bitmap = ImageBitmap.imageResource(id = com.intive.ui.R.drawable.aaa),
+                    bitmap = if(user.image != null) {
+                        user.image!!.decodeBase64IntoBitmap().asImageBitmap()
+                    } else {
+                        ImageBitmap.imageResource(id = R.drawable.aaa)
+                    },
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
