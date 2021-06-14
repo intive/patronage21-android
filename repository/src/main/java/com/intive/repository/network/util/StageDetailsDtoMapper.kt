@@ -9,6 +9,7 @@ class StageDetailsDtoMapper : DomainMapper<StageDetailsDto, StageDetails> {
         return StageDetails(
             id = model.id,
             name = model.name,
+            group = model.group,
             description = model.description,
             events = model.events,
             isStageCompleted = model.isStageCompleted,
@@ -21,6 +22,7 @@ class StageDetailsDtoMapper : DomainMapper<StageDetailsDto, StageDetails> {
         return StageDetailsDto(
             id = domainModel.id!!,
             name = domainModel.name!!,
+            group = domainModel.group!!,
             description = domainModel.description!!,
             events = domainModel.events,
             isStageCompleted = domainModel.isStageCompleted!!,
