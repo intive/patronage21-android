@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.database.Database
 import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.local.LocalRepository
 import com.intive.repository.local.SharedPreferenceSource
@@ -62,6 +63,7 @@ val repositoryModule = module {
     single { SharedPreferenceSource(get()) }
     single(named("js")){ createRetrofitJS() }
     single { createEventsJSService(get(named("js"))) }
+    single { createEventLogger(get()) }
 }
 
 val databaseModule = module {
@@ -180,6 +182,8 @@ private fun createGradebookService(retrofit: Retrofit): GradebookService {
 }
 
 private fun createGradebookMapper(): GradebookDtoMapper = GradebookDtoMapper()
+
+private fun createEventLogger(repository: Repository): EventLogger = EventLogger(repository)
 
 fun provideSharedPref(app: Application): SharedPreferences {
     return androidx.preference.PreferenceManager.getDefaultSharedPreferences(app)

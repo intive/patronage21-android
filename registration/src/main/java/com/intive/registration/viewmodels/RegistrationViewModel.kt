@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.intive.repository.Repository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.util.*
 import kotlinx.coroutines.launch
@@ -14,10 +15,12 @@ import retrofit2.Response
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.logging.Logger
 
 class RegistrationViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
+    private val eventLogger: EventLogger
 ) : ViewModel() {
 
     private val _availableTechnologies: MutableState<Resource<List<String>>> =
@@ -176,9 +179,7 @@ class RegistrationViewModel(
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
-                    val dateFormat = "uuuu-MM-dd'T'HH:mm:ssXXXXX"
-                    val format = DateTimeFormatter.ofPattern(dateFormat, Locale.GERMAN)
-                    repository.insertAudit("Rejestracja", OffsetDateTime.parse(OffsetDateTime.now().format(format)), login.value!!)
+                    eventLogger.log("Udana rejestracja", login.value!!)
                     _responseState.value = Resource.Success("")
                 } else {
                     val responseCode = receivedResponse.code()
@@ -187,6 +188,7 @@ class RegistrationViewModel(
                         responseCode == RESPONSE_NOT_FOUND -> Resource.Error(RESPONSE_NOT_FOUND.toString())
                         else -> Resource.Error(receivedResponse.message())
                     }
+                    eventLogger.log("Nie udana rejestracja", login.value!!)
                 }
             } catch (ex: Exception) {
                 _responseState.value = Resource.Error(ex.localizedMessage)

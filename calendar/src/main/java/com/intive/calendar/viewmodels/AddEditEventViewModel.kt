@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.*
 import com.intive.repository.Repository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.EditEvent
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.util.DispatcherProvider
@@ -20,7 +21,8 @@ import retrofit2.Response
 
 class AddEditEventViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
+    private val eventLogger: EventLogger
 ) : ViewModel() {
 
 
@@ -176,10 +178,12 @@ class AddEditEventViewModel(
                 }
 
                 if (response.isSuccessful) {
+                    eventLogger.log("Dodano wydarzenie: $name")
                     showSnackbar(EventChannel.AddEventSuccess)
                     refreshEventsList()
                     popBackStack()
                 } else {
+                    eventLogger.log("Błąd dodawania wydarzenia")
                     showSnackbar(EventChannel.AddEventError)
                 }
             }
