@@ -97,7 +97,12 @@ fun InputText(
             keyboardType = keyboardType
         ),
         keyboardActions = KeyboardActions(
-            onDone = {keyboardController?.hideSoftwareKeyboard()})
+            onDone = {
+                keyboardController?.hideSoftwareKeyboard()
+                inputStateChanged(
+                    if (isValid()) VALID else INVALID
+                )
+            })
     )
 }
 
