@@ -113,7 +113,7 @@ fun StageScreen(
                 Row(modifier = Modifier.padding(top = 24.dp)) {
                     PrimaryButton(
                         text = stringResource(R.string.check_gradebook_btn),
-                        onClick = { /*TODO*/ })
+                        onClick = { navController.navigate(Uri.parse("https://patronative.page.link/gradebookFragment/${stageDetails!!.group}/${stageDetails!!.name?.substringAfter(" ")}")) })
                 }
 
 
