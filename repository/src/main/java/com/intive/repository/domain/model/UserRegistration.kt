@@ -6,7 +6,7 @@ data class UserRegistration(
     val lastName: String,
     val email: String,
     val phoneNumber: String,
-    val githubUrl: String,
+    val gitHubUrl: String,
     val gender: String,
     val groups: List<TechnologyGroup>,
 )

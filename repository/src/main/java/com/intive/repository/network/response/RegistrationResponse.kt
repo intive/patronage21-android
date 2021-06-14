@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 class RegistrationResponse(
     @SerializedName("violationErrors")
-    val violationErrors: List<RegistrationError>) {
+    val violationErrors: List<RegistrationError>?) {
 }
 
 data class RegistrationError(
     @SerializedName("fieldName")
-    val fieldName: String,
+    val fieldName: String?,
     @SerializedName("rejectedValue")
-    val rejectedValue: String,
+    val rejectedValue: Any?,
     @SerializedName("message")
-    val message: String
+    val message: String?
 )
