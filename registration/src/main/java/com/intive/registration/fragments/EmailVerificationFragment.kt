@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.intive.registration.viewmodels.SharedViewModel
 import com.intive.ui.PatronativeTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+const val TIME_BETWEEN_CLICKS = 500 //milliseconds
 
 class EmailVerificationFragment : Fragment() {
 
@@ -25,11 +27,30 @@ class EmailVerificationFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val args: EmailVerificationFragmentArgs by navArgs()
 
+    private var lastBackPressed = System.currentTimeMillis()
+
+
     @ExperimentalComposeUiApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        //do not allow user back to registration form
+        //if user double click back button -> exit app
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if(System.currentTimeMillis()-lastBackPressed<=TIME_BETWEEN_CLICKS) {
+                        requireActivity().finish()
+                    }
+                    else {
+                        lastBackPressed = System.currentTimeMillis()
+                    }
+                }
+            }
+        )
         with(args) {
             viewModel.email = email
             viewModel.login = login
