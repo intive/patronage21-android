@@ -14,21 +14,34 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.intive.repository.domain.model.GroupParcelable
-import com.intive.repository.domain.model.Stage
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.intive.repository.util.Resource
 import com.intive.tech_groups.R
-
+import com.intive.tech_groups.presentation.viewmodels.GroupDetailsViewModel
 import com.intive.ui.components.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+
+@ExperimentalCoroutinesApi
+@FlowPreview
 @Composable
 fun GroupDetailsScreen(
-    group: GroupParcelable,
-    stageList: Resource<List<Stage>>?,
+    viewModel: GroupDetailsViewModel,
     getStageDetails: (Long) -> Unit,
     onGetStagesRetryClick: (String) -> Unit,
     navController: NavController? = null
 ) {
+
+    val group = viewModel.selectedGroup
+    val stageList = viewModel.stages.value
+    val totalLeaders = viewModel.totalLeaders
+    val leaders = viewModel.leaders.collectAsLazyPagingItems()
+    val totalCandidates = viewModel.totalCandidates
+    val candidates = viewModel.candidates.collectAsLazyPagingItems()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,9 +141,62 @@ fun GroupDetailsScreen(
                         modifier = Modifier
                             .padding(top = 16.dp),
                         text = stringResource(id = R.string.leaders),
-                        count = 0,
+                        count = when (totalLeaders.value) {
+                            is Resource.Loading -> 0
+                            is Resource.Error -> 0
+                            is Resource.Success -> totalLeaders.value.data
+                        },
                         showCount = true,
                     )
+                }
+
+                leaders.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
+                        }
+                        loadState.refresh is LoadState.Error -> {
+                            val e = leaders.loadState.refresh as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = stringResource(id = R.string.an_error_occurred),
+                                    modifier = Modifier.fillParentMaxWidth(),
+                                    onClickRetry = {
+                                        retry()
+                                        viewModel.onLeadersRetryClicked()
+                                    }
+                                )
+                            }
+                        }
+                        loadState.append is LoadState.Error -> {
+                            val e = leaders.loadState.append as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = stringResource(id = R.string.an_error_occurred),
+                                    onClickRetry = {
+                                        retry()
+                                        viewModel.onLeadersRetryClicked()
+                                    }
+                                )
+                            }
+                        }
+                        loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                            if (leaders.itemCount == 0) {
+                                item {
+                                    EmptyItem()
+                                }
+                            } else {
+                                items(leaders) { user ->
+                                    PersonListItem(
+                                        user = user!!,
+                                        onItemClick = {},
+                                        rowPadding = 0.dp
+                                    )
+                                    Divider()
+                                }
+                            }
+                        }
+                    }
                 }
 
                 item {
@@ -138,9 +204,62 @@ fun GroupDetailsScreen(
                         modifier = Modifier
                             .padding(top = 16.dp),
                         text = stringResource(id = R.string.candidates),
-                        count = 0,
+                        count = when (totalCandidates.value) {
+                            is Resource.Loading -> 0
+                            is Resource.Error -> 0
+                            is Resource.Success -> totalCandidates.value.data
+                        },
                         showCount = true,
                     )
+                }
+
+                candidates.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { LoadingView(modifier = Modifier.fillParentMaxWidth()) }
+                        }
+                        loadState.refresh is LoadState.Error -> {
+                            val e = candidates.loadState.refresh as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = stringResource(id = R.string.an_error_occurred),
+                                    modifier = Modifier.fillParentMaxWidth(),
+                                    onClickRetry = {
+                                        retry()
+                                        viewModel.onCandidatesRetryClicked()
+                                    }
+                                )
+                            }
+                        }
+                        loadState.append is LoadState.Error -> {
+                            val e = candidates.loadState.append as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = stringResource(id = R.string.an_error_occurred),
+                                    onClickRetry = {
+                                        retry()
+                                        viewModel.onCandidatesRetryClicked()
+                                    }
+                                )
+                            }
+                        }
+                        loadState.refresh is LoadState.NotLoading && loadState.refresh !is LoadState.Error -> {
+                            if (candidates.itemCount == 0) {
+                                item {
+                                    EmptyItem()
+                                }
+                            } else {
+                                items(candidates) { user ->
+                                    PersonListItem(
+                                        user = user!!,
+                                        onItemClick = {},
+                                        rowPadding = 0.dp
+                                    )
+                                    Divider()
+                                }
+                            }
+                        }
+                    }
                 }
 
                 item {

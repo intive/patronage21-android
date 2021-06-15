@@ -14,6 +14,8 @@ import com.intive.tech_groups.presentation.screens.GroupDetailsScreen
 import com.intive.tech_groups.presentation.viewmodels.GroupDetailsViewModel
 import com.intive.tech_groups.presentation.viewmodels.StageViewModel
 import com.intive.ui.PatronativeTheme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,28 +26,24 @@ class GroupDetailsFragment : Fragment(){
     private val groupDetailsViewModel: GroupDetailsViewModel by viewModel<GroupDetailsViewModel>()
     private val stageViewModel by sharedViewModel<StageViewModel>()
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
-//            val stageList = listOf(
-//                Stage("0","Etap I", "01.01-28.02.2021", "zakończony"),
-//                Stage("1","Etap II", "01.03-31.04.2021", "w trakcie"),
-//                Stage("2","Etap III", "01.05-31.06.2021", "nieaktywny"),
-//                Stage("3","Etap IV", "01.07-31.08.2021", "nieaktywny")
-//            )
+
 
             val safeArgs: GroupDetailsFragmentArgs by navArgs()
-            val group = safeArgs.groupParcelable!!
+            groupDetailsViewModel.selectedGroup = safeArgs.groupParcelable!!
 
-            groupDetailsViewModel.getStages(group.id)
+            groupDetailsViewModel.getStages(groupDetailsViewModel.selectedGroup.id)
 
             setContent {
                 PatronativeTheme {
                     GroupDetailsScreen(
-                        group,
-                        groupDetailsViewModel.stages.value,
+                        groupDetailsViewModel,
                         stageViewModel::getStageDetails,
                         groupDetailsViewModel::onGetStagesRetryClick,
                         findNavController()
