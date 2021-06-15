@@ -35,9 +35,11 @@ import kotlinx.coroutines.launch
 @ExperimentalComposeUiApi
 @Composable
 fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavController) {
+    var scrollUp = viewmodel.scrollUp.value
     val response = viewmodel.responseState.value
     val scrollState = rememberScrollState()
     val titles = stringArrayResource(R.array.titles_array).asList()
+    val titlesEng = stringArrayResource(R.array.titles_eng_array).asList()
     val firstName: String by viewmodel.firstName.observeAsState("")
     val lastName: String by viewmodel.lastName.observeAsState("")
     val email: String by viewmodel.email.observeAsState("")
@@ -84,13 +86,16 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
                     }
                     else -> {
                         Text(
-                            text = response.message ?: stringResource(R.string.error_occured),
+                            text = if(response.message.isNullOrEmpty()) stringResource(R.string.error_occured) else response.message!!,
                             color = Color.Red,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-                        coroutineScope.launch {
-                            scrollState.scrollTo(0)
+                        if(scrollUp) {
+                            viewmodel.resetScrolling()
+                            coroutineScope.launch {
+                                scrollState.scrollTo(0)
+                            }
                         }
                     }
                 }
@@ -102,8 +107,16 @@ fun RegistrationScreen(viewmodel: RegistrationViewModel, navController: NavContr
             title = stringResource(R.string.registration_title),
             text = stringResource(R.string.registration_subtitle)
         )
-        //Spacer(modifier = Modifier.height(SPACER_HEIGHT))
-        Spinner(items = titles, onTitleSelected = viewmodel::onTitleChange)
+        Spinner(
+            items = titles,
+            onTitleSelected = {
+                if(it == titles[0]) {
+                    viewmodel.onTitleChange(titlesEng[0])
+                }
+                else {
+                    viewmodel.onTitleChange(titlesEng[1])
+                }
+            })
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))
         FirstNameInput(firstName, viewmodel, formChecker)
         Spacer(modifier = Modifier.height(SPACER_HEIGHT))

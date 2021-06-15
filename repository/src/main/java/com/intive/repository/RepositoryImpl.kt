@@ -16,6 +16,7 @@ import com.intive.repository.local.LocalRepository
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.response.GradebookResponse
+import com.intive.repository.network.response.RegistrationResponse
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
 import retrofit2.Response
@@ -198,7 +199,7 @@ class RepositoryImpl(
         return networkRepository.getTechnologyGroups()
     }
 
-    override suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<String> {
+    override suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<RegistrationResponse> {
         return networkRepository.sendDataFromRegistrationForm(user)
     }
 

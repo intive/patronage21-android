@@ -50,4 +50,9 @@
         <item>Pan</item>
         <item>Pani</item>
     </string-array>
+
+    <string-array name="titles_eng_array">
+        <item>MALE</item>
+        <item>FEMALE</item>
+    </string-array>
 </resources>

@@ -3,6 +3,7 @@ package com.intive.repository.domain.model
 data class StageDetails(
     val id: Long?,
     val name: String?,
+    val group: String?,
     val description: String?,
     val events: List<Event>,
     val isStageCompleted: Boolean?,
