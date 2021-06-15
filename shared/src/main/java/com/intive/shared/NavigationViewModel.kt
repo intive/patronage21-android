@@ -15,7 +15,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class NavigationViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
     private val _loggedInChannel = Channel<LoginEvent>()
@@ -24,11 +25,16 @@ class NavigationViewModel(
     private val _loggedState: MutableState<LoginEvent> = mutableStateOf(LoginEvent.UserLoggedIn)
     val loggedState: State<LoginEvent> = _loggedState
 
+    private val _userLogin: MutableState<String?> = mutableStateOf(null)
+    val userLogin: State<String?> = _userLogin
+
+
     init {
         viewModelScope.launch {
             if(repository.isUserLogged()){
                 _loggedInChannel.send(LoginEvent.UserLoggedIn)
                 _loggedState.value = LoginEvent.UserLoggedIn
+                _userLogin.value = localRepository.getUserLoginOrNull()
             } else {
                 _loggedInChannel.send(LoginEvent.UserLoggedOut)
                 _loggedState.value = LoginEvent.UserLoggedOut
@@ -41,6 +47,7 @@ class NavigationViewModel(
         viewModelScope.launch {
             _loggedInChannel.send(LoginEvent.UserLoggedIn)
             _loggedState.value = LoginEvent.UserLoggedIn
+            _userLogin.value = localRepository.getUserLoginOrNull()
         }
     }
 

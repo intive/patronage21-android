@@ -51,6 +51,7 @@ class NavActivity : AppCompatActivity() {
             findViewById<ComposeView>(R.id.compose_view).setContent {
 
                 val loginState = navigationViewModel.loggedState.value
+                val userLogin = navigationViewModel.userLogin.value
 
                 PatronativeTheme {
                     PatronativeAppBar(
@@ -65,7 +66,7 @@ class NavActivity : AppCompatActivity() {
                                 Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.appbar_icons_spacer_size)))
 
                                 IconButton(onClick = {
-                                    navController?.navigate(Uri.parse("intive://userDetails/{login}"))
+                                    navController?.navigate(Uri.parse("intive://userDetails/$userLogin"))
                                 }) {
                                     Icon(
                                         Icons.Outlined.Person,
