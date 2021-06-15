@@ -27,7 +27,7 @@
             app:destination="@id/editUserFragment" />
 
         <deepLink
-            android:id="@+id/deepLink"
+            android:id="@+id/userDetailsDeepLink"
             app:uri="intive://userDetails/{login}" />
         <argument
             android:name="login"
