@@ -47,8 +47,6 @@ class NavActivity : AppCompatActivity() {
             Crashes::class.java
         )
 
-
-
         setContentView(R.layout.content_main).apply {
             findViewById<ComposeView>(R.id.compose_view).setContent {
 
