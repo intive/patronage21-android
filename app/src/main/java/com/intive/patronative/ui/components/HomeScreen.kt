@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.intive.patronative.R
 import com.intive.ui.PatronageTypography
 import com.intive.ui.components.BoxButton
+import com.intive.ui.components.Divider
 
 @Preview
 @Composable
@@ -122,16 +123,9 @@ fun HomeScreenBoxButtonsGrid(modifier: Modifier = Modifier, navController: NavCo
             }
             Spacer(modifier = modifier)
             Column (Modifier.weight(1f)) {
-                BoxButton(
-                    text = stringResource(R.string.registration_module),
-                    onClick = { navController?.navigate(Uri.parse("https://patronative.page.link/loginFragment")) }
-                ) {
-                    Icon(
-                        Icons.Outlined.PersonAdd,
-                        contentDescription = stringResource(R.string.registration_module_miniature_desc),
-                        Modifier.fillMaxSize(0.3f)
-                    )
-                }
+                Spacer(
+                    modifier = Modifier.fillMaxSize(0.3f)
+                )
             }
         }
     }
