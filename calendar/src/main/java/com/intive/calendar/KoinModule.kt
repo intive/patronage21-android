@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val calendarModule = module {
     viewModel { CalendarHomeViewModel(get(), get()) }
-    viewModel { AddEditEventViewModel(get(), get()) }
-    viewModel { EventViewModel(get(), get())}
+    viewModel { AddEditEventViewModel(get(), get(), get()) }
+    viewModel { EventViewModel(get(), get(), get())}
 }
 

@@ -46,8 +46,23 @@ class AuditViewModel(
         .distinctUntilChanged()
         .flatMapLatest { (query, sortBy) ->
             Pager(PagingConfig(pageSize = PAGE_SIZE)) {
-                AuditsSource(repository, query = query, sortBy = sortBy.name.toLowerCase(Locale.ROOT))
+                if (query.isEmpty()) {
+                    when (sortBy) {
+                        SortTypes.ASC -> repository.getAllAuditsAsc()
+                        else -> repository.getAllAuditsDesc()
+                    }
+                } else {
+                    when (sortBy) {
+                        SortTypes.ASC -> repository.searchAuditsAsc("$query%")
+                        else -> repository.searchAuditsDesc("$query%")
+                    }
+                }
             }.flow
+                .map {  pagingData ->
+                    pagingData.map { auditEntity ->
+                        repository.auditsEntityMapper.mapFromEntityModel(auditEntity)
+                    }
+                }
                 .cachedIn(viewModelScope)
         }
 
@@ -71,6 +86,7 @@ class AuditViewModel(
     }
 
     fun onSortByChanged(sort: String) {
+
         if (sort == "Od najnowszych")
             _sortBy.value = SortTypes.DESC
         else

@@ -1,5 +1,8 @@
 package com.intive.repository
 
+import androidx.paging.PagingSource
+import com.intive.repository.database.audits.AuditEntity
+import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.domain.model.Event
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.domain.model.NewEvent
@@ -13,12 +16,14 @@ import retrofit2.Response
 import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.GradebookDtoMapper
 import com.intive.repository.network.util.UserDtoMapper
+import java.time.OffsetDateTime
 
 interface Repository {
 
     val usersMapper: UserDtoMapper
     val auditsMapper: AuditDtoMapper
     val gradebookMapper: GradebookDtoMapper
+    val auditsEntityMapper: AuditEntityMapper
 
     suspend fun getTechnologies(): List<String>
     suspend fun getTechnologyGroups(): List<GroupParcelable>
@@ -47,7 +52,12 @@ interface Repository {
     suspend fun deactivateUser(login: String): Response<String>
     suspend fun updateUser(user: User): Response<String>
 
+    fun getAllAuditsAsc(): PagingSource<Int, AuditEntity>
+    fun getAllAuditsDesc(): PagingSource<Int, AuditEntity>
     suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse
+    fun searchAuditsAsc(query: String): PagingSource<Int, AuditEntity>
+    fun searchAuditsDesc(query: String): PagingSource<Int, AuditEntity>
+    suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String)
 
     suspend fun addNewEvent(event: NewEvent): Response<Any>
     suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
