@@ -69,7 +69,7 @@ fun SuccessScreen(
                         bitmap = if(user.image != null) {
                             user.image!!.decodeBase64IntoBitmap().asImageBitmap()
                         } else {
-                            ImageBitmap.imageResource(id = R.drawable.aaa)
+                            ImageBitmap.imageResource(id = R.drawable.blank_user)
                         },
                         contentDescription = stringResource(id = R.string.profile_picture),
                         contentScale = ContentScale.Crop,
