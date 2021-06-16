@@ -97,6 +97,7 @@ private fun createRetrofitJava(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL_JAVA)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }
