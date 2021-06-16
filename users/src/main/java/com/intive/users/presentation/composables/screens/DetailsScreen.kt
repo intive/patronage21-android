@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -91,7 +92,7 @@ fun SuccessScreen(
             Column {
                 HeaderWithCount(text = stringResource(R.string.bio))
                 Text(
-                    text = user.bio,
+                    text = user.bio ?: stringResource(R.string.user_did_not_set_bio),
                     modifier = Modifier
                         .padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
                 )
@@ -106,6 +107,9 @@ fun SuccessScreen(
                 user.projects.forEach { project ->
                     ProjectListItem(project)
                     Divider()
+                }
+                if(user.projects.isEmpty()) {
+                    NoUserProjects()
                 }
             }
 
@@ -160,6 +164,16 @@ fun SuccessScreen(
             }
         }
     }
+}
+
+@Composable
+fun NoUserProjects() {
+    Text(
+        text = stringResource(R.string.user_does_not_have_projects),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+    )
 }
 
 @Composable
