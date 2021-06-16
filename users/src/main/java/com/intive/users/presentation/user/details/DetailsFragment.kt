@@ -16,13 +16,11 @@ import android.content.Intent
 import android.net.Uri
 import com.intive.users.presentation.user.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.core.parameter.parametersOf
-
 
 class DetailsFragment : Fragment() {
 
     private val args: DetailsFragmentArgs by navArgs()
-    private val viewModel: UserViewModel by sharedViewModel { parametersOf(args.login) }
+    private val viewModel: UserViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +28,8 @@ class DetailsFragment : Fragment() {
     ): View {
 
         val navController = findNavController()
+
+        viewModel.getUserData(args.login)
 
         return ComposeView(requireContext()).apply {
             setContent {
