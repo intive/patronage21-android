@@ -37,7 +37,7 @@ private const val BASE_URL_JS = "https://api-patronage21.herokuapp.com/"
 private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
