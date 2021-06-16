@@ -145,22 +145,24 @@ fun SuccessScreen(
                     viewModel.onLaunchWebsiteClicked(user.github)
                 }
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(top = 30.dp, bottom = 16.dp)
-            ) {
-                PrimaryButton(stringResource(R.string.edit_profile),
-                    onClick = {
-                        navController.navigate(R.id.action_detailsFragment_to_editUserFragment)
-                    }
-                )
-                Spacer(modifier = Modifier.size(10.dp))
-                SecondaryButton(
-                    stringResource(R.string.deactivate_profile),
-                    onClick = {
-                        navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
-                    }
-                )
+            if(viewModel.isLoggedInUser()) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(top = 30.dp, bottom = 16.dp)
+                ) {
+                    PrimaryButton(stringResource(R.string.edit_profile),
+                        onClick = {
+                            navController.navigate(R.id.action_detailsFragment_to_editUserFragment)
+                        }
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
+                    SecondaryButton(
+                        stringResource(R.string.deactivate_profile),
+                        onClick = {
+                            navController.navigate(R.id.action_detailsFragment_to_deactivateUserFragment)
+                        }
+                    )
+                }
             }
         }
     }
