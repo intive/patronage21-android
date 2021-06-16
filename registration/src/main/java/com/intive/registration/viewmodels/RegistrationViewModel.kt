@@ -168,7 +168,7 @@ class RegistrationViewModel(
         viewModelScope.launch(dispatchers.io) {
             _responseState.value = Resource.Loading()
             val user = UserRegistration(
-                gender = _title.value ?: "MALE",
+                gender = if(_title.value.isNullOrEmpty()) "MALE" else _title.value!!,
                 firstName = firstName.value!!,
                 lastName = lastName.value!!,
                 email = email.value!!,
