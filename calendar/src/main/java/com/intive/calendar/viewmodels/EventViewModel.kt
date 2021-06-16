@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.EventScreenChannel
 import com.intive.repository.Repository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,7 +18,8 @@ import retrofit2.Response
 
 class EventViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
+    private val eventLogger: EventLogger
 ) : ViewModel() {
 
     private val _showDeleteDialog = MutableLiveData(false)
@@ -56,8 +58,10 @@ class EventViewModel(
             }
 
             if (response.isSuccessful) {
+                eventLogger.log("Pomyślna edycja wydarzenia")
                 refreshEventsList()
             } else {
+                eventLogger.log("Błąd edycji wydarzenia")
                 showSnackbar(EventScreenChannel.InviteResponseError)
             }
         }
@@ -77,10 +81,12 @@ class EventViewModel(
             }
 
             if (response.isSuccessful) {
+                eventLogger.log("Usunięcie wydarzenia")
                 showSnackbar(EventScreenChannel.EventDeleteSuccess)
                 refreshEventsList()
                 popBackStack()
             } else {
+                eventLogger.log("Błąd usunięcia wydarzenia")
                 showSnackbar(EventScreenChannel.EventDeleteError)
             }
         }

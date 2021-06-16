@@ -13,10 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.intive.audit.R
 import com.intive.repository.domain.model.Audit
+import com.intive.repository.util.Resource
 import com.intive.ui.components.ErrorItem
 import com.intive.ui.components.LoadingItem
 import com.intive.ui.components.LoadingView
@@ -86,7 +89,6 @@ fun AuditsList(
                         thickness = 0.5.dp
                     )
                 }
-
                 audits.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {
@@ -96,11 +98,10 @@ fun AuditsList(
                             item { LoadingItem() }
                         }
                         loadState.refresh is LoadState.Error -> {
-                            val e = audits.loadState.refresh as LoadState.Error
+                            val e = audits.loadState.append as LoadState.Error
                             item {
                                 ErrorItem(
                                     message = e.error.localizedMessage!!,
-                                    modifier = Modifier.fillParentMaxWidth(),
                                     onClickRetry = { retry() }
                                 )
                             }

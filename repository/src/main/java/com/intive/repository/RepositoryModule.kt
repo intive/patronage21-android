@@ -18,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.GsonBuilder
 import com.intive.repository.database.Database
 import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.EventLogger
+import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.local.LocalRepository
 import com.intive.repository.local.SharedPreferenceSource
 import com.intive.repository.network.*
@@ -35,14 +37,15 @@ private const val BASE_URL_JS = "https://api-patronage21.herokuapp.com/"
 private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
     single { createTechnologiesService(get(named("mocklab"))) }
     single { createAuditService(get((named("mocklab")))) }
     single { createAuditMapper() }
+    single { createAuditEntityMapper() }
     single { createEventsService(get((named("mocklab")))) }
     single { createEventsMapper() }
     single { createEventInviteResponseMapper() }
@@ -64,6 +67,7 @@ val repositoryModule = module {
     single { SharedPreferenceSource(get()) }
     single(named("js")){ createRetrofitJS() }
     single { createEventsJSService(get(named("js"))) }
+    single { createEventLogger(get()) }
     single { createUsersServiceJava(get(named("java"))) }
 }
 
@@ -75,15 +79,19 @@ val databaseModule = module {
             androidApplication(),
             Database::class.java,
             DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
     single {
         get<Database>().technologyDao()
     }
+    single {
+        get<Database>().auditDao()
+    }
 
     single {
-        DatabaseRepository(technologyDao = get())
+        DatabaseRepository(technologyDao = get(), auditDao = get())
     }
 }
 
@@ -128,6 +136,8 @@ private fun createAuditService(retrofit: Retrofit): AuditService {
 }
 
 private fun createAuditMapper(): AuditDtoMapper = AuditDtoMapper()
+
+private fun createAuditEntityMapper(): AuditEntityMapper = AuditEntityMapper()
 
 private fun createTechnologiesService(retrofit: Retrofit): TechnologyGroupsService {
     return retrofit.create(TechnologyGroupsService::class.java)
@@ -189,6 +199,8 @@ private fun createGradebookService(retrofit: Retrofit): GradebookService {
 }
 
 private fun createGradebookMapper(): GradebookDtoMapper = GradebookDtoMapper()
+
+private fun createEventLogger(repository: Repository): EventLogger = EventLogger(repository)
 
 fun provideSharedPref(app: Application): SharedPreferences {
     return androidx.preference.PreferenceManager.getDefaultSharedPreferences(app)

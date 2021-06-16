@@ -19,12 +19,16 @@ import androidx.fragment.app.Fragment
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.intive.audit.presentation.composables.AuditsList
 import com.intive.ui.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuditFragment : Fragment() {
 
     private val viewModel by viewModel<AuditViewModel>()
 
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     @RequiresApi(Build.VERSION_CODES.O)
     @ExperimentalComposeUiApi
     @ExperimentalAnimationApi

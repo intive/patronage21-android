@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.User
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
+    private val eventLogger: EventLogger
 ) : ViewModel() {
 
     val typedLastName = mutableStateOf("")
@@ -59,9 +61,11 @@ class UserViewModel(
             try {
                 val response = repository.deactivateUser(_userLogin.value)
                 if (response.isSuccessful) {
+                    eventLogger.log("Usunięcie użytkownika", _userLogin.value)
                     repository.logoutUser()
                     deactivateUserChannel.send(DeactivateUserEvent.ShowSuccessMessage)
                 } else {
+                    eventLogger.log("Błąd usunięcia użytkownika", _userLogin.value)
                     deactivateUserChannel.send(DeactivateUserEvent.ShowErrorMessage)
                 }
             } catch (e: Exception) {
@@ -81,8 +85,10 @@ class UserViewModel(
 
                 if(response.isSuccessful) {
                     editUserChannel.send(EditUserEvent.OnSuccessfulEdit)
+                    eventLogger.log("Pomyślna edycja użytkownika", _userLogin.value)
                 } else {
                     editUserChannel.send(EditUserEvent.OnFailedEdit)
+                    eventLogger.log("Błąd edycji użytkownika", _userLogin.value)
                 }
             }
         } catch (e: Exception) {

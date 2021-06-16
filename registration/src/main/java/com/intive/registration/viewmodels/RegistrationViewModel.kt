@@ -8,6 +8,7 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.intive.repository.Repository
+import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.TechnologyGroup
 import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.response.RegistrationResponse
@@ -18,7 +19,8 @@ import retrofit2.Response
 
 class RegistrationViewModel(
     private val repository: Repository,
-    private val dispatchers: DispatcherProvider
+    private val dispatchers: DispatcherProvider,
+    private val eventLogger: EventLogger
 ) : ViewModel() {
 
     private val _availableTechnologies: MutableState<Resource<List<String>>> =
@@ -166,7 +168,7 @@ class RegistrationViewModel(
         viewModelScope.launch(dispatchers.io) {
             _responseState.value = Resource.Loading()
             val user = UserRegistration(
-                gender = _title.value ?: "MALE",
+                gender = if(_title.value.isNullOrEmpty()) "MALE" else _title.value!!,
                 firstName = firstName.value!!,
                 lastName = lastName.value!!,
                 email = email.value!!,
@@ -179,6 +181,7 @@ class RegistrationViewModel(
             try {
                 receivedResponse = repository.sendDataFromRegistrationForm(user)
                 if (receivedResponse.isSuccessful) {
+                    eventLogger.log("Udana rejestracja", login.value!!)
                     _responseState.value = Resource.Success("")
                 } else {
                     _scrollUp.value = true
@@ -195,6 +198,7 @@ class RegistrationViewModel(
                         responseCode == RESPONSE_NOT_FOUND -> Resource.Error(RESPONSE_NOT_FOUND.toString())
                         else -> Resource.Error(message = message)
                     }
+                    eventLogger.log("Nie udana rejestracja", login.value!!)
                 }
             } catch (ex: Exception) {
                 _responseState.value = Resource.Error(ex.localizedMessage)

@@ -2,9 +2,12 @@ package com.intive.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.paging.PagingSource
 import com.google.gson.JsonObject
 import com.intive.repository.database.DatabaseRepository
+import com.intive.repository.database.audits.AuditEntity
 import com.intive.repository.database.technologies.TechnologyEntity
+import com.intive.repository.database.util.AuditEntityMapper
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.domain.model.EventInviteResponse
@@ -14,11 +17,13 @@ import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
 import com.intive.repository.network.util.*
 import retrofit2.Response
+import java.time.OffsetDateTime
 
 class RepositoryImpl(
     private val networkRepository: NetworkRepository,
     userMapper: UserDtoMapper,
     auditMapper: AuditDtoMapper,
+    auditEntityMapper: AuditEntityMapper,
     private val eventMapper: EventDtoMapper,
     private val inviteResponseMapper: EventInviteResponseDtoMapper,
     private val newEventMapper: NewEventDtoMapper,
@@ -193,10 +198,31 @@ class RepositoryImpl(
     }
 
     override val auditsMapper: AuditDtoMapper = auditMapper
+    override val auditsEntityMapper: AuditEntityMapper = auditEntityMapper
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
         return networkRepository.searchAudits(page, query, sortBy)
+    }
+
+    override fun getAllAuditsAsc(): PagingSource<Int, AuditEntity> {
+        return databaseRepository.getAllAuditsAsc()
+    }
+
+    override fun getAllAuditsDesc(): PagingSource<Int, AuditEntity> {
+        return databaseRepository.getAllAuditsDesc()
+    }
+
+    override fun searchAuditsAsc(query: String): PagingSource<Int, AuditEntity> {
+        return databaseRepository.searchAuditsAsc(query)
+    }
+
+    override fun searchAuditsDesc(query: String): PagingSource<Int, AuditEntity> {
+        return databaseRepository.searchAuditsDesc(query)
+    }
+
+    override suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String) {
+        databaseRepository.insert(auditsEntityMapper.mapToEntityModel(Audit("", title, date, userName)))
     }
 
     override suspend fun getTechnologies(): List<String> {
