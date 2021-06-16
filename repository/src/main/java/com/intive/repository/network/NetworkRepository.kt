@@ -84,15 +84,15 @@ class NetworkRepository(
     suspend fun getUser(
         login: String
     ): UserResponse {
-        return usersService.getUser(login)
+        return usersServiceJava.getUser(login)
     }
 
     suspend fun deactivateUser(login: String): Response<String> {
-        return usersService.deactivateUser(login)
+        return usersServiceJava.deactivateUser(login)
     }
 
     suspend fun updateUser(user: User): Response<String> {
-        return usersService.updateUser(
+        return usersServiceJava.updateUser(
             UpdateUserDto(
                 firstName = user.firstName,
                 lastName = user.lastName,
