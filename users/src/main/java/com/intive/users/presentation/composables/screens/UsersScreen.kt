@@ -106,39 +106,40 @@ fun UsersScreen(
                 }
             }
 
-            when(leaders.value) {
+            when (leaders.value) {
                 is Resource.Error -> item { ErrorItem(message = "Błąd", onClickRetry = {}) }
                 is Resource.Loading -> item { LoadingItem() }
                 is Resource.Success -> {
-                    if(leaders.value.data!!.isEmpty()) {
+                    if (leaders.value.data!!.isEmpty()) {
                         item {
                             EmptyItem()
                         }
                     }
-                    items(leaders.value.data!!){ user ->
-                        if(user.status == STATUS_ACTIVE) {
-                            PersonListItem(
-                                user = User(
-                                    login = user.login,
-                                    firstName = user.firstName,
-                                    lastName = user.lastName,
-                                    image = user.image,
-                                    phoneNumber = "",
-                                    projects = emptyList(),
-                                    email = "",
-                                    github = "",
-                                    bio = "",
-                                    role = "",
-                                    gender = ""
-                                ),
-                                onItemClick = {
-                                    val bundle = bundleOf("login" to it.login)
-                                    navController.navigate(R.id.action_usersFragment_to_detailsFragment, bundle)
-                                },
-                                rowPadding = 0.dp
-                            )
-                            Divider()
-                        }
+                    items(leaders.value.data!!) { user ->
+                        PersonListItem(
+                            user = User(
+                                login = user.login,
+                                firstName = user.firstName,
+                                lastName = user.lastName,
+                                image = user.image,
+                                phoneNumber = "",
+                                projects = emptyList(),
+                                email = "",
+                                github = "",
+                                bio = "",
+                                role = "",
+                                gender = ""
+                            ),
+                            onItemClick = {
+                                val bundle = bundleOf("login" to it.login)
+                                navController.navigate(
+                                    R.id.action_usersFragment_to_detailsFragment,
+                                    bundle
+                                )
+                            },
+                            rowPadding = 0.dp
+                        )
+                        Divider()
                     }
                 }
             }
@@ -159,39 +160,40 @@ fun UsersScreen(
 
             }
 
-            when(candidates.value) {
+            when (candidates.value) {
                 is Resource.Error -> item { ErrorItem(message = "Błąd", onClickRetry = {}) }
                 is Resource.Loading -> item { LoadingItem() }
                 is Resource.Success -> {
-                    if(candidates.value.data!!.isEmpty()) {
+                    if (candidates.value.data!!.isEmpty()) {
                         item {
                             EmptyItem()
                         }
                     }
-                    items(candidates.value.data!!){ user ->
-                        if(user.status == STATUS_ACTIVE) {
-                            PersonListItem(
-                                user = User(
-                                    login = user.login,
-                                    firstName = user.firstName,
-                                    lastName = user.lastName,
-                                    image = user.image,
-                                    phoneNumber = "",
-                                    projects = emptyList(),
-                                    email = "",
-                                    github = "",
-                                    bio = "",
-                                    role = "",
-                                    gender = ""
-                                ),
-                                onItemClick = {
-                                    val bundle = bundleOf("login" to it.login)
-                                    navController.navigate(R.id.action_usersFragment_to_detailsFragment, bundle)
-                                },
-                                rowPadding = 0.dp
-                            )
-                            Divider()
-                        }
+                    items(candidates.value.data!!) { user ->
+                        PersonListItem(
+                            user = User(
+                                login = user.login,
+                                firstName = user.firstName,
+                                lastName = user.lastName,
+                                image = user.image,
+                                phoneNumber = "",
+                                projects = emptyList(),
+                                email = "",
+                                github = "",
+                                bio = "",
+                                role = "",
+                                gender = ""
+                            ),
+                            onItemClick = {
+                                val bundle = bundleOf("login" to it.login)
+                                navController.navigate(
+                                    R.id.action_usersFragment_to_detailsFragment,
+                                    bundle
+                                )
+                            },
+                            rowPadding = 0.dp
+                        )
+                        Divider()
                     }
                 }
             }

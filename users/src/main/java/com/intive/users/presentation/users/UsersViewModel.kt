@@ -57,7 +57,7 @@ class UsersViewModel(
                 try {
                     val users = repository.getUsersJava(ROLE_LEADER, selectedGroup, query).users
                     _totalLeaders.value =
-                        Resource.Success(users.filter { it.status == STATUS_ACTIVE }.size)
+                        Resource.Success(users.size)
 
                     emit(Resource.Success(users))
                 } catch (e: Exception) {
@@ -83,7 +83,7 @@ class UsersViewModel(
                 try {
                     val users = repository.getUsersJava(ROLE_CANDIDATE, selectedGroup, query).users
                     _totalCandidates.value =
-                        Resource.Success(users.filter { it.status == STATUS_ACTIVE }.size)
+                        Resource.Success(users.size)
 
                     emit(Resource.Success(users))
                 }  catch (e: Exception) {

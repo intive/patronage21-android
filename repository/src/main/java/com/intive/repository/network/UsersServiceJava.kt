@@ -16,6 +16,7 @@ interface UsersServiceJava {
         @Query("lastName") lastName: String?,
         @Query("login") login: String?,
         @Query("other") other: String?,
+        @Query("status") status: String = "ACTIVE"
     ): UsersResponseJava
 
     @GET("api/users/{login}")
