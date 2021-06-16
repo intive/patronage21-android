@@ -41,4 +41,5 @@
     <string name="failed_to_update_user">Nie udało się zaktualizować danych</string>
     <string name="user_does_not_have_projects">Użytkownik nie posiada projektów</string>
     <string name="user_did_not_set_bio">Użytkownik nie ustawił bio</string>
+    <string name="you">Ty</string>
 </resources>
