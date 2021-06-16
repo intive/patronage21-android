@@ -7,14 +7,11 @@ import com.intive.repository.database.DatabaseRepository
 import com.intive.repository.database.technologies.TechnologyEntity
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
-import com.intive.repository.network.response.AuditResponse
 import com.intive.repository.domain.model.EventInviteResponse
 import com.intive.repository.local.LocalRepository
+import com.intive.repository.network.response.*
 import com.intive.repository.network.util.AuditDtoMapper
 import com.intive.repository.network.util.EventInviteResponseDtoMapper
-import com.intive.repository.network.response.GradebookResponse
-import com.intive.repository.network.response.RegistrationResponse
-import com.intive.repository.network.response.UsersResponse
 import com.intive.repository.network.util.*
 import retrofit2.Response
 
@@ -119,6 +116,63 @@ class RepositoryImpl(
         }
     }
 
+    override suspend fun getUsersJava(
+        role: String,
+        group: String?
+    ): UsersResponseJava {
+        return networkRepository.getUsersJava(
+            role = role,
+            group = group
+        )
+    }
+
+    override suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?
+    ): UsersResponseJava {
+        return networkRepository.getUsersJava(
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName
+        )
+    }
+
+
+    override suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        query: String,
+    ): UsersResponseJava {
+
+        return when {
+            query.isBlank() -> {
+                networkRepository.getUsersJava(
+                    role = role,
+                    group = group
+                )
+            }
+            query.split(" ").size == 1 -> {
+                networkRepository.getUsersJava(
+                    role = role,
+                    group = group,
+                    query = query
+                )
+            }
+            else -> {
+                val q = query.split(" ")
+                networkRepository.getUsersJava(
+                    role = role,
+                    group = group,
+                    firstName = q[0],
+                    lastName = q[1]
+                )
+            }
+        }
+    }
+
     override suspend fun getUser(login: String): User {
         return usersMapper.mapToDomainModel(
             networkRepository.getUser(login).user
@@ -126,8 +180,8 @@ class RepositoryImpl(
     }
 
     override suspend fun getTotalUsersByRole(role: String, group: String?): Int {
-        val response = getUsers(role = role, group = group, page = 1)
-        return response.totalSize
+        val response = getUsersJava(role = role, group = group)
+        return response.users.size
     }
 
     override suspend fun deactivateUser(login: String): Response<String> {
@@ -148,7 +202,7 @@ class RepositoryImpl(
     override suspend fun getTechnologies(): List<String> {
 
         when {
-            isCachingEnabled() && databaseRepository.getCount() > 0  -> {
+            isCachingEnabled() && databaseRepository.getCount() > 0 -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }

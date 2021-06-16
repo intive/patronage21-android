@@ -25,6 +25,12 @@ import org.koin.android.ext.koin.androidApplication
 import com.intive.repository.network.util.*
 import org.koin.core.qualifier.named
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import okhttp3.OkHttpClient
+
+import okhttp3.logging.HttpLoggingInterceptor
+
+
+
 
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
@@ -94,10 +100,14 @@ private fun createRetrofit(): Retrofit {
 }
 
 private fun createRetrofitJava(): Retrofit {
+    val interceptor = HttpLoggingInterceptor()
+    interceptor.level = HttpLoggingInterceptor.Level.BODY
+    val client =  OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL_JAVA)
         .addConverterFactory(ScalarsConverterFactory.create())
+        .client(client)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }

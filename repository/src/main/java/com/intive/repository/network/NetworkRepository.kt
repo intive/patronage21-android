@@ -42,10 +42,6 @@ class NetworkRepository(
         )
     }
 
-    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
-        return auditService.searchAudits(page, query, sortBy)
-    }
-
     suspend fun getUsers(
         page: Int,
         role: String,
@@ -78,6 +74,55 @@ class NetworkRepository(
             firstName = firstName,
             lastName = lastName,
             login = null
+        )
+    }
+
+    suspend fun getUsersJava(
+        role: String,
+        group: String?
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null,
+            other = null
+        )
+    }
+
+    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return auditService.searchAudits(page, query, sortBy)
+    }
+
+    suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        query: String?
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null,
+            other = query
+        )
+    }
+
+    suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = null,
+            other = null
         )
     }
 

@@ -1,12 +1,9 @@
 package com.intive.users.presentation.user
 
-import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
@@ -20,7 +17,6 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
-    //private val userLogin: String,
 ) : ViewModel() {
 
     val typedLastName = mutableStateOf("")
@@ -133,6 +129,10 @@ class UserViewModel(
             isBioValid(user.bio)
 
     fun isLastNameEnteredCorrectly(): Boolean = typedLastName.value == userLastName.value
+
+    fun isLoggedInUser(): Boolean {
+        return _userLogin.value == repository.getUserLoginOrNull()
+    }
 
     sealed class UserContactEvent {
         data class DialPhoneNumber(val phoneNumber: String) : UserContactEvent()
