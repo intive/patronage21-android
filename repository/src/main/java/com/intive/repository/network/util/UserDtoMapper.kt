@@ -17,7 +17,7 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             phoneNumber = model.phoneNumber,
             github = model.gitHubUrl,
             bio = model.bio,
-            role = model.role
+            role = "LEADER"
         )
     }
 
@@ -33,7 +33,6 @@ class UserDtoMapper : DomainMapper<UserDto, User> {
             gitHubUrl = domainModel.github,
             status = "ACTIVE",
             bio = domainModel.bio,
-            role = domainModel.role
         )
     }
 

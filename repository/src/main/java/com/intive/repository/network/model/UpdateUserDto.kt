@@ -10,5 +10,5 @@ data class UpdateUserDto(
     val email: String,
     val phoneNumber: String,
     val gitHubUrl: String,
-    val bio: String,
+    val bio: String?,
 )

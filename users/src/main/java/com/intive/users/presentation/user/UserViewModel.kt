@@ -121,7 +121,7 @@ class UserViewModel(
                     !it.endsWith("-") &&
                     !it.contains("--")
         }
-    fun isBioValid(bio: String): Boolean = bio.isNotEmpty() && bio.length < 100
+    fun isBioValid(bio: String?): Boolean = if(bio != null) bio.length < 100 else true
 
     fun isFormValid(
         user: User,
