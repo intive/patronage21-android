@@ -25,6 +25,7 @@ class NetworkRepository(
     private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService,
     private val registrationServiceJava: RegistrationServiceJava,
+    private val usersServiceJava: UsersServiceJava,
 ) {
     suspend fun getUsers(
         page: Int,
@@ -39,10 +40,6 @@ class NetworkRepository(
             lastName = null,
             login = null
         )
-    }
-
-    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
-        return auditService.searchAudits(page, query, sortBy)
     }
 
     suspend fun getUsers(
@@ -80,18 +77,67 @@ class NetworkRepository(
         )
     }
 
+    suspend fun getUsersJava(
+        role: String,
+        group: String?
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null,
+            other = null
+        )
+    }
+
+    suspend fun searchAudits(page: Int, query: String, sortBy: String): AuditResponse {
+        return auditService.searchAudits(page, query, sortBy)
+    }
+
+    suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        query: String?
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = null,
+            lastName = null,
+            login = null,
+            other = query
+        )
+    }
+
+    suspend fun getUsersJava(
+        role: String,
+        group: String?,
+        firstName: String?,
+        lastName: String?,
+    ): UsersResponseJava {
+        return usersServiceJava.getUsersByRole(
+            role = role,
+            group = group,
+            firstName = firstName,
+            lastName = lastName,
+            login = null,
+            other = null
+        )
+    }
+
     suspend fun getUser(
         login: String
     ): UserResponse {
-        return usersService.getUser(login)
+        return usersServiceJava.getUser(login)
     }
 
     suspend fun deactivateUser(login: String): Response<String> {
-        return usersService.deactivateUser(login)
+        return usersServiceJava.deactivateUser(login)
     }
 
     suspend fun updateUser(user: User): Response<String> {
-        return usersService.updateUser(
+        return usersServiceJava.updateUser(
             UpdateUserDto(
                 firstName = user.firstName,
                 lastName = user.lastName,

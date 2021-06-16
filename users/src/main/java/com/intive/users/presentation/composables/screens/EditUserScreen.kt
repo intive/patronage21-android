@@ -182,7 +182,7 @@ fun EditUserScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                value = bio.value,
+                value = bio.value ?: "",
                 onValueChange = {
                     bio.value = it
                     userCopy.bio = it

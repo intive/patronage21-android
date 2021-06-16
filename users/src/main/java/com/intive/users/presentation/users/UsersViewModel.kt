@@ -5,14 +5,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.*
 import com.intive.repository.Repository
+import com.intive.repository.domain.ListUserJava
 import com.intive.repository.domain.model.GroupEntity
-import com.intive.repository.domain.model.User
 import com.intive.repository.network.ROLE_CANDIDATE
 import com.intive.repository.network.ROLE_LEADER
-import com.intive.repository.network.USERS_PAGE_SIZE
-import com.intive.repository.network.UsersSource
 import com.intive.repository.util.DispatcherProvider
 import com.intive.repository.util.Resource
 import kotlinx.coroutines.*
@@ -20,6 +17,7 @@ import kotlinx.coroutines.flow.*
 import java.util.*
 
 private const val SEARCH_DEBOUNCE_TIMEOUT = 300L
+const val STATUS_ACTIVE = "ACTIVE"
 
 class UsersViewModel(
     private val repository: Repository,
@@ -45,7 +43,7 @@ class UsersViewModel(
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    var leaders: Flow<PagingData<User>> = combine(
+    var leaders: Flow<Resource<List<ListUserJava>>> = combine(
         executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
@@ -54,18 +52,24 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            getTotalLeadersCount(group = selectedGroup, query = query)
+            flow <Resource<List<ListUserJava>>> {
+                emit(Resource.Loading())
+                try {
+                    val users = repository.getUsersJava(ROLE_LEADER, selectedGroup, query).users
+                    _totalLeaders.value =
+                        Resource.Success(users.size)
 
-            Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_LEADER, group = selectedGroup, query = query)
-            }.flow
-                .cachedIn(viewModelScope)
+                    emit(Resource.Success(users))
+                } catch (e: Exception) {
+                    emit(Resource.Error(e.localizedMessage))
+                }
+            }
         }
 
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    var candidates: Flow<PagingData<User>> = combine(
+    var candidates: Flow<Resource<List<ListUserJava>>> = combine(
         executeQuery,
         selectedGroup
     ) { query, selectedGroup ->
@@ -74,12 +78,18 @@ class UsersViewModel(
         .debounce(SEARCH_DEBOUNCE_TIMEOUT)
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
-            getTotalCandidatesCount(group = selectedGroup, query = query)
+            flow <Resource<List<ListUserJava>>> {
+                emit(Resource.Loading())
+                try {
+                    val users = repository.getUsersJava(ROLE_CANDIDATE, selectedGroup, query).users
+                    _totalCandidates.value =
+                        Resource.Success(users.size)
 
-            Pager(PagingConfig(pageSize = USERS_PAGE_SIZE)) {
-                UsersSource(repository, ROLE_CANDIDATE, group = selectedGroup, query = query)
-            }.flow
-                .cachedIn(viewModelScope)
+                    emit(Resource.Success(users))
+                }  catch (e: Exception) {
+                    emit(Resource.Error(e.localizedMessage))
+                }
+            }
         }
 
     init {
@@ -104,15 +114,6 @@ class UsersViewModel(
         }
     }
 
-    fun onCandidatesRetryClicked() {
-        getTotalCandidatesCount(group = selectedGroup.value, query = executeQuery.value)
-    }
-
-    fun onLeadersRetryClicked() {
-        getTotalLeadersCount(group = selectedGroup.value, query = executeQuery.value)
-    }
-
-
     private fun getTechGroups() {
 
         _techGroups.value = Resource.Loading()
@@ -130,25 +131,5 @@ class UsersViewModel(
             }
         }
     }
-
-    private fun getTotalCandidatesCount(group: String?, query: String) =
-        viewModelScope.launch(dispatchers.io) {
-            _totalCandidates.value = try {
-                val response: Int = repository.getUsers(1, ROLE_CANDIDATE, group, query).totalSize
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-        }
-
-    private fun getTotalLeadersCount(group: String?, query: String) =
-        viewModelScope.launch(dispatchers.io) {
-            _totalLeaders.value = try {
-                val response: Int = repository.getUsers(1, ROLE_LEADER, group, query).totalSize
-                Resource.Success(response)
-            } catch (e: Exception) {
-                Resource.Error(e.localizedMessage)
-            }
-        }
 
 }

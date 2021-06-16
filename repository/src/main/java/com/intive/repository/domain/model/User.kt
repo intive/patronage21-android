@@ -10,6 +10,6 @@ data class User(
     var email: String,
     var phoneNumber: String,
     var github: String,
-    var bio: String,
+    var bio: String?,
     var role: String,
 )
