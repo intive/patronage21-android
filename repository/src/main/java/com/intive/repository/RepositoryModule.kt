@@ -29,16 +29,45 @@ import org.koin.core.qualifier.named
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
-
-
 private const val BASE_URL = "https://64z31.mocklab.io/"
 private const val BASE_URL_JAVA = "http://intive-patronage.pl/"
 private const val BASE_URL_JS = "https://api-patronage21.herokuapp.com/"
 private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
-    single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single<Repository> {
+        RepositoryImpl(
+            networkRepository = get(),
+            userMapper = get(),
+            auditMapper = get(),
+            auditEntityMapper = get(),
+            eventMapper = get(),
+            inviteResponseMapper = get(),
+            newEventMapper = get(),
+            editEventMapper = get(),
+            stageDetailsMapper = get(),
+            stageDtoMapper = get(),
+            gbMapper = get(),
+            localRepository = get(),
+            databaseRepository = get(),
+        )
+    }
+    single {
+        NetworkRepository(
+            usersService = get(),
+            auditService = get(),
+            technologyGroupsService = get(),
+            eventsService = get(),
+            eventsServiceJS = get(),
+            registrationService = get(),
+            technologyGroupsServiceJava = get(),
+            stageService = get(),
+            stageDetailsService = get(),
+            gradebookService = get(),
+            registrationServiceJava = get(),
+            usersServiceJava = get(),
+        )
+    }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
@@ -54,7 +83,7 @@ val repositoryModule = module {
     single { createDispatchers() }
     single { createRegistrationService(get((named("mocklab")))) }
     single { createRegistrationServiceJava(get(named("java"))) }
-    single(named("java")){ createRetrofitJava() }
+    single(named("java")) { createRetrofitJava() }
     single { createTechnologiesJavaService(get(named("java"))) }
     single { createStageService(get((named("mocklab")))) }
     single { createStageMapper() }
@@ -63,14 +92,13 @@ val repositoryModule = module {
     single { createGradebookService(get((named("mocklab")))) }
     single { createGradebookMapper() }
     single { provideSharedPref(androidApplication()) }
-    single { LocalRepository(get())}
+    single { LocalRepository(get()) }
     single { SharedPreferenceSource(get()) }
-    single(named("js")){ createRetrofitJS() }
+    single(named("js")) { createRetrofitJS() }
     single { createEventsJSService(get(named("js"))) }
     single { createEventLogger(get()) }
     single { createUsersServiceJava(get(named("java"))) }
 }
-
 
 
 val databaseModule = module {
@@ -153,7 +181,8 @@ private fun createEventsJSService(retrofit: Retrofit): EventsServiceJS {
     return retrofit.create(EventsServiceJS::class.java)
 }
 
-private fun createEventInviteResponseMapper(): EventInviteResponseDtoMapper = EventInviteResponseDtoMapper()
+private fun createEventInviteResponseMapper(): EventInviteResponseDtoMapper =
+    EventInviteResponseDtoMapper()
 
 private fun createNewEventsMapper(): NewEventDtoMapper = NewEventDtoMapper()
 

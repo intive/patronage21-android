@@ -228,7 +228,7 @@ class RepositoryImpl(
     override suspend fun getTechnologies(): List<String> {
 
         when {
-            isCachingEnabled() && databaseRepository.getCount() > 0 -> {
+            isCachingEnabled() && databaseRepository.getTechnologiesCount() > 0 -> {
                 val technologyEntityList = databaseRepository.getAllTechnologies()
                 return technologyEntityList.map { it.name }
             }
