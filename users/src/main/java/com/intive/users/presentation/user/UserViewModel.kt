@@ -41,6 +41,7 @@ class UserViewModel(
 
     fun getUserData(userLogin: String){
         _userLogin.value = userLogin
+        _user.value = Resource.Loading()
         try {
             viewModelScope.launch(dispatchers.io) {
                 val user = repository.getUser(_userLogin.value)

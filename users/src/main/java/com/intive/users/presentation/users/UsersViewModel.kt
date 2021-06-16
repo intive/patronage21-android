@@ -114,6 +114,10 @@ class UsersViewModel(
         }
     }
 
+    fun isLoggedInUser(login: String): Boolean {
+        return login == repository.getUserLoginOrNull()
+    }
+
     private fun getTechGroups() {
 
         _techGroups.value = Resource.Loading()

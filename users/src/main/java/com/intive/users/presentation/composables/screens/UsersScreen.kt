@@ -54,7 +54,7 @@ fun UsersScreen(
                 ) {
                     IntroSection(
                         title = stringResource(R.string.users),
-                        text = stringResource(R.string.lorem_placeholder)
+                        text = stringResource(R.string.users_module_intro)
                     )
 
                     Search(
@@ -137,7 +137,9 @@ fun UsersScreen(
                                     bundle
                                 )
                             },
-                            rowPadding = 0.dp
+                            rowPadding = 0.dp,
+                            additionalText = stringResource(R.string.you),
+                            showAdditionalText = viewModel.isLoggedInUser(user.login)
                         )
                         Divider()
                     }
@@ -191,7 +193,9 @@ fun UsersScreen(
                                     bundle
                                 )
                             },
-                            rowPadding = 0.dp
+                            rowPadding = 0.dp,
+                            additionalText = stringResource(R.string.you),
+                            showAdditionalText = viewModel.isLoggedInUser(user.login)
                         )
                         Divider()
                     }
