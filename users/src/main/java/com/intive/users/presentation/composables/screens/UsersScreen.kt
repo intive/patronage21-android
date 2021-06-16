@@ -54,7 +54,7 @@ fun UsersScreen(
                 ) {
                     IntroSection(
                         title = stringResource(R.string.users),
-                        text = stringResource(R.string.lorem_placeholder)
+                        text = stringResource(R.string.users_module_intro)
                     )
 
                     Search(
