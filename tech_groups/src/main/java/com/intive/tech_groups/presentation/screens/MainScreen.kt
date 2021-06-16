@@ -30,108 +30,106 @@ fun MainScreen(
     val groups = viewModel.groups.value
 
 
-    LayoutContainer(bottomPadding = 0.dp) {
-        FABLayout(
-            onClick = { navController.navigate(R.id.action_add_group) },
-            contentDescription = stringResource(R.string.add_new_technology_group)
-        ) {
-            LayoutContainer(bottomPadding = 0.dp) {
-                val scrollState = rememberScrollState()
+    FABLayout(
+        onClick = { navController.navigate(R.id.action_add_group) },
+        contentDescription = stringResource(R.string.add_new_technology_group)
+    ) {
+        LayoutContainer(bottomPadding = 0.dp) {
+            val scrollState = rememberScrollState()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
+            ) {
+                TitleText(
+                    text = stringResource(R.string.tech_groups_title),
+                    modifier = Modifier
+                        .padding(bottom = 15.dp)
+                )
+                when (filters) {
+                    is Resource.Success -> {
+                        GroupSpinner(
+                            items = filters.data!!
+                        ) {
+                            viewModel.filterList(it.queryValue)
+                        }
+                    }
+                    is Resource.Error -> ErrorItem(
+                        message = stringResource(id = R.string.an_error_occurred)
+                    ) {
+                        viewModel.getFilters()
+                    }
+                    is Resource.Loading -> {
+                        Box {
+                            Spinner(listOf("")) {}
+                            LoadingItem()
+                        }
+                    }
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .verticalScroll(scrollState),
+                        .padding(top = 15.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TitleText(
-                        text = stringResource(R.string.tech_groups_title),
-                        modifier = Modifier
-                            .padding(bottom = 15.dp)
-                    )
-                    when (filters) {
+                    when (groups) {
                         is Resource.Success -> {
-                            GroupSpinner(
-                                items = filters.data!!
-                            ) {
-                                viewModel.filterList(it.queryValue)
-                            }
-                        }
-                        is Resource.Error -> ErrorItem(
-                            message = stringResource(id = R.string.an_error_occurred)
-                        ) {
-                            viewModel.getFilters()
-                        }
-                        is Resource.Loading -> {
-                            Box {
-                                Spinner(listOf("")) {}
-                                LoadingItem()
-                            }
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 15.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        when (groups) {
-                            is Resource.Success -> {
-                                var index = 0
-                                while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
-                                    val indexCloned = index
-                                    Row {
-                                        Column(Modifier.weight(1f)) {
+                            var index = 0
+                            while (!filteredList.isNullOrEmpty() && index < filteredList!!.size) {
+                                val indexCloned = index
+                                Row {
+                                    Column(Modifier.weight(1f)) {
+                                        BoxButton(
+                                            text = filteredList!![index].name,
+                                            onClick = {
+                                                navController.navigate(
+                                                    MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(
+                                                        filteredList!![indexCloned]
+                                                    )
+                                                )
+                                            },
+                                            contentOnTop = false
+                                        ) {
+                                            Text(stringResource(R.string.technologies))
+                                            for (technology in filteredList!![index].technologies) {
+                                                Text(technology)
+                                            }
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.size(20.dp))
+                                    Column(Modifier.weight(1f)) {
+                                        if (index + 1 < filteredList!!.size) {
                                             BoxButton(
-                                                text = filteredList!![index].name,
+                                                text = filteredList!![index + 1].name,
                                                 onClick = {
                                                     navController.navigate(
                                                         MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(
-                                                            filteredList!![indexCloned]
+                                                            filteredList!![indexCloned + 1]
                                                         )
                                                     )
                                                 },
                                                 contentOnTop = false
                                             ) {
                                                 Text(stringResource(R.string.technologies))
-                                                for (technology in filteredList!![index].technologies) {
+                                                for (technology in filteredList!![index + 1].technologies) {
                                                     Text(technology)
                                                 }
                                             }
                                         }
                                         Spacer(modifier = Modifier.size(20.dp))
-                                        Column(Modifier.weight(1f)) {
-                                            if (index + 1 < filteredList!!.size) {
-                                                BoxButton(
-                                                    text = filteredList!![index + 1].name,
-                                                    onClick = {
-                                                        navController.navigate(
-                                                            MainFragmentDirections.actionMainFragmentToGroupDetailsFragment(
-                                                                filteredList!![indexCloned + 1]
-                                                            )
-                                                        )
-                                                    },
-                                                    contentOnTop = false
-                                                ) {
-                                                    Text(stringResource(R.string.technologies))
-                                                    for (technology in filteredList!![index + 1].technologies) {
-                                                        Text(technology)
-                                                    }
-                                                }
-                                            }
-                                            Spacer(modifier = Modifier.size(20.dp))
-                                            index += 2
-                                        }
+                                        index += 2
                                     }
                                 }
                             }
-                            is Resource.Error -> ErrorItem(
-                                message = stringResource(id = R.string.an_error_occurred)
-                            ) {
-                                viewModel.getGroups()
-                            }
-                            is Resource.Loading -> {
-                                Box {
-                                    LoadingItem()
-                                }
+                        }
+                        is Resource.Error -> ErrorItem(
+                            message = stringResource(id = R.string.an_error_occurred)
+                        ) {
+                            viewModel.getGroups()
+                        }
+                        is Resource.Loading -> {
+                            Box {
+                                LoadingItem()
                             }
                         }
                     }
