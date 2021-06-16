@@ -103,4 +103,8 @@ dependencies {
     implementation project(":ui")
     implementation project(":repository")
     implementation project(":shared")
+
+    //Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-beta03"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha08"
 }
