@@ -5,6 +5,8 @@ import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
@@ -18,7 +20,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
-    private val userLogin: String,
+    //private val userLogin: String,
 ) : ViewModel() {
 
     val typedLastName = mutableStateOf("")
@@ -37,10 +39,13 @@ class UserViewModel(
     private val editUserChannel = Channel<EditUserEvent>()
     val editUserEvent = editUserChannel.receiveAsFlow()
 
-    init {
+    private val _userLogin: MutableState<String> = mutableStateOf("")
+
+    fun getUserData(userLogin: String){
+        _userLogin.value = userLogin
         try {
             viewModelScope.launch(dispatchers.io) {
-                val user = repository.getUser(userLogin)
+                val user = repository.getUser(_userLogin.value)
                 _user.value = Resource.Success(user)
                 userLastName.value = user.lastName
             }
@@ -56,7 +61,7 @@ class UserViewModel(
     fun onConfirmClick() {
         viewModelScope.launch(dispatchers.io) {
             try {
-                val response = repository.deactivateUser(userLogin)
+                val response = repository.deactivateUser(_userLogin.value)
                 if (response.isSuccessful) {
                     repository.logoutUser()
                     deactivateUserChannel.send(DeactivateUserEvent.ShowSuccessMessage)
