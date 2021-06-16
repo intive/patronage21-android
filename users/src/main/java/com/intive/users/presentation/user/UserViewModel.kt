@@ -5,6 +5,8 @@ import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intive.repository.Repository
@@ -19,7 +21,6 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val repository: Repository,
     private val dispatchers: DispatcherProvider,
-    private val userLogin: String,
     private val eventLogger: EventLogger
 ) : ViewModel() {
 
@@ -39,10 +40,13 @@ class UserViewModel(
     private val editUserChannel = Channel<EditUserEvent>()
     val editUserEvent = editUserChannel.receiveAsFlow()
 
-    init {
+    private val _userLogin: MutableState<String> = mutableStateOf("")
+
+    fun getUserData(userLogin: String){
+        _userLogin.value = userLogin
         try {
             viewModelScope.launch(dispatchers.io) {
-                val user = repository.getUser(userLogin)
+                val user = repository.getUser(_userLogin.value)
                 _user.value = Resource.Success(user)
                 userLastName.value = user.lastName
             }
@@ -58,13 +62,13 @@ class UserViewModel(
     fun onConfirmClick() {
         viewModelScope.launch(dispatchers.io) {
             try {
-                val response = repository.deactivateUser(userLogin)
+                val response = repository.deactivateUser(_userLogin.value)
                 if (response.isSuccessful) {
-                    eventLogger.log("Usunięcie użytkownika", userLogin)
+                    eventLogger.log("Usunięcie użytkownika", _userLogin.value)
                     repository.logoutUser()
                     deactivateUserChannel.send(DeactivateUserEvent.ShowSuccessMessage)
                 } else {
-                    eventLogger.log("Błąd usunięcia użytkownika", userLogin)
+                    eventLogger.log("Błąd usunięcia użytkownika", _userLogin.value)
                     deactivateUserChannel.send(DeactivateUserEvent.ShowErrorMessage)
                 }
             } catch (e: Exception) {
@@ -84,10 +88,10 @@ class UserViewModel(
 
                 if(response.isSuccessful) {
                     editUserChannel.send(EditUserEvent.OnSuccessfulEdit)
-                    eventLogger.log("Pomyślna edycja użytkownika", userLogin)
+                    eventLogger.log("Pomyślna edycja użytkownika", _userLogin.value)
                 } else {
                     editUserChannel.send(EditUserEvent.OnFailedEdit)
-                    eventLogger.log("Błąd edycji użytkownika", userLogin)
+                    eventLogger.log("Błąd edycji użytkownika", _userLogin.value)
                 }
             }
         } catch (e: Exception) {
