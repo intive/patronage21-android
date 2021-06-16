@@ -25,9 +25,6 @@ import org.koin.android.ext.koin.androidApplication
 import com.intive.repository.network.util.*
 import org.koin.core.qualifier.named
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import okhttp3.OkHttpClient
-
-import okhttp3.logging.HttpLoggingInterceptor
 
 
 
