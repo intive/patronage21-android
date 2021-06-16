@@ -100,14 +100,10 @@ private fun createRetrofit(): Retrofit {
 }
 
 private fun createRetrofitJava(): Retrofit {
-    val interceptor = HttpLoggingInterceptor()
-    interceptor.level = HttpLoggingInterceptor.Level.BODY
-    val client =  OkHttpClient.Builder().addInterceptor(interceptor).build()
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL_JAVA)
         .addConverterFactory(ScalarsConverterFactory.create())
-        .client(client)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }
