@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.ComposeView
@@ -12,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.intive.registration.R
 import com.intive.registration.screens.EmailVerificationScreen
 import com.intive.registration.viewmodels.EmailVerificationViewModel
 import com.intive.registration.viewmodels.RegistrationViewModel
@@ -47,6 +49,7 @@ class EmailVerificationFragment : Fragment() {
                     }
                     else {
                         lastBackPressed = System.currentTimeMillis()
+                        Toast.makeText(requireContext(), getString(R.string.exit_app_toast_text), Toast.LENGTH_SHORT).show()
                     }
                 }
             }

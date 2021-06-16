@@ -44,6 +44,7 @@
     <string name="processing">Przetwarzanie...</string>
     <string name="server_connection_error">Problem z połączeniem z serwerem</string>
     <string name="unknown_error">Wystąpił nieznany błąd</string>
+    <string name="exit_app_toast_text">Aby wyjść naciśnij dwa razy przycisk wstecz</string>
 
 
     <string-array name="titles_array">
