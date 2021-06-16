@@ -33,7 +33,7 @@ private const val DATABASE_NAME = "mainDatabase"
 
 val repositoryModule = module {
     single<Repository> { RepositoryImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { NetworkRepository(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     single(named("mocklab")) { createRetrofit() }
     single { createUsersService(get((named("mocklab")))) }
     single { createUserMapper() }
@@ -48,7 +48,7 @@ val repositoryModule = module {
     single { createDispatchers() }
     single { createRegistrationService(get((named("mocklab")))) }
     single { createRegistrationServiceJava(get(named("java"))) }
-    single(named("java")){ createRetrofit2() }
+    single(named("java")){ createRetrofitJava() }
     single { createTechnologiesJavaService(get(named("java"))) }
     single { createStageService(get((named("mocklab")))) }
     single { createStageMapper() }
@@ -61,7 +61,10 @@ val repositoryModule = module {
     single { SharedPreferenceSource(get()) }
     single(named("js")){ createRetrofitJS() }
     single { createEventsJSService(get(named("js"))) }
+    single { createUsersServiceJava(get(named("java"))) }
 }
+
+
 
 val databaseModule = module {
     single {
@@ -90,7 +93,7 @@ private fun createRetrofit(): Retrofit {
         .build()
 }
 
-private fun createRetrofit2(): Retrofit {
+private fun createRetrofitJava(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL_JAVA)
@@ -108,6 +111,10 @@ private fun createRetrofitJS(): Retrofit {
 
 private fun createUsersService(retrofit: Retrofit): UsersService {
     return retrofit.create(UsersService::class.java)
+}
+
+fun createUsersServiceJava(retrofit: Retrofit): UsersServiceJava {
+    return retrofit.create(UsersServiceJava::class.java)
 }
 
 private fun createEventsMapper(): EventDtoMapper = EventDtoMapper()

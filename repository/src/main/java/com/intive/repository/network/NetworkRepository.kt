@@ -25,6 +25,7 @@ class NetworkRepository(
     private val stageDetailsService: StageDetailsService,
     private val gradebookService: GradebookService,
     private val registrationServiceJava: RegistrationServiceJava,
+    private val usersServiceJava: UsersServiceJava,
 ) {
     suspend fun getUsers(
         page: Int,
