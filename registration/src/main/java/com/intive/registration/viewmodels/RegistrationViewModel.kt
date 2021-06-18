@@ -133,7 +133,7 @@ class RegistrationViewModel(
         githubUrl.value?.let {
             it.isEmpty() ||
                     it.matches(Regex("(https?:\\/\\/)?(www\\.)?github.com\\/[\\-a-zA-Z0-9]{1,39}")) &&
-                    !it.startsWith("-") &&
+                    it[it.indexOf("github.com")+11].toString() != "-" &&
                     !it.endsWith("-") &&
                     !it.contains("--")
         } ?: true
