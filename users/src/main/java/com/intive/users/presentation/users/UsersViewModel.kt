@@ -53,13 +53,15 @@ class UsersViewModel(
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
             flow <Resource<List<ListUserJava>>> {
-                emit(Resource.Loading())
                 try {
-                    val users = repository.getUsersJava(ROLE_LEADER, selectedGroup, query).users
-                    _totalLeaders.value =
-                        Resource.Success(users.size)
+                    if(query.length != 1) {
+                        emit(Resource.Loading())
+                        val users = repository.getUsersJava(ROLE_LEADER, selectedGroup, query).users
+                        _totalLeaders.value =
+                            Resource.Success(users.size)
 
-                    emit(Resource.Success(users))
+                        emit(Resource.Success(users))
+                    }
                 } catch (e: Exception) {
                     emit(Resource.Error(e.localizedMessage))
                 }
@@ -79,13 +81,15 @@ class UsersViewModel(
         .distinctUntilChanged()
         .flatMapLatest { (query, selectedGroup) ->
             flow <Resource<List<ListUserJava>>> {
-                emit(Resource.Loading())
                 try {
-                    val users = repository.getUsersJava(ROLE_CANDIDATE, selectedGroup, query).users
-                    _totalCandidates.value =
-                        Resource.Success(users.size)
+                    if(query.length != 1) {
+                        emit(Resource.Loading())
+                        val users = repository.getUsersJava(ROLE_CANDIDATE, selectedGroup, query).users
+                        _totalCandidates.value =
+                            Resource.Success(users.size)
 
-                    emit(Resource.Success(users))
+                        emit(Resource.Success(users))
+                    }
                 }  catch (e: Exception) {
                     emit(Resource.Error(e.localizedMessage))
                 }
