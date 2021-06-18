@@ -178,7 +178,7 @@ fun NoUserProjects() {
     Text(
         text = stringResource(R.string.user_does_not_have_projects),
         modifier = Modifier
-            .padding(16.dp)
+            .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
             .fillMaxWidth(),
     )
 }
