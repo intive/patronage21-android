@@ -120,29 +120,34 @@ fun SuccessScreen(
                     user.email,
                     modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
                 )
-
-                ContactActionButton(stringResource(R.string.send_message)) {
-                    viewModel.onSendEmailClicked(user.email)
+                if(!viewModel.isLoggedInUser()) {
+                    ContactActionButton(stringResource(R.string.send_message)) {
+                        viewModel.onSendEmailClicked(user.email)
+                    }
+                    Spacer(modifier = Modifier.padding(10.dp))
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
                 Divider()
 
                 Text(
                     user.phoneNumber,
                     modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
                 )
-                ContactActionButton(stringResource(R.string.call)) {
-                    viewModel.onDialPhoneClicked(user.phoneNumber)
+                if(!viewModel.isLoggedInUser()) {
+                    ContactActionButton(stringResource(R.string.call)) {
+                        viewModel.onDialPhoneClicked(user.phoneNumber)
+                    }
+                    Spacer(modifier = Modifier.padding(10.dp))
                 }
-                Spacer(modifier = Modifier.padding(10.dp))
                 Divider()
 
                 Text(
                     user.github,
                     modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 16.dp)
                 )
-                ContactActionButton(stringResource(R.string.open_link)) {
-                    viewModel.onLaunchWebsiteClicked(user.github)
+                if(!viewModel.isLoggedInUser()) {
+                    ContactActionButton(stringResource(R.string.open_link)) {
+                        viewModel.onLaunchWebsiteClicked(user.github)
+                    }
                 }
             }
             if(viewModel.isLoggedInUser()) {
@@ -173,7 +178,7 @@ fun NoUserProjects() {
     Text(
         text = stringResource(R.string.user_does_not_have_projects),
         modifier = Modifier
-            .padding(16.dp)
+            .padding(start = 8.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
             .fillMaxWidth(),
     )
 }
