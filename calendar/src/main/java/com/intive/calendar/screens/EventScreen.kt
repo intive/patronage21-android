@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
-import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -19,10 +18,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
 import com.intive.calendar.fragments.EventFragmentDirections
-import com.intive.calendar.utils.*
 import com.intive.calendar.viewmodels.EventViewModel
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.*
@@ -106,6 +103,7 @@ fun EventScreenLayout(
                     }
                 }
 
+                /*
                 HeaderWithCount(
                     text = stringResource(R.string.event_users_label),
                     count = event.users.size,
@@ -113,8 +111,11 @@ fun EventScreenLayout(
                 )
 
                 UsersList(navController = navController, users = event.users)
+
+                 */
             }
 
+            /*
             Column {
 
                 if (event.active) {
@@ -125,10 +126,13 @@ fun EventScreenLayout(
                     )
                 }
             }
+
+             */
         }
     }
 }
 
+/*
 @Composable
 fun InviteResponseButtons(
     event: EventParcelable,
@@ -213,6 +217,8 @@ fun InviteResponseButtons(
         }
     }
 }
+ */
+
 
 @Composable
 fun UsersList(navController: NavController, users: List<User>) {
@@ -237,7 +243,7 @@ fun DeleteEventDialog(
     navController: NavController,
     refreshEventsList: () -> Unit,
     showDeleteDialog: Boolean?,
-    eventId: Long
+    eventId: String
 ) {
     Column {
 
@@ -266,8 +272,8 @@ fun DeleteEventDialog(
                         ) {
                             viewModel.deleteEvent(
                                 eventId,
-                                { navigationFun() },
-                                { refreshEventsList() })
+                                { navigationFun() }
+                            ) { refreshEventsList() }
                             viewModel.showDeleteDialog(false)
                         }
                         SecondaryButton(text = stringResource(R.string.cancel_dialog)) {

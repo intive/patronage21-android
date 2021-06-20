@@ -163,8 +163,8 @@ class NetworkRepository(
         return registrationServiceJava.sendDataFromRegistrationForm(user)
     }
 
-    suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<EventDto> {
-        return eventsService.getEvents(dateStart, dateEnd, userId)
+    suspend fun getEvents(dateStart: String, dateEnd: String): List<EventDto> {
+        return eventsServiceJS.getEvents(dateStart, dateEnd)
     }
 
 
@@ -172,11 +172,11 @@ class NetworkRepository(
         return eventsServiceJS.addNewEvent(event)
     }
 
-    suspend fun editEvent(event: EditEventDto, id: Long): Response<String> {
+    suspend fun editEvent(event: EditEventDto, id: String): Response<String> {
         return eventsService.editEvent(event, id)
     }
 
-    suspend fun deleteEvent(id: Long): Response<String> {
+    suspend fun deleteEvent(id: String): Response<String> {
         return eventsService.deleteEvent(id)
     }
 

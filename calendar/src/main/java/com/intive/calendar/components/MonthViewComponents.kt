@@ -19,8 +19,9 @@ import com.intive.calendar.R
 import com.intive.calendar.fragments.CalendarHomeFragmentDirections
 import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
+import com.intive.shared.getHour
 import com.intive.shared.EventParcelable
-import com.intive.shared.getDateString
+import com.intive.shared.getDate
 import com.intive.shared.getFullDateString
 import java.util.*
 
@@ -90,10 +91,10 @@ fun CalendarGrid(
 
                     var dayColumnModifier = Modifier.background(bgColor)
 
-                    if (monthEvents!!.find { event -> event.date == getDateString(it) } != null) {
+                    if (monthEvents!!.find { event -> event.date == getDate(it) } != null) {
 
                         val index =
-                            monthEvents.indexOfFirst { event -> event.date!! == getDateString(it) }
+                            monthEvents.indexOfFirst { event -> event.date!! == getDate(it) }
 
                         if (!(isDateSame(it, Calendar.getInstance()))) {
                             bgColor = colorResource(R.color.pale_blue)
@@ -105,12 +106,10 @@ fun CalendarGrid(
                                     !it.before(Calendar.getInstance())
 
                                 val eventParcelable = EventParcelable(
-                                    id = monthEvents[index].events!![0].id,
+                                    id = monthEvents[index].events!![0]._id,
                                     date = getFullDateString(it),
-                                    time = "${monthEvents[index].events!![0].timeStart} - ${monthEvents[index].events!![0].timeEnd}",
-                                    name = monthEvents[index].events!![0].name,
-                                    inviteResponse = monthEvents[index].events!![0].inviteResponse,
-                                    users = monthEvents[index].events!![0].users,
+                                    time = "${monthEvents[index].events!![0].startDate.getHour()} - ${monthEvents[index].events!![0].endDate.getHour()}",
+                                    name = monthEvents[index].events!![0].title,
                                     active = isDayActive
 
                                 )

@@ -67,7 +67,7 @@ class EventViewModel(
         }
     }
 
-    fun deleteEvent(eventId: Long, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
+    fun deleteEvent(eventId: String, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
         var response: Response<String>
 
         val handler = CoroutineExceptionHandler { _, _ ->

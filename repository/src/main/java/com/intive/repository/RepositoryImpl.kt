@@ -264,8 +264,8 @@ class RepositoryImpl(
         return networkRepository.sendCodeToServer(body)
     }
 
-    override suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event> {
-        return networkRepository.getEvents(dateStart, dateEnd, userId).map { event ->
+    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
+        return networkRepository.getEvents(dateStart, dateEnd).map { event ->
             eventMapper.mapToDomainModel(event)
         }
     }
@@ -289,7 +289,7 @@ class RepositoryImpl(
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 
-    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+    override suspend fun editEvent(event: EditEvent, id: String): Response<String> {
         return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
     }
 
@@ -345,7 +345,7 @@ class RepositoryImpl(
         return localRepository.isCachingEnabled()
     }
 
-    override suspend fun deleteEvent(id: Long): Response<String> {
+    override suspend fun deleteEvent(id: String): Response<String> {
         return networkRepository.deleteEvent(id)
     }
 

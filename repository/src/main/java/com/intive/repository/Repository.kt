@@ -65,9 +65,9 @@ interface Repository {
     suspend fun insertAudit(title: String, date: OffsetDateTime, userName: String)
 
     suspend fun addNewEvent(event: NewEvent): Response<Any>
-    suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event>
-    suspend fun editEvent(event: EditEvent, id: Long): Response<String>
-    suspend fun deleteEvent(id: Long): Response<String>
+    suspend fun getEvents(dateStart: String, dateEnd: String): List<Event>
+    suspend fun editEvent(event: EditEvent, id: String): Response<String>
+    suspend fun deleteEvent(id: String): Response<String>
 
     suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<RegistrationResponse>
     suspend fun sendCodeToServer(code: String, email: String): Response<String>

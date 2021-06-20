@@ -1,5 +1,6 @@
 package com.intive.calendar.screens
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -40,7 +41,6 @@ fun CalendarHomeLayout(
     val currentMonth by calendarViewModel.currentMonth.observeAsState()
     val monthEvents by calendarViewModel.monthEvents.observeAsState()
     val calendarViewsList = stringArrayResource(R.array.calendar_views_list).asList()
-
 
 
     FABLayout(
