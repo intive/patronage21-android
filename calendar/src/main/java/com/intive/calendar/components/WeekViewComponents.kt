@@ -25,7 +25,9 @@ import com.intive.calendar.screens.CalendarHeader
 import com.intive.calendar.utils.*
 import java.util.*
 import com.intive.repository.domain.model.Event
+import com.intive.shared.getHour
 import com.intive.shared.EventParcelable
+import com.intive.shared.getDate
 import com.intive.shared.getDateString
 import com.intive.shared.getFullDateString
 
@@ -62,7 +64,7 @@ fun DaysList(
 ) {
 
     (0..6).forEach {
-        if (weekEventsList.find { event -> event.date == getDateString(currentWeek[it]) } == null) {
+        if (weekEventsList.find { event -> event.date == getDate(currentWeek[it]) } == null) {
             DaysListItem(
                 index = it,
                 navController = navController,
@@ -71,7 +73,7 @@ fun DaysList(
             )
         } else {
             val index =
-                weekEventsList.indexOfFirst { event -> event.date!! == getDateString(currentWeek[it]) }
+                weekEventsList.indexOfFirst { event -> event.date!! == getDate(currentWeek[it]) }
             weekEventsList[index].events?.let { event ->
                 DaysListItem(
                     index = it,
@@ -129,12 +131,10 @@ fun DaysListItem(
             val header = getFullDateString(day)
 
             val eventParcelable = EventParcelable(
-                id = events[0].id,
+                id = events[0]._id,
                 date = header,
-                time = "${events[0].timeStart} - ${events[0].timeEnd}",
-                name = events[0].name,
-                inviteResponse = events[0].inviteResponse,
-                users = events[0].users,
+                time = "${events[0].startDate.getHour()} - ${events[0].endDate.getHour()}",
+                name = events[0].title,
                 active = isDayActive
             )
 
@@ -145,7 +145,7 @@ fun DaysListItem(
             WeekDayWithEvents(
                 headerColor = headerColor,
                 txtColor = txtColor,
-                text = "${events[0].name}, ${events[0].timeStart} - ${events[0].timeEnd}",
+                text = "${events[0].title}, ${events[0].startDate.getHour()} - ${events[0].endDate.getHour()}",
                 index = index,
                 date = day,
                 modifier = Modifier
@@ -261,12 +261,10 @@ fun EventsItem(
     val header = getFullDateString(date)
 
     val eventParcelable = EventParcelable(
-        id = event.id,
+        id = event._id,
         date = header,
-        time = "${event.timeStart} - ${event.timeEnd}",
-        name = event.name,
-        inviteResponse = event.inviteResponse,
-        users = event.users,
+        time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
+        name = event.title,
         active = isDayActive
     )
 
@@ -286,7 +284,7 @@ fun EventsItem(
     ) {
 
         Text(
-            text = "${event.name}, ${event.timeStart} - ${event.timeEnd}",
+            text = "${event.title}, ${event.startDate.getHour()} - ${event.endDate.getHour()}",
             style = TextStyle(
                 color = headerColor,
                 fontStyle = FontStyle.Italic,

@@ -188,7 +188,7 @@ class AddEditEventViewModel(
     fun editEvent(
         refreshEventsList: () -> Unit,
         popBackStack: () -> Unit,
-        id: Long
+        id: String
     ) {
         val date = getDateString(_dateStart.value!!)
         val timeStart = timeToString(

@@ -10,6 +10,8 @@ import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 import com.intive.repository.util.DispatcherProvider
 import com.intive.shared.getDateString
+import com.intive.shared.getEndDateString
+import com.intive.shared.getStartDateString
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -69,7 +71,7 @@ class CalendarHomeViewModel(
             weekArray += date.clone() as Calendar
         }
 
-        getWeekEvents(getDateString(weekArray[0]), getDateString(weekArray[6]))
+        getWeekEvents(getStartDateString(weekArray[0]), getEndDateString(weekArray[6]))
         return weekArray
     }
 
@@ -104,7 +106,7 @@ class CalendarHomeViewModel(
 
         _monthHeader.value = getMonthAndYearString(currentDate)
 
-        getMonthEvents(getDateString(numbers.first()), getDateString(numbers.last()))
+        getMonthEvents(getStartDateString(numbers.first()), getEndDateString(numbers.last()))
         return CurrentMonth(offset = offsetList, days = numbers)
 
     }
@@ -118,14 +120,14 @@ class CalendarHomeViewModel(
 
             _monthEvents.postValue(listOf(Day(null, emptyList())))
 
-            events = repository.getEvents(dateStart, dateEnd, userId)
+            events = repository.getEvents(dateStart, dateEnd)
 
             for (i in events.indices) {
-                val index = monthArray.indexOfFirst { it.date!! == events[i].date }
+                val index = monthArray.indexOfFirst { it.date!! == events[i].startDate.substringBefore("T") }
                 if (index != -1) {
                     monthArray[index].events = monthArray[index].events?.plus(events[i])
                 } else {
-                    monthArray += Day(events[i].date, listOf(events[i]))
+                    monthArray += Day(events[i].startDate.substringBefore("T"), listOf(events[i]))
                 }
             }
 
@@ -143,14 +145,14 @@ class CalendarHomeViewModel(
             _weekEvents.postValue(listOf(Day(null, emptyList())))
 
 
-            events = repository.getEvents(dateStart, dateEnd, userId)
+            events = repository.getEvents(dateStart, dateEnd)
 
             for (i in events.indices) {
-                val index = weekArray.indexOfFirst { it.date!! == events[i].date }
+                val index = weekArray.indexOfFirst { it.date!! == events[i].startDate.substringBefore("T") }
                 if (index != -1) {
                     weekArray[index].events = weekArray[index].events?.plus(events[i])
                 } else {
-                    weekArray += Day(events[i].date, listOf(events[i]))
+                    weekArray += Day(events[i].startDate.substringBefore("T"), listOf(events[i]))
                 }
             }
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.intive.calendar.utils.EventScreenChannel
 import com.intive.repository.Repository
 import com.intive.repository.database.EventLogger
-import com.intive.repository.domain.model.EventInviteResponse
+import com.intive.repository.domain.ListUserJava
 import com.intive.repository.util.DispatcherProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
@@ -28,6 +28,9 @@ class EventViewModel(
     private val eventScreenChannel = Channel<EventScreenChannel>()
     val eventScreenFlow = eventScreenChannel.receiveAsFlow()
 
+    private val _usersList = MutableLiveData<List<ListUserJava>>()
+    val usersList: LiveData<List<ListUserJava>> = _usersList
+
     private fun showSnackbar(message: EventScreenChannel) = viewModelScope.launch {
         eventScreenChannel.send(message)
     }
@@ -36,38 +39,23 @@ class EventViewModel(
         _showDeleteDialog.value = value
     }
 
-    fun updateInviteResponse(
-        userId: Long,
-        eventId: Long,
-        inviteResponse: String,
-        refreshEventsList: () -> Unit
-    ) {
+    private val handler = CoroutineExceptionHandler { _, e -> e.printStackTrace() }
 
-        val res = EventInviteResponse(userId, eventId, inviteResponse)
+    init {
+        getEventUsers()
+    }
 
-        val handler = CoroutineExceptionHandler { _, _ ->
-            showSnackbar(EventScreenChannel.InviteResponseError)
-        }
+    private fun getEventUsers() {
 
-        var response: Response<String>
+        var users: List<ListUserJava>
 
-        viewModelScope.launch(handler) {
-
-            withContext(dispatchers.io) {
-                response = repository.updateInviteResponse(res)
-            }
-
-            if (response.isSuccessful) {
-                eventLogger.log("Pomyślna edycja wydarzenia")
-                refreshEventsList()
-            } else {
-                eventLogger.log("Błąd edycji wydarzenia")
-                showSnackbar(EventScreenChannel.InviteResponseError)
-            }
+        viewModelScope.launch(dispatchers.io + handler) {
+            users = repository.getEventUsers()
+            _usersList.postValue(users)
         }
     }
 
-    fun deleteEvent(eventId: Long, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
+    fun deleteEvent(eventId: String, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
         var response: Response<String>
 
         val handler = CoroutineExceptionHandler { _, _ ->

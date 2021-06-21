@@ -25,9 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.intive.repository.domain.model.Event
-import com.intive.shared.EventParcelable
-import com.intive.shared.getFullDateString
-import com.intive.shared.stringToCalendar
+import com.intive.shared.*
 import java.util.*
 
 
@@ -78,6 +76,7 @@ fun StageScreen(
                     showCount = true
                 )
 
+
                 stageDetails!!.events.forEach { event ->
                     EventListItem(
                         event = event,
@@ -85,6 +84,8 @@ fun StageScreen(
                     )
                     Divider()
                 }
+
+
 
                 Spacer(Modifier.height(24.dp))
                 HeaderWithCount(text = stringResource(R.string.stage_completion))
@@ -141,18 +142,16 @@ fun EventListItem(
     var eventActive = true
 
 
-    if (stringToCalendar(dateString = event.date, timeEnd = event.timeEnd).before(Calendar.getInstance())) {
+    if (stringToCalendar(dateString = event.startDate.swap(), timeEnd = event.endDate.getHour()).before(Calendar.getInstance())) {
         fontColor = Color.Gray
         eventActive = false
     }
 
     val eventParcelable = EventParcelable(
-        id = event.id,
-        date = getFullDateString(event.date),
-        time = "${event.timeStart} - ${event.timeEnd}",
-        name = event.name,
-        inviteResponse = event.inviteResponse,
-        users = event.users,
+        id = event._id,
+        date = getFullDateString(event.startDate.substringBefore("T").swapDate()),
+        time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
+        name = event.title,
         active = eventActive
     )
 
@@ -172,7 +171,7 @@ fun EventListItem(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text = getFullDateString(event.date),
+                    text = getFullDateString(event.startDate.substringBefore("T").swapDate()),
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
@@ -183,7 +182,7 @@ fun EventListItem(
 
             Row(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
                 Text(
-                    text = "${event.name}, ${event.timeStart}-${event.timeEnd}",
+                    text = "${event.title}, ${event.startDate.getHour()}-${event.endDate.getHour()}",
                     fontSize = 18.sp,
                     color = fontColor
                 )

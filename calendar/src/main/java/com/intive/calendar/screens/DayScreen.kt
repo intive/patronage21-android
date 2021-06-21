@@ -15,6 +15,7 @@ import com.intive.calendar.R
 import com.intive.calendar.fragments.DayFragmentDirections
 import com.intive.calendar.utils.DayParcelable
 import com.intive.repository.domain.model.Event
+import com.intive.shared.getHour
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.Divider
 import com.intive.ui.components.LayoutContainer
@@ -67,12 +68,10 @@ fun EventsList(
 fun EventsListItem(date: String, event: Event, navController: NavController, isDayActive: Boolean) {
 
     val eventParcelable = EventParcelable(
-        id = event.id,
+        id = event._id,
         date = date,
-        time = "${event.timeStart} - ${event.timeEnd}",
-        name = event.name,
-        inviteResponse = event.inviteResponse,
-        users = event.users,
+        time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
+        name = event.title,
         active = isDayActive
     )
 
@@ -96,11 +95,11 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         ) {
 
             Text(
-                event.name,
+                event.title,
                 style = typography.h6
             )
             Text(
-                "${stringResource(R.string.hour)}: ${event.timeStart} - ${event.timeEnd}",
+                "${stringResource(R.string.hour)}: ${event.startDate.getHour()} - ${event.endDate.getHour()}",
                 style = typography.body1
             )
 

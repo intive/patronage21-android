@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
-import com.intive.calendar.components.*
 import com.intive.repository.domain.model.User
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -21,9 +20,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
+import com.intive.calendar.components.ResponseButton
 import com.intive.calendar.fragments.EventFragmentDirections
-import com.intive.calendar.utils.*
+import com.intive.calendar.utils.InviteResponse
 import com.intive.calendar.viewmodels.EventViewModel
+import com.intive.repository.domain.ListUserJava
 import com.intive.shared.EventParcelable
 import com.intive.ui.components.*
 
@@ -32,12 +33,12 @@ import com.intive.ui.components.*
 fun EventScreenLayout(
     eventViewModel: EventViewModel,
     navController: NavController,
-    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
     event: EventParcelable,
     refreshEventsList: () -> Unit
 ) {
 
     val showDeleteDialog by eventViewModel.showDeleteDialog.observeAsState()
+    val usersList by eventViewModel.usersList.observeAsState()
 
     if (showDeleteDialog == true) {
         DeleteEventDialog(
@@ -108,39 +109,43 @@ fun EventScreenLayout(
 
                 HeaderWithCount(
                     text = stringResource(R.string.event_users_label),
-                    count = event.users.size,
+                    count = if (usersList == null) 0 else usersList?.size,
                     showCount = true,
                 )
 
-                UsersList(navController = navController, users = event.users)
+                if (usersList != null) {
+                    UsersList(navController = navController, users = usersList!!)
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
             }
 
             Column {
 
                 if (event.active) {
-                    InviteResponseButtons(
-                        event = event,
-                        updateInviteResponse = updateInviteResponse,
-                        refreshEventsList = refreshEventsList
-                    )
+                    InviteResponseButtons()
                 }
             }
         }
     }
 }
 
-@Composable
-fun InviteResponseButtons(
-    event: EventParcelable,
-    updateInviteResponse: (Long, Long, String, () -> Unit) -> Unit,
-    refreshEventsList: () -> Unit
-) {
 
+@Composable
+fun InviteResponseButtons() {
+
+    val inviteResponse = InviteResponse.values().random()
     val acceptBtnSelected = remember { mutableStateOf(false) }
     val unknownBtnSelected = remember { mutableStateOf(false) }
     val declineBtnSelected = remember { mutableStateOf(false) }
 
-    when (event.inviteResponse) {
+    when (inviteResponse.name) {
         InviteResponse.ACCEPTED.name -> acceptBtnSelected.value = true
         InviteResponse.UNKNOWN.name -> unknownBtnSelected.value = true
         InviteResponse.DECLINED.name -> declineBtnSelected.value = true
@@ -154,16 +159,6 @@ fun InviteResponseButtons(
                 selected = acceptBtnSelected
             )
             {
-
-                if (event.inviteResponse != InviteResponse.ACCEPTED.name) {
-                    updateInviteResponse(
-                        userId,
-                        event.id,
-                        InviteResponse.ACCEPTED.name,
-                        refreshEventsList,
-                    )
-                }
-
                 acceptBtnSelected.value = true
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = false
@@ -176,15 +171,6 @@ fun InviteResponseButtons(
                 selected = unknownBtnSelected
             )
             {
-                if (event.inviteResponse != InviteResponse.UNKNOWN.name) {
-                    updateInviteResponse(
-                        userId,
-                        event.id,
-                        InviteResponse.UNKNOWN.name,
-                        refreshEventsList
-                    )
-                }
-
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = true
                 declineBtnSelected.value = false
@@ -197,15 +183,6 @@ fun InviteResponseButtons(
                 selected = declineBtnSelected
             )
             {
-                if (event.inviteResponse != InviteResponse.DECLINED.name) {
-                    updateInviteResponse(
-                        userId,
-                        event.id,
-                        InviteResponse.DECLINED.name,
-                        refreshEventsList
-                    )
-                }
-
                 acceptBtnSelected.value = false
                 unknownBtnSelected.value = false
                 declineBtnSelected.value = true
@@ -214,18 +191,30 @@ fun InviteResponseButtons(
     }
 }
 
+
 @Composable
-fun UsersList(navController: NavController, users: List<User>) {
+fun UsersList(navController: NavController, users: List<ListUserJava>) {
     val scrollState = rememberLazyListState()
 
     LazyColumn(state = scrollState, modifier = Modifier.padding(bottom = 12.dp)) {
         items(users) { user ->
             PersonListItem(
-                user = user,
+                user = User(
+                    login = user.login,
+                    firstName = user.firstName,
+                    lastName = user.lastName,
+                    gender = "",
+                    image = null,
+                    projects = emptyList(),
+                    email = "",
+                    phoneNumber = "",
+                    github = "",
+                    bio = "",
+                    role = ""
+                ),
                 onItemClick = { navController.navigate(Uri.parse("intive://userDetails/${user.login}")) },
                 rowPadding = 0.dp,
-                showAdditionalText = true,
-                additionalText = user.role
+                showAdditionalText = false
             )
         }
     }
@@ -237,7 +226,7 @@ fun DeleteEventDialog(
     navController: NavController,
     refreshEventsList: () -> Unit,
     showDeleteDialog: Boolean?,
-    eventId: Long
+    eventId: String
 ) {
     Column {
 
@@ -266,8 +255,8 @@ fun DeleteEventDialog(
                         ) {
                             viewModel.deleteEvent(
                                 eventId,
-                                { navigationFun() },
-                                { refreshEventsList() })
+                                { navigationFun() }
+                            ) { refreshEventsList() }
                             viewModel.showDeleteDialog(false)
                         }
                         SecondaryButton(text = stringResource(R.string.cancel_dialog)) {

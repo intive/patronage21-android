@@ -75,7 +75,6 @@ class EventFragment : Fragment() {
                     EventScreenLayout(
                         eventViewModel = eventViewModel,
                         navController = findNavController(),
-                        updateInviteResponse = eventViewModel::updateInviteResponse,
                         event = event
                     ) { calendarHomeViewModel.refreshEventsList() }
                 }

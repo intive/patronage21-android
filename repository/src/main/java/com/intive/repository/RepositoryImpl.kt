@@ -8,6 +8,7 @@ import com.intive.repository.database.DatabaseRepository
 import com.intive.repository.database.audits.AuditEntity
 import com.intive.repository.database.technologies.TechnologyEntity
 import com.intive.repository.database.util.AuditEntityMapper
+import com.intive.repository.domain.ListUserJava
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.domain.model.EventInviteResponse
@@ -264,10 +265,14 @@ class RepositoryImpl(
         return networkRepository.sendCodeToServer(body)
     }
 
-    override suspend fun getEvents(dateStart: String, dateEnd: String, userId: Long): List<Event> {
-        return networkRepository.getEvents(dateStart, dateEnd, userId).map { event ->
+    override suspend fun getEvents(dateStart: String, dateEnd: String): List<Event> {
+        return networkRepository.getEvents(dateStart, dateEnd).map { event ->
             eventMapper.mapToDomainModel(event)
         }
+    }
+
+    override suspend fun getEventUsers(): List<ListUserJava> {
+        return networkRepository.getEventUsers()
     }
 
 
@@ -289,7 +294,7 @@ class RepositoryImpl(
         return networkRepository.addNewEvent(newEventMapper.mapFromDomainModel(event))
     }
 
-    override suspend fun editEvent(event: EditEvent, id: Long): Response<String> {
+    override suspend fun editEvent(event: EditEvent, id: String): Response<String> {
         return networkRepository.editEvent(editEventMapper.mapFromDomainModel(event), id)
     }
 
@@ -345,7 +350,7 @@ class RepositoryImpl(
         return localRepository.isCachingEnabled()
     }
 
-    override suspend fun deleteEvent(id: Long): Response<String> {
+    override suspend fun deleteEvent(id: String): Response<String> {
         return networkRepository.deleteEvent(id)
     }
 

@@ -42,7 +42,6 @@ fun CalendarHomeLayout(
     val calendarViewsList = stringArrayResource(R.array.calendar_views_list).asList()
 
 
-
     FABLayout(
         onClick = { navController.navigate(R.id.action_calendarFragment_to_addEventFragment) },
         contentDescription = stringResource(R.string.add_event_btn_desc)
