@@ -2,6 +2,7 @@ package com.intive.repository.network
 
 import com.intive.repository.network.model.EventDto
 import com.google.gson.JsonObject
+import com.intive.repository.domain.ListUserJava
 import com.intive.repository.domain.model.UserRegistration
 import com.intive.repository.network.model.*
 import retrofit2.Response
@@ -167,6 +168,9 @@ class NetworkRepository(
         return eventsServiceJS.getEvents(dateStart, dateEnd)
     }
 
+    suspend fun getEventUsers(): List<ListUserJava> {
+        return eventsService.getEventUsers()
+    }
 
     suspend fun addNewEvent(event: NewEventDto): Response<Any> {
         return eventsServiceJS.addNewEvent(event)

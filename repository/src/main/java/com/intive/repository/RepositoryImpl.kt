@@ -8,6 +8,7 @@ import com.intive.repository.database.DatabaseRepository
 import com.intive.repository.database.audits.AuditEntity
 import com.intive.repository.database.technologies.TechnologyEntity
 import com.intive.repository.database.util.AuditEntityMapper
+import com.intive.repository.domain.ListUserJava
 import com.intive.repository.domain.model.*
 import com.intive.repository.network.NetworkRepository
 import com.intive.repository.domain.model.EventInviteResponse
@@ -268,6 +269,10 @@ class RepositoryImpl(
         return networkRepository.getEvents(dateStart, dateEnd).map { event ->
             eventMapper.mapToDomainModel(event)
         }
+    }
+
+    override suspend fun getEventUsers(): List<ListUserJava> {
+        return networkRepository.getEventUsers()
     }
 
 
