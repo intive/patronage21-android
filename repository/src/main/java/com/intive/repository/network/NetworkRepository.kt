@@ -180,8 +180,8 @@ class NetworkRepository(
         return eventsService.editEvent(event, id)
     }
 
-    suspend fun deleteEvent(id: String): Response<String> {
-        return eventsService.deleteEvent(id)
+    suspend fun deleteEvent(id: String): Response<Any> {
+        return eventsServiceJS.deleteEvent(id)
     }
 
     suspend fun sendCodeToServer(body: JsonObject): Response<String> {

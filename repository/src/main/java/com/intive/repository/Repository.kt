@@ -68,7 +68,7 @@ interface Repository {
     suspend fun addNewEvent(event: NewEvent): Response<Any>
     suspend fun getEvents(dateStart: String, dateEnd: String): List<Event>
     suspend fun editEvent(event: EditEvent, id: String): Response<String>
-    suspend fun deleteEvent(id: String): Response<String>
+    suspend fun deleteEvent(id: String): Response<Any>
     suspend fun getEventUsers(): List<ListUserJava>
 
     suspend fun sendDataFromRegistrationForm(user: UserRegistration): Response<RegistrationResponse>

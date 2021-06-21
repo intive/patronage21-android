@@ -56,7 +56,7 @@ class EventViewModel(
     }
 
     fun deleteEvent(eventId: String, popBackStack: () -> Unit, refreshEventsList: () -> Unit) {
-        var response: Response<String>
+        var response: Response<Any>
 
         val handler = CoroutineExceptionHandler { _, _ ->
             showSnackbar(EventScreenChannel.EventDeleteError)
@@ -77,6 +77,7 @@ class EventViewModel(
                 eventLogger.log("Błąd usunięcia wydarzenia")
                 showSnackbar(EventScreenChannel.EventDeleteError)
             }
+
         }
     }
 }

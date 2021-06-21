@@ -350,7 +350,7 @@ class RepositoryImpl(
         return localRepository.isCachingEnabled()
     }
 
-    override suspend fun deleteEvent(id: String): Response<String> {
+    override suspend fun deleteEvent(id: String): Response<Any> {
         return networkRepository.deleteEvent(id)
     }
 
