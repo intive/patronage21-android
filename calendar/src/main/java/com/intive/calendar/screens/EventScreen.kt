@@ -236,7 +236,8 @@ fun DeleteEventDialog(
                 if (navController.previousBackStackEntry?.destination?.id == R.id.calendarFragment || navController.previousBackStackEntry?.destination?.id == R.id.dayFragment) {
                     { navController.popBackStack(R.id.calendarFragment, false) }
                 } else {
-                    { navController.popBackStack() }
+                    { navController.popBackStack()
+                    }
                 }
 
             AlertDialog(

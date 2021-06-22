@@ -16,4 +16,7 @@ interface EventsServiceJS {
     @POST("api/events")
     @Headers("Content-Type: application/json")
     suspend fun addNewEvent(@Body event: NewEventDto): Response<Any>
+
+    @DELETE("api/events/delete/{id}")
+    suspend fun deleteEvent(@Path("id") id: String): Response<Any>
 }
