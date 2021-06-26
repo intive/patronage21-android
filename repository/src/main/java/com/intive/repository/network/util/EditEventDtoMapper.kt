@@ -7,21 +7,19 @@ import com.intive.repository.network.model.EditEventDto
 class EditEventDtoMapper : DomainMapper<EditEventDto, EditEvent> {
     override fun mapToDomainModel(model: EditEventDto): EditEvent {
         return EditEvent(
-            date = model.date,
-            timeStart = model.timeStart,
-            timeEnd = model.timeEnd,
-            name = model.name,
-            groups = model.groups
+            title = model.title,
+            startDate = model.startDate,
+            endDate = model.endDate,
+            description = model.description
         )
     }
 
     override fun mapFromDomainModel(domainModel: EditEvent): EditEventDto {
         return EditEventDto(
-            date = domainModel.date,
-            timeStart = domainModel.timeStart,
-            timeEnd = domainModel.timeEnd,
-            name = domainModel.name,
-            groups = domainModel.groups
+            title = domainModel.title,
+            startDate = domainModel.startDate,
+            endDate = domainModel.endDate,
+            description = domainModel.description
         )
     }
 }

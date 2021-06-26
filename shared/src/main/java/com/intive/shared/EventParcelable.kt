@@ -9,5 +9,6 @@ data class EventParcelable(
     val date: String,
     val time: String,
     val name: String,
+    val description: String,
     val active: Boolean
 ): Parcelable

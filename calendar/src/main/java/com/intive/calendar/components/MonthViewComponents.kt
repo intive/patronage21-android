@@ -110,6 +110,7 @@ fun CalendarGrid(
                                     date = getFullDateString(it),
                                     time = "${monthEvents[index].events!![0].startDate.getHour()} - ${monthEvents[index].events!![0].endDate.getHour()}",
                                     name = monthEvents[index].events!![0].title,
+                                    description = monthEvents[index].events!![0].description ?: "",
                                     active = isDayActive
 
                                 )

@@ -135,6 +135,7 @@ fun DaysListItem(
                 date = header,
                 time = "${events[0].startDate.getHour()} - ${events[0].endDate.getHour()}",
                 name = events[0].title,
+                description = events[0].description ?: "",
                 active = isDayActive
             )
 
@@ -265,6 +266,7 @@ fun EventsItem(
         date = header,
         time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
         name = event.title,
+        description = event.description ?: "",
         active = isDayActive
     )
 

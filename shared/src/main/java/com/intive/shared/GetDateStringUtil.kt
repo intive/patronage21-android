@@ -52,6 +52,12 @@ fun getDate(date: Calendar, separator: String = "-"): String {
     return "${date[Calendar.YEAR]}${separator}${month}${separator}${day}"
 }
 
+fun getDateAndTimeString(date: Calendar): String {
+    val (day, month) = formatDate(date)
+    val time = formatTime(date[Calendar.HOUR_OF_DAY], date[Calendar.MINUTE])
+    return "${date[Calendar.YEAR]}-${month}-${day}T${time}:00Z"
+}
+
 fun getDateAndTimeString(date: Calendar, time: String): String {
     val (day, month) = formatDate(date)
     return "${date[Calendar.YEAR]}-${month}-${day}T${time}Z"

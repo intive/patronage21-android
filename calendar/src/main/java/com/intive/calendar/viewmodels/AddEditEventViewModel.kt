@@ -10,14 +10,15 @@ import com.intive.repository.database.EventLogger
 import com.intive.repository.domain.model.EditEvent
 import com.intive.repository.domain.model.NewEvent
 import com.intive.repository.util.DispatcherProvider
+import com.intive.shared.formatTime
 import com.intive.shared.getDateAndTimeString
-import com.intive.shared.getDateString
 import kotlinx.coroutines.*
 import java.util.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
+
 
 class AddEditEventViewModel(
     private val repository: Repository,
@@ -187,28 +188,27 @@ class AddEditEventViewModel(
 
     fun editEvent(
         refreshEventsList: () -> Unit,
-        popBackStack: () -> Unit,
+        popBackStack: () -> Boolean,
         id: String
     ) {
-        val date = getDateString(_dateStart.value!!)
-        val timeStart = timeToString(
-            _dateStart.value!![Calendar.HOUR_OF_DAY].toString(),
-            _dateStart.value!![Calendar.MINUTE].toString()
-        )
-        val timeEnd = timeToString(
-            _dateStart.value!![Calendar.HOUR_OF_DAY].toString(),
-            _dateStart.value!![Calendar.MINUTE].toString()
-        )
-        val name = _nameValue.value!!
+
+        val startDate = getDateAndTimeString(_dateStart.value!!)
+        val endDate = getDateAndTimeString(_dateEnd.value!!)
 
         if (isFormValid()) {
             val editEvent =
-                EditEvent(date, timeStart, timeEnd, name, _selectedTechnologyGroups.toString())
+                EditEvent(
+                    title = _nameValue.value!!,
+                    startDate = startDate,
+                    endDate = endDate,
+                    description = _descriptionValue.value!!
+                )
+
             val handler = CoroutineExceptionHandler { _, _ ->
                 showSnackbar(EventChannel.EditEventError)
             }
 
-            var response: Response<String>
+                var response: Response<String>
 
             viewModelScope.launch(handler) {
 
@@ -221,6 +221,7 @@ class AddEditEventViewModel(
                     refreshEventsList()
                     popBackStack()
                     popBackStack()
+
                 } else {
                     showSnackbar(EventChannel.EditEventError)
                 }
