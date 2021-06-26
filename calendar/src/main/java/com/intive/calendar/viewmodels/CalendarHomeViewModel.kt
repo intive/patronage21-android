@@ -9,7 +9,6 @@ import com.intive.repository.Repository
 import com.intive.calendar.utils.Day
 import com.intive.repository.domain.model.Event
 import com.intive.repository.util.DispatcherProvider
-import com.intive.shared.getDate
 import com.intive.shared.getDateString
 import com.intive.shared.getEndDateString
 import com.intive.shared.getStartDateString
@@ -217,8 +216,8 @@ class CalendarHomeViewModel(
     }
 
     fun refreshEventsList(){
-        getMonthEvents(getDate(_currentMonth.value!!.days.first()), getDate(_currentMonth.value!!.days.last()))
-        getWeekEvents(getDate(_currentWeek.value!![0]), getDate(_currentWeek.value!![6]))
+        getMonthEvents(getStartDateString(_currentMonth.value!!.days.first()), getEndDateString(_currentMonth.value!!.days.last()))
+        getWeekEvents(getStartDateString(_currentWeek.value!![0]), getEndDateString(_currentWeek.value!![6]))
     }
 
     private fun setWeekHeader(): String {

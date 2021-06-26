@@ -59,6 +59,7 @@ fun EventScreenLayout(
 
                 TitleText(text = event.date, modifier = Modifier.padding(bottom = 24.dp))
 
+                val titleBottomPadding = if(event.description != "") 8.dp else 24.dp
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.weight(2f)) {
@@ -72,7 +73,7 @@ fun EventScreenLayout(
                         Text(
                             "${stringResource(R.string.hour)}: ${event.time}",
                             style = MaterialTheme.typography.subtitle1,
-                            modifier = Modifier.padding(bottom = 24.dp)
+                            modifier = Modifier.padding(bottom = titleBottomPadding)
                         )
                     }
                     Column(modifier = Modifier.weight(1f)) {
@@ -87,14 +88,17 @@ fun EventScreenLayout(
                                     eventInfoParcelable = event
                                 )
 
-                            IconButton(onClick = { navController.navigate(directions) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Edit,
-                                    contentDescription = stringResource(R.string.edit_event_description),
-                                    tint = MaterialTheme.colors.primary,
-                                    modifier = Modifier.align(Alignment.CenterVertically)
-                                )
+                            if(event.active){
+                                IconButton(onClick = { navController.navigate(directions) }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = stringResource(R.string.edit_event_description),
+                                        tint = MaterialTheme.colors.primary,
+                                        modifier = Modifier.align(Alignment.CenterVertically)
+                                    )
+                                }
                             }
+
                             IconButton(onClick = { eventViewModel.showDeleteDialog(true) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
@@ -105,6 +109,10 @@ fun EventScreenLayout(
                             }
                         }
                     }
+                }
+
+                if(event.description != ""){
+                    Paragraph(text = event.description, modifier = Modifier.padding(bottom = 24.dp))
                 }
 
                 HeaderWithCount(

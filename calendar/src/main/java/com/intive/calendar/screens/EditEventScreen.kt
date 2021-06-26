@@ -16,7 +16,7 @@ import com.intive.shared.stringToCalendar
 fun EditEventScreen(
     context: Context,
     event: EventParcelable,
-    popBackStack: () -> Unit,
+    popBackStack: () -> Boolean,
     addEditEventViewModel: AddEditEventViewModel,
     refreshEventsList: () -> Unit
 ) {
@@ -24,7 +24,9 @@ fun EditEventScreen(
     val time = extractTimeFromString(event.time)
 
     addEditEventViewModel.setStartDate(stringToCalendar(event.date))
+    addEditEventViewModel.setEndDate(stringToCalendar(event.date))
     addEditEventViewModel.setInputValue(event.name)
+    addEditEventViewModel.setDescriptionValue(event.description)
     addEditEventViewModel.setTimeStart(time[0], time[1])
     addEditEventViewModel.setTimeEnd(time[2], time[3])
 

@@ -145,6 +145,7 @@ private fun createRetrofitJS(): Retrofit {
 
     return Retrofit.Builder()
         .baseUrl(BASE_URL_JS)
+        .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 }

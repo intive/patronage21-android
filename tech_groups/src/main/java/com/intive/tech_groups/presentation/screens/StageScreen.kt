@@ -152,6 +152,7 @@ fun EventListItem(
         date = getFullDateString(event.startDate.substringBefore("T").swapDate()),
         time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
         name = event.title,
+        description = event.description ?: "",
         active = eventActive
     )
 

@@ -72,6 +72,7 @@ fun EventsListItem(date: String, event: Event, navController: NavController, isD
         date = date,
         time = "${event.startDate.getHour()} - ${event.endDate.getHour()}",
         name = event.title,
+        description = event.description ?: "",
         active = isDayActive
     )
 

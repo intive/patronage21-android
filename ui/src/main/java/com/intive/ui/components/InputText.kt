@@ -13,12 +13,12 @@ import androidx.compose.ui.text.input.ImeAction
 
 @ExperimentalComposeUiApi
 @Composable
-fun InputText(textState: String, label: String, setInputValue: (String) -> Unit, focusManager: FocusManager, modifier: Modifier = Modifier) {
+fun InputText(textState: String, label: String, setInputValue: (String) -> Unit, focusManager: FocusManager, modifier: Modifier = Modifier, singleLine: Boolean = true) {
     OutlinedTextField(
         value = textState,
         onValueChange = { setInputValue(it) },
         label = { Text(label) },
-        maxLines = 1,
+        singleLine = singleLine,
         modifier = modifier.fillMaxWidth(),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),

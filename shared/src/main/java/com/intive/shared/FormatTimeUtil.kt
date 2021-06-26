@@ -1,4 +1,4 @@
-package com.intive.calendar.utils
+package com.intive.shared
 
 fun formatTime(hour: Int, minutes: Int): String {
 

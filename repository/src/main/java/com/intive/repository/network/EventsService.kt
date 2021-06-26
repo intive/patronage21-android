@@ -14,10 +14,6 @@ interface EventsService {
     @Headers("Content-Type: application/json")
     suspend fun updateInviteResponse(@Body event: EventInviteResponseDto): Response<String>
 
-    @PUT("api/events/edit")
-    @Headers("Content-Type: application/json")
-    suspend fun editEvent(@Body event: EditEventDto, @Query("id") id: String): Response<String>
-
     @GET("api/events/users")
     suspend fun getEventUsers(): List<ListUserJava>
 

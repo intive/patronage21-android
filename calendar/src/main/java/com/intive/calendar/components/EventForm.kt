@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.intive.calendar.R
-import com.intive.calendar.utils.formatTime
+import com.intive.shared.formatTime
 import com.intive.calendar.viewmodels.AddEditEventViewModel
 import com.intive.shared.getDateString
 import com.intive.ui.components.*
@@ -141,7 +141,8 @@ fun EventForm(
                         focusManager = LocalFocusManager.current,
                         modifier = Modifier
                             .height(150.dp)
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        singleLine = false
                     )
 
                     if (technologyGroups?.isNotEmpty() == true) {

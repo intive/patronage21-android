@@ -1,5 +1,6 @@
 package com.intive.repository.network
 
+import com.intive.repository.network.model.EditEventDto
 import com.intive.repository.network.model.EventDto
 import com.intive.repository.network.model.NewEventDto
 import retrofit2.Response
@@ -19,4 +20,8 @@ interface EventsServiceJS {
 
     @DELETE("api/events/delete/{id}")
     suspend fun deleteEvent(@Path("id") id: String): Response<Any>
+
+    @PATCH("api/events/{id}")
+    @Headers("Content-Type: application/json")
+    suspend fun editEvent(@Body event: EditEventDto, @Path("id") id: String): Response<String>
 }
